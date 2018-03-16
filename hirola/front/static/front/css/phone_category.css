@@ -1,0 +1,60 @@
+.d-flex{
+    padding-top: 80px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+/* Three columns side by side */
+.column {
+    float: left;
+    width: 20%;
+    margin-bottom: 16px;
+    padding: 0 8px;
+}
+
+.price {
+    color: orange;
+}
+
+/* Display the columns below each other instead of side by side on small screens */
+@media screen and (max-width: 1050px) {
+    .column {
+        float: left;
+        width: 33.3%;
+        margin-bottom: 16px;
+        padding: 0 8px;
+        
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .column {
+        float: left;
+        width: 50%;
+        margin-bottom: 16px;
+        padding: 0 8px;
+        
+    }
+}
+@media screen and (max-width: 550px) {
+    .column {
+        float: left;
+        width: 100%;
+        margin-bottom: 16px;
+        padding: 0 8px;
+    }
+}
+
+.card-spacer {
+    padding: 4px;
+}
+/* Add some shadows to create a card effect */
+.card {
+    box-shadow: 10px 4px 8px 10px rgba(0, 0, 0, 0.2);
+    border-color:#595959;
+    width: 220px;
+}
+
+
+.title {
+    color: white;
+}
