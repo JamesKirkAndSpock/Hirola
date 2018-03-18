@@ -1,2 +1,63 @@
-html, body {height: 100%; margin:0; padding:0;     flex: 1;
-  overflow-y: scroll;}
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    overflow-y: scroll;
+}
+
+.carousel {
+    height: 88vh;
+    /* height: auto; */
+}
+
+.item-one {
+    position: relative;
+    background-image: url('../../../static/front/image1.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    -moz-background-size: cover;
+}
+
+.item-two {
+    position: relative;
+    background-image: url('../../../static/front/image2.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    -moz-background-size: cover;
+}
+
+.item-three {
+    position: relative;
+    background-image: url('../../../static/front/image3.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    -moz-background-size: cover;
+}
+
+.nav-wrapper {
+    background-color: #282828 !important;
+}
+
+li {
+    margin-right: 100px;
+}
+
+
+/* #item-text {
+    position: absolute;
+    text-align: center;
+} */
+
+.input-field input[type=text]:focus+label {
+    color: #C00000;
+}
+
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #C00000;
+    box-shadow: 0 1px 0 0 #C00000;
+}

@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views import generic
 
 def page_view(request):
-    return  render(request, 'front/landing_page_slideshow.html')
+    return  render(request, 'front/landing_page.html')
 
 def phone_category_view(request):
     return  render(request, 'front/phone_category.html')

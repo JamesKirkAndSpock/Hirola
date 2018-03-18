@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang="en">
-  
+
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Materialize css -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 
     <!-- Application Title -->
     <title>{% block title %}Hirola!{% endblock %}</title>
@@ -16,53 +17,86 @@
     <link rel="stylesheet" type="text/css" href="{% static 'front/css/landing_page.css' %}" />
   </head>
 
-  <body class="bg-dark">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">
-        <img src="{% static 'front/run.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-        <span class="navbar-brand mb-0 font-weight-bold h1">teke</span>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-          <li class="nav-item ml-5 mr-5" onclick="currentPhoneCategory(1)">
-            <a class="nav-link" href="#">Doll
-              <!-- Currently not keen for screen reader functionality -->
-              <!-- <span class="sr-only">(current)</span> -->
+  <body>
+    <div class="row">
+      <div class="navigation">
+        <nav>
+          <div class="nav-wrapper">
+            <a href="#!" class="brand-logo">Logo</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse">
+              <i class="material-icons">menu</i>
             </a>
-          </li>
-          <li class="nav-item ml-5 mr-5" onclick="currentPhoneCategory(2)">
-            <a class="nav-link" href="#">Lego</a>
-          </li>
-          <li class="nav-item ml-5 mr-5" onclick="currentPhoneCategory(3)">
-            <a class="nav-link" href="#">Cartoon</a>
-          </li>
-          <li class="nav-item ml-5 mr-5" onclick="currentPhoneCategory(4)">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item ml-5 mr-5" onclick="currentPhoneCategory(5)">
-            <a class="nav-link" href="#">Inquiry</a>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input id="search-input" class="form-control mr-sm-2" type="hidden" value="" placeholder="Search" aria-label="Search">
-            <button id="search-button" class="btn btn-outline-light my-2 my-sm-0" type="submit">
-              <i class="fas fa-search"></i>
-            </button>
-        </form>
+            <ul class="right hide-on-med-and-down">
+              <li>
+                <a href="#">Doll</a>
+              </li>
+              <li>
+                <a href="#">Lego</a>
+              </li>
+              <li>
+                <a href="#">Cartoon</a>
+              </li>
+              <li>
+                <a href="#">About</a>
+              </li>
+              <li>
+                <a href="#">Enquiry</a>
+              </li>
+              <li>
+                <form>
+                  <div class="input-field">
+                    <input id="search" type="search" required>
+                    <label class="label-icon" for="search">
+                      <i class="material-icons">search</i>
+                    </label>
+                    <i class="material-icons">close</i>
+                  </div>
+                </form>
+              </li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+              <li>
+                <a href="#">Doll</a>
+              </li>
+              <li>
+                <a href="#">Lego</a>
+              </li>
+              <li>
+                <a href="#">Cartoon</a>
+              </li>
+              <li>
+                <a href="#">About</a>
+              </li>
+              <li>
+                <a href="#">Enquiry</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
       </div>
-    </nav>
+      <div class="bg-slideshow">
+        <div class="carousel carousel-slider center" data-indicators="true">
+          <div class="carousel-item red white-text item-one" href="#one!">
+            <h5>iPhone 7s</h5>
+            <p class="white-text">Slimmer than slim</p>
+          </div>
+          <div class="carousel-item amber white-text item-two" href="#two!">
+            <h5>Samsung 7</h5>
+            <p class="white-text">Slicker and Faster</p>
+          </div>
+          <div class="carousel-item green white-text item-three" href="#three!">
+            <h5>Huawei</h5>
+            <p class="white-text">New Paradigm of Thinking.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
     {% block content %}
     {% endblock %}
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="{% static 'front/js/jquery-3.3.1.js' %}"></script>
-    <script src="{% static 'front/js/landing_page.js' %}"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="{% static 'front/js/material_init.js' %}"></script>
   </body>
 </html>
