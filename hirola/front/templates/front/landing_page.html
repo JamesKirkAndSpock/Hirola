@@ -9,7 +9,7 @@
     <!-- Materialize css -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Application Title -->
     <title>{% block title %}Hirola!{% endblock %}</title>
     <!-- Load Static for Images and CSS -->
@@ -18,10 +18,11 @@
   </head>
 
   <body>
-    <div class="row">
+    <div class="row content">
       <div class="navigation">
-        <nav>
+        <nav class="black">
           <div class="nav-wrapper">
+            <!-- <div class="col m8"> -->
             <a href="#!" class="brand-logo">Logo</a>
             <a href="#" data-activates="mobile-demo" class="button-collapse">
               <i class="material-icons">menu</i>
@@ -42,14 +43,12 @@
               <li>
                 <a href="#">Enquiry</a>
               </li>
-              <li>
+              <li id="search">
                 <form>
                   <div class="input-field">
-                    <input id="search" type="search" required>
-                    <label class="label-icon" for="search">
-                      <i class="material-icons">search</i>
-                    </label>
-                    <i class="material-icons">close</i>
+                    <i class="material-icons prefix">search</i>
+                    <input type="text" id="autocomplete-input" class="autocomplete">
+                    <label for="autocomplete-input">Search</label>
                   </div>
                 </form>
               </li>
@@ -77,20 +76,25 @@
       <div class="bg-slideshow">
         <div class="carousel carousel-slider center" data-indicators="true">
           <div class="carousel-item red white-text item-one" href="#one!">
-            <h5>iPhone 7s</h5>
-            <p class="white-text">Slimmer than slim</p>
+            <div class="item-text">
+              <h5>iPhone 7s</h5>
+              <p>Slimmer than slim</p>
+            </div>
           </div>
           <div class="carousel-item amber white-text item-two" href="#two!">
-            <h5>Samsung 7</h5>
-            <p class="white-text">Slicker and Faster</p>
+            <div class="item-text">
+              <h5>Samsung 7</h5>
+              <p>Slicker and Faster</p>
+            </div>
           </div>
           <div class="carousel-item green white-text item-three" href="#three!">
-            <h5>Huawei</h5>
-            <p class="white-text">New Paradigm of Thinking.</p>
+            <div class="item-text">
+              <h5>Huawei</h5>
+              <p>New Paradigm of Thinking.</p>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
     {% block content %}
     {% endblock %}

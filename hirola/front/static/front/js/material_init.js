@@ -4,9 +4,9 @@ $(document).ready(function () {
 });
 
 // set autoplay
-$('.carousel.carousel-slider').carousel({ fullWidth: true }, setTimeout(autoplay, 3000));
+$('.carousel.carousel-slider').carousel({ fullWidth: true }, setTimeout(autoplay, 4000));
 function autoplay() {
     $('.carousel').carousel('next');
-    setTimeout(autoplay, 3000);
+    setTimeout(autoplay, 4000);
 }
 $(".button-collapse").sideNav();

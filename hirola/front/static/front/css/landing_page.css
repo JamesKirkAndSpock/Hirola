@@ -1,20 +1,26 @@
-html,
+/* html,
 body {
     height: 100%;
     margin: 0;
     padding: 0;
     flex: 1;
     overflow-y: scroll;
-}
+    height: 100vh;
+} */
 
 .carousel {
-    height: 88vh;
+    height: 92vh;
     /* height: auto; */
+    background-color: yellow;
+ }
+
+.content {
+    /* height: 100vh; */
 }
 
 .item-one {
     position: relative;
-    background-image: url('../../../static/front/image1.jpeg');
+    background-image: url('../../../static/front/phone5.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -23,7 +29,7 @@ body {
 
 .item-two {
     position: relative;
-    background-image: url('../../../static/front/image2.jpeg');
+    background-image: url('../../../static/front/phone8.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -32,26 +38,33 @@ body {
 
 .item-three {
     position: relative;
-    background-image: url('../../../static/front/image3.jpeg');
+    background-image: url('../../../static/front/phone2.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     -moz-background-size: cover;
 }
 
-.nav-wrapper {
-    background-color: #282828 !important;
-}
-
 li {
     margin-right: 100px;
 }
 
+form .input-field {
+    height: 60px;
+}
 
-/* #item-text {
-    position: absolute;
-    text-align: center;
-} */
+#search {
+    margin-right: 0px !important;
+}
+
+.item-text {
+    margin-top: 300px;
+    color: white;
+}
+
+.input-field label {
+    color: white;
+}
 
 .input-field input[type=text]:focus+label {
     color: #C00000;
@@ -60,4 +73,12 @@ li {
 .input-field input[type=text]:focus {
     border-bottom: 1px solid #C00000;
     box-shadow: 0 1px 0 0 #C00000;
+}
+
+.input-field .prefix.active {
+    color: #C00000;
+}
+
+.input-field .prefix {
+    color: white;
 }
