@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block styles %}
+    <!-- Materialize css -->
+    {% load static %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'front/css/base.css' %}" />
+    {% endblock %}
+    <!-- Application Title -->
+    <title>{% block title %}Hirola!{% endblock %}</title>
+    <!-- Load Static for Images and CSS -->
+</head>
+<body>
+<header>
+    <div class="navigation">
+        <div class="navbar-fixed">
+            <nav class="black">
+                <div class="nav-wrapper">
+                    <!-- <div class="col m8"> -->
+                    <a href="#!" class="brand-logo">Logo</a>
+                    <a href="#" data-activates="nav-mobile" class="button-collapse">
+                        <i class="material-icons">menu</i>
+                    </a>
+                    <ul class="right hide-on-med-and-down">
+                        <li>
+                            <a href="#">Doll</a>
+                        </li>
+                        <li>
+                            <a href="#">Lego</a>
+                        </li>
+                        <li>
+                            <a href="#">Cartoon</a>
+                        </li>
+                        <li>
+                            <a href="#">About</a>
+                        </li>
+                        <li>
+                            <a href="#">Enquiry</a>
+                        </li>
+                        <li id="search">
+                            <!-- <form>
+                                <div class="input-field">
+                                    <i class="material-icons">search</i>
+                                    <input type="text" id="autocomplete-input" class="autocomplete">
+                                    <label for="autocomplete-input">Search</label>
+                                </div>
+                            </form> -->
+                            <form id="navbarsearch">
+                                <div class="navfix">
+                                    <div id="navfix2">
+                                        <div class="input-field">
+                                            <input id="search" type="search" required>
+                                            <label class="label-icon" for="search">
+                                                <i class="material-icons">search</i>
+                                            </label>
+                                            <i class="material-icons">close</i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+        </div>
+        <ul class="side-nav" id="nav-mobile">
+            <li>
+                <a href="#">Doll</a>
+            </li>
+            <li>
+                <a href="#">Lego</a>
+            </li>
+            <li>
+                <a href="#">Cartoon</a>
+            </li>
+            <li>
+                <a href="#">About</a>
+            </li>
+            <li>
+                <a href="#">Enquiry</a>
+            </li>
+
+            <li>
+                <div class="divider"></div>
+            </li>
+            <li>
+                <form style="padding-left: 30px;">
+                    <div class="input-field">
+                        <!-- <i class="material-icons postfix">search</i> -->
+                        <input type="text" id="autocomplete-input" class="autocomplete">
+                        <label for="autocomplete-input">Search</label>
+                    </div>
+                </form>
+                <!-- <form id="navbarsearch">
+                    <div class="navfix">
+                        <div id="navfix2">
+                            <div class="input-field">
+                                <input id="search" type="search" required>
+                                <label class="label-icon" for="search">
+                                    <i class="material-icons">search</i>
+                                </label>
+                                <i class="material-icons">close</i>
+                            </div>
+                        </div>
+                    </div>
+                </form> -->
+            </li>
+        </ul>
+    </div>
+</header>
+
+    {% block content %}
+
+    {% block scripts %}
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="{% static 'front/js/material_init.js' %}"></script>
+    <script src="{% static 'front/js/base.js' %}"></script>
+    {% endblock %}
+    {% endblock %}
+
+</body>
+</html>

@@ -1,26 +1,37 @@
-/* html,
+html,
 body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    flex: 1;
-    overflow-y: scroll;
-    height: 100vh;
-} */
+    /* height: 100%; */
+    /* margin: 0;
+    padding: 0; */
+    /* flex: 1; */
+    /* overflow-y: scroll; */
+    /* height: 100vh; */
+}
 
 .carousel {
     height: 92vh;
-    /* height: auto; */
-    background-color: yellow;
- }
+    /* background-size: 100vh; */
+    /* background-color: indigo; */
+}
+
+.carousel-item {
+    height: 100vh;
+    /* padding-top: 50px; */
+    margin-bottom: 0 !important;
+    background-size: cover;
+}
 
 .content {
     /* height: 100vh; */
 }
 
+.bg-slideshow {
+    /* height: 100vh; */
+}
+
 .item-one {
     position: relative;
-    background-image: url('../../../static/front/phone5.jpeg');
+    background-image: url('../../../static/front/phone8.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -29,7 +40,7 @@ body {
 
 .item-two {
     position: relative;
-    background-image: url('../../../static/front/phone8.jpeg');
+    background-image: url('../../../static/front/phone7.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -45,40 +56,22 @@ body {
     -moz-background-size: cover;
 }
 
-li {
-    margin-right: 100px;
-}
-
-form .input-field {
-    height: 60px;
-}
-
-#search {
-    margin-right: 0px !important;
-}
-
 .item-text {
     margin-top: 300px;
-    color: white;
 }
 
-.input-field label {
-    color: white;
+@media only screen and (max-width: 767px) {
+    .carousel {
+        height: 91vh;
+        /* background-size: 100vh; */
+        /* background-color: indigo; */
+    }
+    .carousel-item {
+        /* height: 100vh; */
+    }
 }
 
-.input-field input[type=text]:focus+label {
-    color: #C00000;
-}
-
-.input-field input[type=text]:focus {
-    border-bottom: 1px solid #C00000;
-    box-shadow: 0 1px 0 0 #C00000;
-}
-
-.input-field .prefix.active {
-    color: #C00000;
-}
-
-.input-field .prefix {
-    color: white;
+.row {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }

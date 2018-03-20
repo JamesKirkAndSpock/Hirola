@@ -1,106 +1,37 @@
-<!doctype html>
-<html lang="en">
+{% extends "front/base.html" %}
+{% block styles %}
+{{ block.super }}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/landing_page.css' %}" />
+{% endblock %}
+{% block content %}
 
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-    <!-- Materialize css -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Application Title -->
-    <title>{% block title %}Hirola!{% endblock %}</title>
-    <!-- Load Static for Images and CSS -->
-
-    <link rel="stylesheet" type="text/css" href="{% static 'front/css/landing_page.css' %}" />
-  </head>
-
-  <body>
-    <div class="row content">
-      <div class="navigation">
-        <nav class="black">
-          <div class="nav-wrapper">
-            <!-- <div class="col m8"> -->
-            <a href="#!" class="brand-logo">Logo</a>
-            <a href="#" data-activates="mobile-demo" class="button-collapse">
-              <i class="material-icons">menu</i>
-            </a>
-            <ul class="right hide-on-med-and-down">
-              <li>
-                <a href="#">Doll</a>
-              </li>
-              <li>
-                <a href="#">Lego</a>
-              </li>
-              <li>
-                <a href="#">Cartoon</a>
-              </li>
-              <li>
-                <a href="#">About</a>
-              </li>
-              <li>
-                <a href="#">Enquiry</a>
-              </li>
-              <li id="search">
-                <form>
-                  <div class="input-field">
-                    <i class="material-icons prefix">search</i>
-                    <input type="text" id="autocomplete-input" class="autocomplete">
-                    <label for="autocomplete-input">Search</label>
-                  </div>
-                </form>
-              </li>
-            </ul>
-            <ul class="side-nav" id="mobile-demo">
-              <li>
-                <a href="#">Doll</a>
-              </li>
-              <li>
-                <a href="#">Lego</a>
-              </li>
-              <li>
-                <a href="#">Cartoon</a>
-              </li>
-              <li>
-                <a href="#">About</a>
-              </li>
-              <li>
-                <a href="#">Enquiry</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+<div class="row content">
+  <div class="bg-slideshow">
+    <div class="carousel carousel-slider center" data-indicators="true">
+      <div class="carousel-item red item-one" href="#one!">
+        <div class="item-text white-text">
+          <h4>iPhone 7s</h4>
+          <h5>Slimmer than slim</h5>
+        </div>
       </div>
-      <div class="bg-slideshow">
-        <div class="carousel carousel-slider center" data-indicators="true">
-          <div class="carousel-item red white-text item-one" href="#one!">
-            <div class="item-text">
-              <h5>iPhone 7s</h5>
-              <p>Slimmer than slim</p>
-            </div>
-          </div>
-          <div class="carousel-item amber white-text item-two" href="#two!">
-            <div class="item-text">
-              <h5>Samsung 7</h5>
-              <p>Slicker and Faster</p>
-            </div>
-          </div>
-          <div class="carousel-item green white-text item-three" href="#three!">
-            <div class="item-text">
-              <h5>Huawei</h5>
-              <p>New Paradigm of Thinking.</p>
-            </div>
-          </div>
+      <div class="carousel-item amber item-two" href="#two!">
+        <div class="item-text black-text">
+          <h4>Samsung 7</h4>
+          <h5>Slicker and Faster</h5>
+        </div>
+      </div>
+      <div class="carousel-item green white-text item-three" href="#three!">
+        <div class="item-text">
+          <h4>Huawei</h4>
+          <h5>New Paradigm of Thinking.</h5>
         </div>
       </div>
     </div>
-    {% block content %}
-    {% endblock %}
-    <!-- scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script src="{% static 'front/js/material_init.js' %}"></script>
-  </body>
-</html>
+  </div>
+</div>
+{% block scripts %}
+{{ block.super }}
+{% load static %}
+{% endblock %}
+{% endblock %}
