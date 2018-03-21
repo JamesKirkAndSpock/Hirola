@@ -30,8 +30,6 @@ $(document).ready(function () {
         //handle other nav elements visibility first to avoid push down
         $('.search-hide').removeClass('hide');
 
-
-
     });
 
 });

@@ -1,25 +1,21 @@
 li {
-    margin-right: 50px;
+    margin-right: 100px;
 }
-
-form .input-field {
-    height: 50px;
-}
-
 #search {
     margin-right: 0px !important;
 }
 
+.brand-logo{
+    margin-left: 20px;
+}
 
-/* .input-field label {
-    color: white;
-} */
 
-
-/* .input-field input[type=text]:focus+label {
+.input-field input[type=text]:focus+label {
     color: #C00000;
-} */
-
+}
+nav{
+    /* height: 60px !important; */
+}
 
 /* .input-field input[type=text]:focus {
     border-bottom: 1px solid #C00000;
@@ -27,18 +23,8 @@ form .input-field {
 } */
 
 
-/* .input-field .prefix.active {
-    color: #C00000;
-} */
-
-.input-field .prefix {
-    color: black;
-}
-
-.row {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
+.input-field .prefix.active {
+    color: white;
 }
 
 @media only screen and (max-width: 600px) {
@@ -60,4 +46,12 @@ form .input-field {
 
 .navfix2 {
     position: absolute;
+}
+
+
+.input-field .prefix {
+    /* color: black; */
+    color: white;
+    padding-top: 4px;
+    font-size: 1.5em;
 }

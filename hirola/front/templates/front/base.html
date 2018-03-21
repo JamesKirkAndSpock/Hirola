@@ -9,7 +9,6 @@
     {% load static %}
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'front/css/base.css' %}" />
     {% endblock %}
     <!-- Application Title -->
@@ -18,12 +17,11 @@
 </head>
 <body>
 <header>
-    <div class="navigation">
+    <!-- <div class="navigation"> -->
         <div class="navbar-fixed">
             <nav class="black">
                 <div class="nav-wrapper">
-                    <!-- <div class="col m8"> -->
-                    <a href="#!" class="brand-logo">Logo</a>
+                    <a href="#!" class="brand-logo">teke</a>
                     <a href="#" data-activates="nav-mobile" class="button-collapse">
                         <i class="material-icons">menu</i>
                     </a>
@@ -44,21 +42,14 @@
                             <a href="#">Enquiry</a>
                         </li>
                         <li id="search">
-                            <!-- <form>
-                                <div class="input-field">
-                                    <i class="material-icons">search</i>
-                                    <input type="text" id="autocomplete-input" class="autocomplete">
-                                    <label for="autocomplete-input">Search</label>
-                                </div>
-                            </form> -->
                             <form id="navbarsearch">
                                 <div class="navfix">
                                     <div id="navfix2">
                                         <div class="input-field">
+                                            <i class="prefix material-icons">search</i>
                                             <input id="search" type="search" required>
-                                            <label class="label-icon" for="search">
-                                                <i class="material-icons">search</i>
-                                            </label>
+                                            <!-- <label class="label-icon" for="search"> -->
+                                            <!-- </label> -->
                                             <i class="material-icons">close</i>
                                         </div>
                                     </div>
@@ -69,7 +60,7 @@
 
                 </div>
             </nav>
-        </div>
+        <!-- </div> -->
         <ul class="side-nav" id="nav-mobile">
             <li>
                 <a href="#">Doll</a>
@@ -98,19 +89,7 @@
                         <label for="autocomplete-input">Search</label>
                     </div>
                 </form>
-                <!-- <form id="navbarsearch">
-                    <div class="navfix">
-                        <div id="navfix2">
-                            <div class="input-field">
-                                <input id="search" type="search" required>
-                                <label class="label-icon" for="search">
-                                    <i class="material-icons">search</i>
-                                </label>
-                                <i class="material-icons">close</i>
-                            </div>
-                        </div>
-                    </div>
-                </form> -->
+
             </li>
         </ul>
     </div>
