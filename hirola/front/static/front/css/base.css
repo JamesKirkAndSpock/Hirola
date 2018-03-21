@@ -1,27 +1,19 @@
 li {
-    margin-right: 100px;
+    margin-right: 90px;
 }
+
 #search {
     margin-right: 0px !important;
 }
 
-.brand-logo{
+form .input-field {
+    margin-top: 3px;
+    height: 60px;
+}
+
+.brand-logo {
     margin-left: 20px;
 }
-
-
-.input-field input[type=text]:focus+label {
-    color: #C00000;
-}
-nav{
-    /* height: 60px !important; */
-}
-
-/* .input-field input[type=text]:focus {
-    border-bottom: 1px solid #C00000;
-    box-shadow: 0 1px 0 0 #C00000;
-} */
-
 
 .input-field .prefix.active {
     color: white;
@@ -48,10 +40,9 @@ nav{
     position: absolute;
 }
 
-
 .input-field .prefix {
-    /* color: black; */
     color: white;
-    padding-top: 4px;
+    padding-top: 2px;
     font-size: 1.5em;
+    margin-right: 0 !important;
 }
