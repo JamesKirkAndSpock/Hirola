@@ -7,8 +7,6 @@ li {
 }
 
 form .input-field {
-    margin-top: 3px;
-    height: 60px;
 }
 
 .brand-logo {
@@ -38,11 +36,13 @@ form .input-field {
 
 .navfix2 {
     position: absolute;
+    background-color: indigo;
 }
 
-.input-field .prefix {
-    color: white;
-    padding-top: 2px;
-    font-size: 1.5em;
-    margin-right: 0 !important;
+.label-icon {
+    vertical-align: top;
+}
+
+.label-icon i.material-icons {
+    font-size: 2em;
 }
