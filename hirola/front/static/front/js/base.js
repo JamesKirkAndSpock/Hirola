@@ -1,35 +1,9 @@
-$(document).ready(function () {
-    var trig = 1;
-    //fix for chrome
-    $("#search").addClass('searchbarfix');
+function revealSearch(searchField){
+    var searchField = document.getElementById(searchField);
+    if (searchField.style.visibility === 'hidden') {
+        searchField.style.visibility = 'visible';
+    } else {
+        searchField.style.visibility = 'hidden';
+    }
 
-
-    //animate searchbar width increase to  +150%
-    $('#search').click(function (e) {
-        //handle other nav elements visibility here to avoid push down
-        $('.search-hide').addClass('hide');
-        if (trig == 1) {
-            $('#navfix2').animate({
-                width: '+=250',
-                marginRight: 0
-            }, 400);
-
-            trig++;
-        }
-
-    });
-
-    // if user leaves the form the width will go back to original state
-
-    $("#search").focusout(function () {
-
-        $('#navfix2').animate({
-            width: '-=250'
-        }, 400);
-        trig = trig - 1;
-        //handle other nav elements visibility first to avoid push down
-        $('.search-hide').removeClass('hide');
-
-    });
-
-});
+}

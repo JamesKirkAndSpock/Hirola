@@ -2,47 +2,44 @@ li {
     margin-right: 90px;
 }
 
-#search {
+#search-form {
     margin-right: 0px !important;
-}
-
-form .input-field {
+    margin-left: 550px;
 }
 
 .brand-logo {
     margin-left: 20px;
 }
 
-.input-field .prefix.active {
-    color: white;
+.btn-small {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 0.5rem;
+    border: 1px solid whitesmoke;
+    border-radius: 5px;
 }
 
-@media only screen and (max-width: 600px) {
-    .searchbarfix {
-        height: 56px !important;
-    }
+form .input-field {
+    background-color: whitesmoke;
+    color: black;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    height: 50px;
+    line-height: 20px;
+    padding: 0 0.5rem;
 }
 
-@media only screen and (min-width: 601px) {
-    .searchbarfix {
-        height: 64px !important;
-    }
+.row {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
 
-.navfix {
-    position: relative;
-    margin-right: 0;
+input[type="text"] {
+    border-bottom: none !important;
+    outline: none !important;
 }
 
-.navfix2 {
-    position: absolute;
-    background-color: indigo;
-}
-
-.label-icon {
-    vertical-align: top;
-}
-
-.label-icon i.material-icons {
-    font-size: 2em;
+input:focus {
+    border-bottom: none!important;
+    box-shadow: none!important;
 }
