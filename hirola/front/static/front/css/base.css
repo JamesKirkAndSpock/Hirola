@@ -4,11 +4,10 @@ li {
 
 #search-form {
     margin-right: 0px !important;
-    margin-left: 550px;
 }
 
 .brand-logo {
-    margin-left: 20px;
+    /* margin-left: 20px; */
 }
 
 .btn-small {
@@ -24,9 +23,11 @@ form .input-field {
     color: black;
     margin-top: 10px;
     margin-bottom: 20px;
-    height: 50px;
+    height: 40px;
     line-height: 20px;
     padding: 0 0.5rem;
+    border-radius:105px;
+    width: 100%;
 }
 
 .row {
