@@ -1,0 +1,12 @@
+languages:
+  Ruby: false
+  Javascript: false
+  PHP: false
+  Python: true
+
+exclude_paths:
+- static/css/bootstrap.css
+- "**/migrations/**"
+- "**/tests/**"
+- "**.js"
+- "**.css"
