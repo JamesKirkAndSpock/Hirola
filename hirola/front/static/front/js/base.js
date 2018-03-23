@@ -7,3 +7,12 @@ function revealSearch(searchField){
     }
 
 }
+function revealSearchMobile(searchFields) {
+    var searchField = document.getElementById(searchFields);
+    if (searchField.style.visibility === 'hidden') {
+        searchField.style.visibility = 'visible';
+    } else {
+        searchField.style.visibility = 'hidden';
+    }
+
+}

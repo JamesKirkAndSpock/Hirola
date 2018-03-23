@@ -52,7 +52,7 @@
                             </ul>
                         </div>
                         <div class="col m3" >
-                            <ul>
+                            <ul class=" hide-on-med-and-down">
                                 <li class="right" id="search-form">
                                     <form>
                                         <div class="row">
@@ -95,10 +95,22 @@
                 <div class="divider"></div>
             </li>
             <li>
-                <form style="padding-left: 30px;">
+                <!-- <form style="padding-left: 30px;">
                     <div class="input-field">
                         <input type="text" id="autocomplete-input" class="autocomplete">
                         <label for="autocomplete-input">Search</label>
+                    </div>
+                </form> -->
+                <form>
+                    <div class="row">
+                        <div id="searchFields" class="right input-field col s8" style="visibility: hidden;">
+                            <input id="search" type="text" required placeholder="Search...">
+                        </div>
+                        <div class="col s4">
+                            <a class="btn btn-small waves-effect waves-light white black-text" onclick="revealSearchMobile('searchFields');">
+                                <i class="material-icons">search</i>
+                            </a>
+                        </div>
                     </div>
                 </form>
             </li>
