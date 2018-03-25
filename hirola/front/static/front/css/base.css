@@ -2,28 +2,17 @@ li {
     margin-right: 90px;
 }
 
-#search-form {
+.search-form {
     margin-right: 0px !important;
 }
 
-.btn-small {
-    height: 30px;
-    line-height: 30px;
-    padding: 0 0.5rem;
-    border: 1px solid whitesmoke;
-    border-radius: 5px;
+.m3 {
+    padding-right: 0px !important;
+    height: 100%;
 }
 
-form .input-field {
-    background-color: whitesmoke;
-    color: black;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    height: 40px;
-    line-height: 20px;
-    padding: 0 0.5rem;
-    border-radius: 105px;
-    width: 100%;
+form .input-field{
+    height: 64px;
 }
 
 .row {
@@ -31,23 +20,12 @@ form .input-field {
     padding-bottom: 0 !important;
 }
 
-input[type="text"] {
-    border-bottom: none !important;
-    outline: none !important;
-}
-
-input:focus {
-    border-bottom: none!important;
-    box-shadow: none!important;
-}
-
 @media only screen and (max-width: 767px) {
-    .btn-small {
-        border: 1px solid black;
-        border-radius: 5px;
-        margin-left: 18px;
-    }
+
     li {
         margin-right: 10px;
+    }
+    form .input-field{
+        margin-left: 5px;
     }
 }
