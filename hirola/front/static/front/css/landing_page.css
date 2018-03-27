@@ -1,41 +1,20 @@
 html,
 body {
     height: 100%;
-    /* margin: 0;
-    padding: 0; */
     flex: 1;
-    /* overflow-y: scroll; */
-    /* height: 100vh; */
 }
+
 .carousel {
     height: auto;
     height: 93.5vh;
 }
+
 .content {
     margin-bottom: 0 !important;
 }
 
-.item-one {
+.bg-image {
     position: relative;
-    background-image: url('../../../static/front/phone8.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    -moz-background-size: cover;
-}
-
-.item-two {
-    position: relative;
-    background-image: url('../../../static/front/phone7.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    -moz-background-size: cover;
-}
-
-.item-three {
-    position: relative;
-    background-image: url('../../../static/front/phone2.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -51,7 +30,6 @@ body {
         height: 91vh;
     }
 }
-
 .row {
     margin-top: 0 !important;
     padding-top: 0 !important;
