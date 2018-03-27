@@ -27,18 +27,24 @@ check_branch(){
         HOST=${DEVOPS_HOST}
         ENVIRONMENT=${DEVOPS_ENVIRONMENT}
         IP_ADDRESS=${DEVOPS_IP_ADDRESS}
+        REGION=${DEVOPS_REGION}
+        ZONE=${DEVOPS_ZONE}
     fi
 
     if [ "$CIRCLE_BRANCH" == 'develop' ]; then
         HOST=${DEVELOP_HOST}
         ENVIRONMENT=${DEVELOP_ENVIRONMENT}
         IP_ADDRESS=${DEVELOP_IP_ADDRESS}
+        REGION=${DEVELOP_REGION}
+        ZONE=${DEVELOP_ZONE}
     fi
 
     if [ "$CIRCLE_BRANCH" == 'master' ]; then
         HOST=${MASTER_HOST}
         ENVIRONMENT=${MASTER_ENVIRONMENT}
         IP_ADDRESS=${MASTER_IP_ADDRESS}
+        REGION=${MASTER_REGION}
+        ZONE=${MASTER_ZONE}
     fi
 }
 
@@ -49,7 +55,7 @@ initialise_terraform() {
 
 destroy_previous_infrastructure(){
     if [[ "$CIRCLE_USERNAME" == "JamesKirkAndSpock" && "$CIRCLE_BRANCH" != 'develop' && "$CIRCLE_BRANCH" != 'master' ]]; then
-        terraform destroy -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${DEVOPS_REGION}" -var=zone="${DEVOPS_ZONE}"
+        terraform destroy -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}"
     else
         terraform destroy -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}"
     fi
@@ -58,7 +64,7 @@ destroy_previous_infrastructure(){
 
 build_current_infrastructure() {
     if [[ "$CIRCLE_USERNAME" == "JamesKirkAndSpock" && "$CIRCLE_BRANCH" != 'develop' && "$CIRCLE_BRANCH" != 'master' ]]; then
-        terraform apply -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${DEVOPS_REGION}" -var=zone="${DEVOPS_ZONE}"
+        terraform apply -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}"
     else
         terraform apply -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}"
     fi
