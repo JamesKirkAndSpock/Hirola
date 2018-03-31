@@ -1,0 +1,43 @@
+
+{% extends "front/landing_page.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/landing_page_slideshow.css' %}" />
+<div class="slideshow-container">
+
+    <ol class="carousel-indicators">
+      <li class="dots ml-3"  data-target="#carouselExampleIndicators" onclick="currentSlide(1)" data-slide-to="0"></li>
+      <li class="dots ml-3"  data-target="#carouselExampleIndicators" onclick="currentSlide(2)" data-slide-to="1"></li>
+      <li class="dots ml-3"  data-target="#carouselExampleIndicators" onclick="currentSlide(3)" data-slide-to="2"></li>
+    </ol>
+
+    <!-- Full-width images and caption text -->
+    <div class="mySlides">
+      <img class="img-fluid"src="{% static 'front/image1.jpeg' %}" style="max-height:92vh; width:100%; height:auto;">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>iPhone 7s</h5>
+        <p>Slimmer than slim</p>
+      </div>
+    </div>
+
+    <div class="mySlides">
+      <img src="{% static 'front/image2.jpeg' %}" style="max-height:92vh; width:100%; height:auto;">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Samsung 7</h5>
+        <p>Slicker and Faster</p>
+      </div>
+    </div>
+
+    <div class="mySlides">
+      <img src="{% static 'front/image3.jpeg' %}" style="max-height:92vh; width:100%; height:auto;">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Huawei</h5>
+        <p>New Paradigm of Thinking.</p>
+      </div>
+    </div>
+
+  </div>
+  <br>
+  <script src="{% static 'front/js/landing_page_slideshow.js' %}"></script>
+{% endblock %}

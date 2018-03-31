@@ -1,0 +1,36 @@
+html,
+body {
+    height: 100%;
+    flex: 1;
+}
+
+.carousel {
+    height: auto;
+    height: 93.5vh;
+}
+
+.content {
+    margin-bottom: 0 !important;
+}
+
+.bg-image {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    -moz-background-size: cover;
+}
+
+.item-text {
+    margin-top: 300px;
+}
+
+@media only screen and (max-width: 767px) {
+    .carousel {
+        height: 91vh;
+    }
+}
+.row {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
