@@ -12,7 +12,11 @@ download_terraform() {
 
 prepare_deployment_script() {
     cd ~
-    git clone -b continuous-deployment-156068297 https://github.com/JamesKirkAndSpock/Hirola-Deployment-Script.git
+    if [ "$CIRCLE_USERNAME" == "JamesKirkAndSpock" ]; then
+        git clone -b continuous-deployment-156068297 https://github.com/JamesKirkAndSpock/Hirola-Deployment-Script.git
+    else
+        git clone -b non-telegram-continuous-deployment-156068297 https://github.com/JamesKirkAndSpock/Hirola-Deployment-Script.git
+    fi
     cd ~/Hirola-Deployment-Script
     mkdir account-folder
     cd account-folder
