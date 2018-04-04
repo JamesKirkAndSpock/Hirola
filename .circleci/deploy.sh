@@ -74,6 +74,21 @@ build_current_infrastructure() {
     fi
 }
 
+send_sticker() {
+    STICKERS=( "CAADAgADswIAAkb7rASMLYKaSCtm6AI" "CAADAgAD7AYAAnlc4gmyzyRQT6BJSwI" "CAADAgADdAIAArnzlwuPQ69bvLwTLQI" "CAADAgADKQcAAmMr4gnhM9ccDb2hKAI" "CAADAgADHAgAAgi3GQKRQRBYukJHPQI" "CAADAgADnAMAAkKvaQABPPcu6tryHCAC" "CAADAgAD8QADHdMcCujnc2NYpF9LAg" "CAADBAADTwEAAriGNgch8jFBHEA_9gI" "CAADAgADZxIAAkKvaQABvhbl68BnTKUC" "CAADAgAD8gIAAmvEygq7pRRA8OnbFAI" )
+    RANDOM=$$$(date +%s)
+    STICKER=${STICKERS[$RANDOM % ${#STICKERS[@]} ]}
+    curl -s -X POST https://api.telegram.org/bot${TELEGRAM_API_KEY}/sendSticker \
+    -d chat_id=${TELEGRAM_CHAT_ID} \
+    -d sticker=$STICKER
+}
+
+send_message() {
+    curl -s -X POST https://api.telegram.org/bot${TELEGRAM_API_KEY}/sendMessage \
+    -d chat_id=${TELEGRAM_CHAT_ID} \
+    -d text="Your branch "${CIRCLE_BRANCH}" has been deployed. Open http://${HOST} to view it."
+}
+
 main() {
     download_terraform
     prepare_deployment_script
@@ -81,6 +96,8 @@ main() {
     initialise_terraform
     destroy_previous_infrastructure
     build_current_infrastructure
+    send_sticker
+    send_message
 }
 
 main "$@"
