@@ -35,7 +35,7 @@ check_branch(){
         ZONE=${DEVOPS_ZONE}
     fi
 
-    if [ "$CIRCLE_BRANCH" == 'develop' ]; then
+if [[ "$CIRCLE_BRANCH" == 'develop' ]]; then
         HOST=${DEVELOP_HOST}
         ENVIRONMENT=${DEVELOP_ENVIRONMENT}
         IP_ADDRESS=${DEVELOP_IP_ADDRESS}
@@ -43,7 +43,7 @@ check_branch(){
         ZONE=${DEVELOP_ZONE}
     fi
 
-    if [ "$CIRCLE_BRANCH" == 'master' ]; then
+    if [[ "$CIRCLE_BRANCH" == 'master' ]]; then
         HOST=${MASTER_HOST}
         ENVIRONMENT=${MASTER_ENVIRONMENT}
         IP_ADDRESS=${MASTER_IP_ADDRESS}
@@ -58,7 +58,7 @@ initialise_terraform() {
 }
 
 destroy_previous_infrastructure(){
-    if [[ "$CIRCLE_USERNAME" == "JamesKirkAndSpock" && "$CIRCLE_BRANCH" != 'develop' && "$CIRCLE_BRANCH" != 'master' ]]; then
+    if [[ "$CIRCLE_USERNAME" == "JamesKirkAndSpock" || "$CIRCLE_BRANCH" == 'develop' || "$CIRCLE_BRANCH" == 'master' ]]; then
         terraform destroy -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}"
     else
         terraform destroy -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}"
@@ -67,7 +67,7 @@ destroy_previous_infrastructure(){
 }
 
 build_current_infrastructure() {
-    if [[ "$CIRCLE_USERNAME" == "JamesKirkAndSpock" && "$CIRCLE_BRANCH" != 'develop' && "$CIRCLE_BRANCH" != 'master' ]]; then
+    if [[ "$CIRCLE_USERNAME" == "JamesKirkAndSpock" || "$CIRCLE_BRANCH" == 'develop' || "$CIRCLE_BRANCH" == 'master' ]]; then
         terraform apply -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}"
     else
         terraform apply -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}"
