@@ -1,30 +1,42 @@
 .content {
     margin-top: 50px;
     padding: 20px;
-    /* background-color: whitesmoke; */
-    border: black 0.5px solid;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
 }
 
 .storage {
-    /* border: solid 1px black; */
     padding: 10px;
+    /* margin-bottom: 50px; */
+    border-bottom: solid 0.05em;
+    border-bottom-color: #E8E8E8;
 }
 
 .storage .m3 {
-    /* border: black 1px solid; */
-    /* margin: 10px; */
-    /* width: 90vw; */
     text-align: center;
-    margin-bottom: 10px;
-    /* height: 30px; */
+    margin-bottom: 50px;
 }
 
 .storage .m3 #size {
-    border: black 1px solid;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
     background-color: whitesmoke;
-    /* height: 100%; */
-    /* color:  */
 }
-.images{
+
+.images {
     padding-top: 50px;
+}
+
+.image {
+    height: 100px;
+    width: 80px;
+}
+
+.image-div {
+    padding-top: 40px;
+}
+
+.card {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
 }
