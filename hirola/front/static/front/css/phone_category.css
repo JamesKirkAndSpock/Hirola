@@ -11,7 +11,7 @@
     border-bottom-color: #E8E8E8;
 }
 
-.storage .m3 {
+.storage .col {
     text-align: center;
     margin-bottom: 50px;
 }
@@ -38,4 +38,14 @@
 .card {
     border: solid 0.05em;
     border-color: #E8E8E8;
+}
+
+.card-content {
+    /* font-weight: bold; */
+}
+
+@media only screen and (min-width: 1200px) {
+    p {
+        font-size: 0.9vw;
+    }
 }
