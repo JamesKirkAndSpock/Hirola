@@ -7,7 +7,7 @@
     padding: 20px;
     border: solid 0.05em;
     border-color: #E8E8E8;
-    flex-grow: 1.5;
+    flex-grow: 1.2;
 }
 
 .storage {
@@ -21,7 +21,7 @@
     margin-bottom: 50px;
 }
 
-.storage .m3 #size {
+.storage .s3 #size {
     border: solid 0.05em;
     border-color: #E8E8E8;
     background-color: whitesmoke;
@@ -45,22 +45,12 @@
     border-color: #E8E8E8;
 }
 
-.card-content {
-    /* font-weight: bold; */
-}
-
 .container {
     flex-shrink: 5;
 }
 
-@media only screen and (min-width: 1200px) {
-    /* p {
-        font-size: 0.9vw;
-    } */
-    /* .container{
-        width: 75vw;
+@media only screen and (max-width: 600px) {
+    .storage .s3 #size h4 {
+        font-size: 4vw;
     }
-    .row{
-        width: 100vw;
-    } */
 }
