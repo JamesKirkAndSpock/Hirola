@@ -1,8 +1,13 @@
+.main-container {
+    display: flex
+}
+
 .content {
     margin-top: 50px;
     padding: 20px;
     border: solid 0.05em;
     border-color: #E8E8E8;
+    flex-grow: 1.5;
 }
 
 .storage {
@@ -44,8 +49,18 @@
     /* font-weight: bold; */
 }
 
+.container {
+    flex-shrink: 5;
+}
+
 @media only screen and (min-width: 1200px) {
-    p {
+    /* p {
         font-size: 0.9vw;
+    } */
+    /* .container{
+        width: 75vw;
     }
+    .row{
+        width: 100vw;
+    } */
 }
