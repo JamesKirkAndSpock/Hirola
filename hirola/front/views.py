@@ -20,5 +20,8 @@ def android_view(request):
 def tablet_view(request):
     return render(request, 'front/tablet.html')
 
+def phone_profile_view(request):
+    return render(request, 'front/phone_profile.html')
+
 def phone_view(request):
     return  render(request, 'front/phone.html')

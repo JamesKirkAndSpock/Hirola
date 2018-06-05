@@ -9,5 +9,6 @@ urlpatterns = [
     path('iphone', views.iphone_view, name='iphone'),
     path('android', views.android_view, name='android'),
     path('tablet', views.tablet_view, name='android'),
+    path('profile', views.phone_profile_view, name='profile'),
     path('phone', views.phone_view, name='phone'),
 ]

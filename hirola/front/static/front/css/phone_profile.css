@@ -1,0 +1,40 @@
+.container {
+    /* background-color: red; */
+    height: 100px;
+}
+
+.action {
+    background-color: yellow;
+    height: 100px;
+}
+
+.thumb-img {
+    background-color: #7fffd4;
+    height: 100px;
+}
+
+.main-img {
+    background-color: rebeccapurple;
+    height: 100px;
+}
+
+.profile {
+    background-color: blue;
+    height: 100px;
+}
+
+.thumb1 {
+    background-color: chocolate
+}
+
+.thumb2 {
+    background-color: yellowgreen;
+}
+
+.thumb3 {
+    background-color: chocolate
+}
+
+.thumb4 {
+    background-color: yellowgreen;
+}

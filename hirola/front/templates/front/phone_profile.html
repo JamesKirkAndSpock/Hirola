@@ -1,0 +1,16 @@
+{% extends "front/base.html" %} {% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_profile.css' %}" /> {% endblock %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col m3 thumb-img">
+            <div class="row thumb1"></div>
+            <div class="row thumb2"></div>
+            <div class="row thumb3"></div>
+            <div class="row thumb4"></div>
+        </div>
+        <div class="col m3 main-img"></div>
+        <div class="col m5 profile"></div>
+        <div class="col m1 action"></div>
+    </div>
+</div>
+{% block scripts %} {{ block.super }} {% load static %} {% endblock %} {% endblock %}
