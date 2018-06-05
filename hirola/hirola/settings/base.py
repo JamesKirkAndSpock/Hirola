@@ -20,14 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'uknfxtk9bk*xf6%o=89vmibnui^mece+#y41q$lr4m-ecdq_gu'
+SECRET_KEY = os.environ.get('IP_ADDRESS')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = [os.environ.get('IP_ADDRESS'), os.environ.get('HOST')]
-
-ALLOWED_HOSTS = ['198.211.99.20', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -64,6 +60,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -77,8 +74,12 @@ WSGI_APPLICATION = 'hirola.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('USER'),
+        'PASSWORD': os.environ.get('PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_IP'),
+        'PORT': '5432',
     }
 }
 
