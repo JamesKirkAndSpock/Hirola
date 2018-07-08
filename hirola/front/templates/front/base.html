@@ -32,22 +32,13 @@
                         </div>
                         <div class="col m8">
                             <ul class=" hide-on-med-and-down">
-
+                                {% for category in categories %} 
                                 <div class="col m2">
                                     <li>
-                                        <a class="" href="/iphone">iPhones</a>
+                                        <a class="" href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
                                     </li>
                                 </div>
-                                <div class="col m2">
-                                    <li>
-                                        <a class="" href="/android">Android</a>
-                                    </li>
-                                </div>
-                                <div class="col m2">
-                                    <li>
-                                        <a class="" href="/tablet">Tablets</a>
-                                    </li>
-                                </div>
+                                {% endfor %}
                                 <div class="col m2">
                                     <li>
                                         <a class="" href="/profile">About</a>
@@ -75,16 +66,12 @@
                 </div>
             </nav>
         </div>
-        <ul class="side-nav" id="nav-mobile">
+        <ul class="side-nav" id="nav-mobile">                              
+            {% for category in categories %} 
             <li>
-                <a href="/iphone">iPhones</a>
+                <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
             </li>
-            <li>
-                <a href="/android">Android</a>
-            </li>
-            <li>
-                <a href="/tablet">Tablets</a>
-            </li>
+            {% endfor %}
             <li>
                 <a href="/profile">About</a>
             </li>
@@ -114,7 +101,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <script src="{% static 'front/js/material_init.js' %}"></script>
-    <script src="{% static 'front/js/base.js' %}"></script>
     {% endblock %}
     {% endblock %}
 
