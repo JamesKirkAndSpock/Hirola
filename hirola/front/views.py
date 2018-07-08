@@ -11,5 +11,17 @@ def page_view(request):
 def phone_category_view(request):
     return  render(request, 'front/phone_category.html')
 
+def iphone_view(request):
+    return  render(request, 'front/iphone.html')
+
+def android_view(request):
+    return  render(request, 'front/android.html')
+
+def tablet_view(request):
+    return render(request, 'front/tablet.html')
+
+def phone_profile_view(request):
+    return render(request, 'front/phone_profile.html')
+
 def phone_view(request):
     return  render(request, 'front/phone.html')
