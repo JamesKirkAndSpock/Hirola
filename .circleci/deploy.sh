@@ -12,7 +12,7 @@ download_terraform() {
 
 prepare_deployment_script() {
     cd ~
-    git clone -b continuous-deployment-156068297 https://github.com/JamesKirkAndSpock/Hirola-Deployment-Script.git
+    git clone -b ch-database-configuration-staging-156700135 https://github.com/JamesKirkAndSpock/Hirola-Deployment-Script.git
     cd ~/Hirola-Deployment-Script
     mkdir account-folder
     cd account-folder
@@ -22,16 +22,21 @@ prepare_deployment_script() {
 }
 
 check_branch(){
-    echo "$CIRCLE_USERNAME"
-    if [[ "$CIRCLE_USERNAME" == "JamesKirkAndSpock" && "$CIRCLE_BRANCH" != 'develop' && "$CIRCLE_BRANCH" != 'master' ]]; then
+    re='^[0-9]+$'
+    OIFS=IFS
+    IFS=- read var1 var2 <<< "${CIRCLE_BRANCH}"
+    echo "$var1"
+    if [[ ! "$var1" =~ $re && "$CIRCLE_BRANCH" != 'develop' && "$CIRCLE_BRANCH" != 'master' ]]; then
         HOST=${DEVOPS_HOST}
         ENVIRONMENT=${DEVOPS_ENVIRONMENT}
         IP_ADDRESS=${DEVOPS_IP_ADDRESS}
         REGION=${DEVOPS_REGION}
         ZONE=${DEVOPS_ZONE}
     fi
+    
+    IFS=OIFS
 
-if [[ "$CIRCLE_BRANCH" == 'develop' ]]; then
+    if [[ "$CIRCLE_BRANCH" == 'develop' ]]; then
         HOST=${DEVELOP_HOST}
         ENVIRONMENT=${DEVELOP_ENVIRONMENT}
         IP_ADDRESS=${DEVELOP_IP_ADDRESS}
@@ -50,39 +55,24 @@ if [[ "$CIRCLE_BRANCH" == 'develop' ]]; then
 
 initialise_terraform() {
     cd ~/Hirola-Deployment-Script
-    terraform init -backend-config=bucket="${GCP_BUCKET}" -backend-config=prefix="/hirola-terraform/${ENVIRONMENT}/terraform.tfstate"
+    terraform init -lock=false -backend-config=bucket="${GCP_BUCKET}" -backend-config=prefix="/hirola-terraform/${ENVIRONMENT}/terraform.tfstate"
 }
 
 destroy_previous_infrastructure(){
-    if [[ "$CIRCLE_USERNAME" == "JamesKirkAndSpock" || "$CIRCLE_BRANCH" == 'develop' || "$CIRCLE_BRANCH" == 'master' ]]; then
-        terraform destroy -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}"
+    if [[ ! "$var1" =~ $re || "$CIRCLE_BRANCH" == 'develop' || "$CIRCLE_BRANCH" == 'master' ]]; then
+        terraform destroy -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}"
     else
-        terraform destroy -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}"
+        terraform destroy -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}"
     fi
 
 }
 
 build_current_infrastructure() {
-    if [[ "$CIRCLE_USERNAME" == "JamesKirkAndSpock" || "$CIRCLE_BRANCH" == 'develop' || "$CIRCLE_BRANCH" == 'master' ]]; then
-        terraform apply -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}"
+    if [[ ! "$var1" =~ $re || "$CIRCLE_BRANCH" == 'develop' || "$CIRCLE_BRANCH" == 'master' ]]; then
+        terraform apply -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}"
     else
-        terraform apply -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}"
+        terraform apply -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}"
     fi
-}
-
-send_sticker() {
-    STICKERS=( "CAADAgADswIAAkb7rASMLYKaSCtm6AI" "CAADAgAD7AYAAnlc4gmyzyRQT6BJSwI" "CAADAgADdAIAArnzlwuPQ69bvLwTLQI" "CAADAgADKQcAAmMr4gnhM9ccDb2hKAI" "CAADAgADHAgAAgi3GQKRQRBYukJHPQI" "CAADAgADnAMAAkKvaQABPPcu6tryHCAC" "CAADAgAD8QADHdMcCujnc2NYpF9LAg" "CAADBAADTwEAAriGNgch8jFBHEA_9gI" "CAADAgADZxIAAkKvaQABvhbl68BnTKUC" "CAADAgAD8gIAAmvEygq7pRRA8OnbFAI" )
-    RANDOM=$$$(date +%s)
-    STICKER=${STICKERS[$RANDOM % ${#STICKERS[@]} ]}
-    curl -s -X POST https://api.telegram.org/bot${TELEGRAM_API_KEY}/sendSticker \
-    -d chat_id=${TELEGRAM_CHAT_ID} \
-    -d sticker=$STICKER
-}
-
-send_message() {
-    curl -s -X POST https://api.telegram.org/bot${TELEGRAM_API_KEY}/sendMessage \
-    -d chat_id=${TELEGRAM_CHAT_ID} \
-    -d text="Your branch "${CIRCLE_BRANCH}" has been deployed. Open http://${HOST} to view it."
 }
 
 main() {
@@ -92,8 +82,6 @@ main() {
     initialise_terraform
     destroy_previous_infrastructure
     build_current_infrastructure
-    send_sticker
-    send_message
 }
 
 main "$@"
