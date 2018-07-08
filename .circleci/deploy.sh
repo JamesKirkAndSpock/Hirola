@@ -32,6 +32,7 @@ check_branch(){
         IP_ADDRESS=${DEVOPS_IP_ADDRESS}
         REGION=${DEVOPS_REGION}
         ZONE=${DEVOPS_ZONE}
+        DATABASE_NAME=${DEVOPS_DATABASE}
     fi
     
     IFS=OIFS
