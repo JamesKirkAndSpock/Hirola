@@ -17,10 +17,10 @@
     </div>
     <div class="row storage">
       <h4>Shop by storage capacity</h4>
-        <div class="col s12" >
+        <div class="col s12">
         {% for size in sizes %}
         <a href="/phone_category/{{ category_id }}/{{ size.id }}">
-          <div class="col s3">
+          <div class="col s3 m2">
             <div id="size">
               <h4>{{ size }}</h4>
             </div>
@@ -28,6 +28,7 @@
         </a>
         {% endfor %}
         </div>
+    </div>
     <div class="row images">
       {% if phones %}
       <h5>Select your favorite {{category.phone_category}} {{ size_message }}</h5>
@@ -54,6 +55,6 @@
       </div>
       {% endfor %}
     </div>
-  </div>
+  <!-- </div> -->
 </div>
 {% block scripts %} {{ block.super }} {% load static %} {% endblock %} {% endblock %}
