@@ -32,7 +32,7 @@
                         </div>
                         <div class="col m8">
                             <ul class=" hide-on-med-and-down">
-                                {% for category in categories %} 
+                                {% for category in categories %}
                                 <div class="col m2">
                                     <li>
                                         <a class="" href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
@@ -41,7 +41,7 @@
                                 {% endfor %}
                                 <div class="col m2">
                                     <li>
-                                        <a class="" href="/profile">About</a>
+                                        <a class="" href="/about">About</a>
                                     </li>
                                 </div>
                                 <div class="col m2">
@@ -66,14 +66,14 @@
                 </div>
             </nav>
         </div>
-        <ul class="side-nav" id="nav-mobile">                              
-            {% for category in categories %} 
+        <ul class="side-nav" id="nav-mobile">
+            {% for category in categories %}
             <li>
                 <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
             </li>
             {% endfor %}
             <li>
-                <a href="/profile">About</a>
+                <a href="/about">About</a>
             </li>
             <li>
                 <a href="#">Enquiry</a>
