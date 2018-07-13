@@ -11,7 +11,6 @@
 }
 
 .storage {
-    padding: 10px;
     border-bottom: solid 0.05em;
     border-bottom-color: #E8E8E8;
 }
@@ -23,15 +22,15 @@
     text-decoration: none;
 }
 
-.storage .col {
-    text-align: center;
+/* .storage .col .s3 .m2 {
     margin-bottom: 50px;
-}
+} */
 
 .storage .s3 #size {
     border: solid 0.05em;
     border-color: #E8E8E8;
     background-color: whitesmoke;
+    margin-bottom: 50px;
 }
 
 .images {
@@ -61,6 +60,9 @@
         font-size: 4vw;
     }
     .storage h4 {
-        font-size: 7vw;
+        font-size: 5vw;
+    }
+    .storage .s3 #size {
+        margin-bottom: 20px;
     }
 }

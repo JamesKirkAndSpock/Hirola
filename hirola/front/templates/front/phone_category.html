@@ -17,17 +17,15 @@
     </div>
     <div class="row storage">
       <h4>Shop by storage capacity</h4>
-        <div class="col s12">
         {% for size in sizes %}
         <a href="/phone_category/{{ category_id }}/{{ size.id }}">
-          <div class="col s3 m2">
+          <div class="col s3 m2 center">
             <div id="size">
               <h4>{{ size }}</h4>
             </div>
           </div>
         </a>
         {% endfor %}
-        </div>
     </div>
     <div class="row images">
       {% if phones %}
