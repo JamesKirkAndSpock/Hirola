@@ -1,0 +1,20 @@
+.main-content {
+    margin-top: 100px;
+}
+
+.content {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 50px;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+.input-field {
+    margin-top: 30px;
+}
+
+.btn {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
