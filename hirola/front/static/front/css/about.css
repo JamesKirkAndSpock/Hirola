@@ -1,6 +1,22 @@
-.breadcrumbs{
+.breadcrumbs {
     margin-top: 50px;
 }
-.box p{
+
+.box p {
     text-align: left;
+}
+
+@media only screen and (max-width: 600px) {
+    .row .s12 {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+    .how-it-works {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    .welcome {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
 }
