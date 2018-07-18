@@ -15,5 +15,6 @@ urlpatterns = [
     path('about', views.about_view, name='about'),
     path('signup', views.signup_view, name='signup'),
     path('login', views.login_view, name='login'),
-    path('reset_password', views.reset_password_view, name='reset_password')
+    path('reset_password', views.reset_password_view, name='reset_password'),
+    path('new_password', views.new_password_view, name='new_password')
 ]
