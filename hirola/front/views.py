@@ -72,3 +72,6 @@ def reset_password_view(request):
 
 def new_password_view(request):
     return render(request, 'front/new_password.html')
+
+def checkout_view(request):
+    return render(request, 'front/checkout.html')
