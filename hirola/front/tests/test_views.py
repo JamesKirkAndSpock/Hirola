@@ -13,49 +13,32 @@ class LandingPageImagsViewsTestCase(BaseTestCase):
         Test tha carousel colors appear
         '''
         mock_image = image('test_image_1.jpeg')
-        form = {"photo": mock_image, "carousel_color": "red",
-                "phone_name": "test_phone_name1",
-                "phone_tag": "test_phone_tag1", "text_color": "white"}
+        form = landing_page_form(mock_image, 1, ["red", "white"])
         response = self.elena.post(self.add_url, form)
         self.assertRedirects(response, '/admin/front/landingpageimage/', 302)
         get_images = LandingPageImage.objects.all()
-        self.assertEqual(len(get_images), 1)
-        get_image = LandingPageImage.objects.get(pk=1)
-        self.assertEqual(get_image.phone_name, 'test_phone_name1')
+        self.assertEqual(len(get_images), 2)
+        get_image = LandingPageImage.objects.get(phone_name='test_phone_name1')
         self.assertEqual(get_image.phone_tag, 'test_phone_tag1')
         response = self.client.get('/')
         self.assertContains(response, "red")
         self.assertContains(response, "white")
 
-    def add_image_before_edit(self):
-        mock_image_2 = image('test_image_2.jpeg')
-        form = {"photo": mock_image_2, "carousel_color": "red",
-                "phone_name": "test_phone_name2",
-                "phone_tag": "test_phone_tag2", "text_color": "white"}
-        self.elena.post(self.add_url, form)
-
     def test_edition_of_entry(self):
         '''
         Test that all fields for a created image are editable.
         '''
-        self.add_image_before_edit()
-        image_path = BASE_DIR + '/media/test_image_2.jpeg'
-        get_image = LandingPageImage.objects.get(pk=2)
-        self.assertEqual(get_image.phone_name, 'test_phone_name2')
+        get_image = LandingPageImage.objects.get(phone_name='test_phone_name2')
         self.assertEqual(get_image.phone_tag, 'test_phone_tag2')
         self.assertEqual(get_image.carousel_color, 'red')
         self.assertEqual(get_image.text_color, 'white')
-        edit_url = "/admin/front/landingpageimage/2/change/"
-        mock_image = SimpleUploadedFile(name='test_image_3.jpeg',
-                                        content=open(image_path, 'rb').read(),
-                                        content_type='image/jpeg')
-        form = {"photo": mock_image, "carousel_color": "green",
-                "phone_name": "edited_phone_name2",
-                "phone_tag": "edited_test_phone_tag2", "text_color": "black"}
-        response2 = self.elena.post(edit_url, form)
-        get_edited_image = LandingPageImage.objects.get(pk=2)
-        self.assertEqual(get_edited_image.phone_name, 'edited_phone_name2')
-        self.assertEqual(get_edited_image.phone_tag, 'edited_test_phone_tag2')
+        edit_url = "/admin/front/landingpageimage/{}/change/"
+        mock_image = image('test_image_3.jpeg')
+        form = landing_page_form(mock_image, 3, ["green", "black"])
+        response2 = self.elena.post(edit_url.format(get_image.pk), form)
+        get_edited_image = LandingPageImage.objects.get(pk=get_image.pk)
+        self.assertEqual(get_edited_image.phone_name, 'test_phone_name3')
+        self.assertEqual(get_edited_image.phone_tag, 'test_phone_tag3')
         self.assertEqual(get_edited_image.carousel_color, 'green')
         self.assertEqual(get_edited_image.text_color, 'black')
         self.assertRedirects(response2, '/admin/front/landingpageimage/', 302)
@@ -68,9 +51,8 @@ class LandingPageImagsViewsTestCase(BaseTestCase):
         mock_image = image('test_image_1.jpeg')
         long_phone_name = ('a long phone name for creation of an entry of an '
                            'image')
-        form = {"photo": mock_image, "carousel_color": "red",
-                "phone_name": long_phone_name, "phone_tag": "test_phone_tag2",
-                "text_color": "white"}
+        form = landing_page_form(mock_image, [long_phone_name,
+                                 "test_phone_tag2"], ["green", "black"])
         response = self.elena.post(self.add_url, form)
         e_mess_1 = b"Ensure this value has at most 20 characters (it has 54)"
         self.assertIn(e_mess_1, response.content)
@@ -91,9 +73,7 @@ class LandingPageImagsViewsTestCase(BaseTestCase):
         lower than 700 cannot be added.
         '''
         mock_image = image('test_image_4.jpeg')
-        form = {"photo": mock_image, "carousel_color": "red",
-                "phone_name": "test_phone_4", "phone_tag": "test_phone_tag4",
-                "text_color": "white"}
+        form = landing_page_form(mock_image, 4, ["red", "white"])
         response = self.elena.post(self.add_url, form)
         self.assertIn(str.encode(landing_page_error.format(225, 225)),
                       response.content)
@@ -269,11 +249,3 @@ class ClientViewsTestCase(BaseTestCase):
         response = self.client.get('/sizes', {"id": self.android.pk})
         self.assertContains(response, self.size_android.pk)
         self.assertContains(response, self.size_android)
-
-
-def image(name):
-    image_path = BASE_DIR + '/media/' + name
-    mock_image = SimpleUploadedFile(name=name,
-                                    content=open(image_path, 'rb').read(),
-                                    content_type='image/jpeg')
-    return mock_image

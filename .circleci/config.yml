@@ -21,6 +21,8 @@ jobs:
             DATABASE_NAME: hi-database
             USER: postgres
           command: |
+            sudo apt-get install memcached
+            memcached -d
             virtualenv --python=python3 hi-venv
             source hi-venv/bin/activate
             pip install -r ./hirola/requirements.txt

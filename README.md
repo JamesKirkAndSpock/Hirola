@@ -39,6 +39,12 @@ To deactivate the virtual environment when not using the application just run th
 deactivate
 ```
 
+This application uses [memcached](https://memcached.org/) to cache data on the application. You'll therefore need to install it and run it on the background.
+```
+brew install memcached
+memcached -d
+```
+
 #### STEP 3: Set up postgres locally on your machine and creating a database
 
 You can download postgres for Mac from [here](https://www.postgresql.org/download/macosx/). Create a postgres user and password and create a database to which will be added in the fourth step.
@@ -61,15 +67,19 @@ export PASSWORD=<password of postgres user>
 export DJANGO_SETTINGS_MODULE=hirola.settings.development
 export POSTGRES_IP=127.0.0.1
 export SECRET_KEY=<any random long string>
+export CACHE_IP=127.0.0.1
+export CACHE_PORT=11211
 ```
 * The IP_ADDRESS refers to the address of localhost which is usually 127.0.0.1
 * The HOST refers to the name pointing to the IP address which is usually localhost
 * The DATABASE_NAME refers to the name of your postgres database
-* The USER refers to the user who has access to your postgres database
+* The USER refers to the user who has access to your postgres database. Ensure that the user you give has priviledges of creating a database. This is because while django is running tests it creates a database before executing the tests and then drops it. The database user hence has to have these priviledges.
 * The PASSWORD refers the the password of the user of your postgres database
 * The DJANGO_SETTINGS_MODULE refers to the type of settings that will be used for the application where in this case we use settings in the development.py file for development by using the variable "hirola.settings.development"
 * The POSTGRES_IP is the IP Address of which postgres will be accessed with. In development since postgres will be stored locally whe use the localhost IP Address.
 * The SECRET_KEY is any random long string that will be used to generate the CSRF Token and can include any characters.
+* The CACHE_IP refers to the address of the machine that you are running on. This should be the same as IP address.
+* The CACHE_PORT refers to the port on which memcache is running. By default it runs on the Port 11211
 
 Once you have entered data as per your machine and credentials for postgres you can save the file.
 
@@ -86,11 +96,11 @@ cd hirola
 ```
 * Make migrations for the application
 ```
-python manage.py makemigrations
+python manage.py makemigrations front
 ```
 * Migrate the database.
 ```
-python manage.py migrate
+python manage.py migrate front
 ```
 * Start the application
 ```
@@ -98,6 +108,12 @@ python manage.py runserver
 ```
 
 #### STEP 6: Test the application
+
+* The following application uses caching of data using memcached. It is therefore necessary to install it before running tests, otherwise the tests will fail.
+
+* In your MAC run the command `brew install memcached` or if using an ubuntu machine `sudo apt-get install memcached`
+
+* Run the command `memcached -d` to run memcached in the background.
 
 * Simply run the command below under the folder with the file manage.py
 ```

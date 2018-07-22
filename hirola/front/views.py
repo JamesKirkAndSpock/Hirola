@@ -2,17 +2,27 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import *
 from django.views import generic
+from django.core.cache import cache
 
 
 def page_view(request):
-    images = LandingPageImage.objects.all()
-    phone_categories = PhoneCategoryList.objects.all()
+    images = cache.get('landing_page_images')
+    phone_categories = cache.get('phone_categories')
+    if images is None:
+        images = LandingPageImage.objects.all()
+        cache.set('landing_page_images', images)
+    if phone_categories is None:
+        phone_categories = PhoneCategoryList.objects.all()
+        cache.set('phone_categories', phone_categories)
     context = {'images': images, 'categories': phone_categories}
     return render(request, 'front/landing_page.html', context)
 
 
 def phone_category_view(request, category_id):
-    phones = PhoneList.objects.filter(category=category_id)
+    phones = cache.get('phones_{}'.format(category_id))
+    if phones is None:
+        phones = PhoneList.objects.filter(category=category_id)
+        cache.set('phones_{}'.format(category_id), phones)
     return shared_phone_view(request, phones, category_id)
 
 
@@ -24,9 +34,18 @@ def phone_category_size_view(request, category_id, size):
 
 
 def shared_phone_view(request, phones, category_id, message=""):
-    category_pk = PhoneCategoryList.objects.get(pk=category_id)
-    phone_categories = PhoneCategoryList.objects.all()
-    sizes = PhoneMemorySize.objects.filter(size_category=category_id).order_by('size_number')
+    category_pk = cache.get('category_{}'.format(category_id))
+    phone_categories = cache.get('phone_categories')
+    sizes = cache.get('sizes_{}'.format(category_id))
+    if category_pk is None:
+        category_pk = PhoneCategoryList.objects.get(pk=category_id)
+        cache.set('category_{}'.format(category_id), category_pk)
+    if phone_categories is None:
+        phone_categories = PhoneCategoryList.objects.all()
+        cache.set('phone_categories', phone_categories)
+    if sizes is None:
+        sizes = PhoneMemorySize.objects.filter(size_category=category_id).order_by('size_number')
+        cache.set('sizes_{}'.format(category_id), sizes)
     context = {'categories': phone_categories, 'phones': phones,
                'category': category_pk, 'category_id': category_id,
                'size_message': message, 'sizes': sizes, }
