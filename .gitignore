@@ -1,0 +1,19 @@
+*pycache*
+# ignore sql file generated
+hirola/db.sqlite3
+# ignore IDE generated files
+*_DS_Store
+*.DS_Store
+.vscode/
+*.pyc
+# Ignore environment file
+.env
+hi-venv/
+# Mock Images
+test_image_1_*
+test_image_2_*
+test_image_3_*
+test_image_4_*
+test_image_5_*
+migrations
+Makefile
