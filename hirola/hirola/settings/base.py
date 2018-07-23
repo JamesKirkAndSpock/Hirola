@@ -102,6 +102,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '{}:{}'.format(os.environ.get('CACHE_IP'),
+                                   os.environ.get('CACHE_PORT')),
+        'TIMEOUT': None,
+        'OPTIONS': {
+            'server_max_value_length': 1024 * 1024 * 10,
+        }
+
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
