@@ -6,6 +6,16 @@ p {
     font-size: 12pt;
 }
 
+.main-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.container-content {
+    margin-top: 20px;
+    flex: 1;
+}
+
 @media only screen and (max-width: 600px) {
     .row .s12 {
         padding-left: 50px;
