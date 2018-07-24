@@ -1,6 +1,7 @@
 {% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_category.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/slick.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/slick-theme.css' %}" />
 {% endblock %}
@@ -33,17 +34,6 @@
           {% endfor %}
       </div>
     </div>
-
-    <!-- <div class="row">
-      <h4>Shop by storage capacity</h4>
-      <div class="col s12 storage">
-        <div class="col m2 center">cont 1</div>
-        <div class="col m2 center">cont 2</div>
-        <div class="col m2 center">cont 3</div>
-        <div class="col m2 center">cont 4</div>
-      </div>
-    </div> -->
-
     <div class="row images">
       {% if phones %}
       <h5>Select your favorite {{category.phone_category}} {{ size_message }}</h5>
@@ -70,6 +60,8 @@
       </div>
       {% endfor %}
     </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
 </div>
 {% block scripts %}
 {{ block.super }}
