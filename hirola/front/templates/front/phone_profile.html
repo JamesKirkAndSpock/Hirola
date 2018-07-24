@@ -1,16 +1,138 @@
 {% extends "front/base.html" %} {% block styles %} {{ block.super }} {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_profile.css' %}" /> {% endblock %} {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col m3 thumb-img">
-            <div class="row thumb1"></div>
-            <div class="row thumb2"></div>
-            <div class="row thumb3"></div>
-            <div class="row thumb4"></div>
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_profile.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> {% endblock %} {% block content %}
+<div class="main-content">
+<div class="container navrow">
+    <nav class="black">
+        <div class="nav-wrapper">
+            <div class="col s12">
+                <a href="#!" class="breadcrumb">teke</a>
+                <a href="#!" class="breadcrumb">iphones</a>
+                <a class="breadcrumb">Iphone 6s</a>
+            </div>
         </div>
-        <div class="col m3 main-img"></div>
-        <div class="col m5 profile"></div>
-        <div class="col m1 action"></div>
+    </nav>
+</div>
+<div class="container phone-details">
+    <div class="row">
+        <div class="col m5 s12 main-img">
+            <div class="row">
+                <div class="col m2"></div>
+                <div class="col s12 m8">
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="{% static 'front/moto-g5.png' %}" height="350" width="200">
+                            <span class="card-title white-text">Iphone 6s</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col m2"></div>
+            </div>
+        </div>
+        <div class="col m4 s12 profile">
+            <div class="row">
+                <p id="intro">Donec rutrum congue leo eget malesuada.</p>
+                <div id="stars">
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span>506</span>
+                </div>
+            </div>
+            <div class="row features">
+                <p><b>Key Features</b></p>
+                <ul>
+                    <li>Nulla porttitor accumsan tincidunt.</li>
+                    <li>Nulla porttitor accumsan tincidunt.</li>
+                    <li>Nulla porttitor accumsan tincidunt.</li>
+                    <li>Nulla porttitor accumsan tincidunt.</li>
+                    <li>Nulla porttitor accumsan tincidunt.</li>
+                </ul>
+                <p>Nulla porttitor accumsan tincidunt. Curabitur aliquet quam id dui posuere blandit. Nulla porttitor accumsan tincidunt. Vestibulum
+                ac diam sit amet quam vehicula elementum sed sit amet dui.</p>
+            </div>
+        </div>
+        <div class="col m3 s12 action">
+            <p>
+                <i class="medium material-icons inline-icon">local_atm</i>
+                Pay cash on delivery
+            </p>
+            <p>
+                <i class="medium material-icons inline-icon">loop</i>
+                7 day free return
+            </p>
+            <p>
+                <i class="medium material-icons inline-icon">check</i>
+                Genuine product
+            </p>
+            <form class="col s12" action="#">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="qty" type="number" value="1">
+                    </div>
+                </div>
+                <div class="row">
+                    <p>Total Ksh. 30 000 (Shipping included)</p>
+                </div>
+                <div class="row">
+                    <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Add to cart
+                        <i class="material-icons left">add_shopping_cart</i>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+<div class="container more-details">
+    <div class="row">
+        <div class="col m6">
+            <table class="responsive">
+                <thead>
+                    <tr>
+                        <th>Product Info</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="title">Network</td>
+                        <td>GSM</td>
+                    </tr>
+                    <tr>
+                        <td id="title">Speed</td>
+                        <td>Edge</td>
+                    </tr>
+                    <tr>
+                        <td id="title">Status</td>
+                        <td>Something</td>
+                    </tr>
+                    <tr>
+                        <td id="title">Dimensions</td>
+                        <td>Something</td>
+                    </tr><tr>
+                        <td id="title">Weight</td>
+                        <td>Something</td>
+                    </tr><tr>
+                        <td id="title">Build</td>
+                        <td>Aluminium top</td>
+                    </tr><tr>
+                        <td id="title">SIM</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col m1"></div>
+        <div class="col m5 warranty">
+            <div class="row">
+                <h4>Warranty and Support</h4>
+                <h5>Product Warranty: 7 day free return</h5>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %} {{ block.super }} {% load static %} {% endblock %} {% endblock %}

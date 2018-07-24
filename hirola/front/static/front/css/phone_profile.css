@@ -1,40 +1,96 @@
-.container {
-    /* background-color: red; */
-    height: 100px;
+.main-content {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+.phone-details {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    padding: 50px;
+}
+
+.more-details {
+    margin-top: 50px;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    padding: 50px;
+}
+
+.checked {
+    color: orange;
+}
+
+#intro {
+    font: bold;
+    font-size: 14pt;
+}
+
+#stars {
+    font-size: 16pt;
+    border-bottom: solid 0.05em;
+    border-bottom-color: #E8E8E8;
+}
+
+.sample-form .row {
+    margin: 5px;
+}
+
+.btn {
+    width: 100%;
+}
+
+h5 {
+    font: bold;
+}
+
+#title {
+    background-color: #E8E8E8;
+}
+
+tbody {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+.inline-icon {
+    vertical-align: bottom;
+    font-size: 18px !important;
+}
+
+.warranty .row {
+    padding-top: 50px;
+}
+
+.card {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    padding: 10px;
+}
+
+.features {
+    border-bottom: solid 0.05em;
+    border-bottom-color: #E8E8E8;
 }
 
 .action {
-    background-color: yellow;
-    height: 100px;
-}
-
-.thumb-img {
-    background-color: #7fffd4;
-    height: 100px;
-}
-
-.main-img {
-    background-color: rebeccapurple;
-    height: 100px;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
 }
 
 .profile {
-    background-color: blue;
-    height: 100px;
+    padding-right: 40px !important;
 }
 
-.thumb1 {
-    background-color: chocolate
+.navrow {
+    margin-top: 50px;
+    margin-bottom: 40px;
 }
 
-.thumb2 {
-    background-color: yellowgreen;
-}
-
-.thumb3 {
-    background-color: chocolate
-}
-
-.thumb4 {
-    background-color: yellowgreen;
+@media only screen and (max-width: 600px) {
+    .container {
+        margin-top: 0px !important;
+    }
+    .s12 {
+        margin-bottom: 15px;
+    }
 }
