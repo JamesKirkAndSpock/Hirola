@@ -43,6 +43,7 @@ check_branch(){
         IP_ADDRESS=${DEVELOP_IP_ADDRESS}
         REGION=${DEVELOP_REGION}
         ZONE=${DEVELOP_ZONE}
+        DATABASE_NAME=${DEVELOP_DATABASE}
     fi
 
     if [[ "$CIRCLE_BRANCH" == 'master' ]]; then
@@ -51,6 +52,7 @@ check_branch(){
         IP_ADDRESS=${MASTER_IP_ADDRESS}
         REGION=${MASTER_REGION}
         ZONE=${MASTER_ZONE}
+        DATABASE_NAME=${MASTER_DATABASE}
     fi
 }
 
