@@ -1,0 +1,78 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/about.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="main-content">
+<div class="container container-content">
+    <div class="row breadcrumbs">
+        <nav class="black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb">about</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row welcome">
+        <h3 class="center">About teke</h3>
+        <p class="center">Teke is an online store that sells mint condition phones to the Kenyan community</p>
+    </div>
+    <div class="row boxes center">
+        <div class="row box box-one">
+            <div class="col m6 s12">
+                <h5>Our mission</h5>
+                <i class="material-icons">whatshot</i>
+                <p class="justified">We believe that every Kenyan should have a quality smartphone at an affordable price.
+                    Therefore our mission is simple: We want to deliver quality smartphones for Kenyans at an affordable price
+                </p>
+            </div>
+            <div class="col m6 s12">
+                <h5>Our Story</h5>
+                <i class="material-icons">thumb_up</i>
+                <p>For many years, there have been many low quality phone models from abroad in the market and extremely
+                    high prices of new smartphones. This has made it impossible for Kenyans to afford quality smartphones.
+                    At Teke, we are changing things for the better.
+                </p>
+            </div>
+        </div>
+        <div class="row box box-two">
+            <div class="col m6 s12">
+                <h5>Quality assurance</h5>
+                <i class="material-icons">verified_user</i>
+                <p>On Teke you buy quality <em>mint</em> condition smartphones sourced directly from the USA and delivered to you
+                    on your doorstep at an affordable price. Mint condition phones are phones that are resold with (1) perfect screen condition
+                    (2) function flawlessly and (3) have no signs of use.
+                </p>
+            </div>
+            <div class="col m6 s12">
+                <h5>No junk</h5>
+                <i class="material-icons">phonelink_setup</i>
+                <p>To uphold our promise of providing only quality original-model phones, we handpick the phones ourselves
+                    We ensure that they are compatible with the Kenyan network providers and are free from defects. As a principle
+                    We dont sell broken/fake goods.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row how-it-works">
+        <div class="col m3"></div>
+        <div class="col m6">
+            <h5 class="center">How it works</h5>
+            <h6>Its simple</h6>
+            <ol type="1">
+                <li>
+                    <a href="/login">Login</a> to your account</li>
+                <li>Select your smartphone(s) of choice and add them to the cart.</li>
+                <li>When ready, checkout, click confirm and pay</li>
+                <li>We will contact you with the delivery/pickup details within 12 hrs of receiving your order.</li>
+            </ol>
+        </div>
+        <div class="col m3"></div>
+    </div>
+</div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% endblock %}

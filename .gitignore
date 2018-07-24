@@ -1,0 +1,36 @@
+*pycache*
+# ignore sql file generated
+hirola/db.sqlite3
+# ignore IDE generated files
+*_DS_Store
+*.DS_Store
+.vscode/
+*.pyc
+# Ignore environment file
+.env
+hi-venv/
+# Mock Images
+test_image_1_*
+test_image_2_*
+test_image_3_*
+test_image_4_*
+test_image_5_*
+migrations
+Makefile
+hirola/hirola/media/back6.jpeg
+hirola/hirola/media/comp4.jpeg
+hirola/hirola/media/google-pixel.png
+hirola/hirola/media/iphone5S.png
+hirola/hirola/media/lg-g6.png
+hirola/hirola/media/moto-g5.png
+hirola/hirola/media/nexus-5x.png
+hirola/hirola/media/phone7.jpeg
+hirola/hirola/media/phone8.jpeg
+hirola/hirola/media/samsung-galaxy-s5-mini.png
+hirola/hirola/media/samsung-galaxy-s5-mini_WLhZL5o.png
+hirola/hirola/media/samsung-s6-edge.png
+hirola/hirola/media/test_image_1.jpeg
+hirola/hirola/media/test_image_2.jpeg
+hirola/hirola/media/test_image_3.jpeg
+hirola/hirola/media/test_image_4.jpeg
+hirola/hirola/media/test_image_5.png

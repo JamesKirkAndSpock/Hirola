@@ -1,0 +1,65 @@
+.main-container {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+.content {
+    margin-top: 50px;
+    padding: 20px;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    flex-grow: 1.2;
+}
+
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+}
+
+.storage {
+    margin-right: 5%;
+    margin-left: 5%;
+    width: 90%;
+}
+
+.storage-item {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    background-color: whitesmoke;
+}
+
+.images {
+    padding-top: 50px;
+}
+
+.image {
+    height: 100px;
+    width: 80px;
+}
+
+.image-div {
+    padding-top: 40px;
+}
+
+.card {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+.container {
+    flex-shrink: 5;
+}
+
+@media only screen and (max-width: 600px) {
+    .storage .s3 #size h4 {
+        font-size: 4vw;
+    }
+    .storage h4 {
+        font-size: 5vw;
+    }
+    .storage .s3 #size {
+        margin-bottom: 20px;
+    }
+}

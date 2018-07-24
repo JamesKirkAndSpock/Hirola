@@ -1,0 +1,91 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/checkout.css' %}" /> {% endblock %} {% block content %}
+<div class="row">
+    <div class="container">
+        <h4>teke checkout</h4>
+        <div class="row">
+            <div class="col m7 goods">
+                <div class="row shipping">
+                    <h5>1. Shipping</h5>
+                    <form action="#">
+                        <div class="col s12">
+                        <input class="with-gap" name="group1" type="radio" id="pickup"/>
+                        <label for="pickup">Pick up at Nairobi office</label>
+                        </div>
+                        <div class="col s12">
+                        <input class="with-gap" name="group1" type="radio" id="delivery" />
+                        <label for="delivery">Request delivery (only within Nairobi)</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="row payment">
+                    <h5>2. Payment</h5>
+                    <form action="#" class="payment-form">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="tel" type="text" class="validate" required>
+                                <label for="tel">Phone Number:</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="town" type="text" class="validate" required>
+                                <label for="town">Town:</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row" style="margin-top: 30px">
+                    <h5>3. Review Item and Shipping</h5>
+                </div>
+                <div class="row item">
+                    <div class="col m3 center">
+                        <div class="image responsive-img">
+                            <img src="../../static/front/nexus-5x.png">
+                        </div>
+                    </div>
+                    <div class="col m3 s12">
+                        <p>Apple iphone 6s</p>
+                        <p>Estimated Delivery time: 14 days</p>
+                        <form action="#">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="qty" type="number" value="1">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col m6 s12">
+                        <p>Price: 67 000</p>
+                    </div>
+                </div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+            <div class="col m1"></div>
+            <div class="col m4 confirmation">
+                <div class="row">
+                    <div class="col s6"><p>Item(1)</p></div>
+                    <div class="col s6"><p>Kshs 67 000</p></div>
+                </div>
+                <div class="row">
+                    <div class="col s6">Shipping</div>
+                    <div class="col s6">Ksh 1000</div>
+                </div>
+                <div class="row">
+                    <div class="col s6">Order Total</div>
+                    <div class="col s6">Ksh 68 000</div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <p>By clicking Confirm and Pay, you agree to teke's <a>Privacy notice</a> and <a>Condition of use</a></p>
+                        <button class="btn waves-effect waves-light btg  blue darken-4" type="submit" name="action">Confirm and Pay
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block scripts %} {{ block.super }} {% load static %} {% endblock %} {% endblock %}

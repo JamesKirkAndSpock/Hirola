@@ -1,0 +1,73 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_category.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/slick.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/slick-theme.css' %}" />
+{% endblock %}
+{% block content %}
+
+<div class="row main-container">
+  <div class="container content">
+    <div class="row">
+      <nav class="black">
+        <div class="nav-wrapper">
+          <div class="col s12">
+            <a href="#!" class="breadcrumb">teke</a>
+            <a href="#!" class="breadcrumb">{{category}}</a>
+            <a class="breadcrumb">Buy {{category}} </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <h4>Shop by storage capacity</h4>
+    <div class="row center">
+      <div class="storage">
+          {% for size in sizes %}
+          <a href="/phone_category/{{ category_id }}/{{ size.id }}">
+            <div class="center storage-item">
+              <div id="size">
+                <h4>{{ size }}</h4>
+              </div>
+            </div>
+          </a>
+          {% endfor %}
+      </div>
+    </div>
+    <div class="row images">
+      {% if phones %}
+      <h5>Select your favorite {{category.phone_category}} {{ size_message }}</h5>
+      {% else %}
+      <h5>Oops! We currently do not have it</h5>
+      {% endif %}
+      {% for phone in phones %}
+      <div class="col m4 xl2 s12 l3">
+        <div class="row">
+          <div class="col s12">
+            <div class="card image-div z-depth-0">
+              <div class="center">
+                <a href="#" class="image">
+                  <img src="{{ MEDIA_URL }}{{ phone.phone_image }}">
+                </a>
+              </div>
+              <div class="card-content">
+                <p class="center">{{ phone.phone_name}}</p>
+                <p class="center">{{ phone.currency }} {{ phone.price }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+</div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %}
+{{ block.super }}
+{% load static %}
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="{% static 'front/js/slick.min.js' %}"></script>
+<script src="{% static 'front/js/slick-init.js' %}"></script>
+{% endblock %}
+{% endblock %}
