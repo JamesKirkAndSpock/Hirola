@@ -1,6 +1,6 @@
 .main-container {
-    display: flex;
-    flex-direction: column;
+    flex: 1 0 auto;
+    width: 100%;
 }
 
 .content {
@@ -8,7 +8,6 @@
     padding: 20px;
     border: solid 0.05em;
     border-color: #E8E8E8;
-    flex: 1;
     flex-grow: 1.2;
 }
 
