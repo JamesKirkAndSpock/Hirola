@@ -25,10 +25,14 @@
     font-size: 14pt;
 }
 
-#stars {
+.stars {
     font-size: 16pt;
     border-bottom: solid 0.05em;
     border-bottom-color: #E8E8E8;
+}
+
+.reviews .collection {
+    padding-left: 50px;
 }
 
 .sample-form .row {
@@ -47,9 +51,13 @@ h5 {
     background-color: #E8E8E8;
 }
 
-tbody {
+.details-container{
     border: solid 0.05em;
     border-color: #E8E8E8;
+}
+
+.detail .col {
+    padding-bottom: 20px;
 }
 
 .inline-icon {
@@ -77,6 +85,11 @@ tbody {
     border-color: #E8E8E8;
 }
 
+.action form {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
 .profile {
     padding-right: 40px !important;
 }
@@ -92,5 +105,8 @@ tbody {
     }
     .s12 {
         margin-bottom: 15px;
+    }
+    .reviews .collection {
+        padding-left: 0
     }
 }
