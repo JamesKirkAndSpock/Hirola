@@ -1,0 +1,32 @@
+.breadcrumbs {
+    margin-top: 50px;
+}
+
+p {
+    font-size: 12pt;
+}
+
+.main-content {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+.container-content {
+    margin-top: 20px;
+    flex: 1;
+}
+
+@media only screen and (max-width: 600px) {
+    .row .s12 {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+    .how-it-works {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    .welcome {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}
