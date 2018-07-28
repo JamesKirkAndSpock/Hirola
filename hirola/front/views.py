@@ -81,3 +81,6 @@ def about_view(request):
 
 def signup_view(request):
     return render(request, 'front/signup.html')
+
+def login_view(request):
+    return render(request, 'front/login.html')
