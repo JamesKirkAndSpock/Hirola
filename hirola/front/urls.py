@@ -12,5 +12,6 @@ urlpatterns = [
     path('phone_category/<int:category_id>/<int:size>/',
          views.phone_category_size_view, name='phone_category_size'),
     path('sizes', views.sizes, name='sizes'),
-    path('about', views.about_view, name='about')
+    path('about', views.about_view, name='about'),
+    path('signup', views.signup_view, name='signup')
 ]
