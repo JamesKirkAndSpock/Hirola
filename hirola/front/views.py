@@ -84,3 +84,9 @@ def signup_view(request):
 
 def login_view(request):
     return render(request, 'front/login.html')
+
+def reset_password_view(request):
+    return render(request, 'front/reset_password.html')
+
+def new_password_view(request):
+    return render(request, 'front/new_password.html')
