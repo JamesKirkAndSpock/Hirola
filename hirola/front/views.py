@@ -78,3 +78,6 @@ def phone_view(request):
 
 def about_view(request):
     return render(request, 'front/about.html')
+
+def signup_view(request):
+    return render(request, 'front/signup.html')
