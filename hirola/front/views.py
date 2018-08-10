@@ -94,5 +94,5 @@ def new_password_view(request):
 def checkout_view(request):
     return render(request, 'front/checkout.html')
 
-def footer_view(request):
-    return render(request, 'front/footer.html')
+def dashboard_view(request):
+    return render(request, 'front/dashboard.html')

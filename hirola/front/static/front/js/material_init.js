@@ -13,4 +13,18 @@ $(document).ready(function () {
         }
 });
 
+// initialize side nav
 $(".button-collapse").sideNav();
+
+// initialize tabs
+$(document).ready(function(){
+    $('.tabs').tabs();
+});
+
+// initialize collapsible
+$(document).ready(function(){
+  $('.collapsible').collapsible();
+});
+
+// trigger dropdown
+// $('.dropdown-trigger').dropdown();

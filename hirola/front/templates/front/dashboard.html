@@ -1,0 +1,314 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/dashboard.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
+<div class="main-content">
+<div class="container content">
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s4">
+                    <a  class="active black-text" href="#login">Login and Security</a>
+                </li>
+                <li class="tab col s4">
+                    <a class="black-text" href="#orders">My Orders</a>
+                </li>
+                <li class="tab col s4">
+                    <a class="black-text" href="#reviews">My Reviews and Ratings</a>
+                </li>
+            </ul>
+        </div>
+        <div id="login" class="col s12 tab-content">
+            <div class="row">
+                <div class="col m3"></div>
+                <div class="col s12 m6">
+                    <div class="row field-row">
+                        <form class="col s12" action="/dashboard">
+                            <div class="row" id="name-output">
+                                <p><b>First Name</b></p>
+                                <p>
+                                    Simon Makonde
+                                    <span class="right">
+                                        <a href="#" onclick="editName('name-input', 'name-output');">
+                                            <i class="material-icons right">edit</i>
+                                        </a>
+
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="row hidden-input" id="name-input">
+                                <div class="input-field col m6 s12">
+                                    <input id="identity" type="text" placeholder="Name" class="validate">
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">save
+                                        <i class="material-icons right">save</i>
+                                    </button>
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="button" onclick="editName('name-output', 'name-input');">cancel
+                                        <i class="material-icons right">cancel</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row field-row">
+                        <form class="col s12" action="/dashboard">
+                            <div class="row" id="tel-output">
+                                <p>
+                                    <b>Phone Number</b>
+                                </p>
+                                <p>
+                                    +254 23234354
+                                    <span class="right">
+                                        <a href="#" onclick="editName('tel-input', 'tel-output');">
+                                            <i class="material-icons right">edit</i>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="row hidden-input" id="tel-input">
+                                <div class="input-field col m6 s12">
+                                    <input id="tel" type="text" placeholder="Phone Number" class="validate">
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">save
+                                        <i class="material-icons right">save</i>
+                                    </button>
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="button" onclick="editName('tel-output', 'tel-input');">cancel
+                                        <i class="material-icons right">cancel</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row field-row">
+                        <form class="col s12" action="/dashboard">
+                            <div class="row" id="mail-output">
+                                <p>
+                                    <b>Email</b>
+                                </p>
+                                <p>
+                                    makos.makende@gmail.com
+                                    <span class="right">
+                                        <a href="#" onclick="editName('mail-input', 'mail-output');">
+                                            <i class="material-icons right">edit</i>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="row hidden-input" id="mail-input">
+                                <div class="input-field col s6">
+                                    <input id="email" type="text" placeholder="Email" class="validate">
+                                </div>
+                                <div class="input-field col s3">
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">save
+                                        <i class="material-icons right">save</i>
+                                    </button>
+                                </div>
+                                <div class="input-field col s3">
+                                    <button class="btn waves-effect waves-light" type="button" onclick="editName('mail-output', 'mail-input');">cancel
+                                        <i class="material-icons right">cancel</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row field-row">
+                        <form class="col s12" action="/dashboard">
+                            <div class="row" id="pass-output">
+                                <p>
+                                    <b>Password</b>
+                                </p>
+                                <p>
+                                    54makosi@x.com
+                                    <span class="right">
+                                        <a href="#" onclick="editName('pass-input', 'pass-output');">
+                                            <i class="material-icons right">edit</i>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="row hidden-input" id="pass-input">
+                                <div class="input-field col m6 s12">
+                                    <input id="pass" type="password" placeholder="Password" class="validate">
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">save
+                                        <i class="material-icons right">save</i>
+                                    </button>
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="button" onclick="editName('pass-output', 'pass-input');">cancel
+                                        <i class="material-icons right">cancel</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col m3"></div>
+            </div>
+        </div>
+        <div id="orders" class="col s12 tab-content">
+                <div class="row tab-heading">
+                    <h5>MY ORDERS</h5>
+                </div>
+                <div class="row order-row">
+                    <div class="col m2 s6">
+                        <div class="row">
+                            <div class="col s6">
+                                <p><b>Order</b></p>
+                            </div>
+                            <div class="col s6">
+                                <p>
+                                    <b>#234234</b>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col m2 s6">
+                        <div class="row">
+                            <div class="col s6">
+                                <p>
+                                    <b>Date</b>
+                                </p>
+                            </div>
+                            <div class="col s6">
+                                <p>
+                                    <b>04/08/2018</b>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col m2 s6">
+                            <div class="row">
+                                <div class="col s6">
+                                    <p>
+                                        <b>Total</b>
+                                    </p>
+                                </div>
+                                <div class="col s6">
+                                    <p>
+                                        <b>Ksh. 23500</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col m2 s6">
+                            <div class="row">
+                                <div class="col s6">
+                                    <p>
+                                        <b>Item Name</b>
+                                    </p>
+                                </div>
+                                <div class="col s6">
+                                    <p>
+                                        <b>Transcend HDD</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col m2 s6">
+                            <div class="row">
+                                <a href="#" id="status-link">CHECK STATUS</a>
+                            </div>
+                        </div>
+                        <div class="col m2 s6">
+                            <div class="row">
+                                <a href="#" id="details-link">ORDER DETAILS</a>
+                            </div>
+                        </div>
+                </div>
+                <div class="row" id="status">
+                    <div class="col m4 s12">
+                        <p><b>Product Name</b></p>
+                        <p>Samsun Galaxy 28</p>
+                    </div>
+                    <div class="col m4 s12">
+                        <p><b>Quantity</b></p>
+                        <p>2</p>
+                    </div>
+                    <div class="col m4 s12">
+                        <p><b>Current Status</b></p>
+                        <p id="current-date"></p>
+                        <br>
+                        <p>Your Item is on transit</p>
+                    </div>
+
+                </div>
+                <div class="row" id="details">
+                    <div class="col m4 s12">
+                            <p>
+                                <b>Payment Method</b>
+                            </p>
+                        <p>
+                             Mpesa
+                        </p>
+                    </div>
+                    <div class="col m4 s12">
+                        <p>
+                            <b>Shipping Address</b>
+                        </p>
+                        <ul>
+                            <li>Peter Ndungu</li>
+                            <li>Pick up: Posta Mbagathi</li>
+                            <li>Location: Langata</li>
+                            <li>Date: 23/9/2020</li>
+                        </ul>
+
+                    </div>
+                    <div class="col m4 s12 center">
+                        <p>
+                            <b>Item</b>
+                        </p>
+                        <div class="img">
+                                <img src="{% static 'front/moto-g5.png' %}" height="200" width="200">
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div id="reviews" class="col s12 tab-content">
+            <div class="row reviews">
+                <ul class="collection">
+                    <li class="collection-header">
+                        <h4>My Reviews</h4>
+                    </li>
+                    <li class="collection-item avatar">
+                        <img src="{% static 'front/run.png' %}" alt="User 1" class="circle">
+                        <i class="material-icons left checked">grade</i>
+                        <i class="material-icons left checked">grade</i>
+                        <i class="material-icons left checked">grade</i>
+                        <i class="material-icons left checked">grade</i>
+                        <i class="material-icons left">grade</i>
+                        <a class="right" href="#"><p>Item Bought</p></a>
+                        <br>
+                        <br>
+                        <p>Hii ni Kampuni moto jamaa! </p>
+                    </li>
+                    <li class="collection-item avatar">
+                        <img src="{% static 'front/run.png' %}" alt="User 1" class="circle">
+                        <i class="material-icons left checked">grade</i>
+                        <i class="material-icons left checked">grade</i>
+                        <i class="material-icons left checked">grade</i>
+                        <i class="material-icons left checked">grade</i>
+                        <i class="material-icons left checked">grade</i>
+                        <a class="right" href="#">
+                            <p>Item Bought</p>
+                        </a>
+                        <br>
+                        <br>
+                        <p>Kali sana...nilipenda services zao bana, timely delivery na product ya waya </p>
+                    </li>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %} {% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script>
+<script src="{% static 'front/js/dashboard.js' %}"></script>
+{% endblock %} {% endblock %}
