@@ -6,8 +6,11 @@
     padding: 0 20px 50px 20px;
     border: solid 0.05em;
     border-color: #E8E8E8;
+    border-radius: 50px;
 }
-
+.material-icons {
+    color: green;
+}
 .input-field {
     margin-top: 30px;
 }
