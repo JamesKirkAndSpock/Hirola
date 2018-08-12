@@ -249,3 +249,18 @@ class ClientViewsTestCase(BaseTestCase):
         response = self.client.get('/sizes', {"id": self.android.pk})
         self.assertContains(response, self.size_android.pk)
         self.assertContains(response, self.size_android)
+
+
+class AboutPageViewsTestCase(BaseTestCase):
+    def setUp(self):
+        super(AboutPageViewsTestCase, self).setUp()
+
+    def test_phone_categories_rendered(self):
+        '''
+        Test that phone categories from the cache or from the database are
+        rendered on the about page.
+        '''
+        response = self.client.get('/about')
+        self.assertContains(response, "Iphone")
+        self.assertContains(response, "Android")
+        self.assertContains(response, "Tablet")

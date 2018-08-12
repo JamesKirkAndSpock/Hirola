@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import *
-from .forms import LandingPageImageForm, PhoneCategoryListForm, PhoneListForm
+from .forms import *
 
 
 class LandingPageImageAdmin(admin.ModelAdmin):
