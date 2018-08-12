@@ -76,8 +76,14 @@ def phone_profile_view(request):
 def phone_view(request):
     return render(request, 'front/phone.html')
 
+
 def about_view(request):
-    return render(request, 'front/about.html')
+    phone_categories = cache.get('phone_categories') or set_cache(
+        PhoneCategoryList.objects.all(),
+        'phone_categories')
+    context = {"categories": phone_categories}
+    return render(request, 'front/about.html', context=context)
+
 
 def signup_view(request):
     return render(request, 'front/signup.html')
