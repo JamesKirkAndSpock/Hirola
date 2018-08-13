@@ -23,6 +23,7 @@
     border: solid 0.05em;
     border-color: #E8E8E8;
     padding: 20px;
+    /*border-radius: 10px;*/
 }
 
 form {
@@ -86,6 +87,17 @@ p {
     border-right: solid 0.05em;
     border-color: #E8E8E8;
 }
+
+/*––––––––––––––––dragz css––––––––––––––*/
+#top-list {
+    text-transform: unset;
+}
+
+.collection {
+    border-radius: 10px;
+}
+
+/*–––––––––––––––––––––––––––––––––––––*/
 
 @media only screen and (max-width: 600px) {
     .reviews .collection {
