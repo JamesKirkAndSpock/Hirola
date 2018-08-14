@@ -5,35 +5,21 @@
     <div id="footer-container" class="container">
         <div class="col m3 s6 white-text">
             <ul>
+                {% for medium in social_media %}
                 <li>
-                    <a href="#">
-                        <i class="fa fa-facebook"></i> facebook</a>
+                    <a href="{{medium.url_link}}" target="_blank">
+                    <i class="{{ medium.icon }}"></i> {{ medium.name }}</a>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-twitter"></i> twitter</a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-instagram"></i> instagram</a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-youtube"></i> youtube</a>
-                </li>
+                {% endfor %}
             </ul>
         </div>
         <div class="col m3 s6 white-text">
             <ul>
+                {% for category in categories %}
                 <li>
-                    <a href="#">Buy iPhone</a>
+                    <a href="/phone_category/{{category.id}}">Buy {{ category }}</a>
                 </li>
-                <li>
-                    <a href="#">Buy Android</a>
-                </li>
-                <li>
-                    <a href="#">Buy Tablets</a>
-                </li>
+                {% endfor %}
                 <li>
                     <a href="#">IMEI/ESN Check</a>
                 </li>
@@ -58,7 +44,7 @@
         <div class="col m3 s6 white-text">
             <ul>
                 <li>
-                    <a href="#">About teke</a>
+                    <a href="/about">About teke</a>
                 </li>
                 <li>
                     <a href="#">Contact Us</a>

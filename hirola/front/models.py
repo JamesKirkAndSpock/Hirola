@@ -98,6 +98,21 @@ class PhoneList(models.Model):
         super(PhoneList, self).save(*args, **kwargs)
 
 
+class SocialMedia(models.Model):
+    class Meta:
+        verbose_name_plural = "Social Media"
+    url_link = models.URLField()
+    icon = models.CharField(max_length=40, blank=True, default='')
+    name = models.CharField(max_length=20, blank=False, default=None)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        cache.delete('social_media')
+        super(SocialMedia, self).save(*args, **kwargs)
+
+
 def delete_cache(model_class, object_id, cache_name):
     model_object = model_class.objects.get(pk=object_id)
     if model_object.category:
@@ -125,6 +140,11 @@ def clear_phone_cache(sender, **kwargs):
 @receiver(pre_delete, sender=PhoneMemorySize)
 def clear_phone_mem_size_cache(sender, **kwargs):
     cache_delete("sizes_{}", kwargs["instance"].category)
+
+
+@receiver(pre_delete, sender=SocialMedia)
+def clear_social_media_cache(sender, **kwargs):
+    cache.delete('social_media')
 
 
 def cache_delete(cache_name, cache_id):
