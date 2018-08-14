@@ -264,3 +264,58 @@ class AboutPageViewsTestCase(BaseTestCase):
         self.assertContains(response, "Iphone")
         self.assertContains(response, "Android")
         self.assertContains(response, "Tablet")
+
+
+class FooterViewTestCase(BaseTestCase):
+    def setUp(self):
+        super(FooterViewTestCase, self).setUp()
+
+    def tearDown(self):
+        cache.clear()
+
+    def test_admin_view(self):
+        '''
+        Test that when visiting the admin view the Meta name for the Social
+        Media Model is as indicated on the models class
+        '''
+        response = self.elena.get('/admin', follow=True)
+        self.assertContains(response, "Social Media")
+
+    def test_category_data(self):
+        '''
+        Test that category links and views are available on the footer
+        '''
+        response = self.client.get('/about')
+        iphone_data = "<a href=\"/phone_category/{}\">Buy Iphone</a>".format(
+            self.iphone.id)
+        android_data = "<a href=\"/phone_category/{}\">Buy Android</a>".format(
+            self.android.id)
+        tablet_data = "<a href=\"/phone_category/{}\">Buy Tablet</a>".format(
+            self.tablet.id)
+        self.assertContains(response, iphone_data)
+        self.assertContains(response, android_data)
+        self.assertContains(response, tablet_data)
+
+    def test_social_media_data(self):
+        '''
+        Test that the social media data is rendered properly
+        '''
+        data = {"url_link": "http://example.com", "name": "example",
+                "icon": "fa fa icon"}
+        self.elena.post("/admin/front/socialmedia/add/", data)
+        response = self.client.get('/about')
+        example_data_url = "<a href=\"http://example.com\" target=\"_blank\">"
+        example_data_icon_name = "<i class=\"fa fa icon\"></i> example</a>"
+        self.assertContains(response, example_data_icon_name)
+        self.assertContains(response, example_data_url)
+
+    def test_social_media_object_view(self):
+        '''
+        Test that the social media objects on the admin view are human readable
+        '''
+        data = {"url_link": "http://example.com", "name": "Example",
+                "icon": "fa fa icon"}
+        self.elena.post("/admin/front/socialmedia/add/", data)
+        response = self.elena.get("/admin/front/socialmedia/")
+        self.assertContains(response, "Example")
+        

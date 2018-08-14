@@ -81,7 +81,9 @@ def about_view(request):
     phone_categories = cache.get('phone_categories') or set_cache(
         PhoneCategoryList.objects.all(),
         'phone_categories')
-    context = {"categories": phone_categories}
+    social_media = cache.get('social_media') or set_cache(
+        SocialMedia.objects.all(), 'social_media')
+    context = {"categories": phone_categories, "social_media": social_media}
     return render(request, 'front/about.html', context=context)
 
 

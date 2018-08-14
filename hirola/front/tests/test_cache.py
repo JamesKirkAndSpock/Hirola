@@ -464,6 +464,79 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
         self.assertEqual(edited_size.abbreviation, "HI")
 
 
+class FooterViewCacheTest(BaseTestCase):
+
+    def setUp(self):
+        super(FooterViewCacheTest, self).setUp()
+
+    def tearDown(self):
+        cache.clear()
+
+    def get_page_and_set_cache(self):
+        '''
+        Get to a page and set the cache for the footer. Test that it exists.
+        '''
+        self.client.get("/about")
+        media_cache = cache.get('social_media')
+        self.assertNotEqual(media_cache, None)
+
+    def get_none_on_cache(self):
+        '''
+        When a cache for social media is queried it returns None
+        '''
+        media_cache = cache.get('social_media')
+        self.assertEqual(media_cache, None)
+
+    def create_social_media_object(self):
+        '''
+        Create an object for social media
+        '''
+        data = {"url_link": "http://example.com", "name": "example",
+                "icon": "fa fa icon"}
+        self.elena.post("/admin/front/socialmedia/add/", data)
+
+    def test_setting_of_cache_social_media(self):
+        '''
+        Test that the 'social_media' cache does not exist and that it is
+        created after visting a page.
+        '''
+        self.get_none_on_cache()
+        self.get_page_and_set_cache()
+
+    def test_addition_of_social_media(self):
+        '''
+        Test that the addition of social media will delete the cache
+        '''
+        self.get_page_and_set_cache()
+        self.create_social_media_object()
+        self.get_none_on_cache()
+
+    def test_edition_of_social_media(self):
+        '''
+        Test that the edition of social media will delete the cache
+        '''
+        self.create_social_media_object()
+        self.get_page_and_set_cache()
+        media_object = SocialMedia.objects.get(name="example")
+        url = "/admin/front/socialmedia/{}/change/".format(media_object.pk)
+        data_2 = {"url_link": "http://example.com", "name": "another_name",
+                  "icon": "fa fa icon"}
+        self.elena.post(url, data_2)
+        self.assertEqual(SocialMedia.objects.get(pk=media_object.pk).name,
+                         "another_name")
+        self.get_none_on_cache()
+
+    def test_deletion_of_social_media(self):
+        '''
+        Test that the deletion of social media will delete the cache
+        '''
+        self.create_social_media_object()
+        self.get_page_and_set_cache()
+        media_object = SocialMedia.objects.get(name="example")
+        media_object.delete()
+        self.get_none_on_cache()
+
+
 def phone_form(category, currency, size):
     mock_image = image('test_image_5.png')
     form = {"phone_image": mock_image, "phone_name": "Phone_ImageV",
