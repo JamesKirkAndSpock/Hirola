@@ -14,3 +14,8 @@ $(document).ready(function () {
 });
 
 $(".button-collapse").sideNav();
+
+// Reinitialize the labels on the page for dynamically adding inputs
+$(document).ready(function () {
+    M.updateTextFields();
+});
