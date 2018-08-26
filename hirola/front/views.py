@@ -55,6 +55,7 @@ def sizes(request):
     sizes = PhoneMemorySize.objects.all()
     list_sizes = {}
     size_key = 1
+    size_id = 0
     for size in sizes:
         list_sizes[size_key] = size.category
         size_key += 1
@@ -63,9 +64,12 @@ def sizes(request):
     else:
         filtered_sizes = PhoneMemorySize.objects.filter(
             category=request.GET["id"])
+        if PhoneList.objects.filter(pk=request.GET["id"]).first():
+            size_id = PhoneList.objects.filter(pk=request.GET["id"]).first().size_sku.pk
     data = {}
     for size in filtered_sizes:
         data[size.pk] = str(size)
+    data = {"size_id": size_id, "data": data}
     return JsonResponse(data)
 
 
