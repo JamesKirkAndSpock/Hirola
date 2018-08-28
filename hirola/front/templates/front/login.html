@@ -1,8 +1,19 @@
 {% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/login.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %} {% block content %}
 
 <div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb" id="last-link">login</a>
+                </div>
+            </div>
+        </nav>
+    </div>
     <div class="row">
         <div class="col m3"></div>
         <div class="col m6 s12">
@@ -32,22 +43,27 @@
                             <a href="#" class="right">Forgot password?</a>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row center">
                         <button class="btn waves-effect waves-light bt light-green accent-4" type="submit" name="action">Login
                         </button>
                     </div>
-                    <div class="row">
-                        <div class="col s12">
-                            <h5 class="center">New customer?</h5>
+                    <div class="row center">
+                        <div class="row">
+                            <p class="center">Or register with your social account
+                            </p>
                         </div>
-                    </div>
-                    <div class="row">
-                        <button class="btn waves-effect waves-light btg  red accent-4" type="submit" name="action">Create an Account
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button class="btn waves-effect waves-light btg  blue darken-4" type="submit" name="action">Signup with facebook
-                        </button>
+                        <div class="row social">
+                            <div class="col s6">
+                                <a href="#">
+                                    <i class="fa fa-google fa-lg right"></i>
+                                </a>
+                            </div>
+                            <div class="col s6">
+                                <a href="#">
+                                    <i class="fa fa-facebook-square fa-lg left"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
