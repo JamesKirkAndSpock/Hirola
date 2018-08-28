@@ -31,6 +31,10 @@
     color: #3cba54;
 }
 
+.social i {
+    margin-top: 20px;
+}
+
 @media only screen and (max-width: 600px) {
     .main-content {
         margin-top: 10px;

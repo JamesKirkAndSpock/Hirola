@@ -13,5 +13,6 @@ urlpatterns = [
          views.phone_category_size_view, name='phone_category_size'),
     path('sizes', views.sizes, name='sizes'),
     path('about', views.about_view, name='about'),
-    path('signup', views.signup_view, name='signup')
+    path('signup', views.signup_view, name='signup'),
+    path('login', views.login_view, name='login')
 ]
