@@ -10,6 +10,10 @@ hirola/db.sqlite3
 .env
 hi-venv/
 # Mock Images
-
+test_image_1_*
+test_image_2_*
+test_image_3_*
+test_image_4_*
+test_image_5_*
 migrations
 Makefile
