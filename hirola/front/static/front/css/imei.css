@@ -31,6 +31,10 @@ button {
     border-radius: 2px;
 }
 
+.imei-info li {
+    list-style-type: disc;
+}
+
 @media only screen and (max-width: 600px) {
     #formdiv {
         margin-top: 0;
