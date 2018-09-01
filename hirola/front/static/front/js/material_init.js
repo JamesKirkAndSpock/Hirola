@@ -19,3 +19,8 @@ $(".button-collapse").sideNav();
 $(document).ready(function () {
     M.updateTextFields();
 });
+
+// trigger modal
+$(document).ready(function () {
+    $('.modal').modal();
+});

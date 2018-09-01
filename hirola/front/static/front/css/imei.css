@@ -3,8 +3,12 @@
     flex: 1 0 auto;
 }
 
+.heading {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
 .content {
-    margin-top: 100px;
     background-color: whitesmoke;
     height: 200px;
 }
@@ -25,4 +29,13 @@ button {
 .input-field input[type=text] {
     border: 1px solid #A9A9A9;
     border-radius: 2px;
+}
+
+@media only screen and (max-width: 600px) {
+    #formdiv {
+        margin-top: 0;
+    }
+    .content {
+        height: 0px;
+    }
 }
