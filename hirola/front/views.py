@@ -96,3 +96,6 @@ def signup_view(request):
 
 def login_view(request):
     return render(request, 'front/login.html')
+
+def imei_view(request):
+    return render(request, 'front/imei.html')

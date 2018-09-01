@@ -1,0 +1,36 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/imei.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
+
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb" id="last-link">login</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row content center">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <div id="formdiv">
+                <form action="#">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input type="text">
+                        </div>
+                        <div class="input-field col s6">
+                            <button class="btn waves-effect waves-light bt left" type="submit" name="action">Check Imei
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col s3"></div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %} {% endblock %}

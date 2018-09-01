@@ -14,5 +14,6 @@ urlpatterns = [
     path('sizes', views.sizes, name='sizes'),
     path('about', views.about_view, name='about'),
     path('signup', views.signup_view, name='signup'),
-    path('login', views.login_view, name='login')
+    path('login', views.login_view, name='login'),
+    path('imei', views.imei_view, name='imei')
 ]
