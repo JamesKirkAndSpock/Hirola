@@ -2,9 +2,9 @@ from front.base_test import *
 from front.errors import *
 
 
-class LandingPageImagsViewsTestCase(BaseTestCase):
+class LandingPageImagesViewsTestCase(BaseTestCase):
     def setUp(self):
-        super(LandingPageImagsViewsTestCase, self).setUp()
+        super(LandingPageImagesViewsTestCase, self).setUp()
         self.add_url = "/admin/front/landingpageimage/add/"
 
     def test_creation_of_entry(self):

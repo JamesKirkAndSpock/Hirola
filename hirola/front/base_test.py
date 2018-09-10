@@ -20,7 +20,6 @@ class BaseTestCase(TestCase):
         # Elena is an admin who has admin privilidges
         self.elena = Client()
         user = User.objects.create_superuser(
-            username='test',
             email='test@example.com',
             password='test',
         )

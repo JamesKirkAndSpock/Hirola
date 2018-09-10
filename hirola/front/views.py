@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import *
 from django.views import generic
 from django.core.cache import cache
+from .forms import UserCreationForm
 
 
 def page_view(request):
@@ -80,6 +81,9 @@ def phone_profile_view(request):
 def phone_view(request):
     return render(request, 'front/phone.html')
 
+def login_view(request):
+    return render(request, 'front/login.html')
+
 
 def about_view(request):
     phone_categories = cache.get('phone_categories') or set_cache(
@@ -92,7 +96,13 @@ def about_view(request):
 
 
 def signup_view(request):
-    return render(request, 'front/signup.html')
-
-def login_view(request):
-    return render(request, 'front/login.html')
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+        args = {'form':  form}
+        return render(request, 'front/signup.html', args)
+    else:
+        args = {'form':  UserCreationForm()}
+        return render(request, 'front/signup.html', args)

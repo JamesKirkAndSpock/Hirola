@@ -19,3 +19,8 @@ $(".button-collapse").sideNav();
 $(document).ready(function () {
     M.updateTextFields();
 });
+
+// initialize the materialize select
+$(document).ready(function () {
+    $('select').material_select();
+});
