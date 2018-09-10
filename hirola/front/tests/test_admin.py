@@ -5,7 +5,6 @@ class AdminPage(TestCase):
     def setUp(self):
         self.client = Client()
         user = User.objects.create_superuser(
-            username='test',
             email='test@example.com',
             password='test',
         )
