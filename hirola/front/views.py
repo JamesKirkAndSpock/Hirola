@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from .models import *
 from django.views import generic
 from django.core.cache import cache
-from .forms import UserCreationForm
+from .forms import UserCreationForm, AuthenticationForm
 
 
 def page_view(request):
@@ -82,7 +82,15 @@ def phone_view(request):
     return render(request, 'front/phone.html')
 
 def login_view(request):
-    return render(request, 'front/login.html')
+    if request.method == "POST":
+        form = AuthenticationForm(None, request.POST)
+        if form.is_valid():
+            return redirect('/')
+        args = {'form':  form}
+        return render(request, 'front/login.html', args)
+    else:
+        args = {'form':  AuthenticationForm()}
+        return render(request, 'front/login.html', args)
 
 
 def about_view(request):
