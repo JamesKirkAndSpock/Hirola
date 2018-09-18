@@ -24,3 +24,8 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('select').material_select();
 });
+
+// trigger modal
+$(document).ready(function () {
+    $('.modal').modal();
+});
