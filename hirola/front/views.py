@@ -114,3 +114,7 @@ def signup_view(request):
     else:
         args = {'form':  UserCreationForm()}
         return render(request, 'front/signup.html', args)
+
+
+def imei_view(request):
+    return render(request, 'front/imei.html')
