@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+p#!/usr/bin/env bash
 
 set -o errexit
 set -o pipefail
@@ -43,6 +43,7 @@ check_branch(){
         IP_ADDRESS=${DEVELOP_IP_ADDRESS}
         REGION=${DEVELOP_REGION}
         ZONE=${DEVELOP_ZONE}
+        DATABASE_NAME=${DEVELOP_DATABASE}
     fi
 
     if [[ "$CIRCLE_BRANCH" == 'master' ]]; then
@@ -51,6 +52,7 @@ check_branch(){
         IP_ADDRESS=${MASTER_IP_ADDRESS}
         REGION=${MASTER_REGION}
         ZONE=${MASTER_ZONE}
+        DATABASE_NAME=${MASTER_DATABASE}
     fi
 }
 
@@ -61,18 +63,18 @@ initialise_terraform() {
 
 destroy_previous_infrastructure(){
     if [[ ! "$var1" =~ $re || "$CIRCLE_BRANCH" == 'develop' || "$CIRCLE_BRANCH" == 'master' ]]; then
-        terraform destroy -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}" -var=cache_ip="${IP_ADDRESS}" -var=cache_port="${CACHE_PORT}"
+        terraform destroy -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}" -var=cache_ip="${IP_ADDRESS}" -var=cache_port="${CACHE_PORT}" -var=twilio_account_sid="${TWILIO_ACCOUNT_SID}" -var=twilio_auth_token="${TWILIO_AUTH_TOKEN}"
     else
-        terraform destroy -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}" -var=cache_ip="${IP_ADDRESS}" -var=cache_port="${CACHE_PORT}"
+        terraform destroy -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}" -var=cache_ip="${IP_ADDRESS}" -var=cache_port="${CACHE_PORT}" -var=twilio_account_sid="${TWILIO_ACCOUNT_SID}" -var=twilio_auth_token="${TWILIO_AUTH_TOKEN}"
     fi
 
 }
 
 build_current_infrastructure() {
     if [[ ! "$var1" =~ $re || "$CIRCLE_BRANCH" == 'develop' || "$CIRCLE_BRANCH" == 'master' ]]; then
-        terraform apply -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}" -var=cache_ip="${IP_ADDRESS}" -var=cache_port="${CACHE_PORT}"
+        terraform apply -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=region="${REGION}" -var=zone="${ZONE}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}" -var=cache_ip="${IP_ADDRESS}" -var=cache_port="${CACHE_PORT}" -var=twilio_account_sid="${TWILIO_ACCOUNT_SID}" -var=twilio_auth_token="${TWILIO_AUTH_TOKEN}"
     else
-        terraform apply -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}" -var=cache_ip="${IP_ADDRESS}" -var=cache_port="${CACHE_PORT}"
+        terraform apply -lock=false -auto-approve -var=project="${PROJECT_ID}" -var=ip-address="${IP_ADDRESS}" -var=env="${ENVIRONMENT}" -var=branch="${CIRCLE_BRANCH}" -var=host="${HOST}" -var=database_password="${DATABASE_PASSWORD}" -var=database_user="${DATABASE_USER}" -var=database_name="${DATABASE_NAME}" -var=postgres_ip="${POSTGRES_IP}" -var=environment="staging" -var=gs_bucket_name="${GS_BUCKET_NAME}" -var=gs_bucket_url="${GS_BUCKET_URL}" -var=cache_ip="${IP_ADDRESS}" -var=cache_port="${CACHE_PORT}" -var=twilio_account_sid="${TWILIO_ACCOUNT_SID}" -var=twilio_auth_token="${TWILIO_AUTH_TOKEN}"
     fi
 }
 

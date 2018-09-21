@@ -1,51 +1,84 @@
 {% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/login.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %} {% block content %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'front/css/login.css' %}" /> {% endblock %} {% block content %}
-
-<div class="container">
-    <div class="row main-content">
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb" id="last-link">login</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row">
         <div class="col m3"></div>
-        <div class="col m6">
+        <div class="col m6 s12">
             <div class="center">
                 <h4>teke</h4>
             </div>
             <div class="row content">
-                <form class="col s12" action="#">
+                <form class="col s12" method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
                     <div class="row">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">account_circle</i>
-                            <input id="identity" type="text" placeholder="Phone number or email" class="validate" required>
+                            {{ form.email }}
                         </div>
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    {% endif %}
                     </div>
                     <div class="row">
                         <div class="input-field col s12 pass">
                             <i class="material-icons prefix">lock</i>
-                            <input id="password" type="password" placeholder="Password" class="validate" required>
+                            {{ form.password }}
                         </div>
+                    {% if form.password.errors %}
+                        {% for error in form.password.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    {% endif %}
                     </div>
                     <div class="row check">
                         <div class="col s6">
                             <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
                             <label for="filled-in-box">Remember me</label>
                         </div>
-                        <div class="col s6"><a href="#" class="right">Forgot password?</a></div>
+                        <div class="col s6">
+                            <a href="#" class="right" style="color:red;">Forgot password?</a>
+                        </div>
                     </div>
-                    <div class="row">
+                    <div class="row center">
                         <button class="btn waves-effect waves-light bt light-green accent-4" type="submit" name="action">Login
                         </button>
                     </div>
-                    <div class="row">
-                        <div class="col s12">
-                            <h6 class="center">New customer?</h6>
+                    <div class="row center">
+                        <!-- <div class="row">
+                            <p class="center">Or login with your social media account
+                            </p>
                         </div>
-                    </div>
-                    <div class="row">
-                        <button class="btn waves-effect waves-light btg  red accent-4" type="submit" name="action">Create an Account
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button class="btn waves-effect waves-light btg  blue darken-4" type="submit" name="action">Signup with facebook
-                        </button>
+                        <div class="row social">
+                            <div class="col s6">
+                                <a href="#">
+                                    <i class="fa fa-google fa-lg right"></i>
+                                </a>
+                            </div>
+                            <div class="col s6">
+                                <a href="#">
+                                    <i class="fa fa-facebook-square fa-lg left"></i>
+                                </a>
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <p class="center" style="margin-bottom: 20px;">Don't have an account? <a href="/signup" style="color:green;">sign up</a></p>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -53,4 +86,4 @@
         <div class="col m3"></div>
     </div>
 </div>
-{% block scripts %} {{ block.super }} {% load static %} {% endblock %} {% endblock %}
+{% block footer %} {% include 'front/footer.html' %} {% endblock %} {% endblock %}

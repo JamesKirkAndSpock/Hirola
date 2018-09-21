@@ -1,58 +1,141 @@
-{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+{% extends "front/base.html" %}
+{% block styles %}
+{{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/signup.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %}
+{% block content %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'front/css/signup.css' %}" /> {% endblock %} {% block content %}
-
-<div class="container">
-    <div class="row main-content">
+<div class="container  main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb" id="last-link">signup</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row">
         <div class="col m3"></div>
         <div class="col m6">
             <div class="center">
-            <h4>teke</h4>
+                <h4>teke</h4>
             </div>
             <div class="row content">
-                <form class="col s12" action="#">
+                <form class="col s12" method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
                     <div class="row">
                         <div class="input-field col s6">
                             <i class="material-icons prefix">account_circle</i>
-                            <input id="first_name" type="text" class="validate" required>
-                            <label for="first_name">First Name</label>
+                            <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                            {{ form.first_name}}
                         </div>
                         <div class="input-field col s6">
-                            <input id="last_name" type="text" class="validate">
-                            <label for="last_name">Last Name</label>
+                            <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                            {{ form.last_name }}
                         </div>
+                    {% if form.first_name.errors %}
+                        {% for error in form.first_name.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    {% endif %}
+                    {% if form.last_name.errors %}
+                        {% for error in form.last_name.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    {% endif %}
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12">
+                      <div class="row">
+                        <div class="input-field col s6">
                             <i class="material-icons prefix">phone</i>
-                            <input id="tel" type="text" class="validate" required>
-                            <label for="tel">Phone number</label>
+                              <label for="{{ form.area_code.id_for_label }}">Area Code</label>
+                            {{ form.area_code }}
                         </div>
-                    </div>
+                        <div class="input-field col s6">
+                            <label for="{{ form.phone_number.id_for_label }}">Phone number</label>
+                            {{ form.phone_number }}
+                        </div>
+                      </div>
+                    {% if form.phone_number.errors %}
+                            {% for error in form.phone_number.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                            {% endfor %}
+                    {% endif %}
                     <div class="row">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">email</i>
-                            <input id="email" type="email" class="validate" required>
-                            <label for="email">Email</label>
+                            <label for="{{ form.email.id_for_label }}">Email</label>
+                            {{ form.email }}
                         </div>
+                    {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                            {% endfor %}
+                    {% endif %}
                     </div>
                     <div class="row">
                         <div class="input-field col s12 pass">
                             <i class="material-icons prefix">lock</i>
-                            <input id="password" type="password" class="validate" required>
-                            <label for="password">Password</label>
+                            <label for="{{ form.password1.id_for_label }}">Password</label>
+                            {{ form.password1 }}
                         </div>
+                    {% if form.password1.errors %}
+                        {% for error in form.password1.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 pass">
+                            <i class="material-icons prefix">lock</i>
+                            <label for="{{ form.password2.id_for_label }}"> Confirm Password</label>
+                            {{ form.password2 }}
+                        </div>
+                    {% if form.password2.errors %}
+                        {% for error in form.password2.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                    <div class="row">
                     </div>
                     <div class="row">
                         <div class="col s12">
-                            <p> When you <em>Register</em> you agree to our <a href="#">User agreement</a>
-                            and acknowledge to have read our <a href="#">user privacy policy</a>
+                            <p> When you
+                                <em>Register</em> you agree to our
+                                <a href="#">User agreement</a>
+                                and acknowledge to have read our
+                                <a href="#">user privacy policy</a>
                             </p>
                         </div>
                     </div>
-                    <div class="row">
-                        <button class="btn waves-effect waves-light green right" type="submit" name="action">Create Account
+                    <div class="row center">
+                        <button class="btn waves-effect waves-light green" type="submit" name="action">Create Account
                         </button>
+                    </div>
+                    <!-- <div class="row center">
+                        <div class="row">
+                        <p class="center">Or register with your social media account
+                        </p>
+                        </div>
+                        <div class="row social">
+                            <div class="col s6">
+                                <a href="#">
+                                    <i class="fa fa-google fa-lg right"></i>
+                                </a>
+                            </div>
+                            <div class="col s6">
+                                <a href="#">
+                                    <i class="fa fa-facebook-square fa-lg left"></i>
+                                </a>
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <p class="center" style="margin-bottom: 20px;">Already have an account? <a href="/login" style="color:green">Log in</a></p>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -60,4 +143,10 @@
         <div class="col m3"></div>
     </div>
 </div>
-{% block scripts %} {{ block.super }} {% load static %} {% endblock %} {% endblock %}
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %}
+{{ block.super }}
+{% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script>
+{% endblock %}
+{% endblock %}

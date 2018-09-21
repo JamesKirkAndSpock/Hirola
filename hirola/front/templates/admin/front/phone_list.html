@@ -5,15 +5,19 @@
 $(document).ready(selector);
 $('#id_category').change(selector);
 function selector() {
-    $.getJSON("/sizes",{id: $(this).val(), view: 'json'}, function(j) {
+    $.getJSON("/sizes", {id: $('#id_category').val(), view: 'json'}, function(j) {
         var options = '<option value="">--------&nbsp;</option>';
-        for (var i in j) {
-          options += '<option value="' + i + '">' + j[i] + '</option>';
+        for (var i in j["data"]) {
+          if ( j["size_id"] == i ) {
+            options += '<option value="' + i + '" selected>' + j["data"][i] + '</option>';
+          }
+          else {
+          options += '<option value="' + i + '">' + j["data"][i] + '</option>';
+          }
         }
         $("#id_size_sku").html(options);
-        $("#id_size_sku option:first").attr('selected', 'selected');
-      })
-      $("#id_category").attr('selected', 'selected');
+    })
+  $("#id_category").attr('selected', 'selected');
 }
   </script>
 {% endblock %}

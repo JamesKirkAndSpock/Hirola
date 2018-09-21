@@ -1,75 +1,66 @@
-{% block styles %}
-{% load static %}
+{% block styles %} {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/footer.css' %}" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
-{% endblock %}
-{% block footer %}
+{% endblock %} {% block footer %}
 <div class="row footer">
-    <div class="container">
+    <div id="footer-container" class="container">
         <div class="col m3 s6 white-text">
             <ul>
+                {% for medium in social_media %}
                 <li>
-                    <i class="fa fa-facebook"></i> facebook</a>
+                    <a href="{{medium.url_link}}" target="_blank">
+                    <i class="{{ medium.icon }}"></i> {{ medium.name }}</a>
                 </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col m3 s6 white-text">
+            <ul>
+                {% for category in categories %}
                 <li>
-                    <i class="fa fa-twitter"></i> twitter</a>
+                    <a href="/phone_category/{{category.id}}">Buy {{ category }}</a>
                 </li>
+                {% endfor %}
                 <li>
-                    <i class="fa fa-instagram"></i> instagram</a>
-                </li>
-                <li>
-                    <i class="fa fa-youtube"></i> youtube</a>
+                    <a href="#">IMEI/ESN Check</a>
                 </li>
             </ul>
         </div>
         <div class="col m3 s6 white-text">
             <ul>
                 <li>
-                    <a href="#" class="white-text">Buy iPhone</a>
+                    <a href="#">Help Center</a>
                 </li>
                 <li>
-                    <a href="#" class="white-text">Buy Android</a>
+                    <a href="#">FAQs</a>
                 </li>
                 <li>
-                    <a href="#" class="white-text">Buy Tablets</a>
+                    <a href="#">Repair Network</a>
                 </li>
                 <li>
-                    <a href="#" class="white-text">News and Press</a>
+                    <a href="#">teke vs. OLX</a>
                 </li>
             </ul>
         </div>
         <div class="col m3 s6 white-text">
             <ul>
                 <li>
-                    <a href="#" class="white-text">Help Center</a>
+                    <a href="/about">About teke</a>
                 </li>
                 <li>
-                    <a href="#" class="white-text">FAQs</a>
+                    <a href="#">Contact Us</a>
                 </li>
                 <li>
-                    <a href="#" class="white-text">Repair Network</a>
+                    <a href="#">Privacy Policy</a>
                 </li>
                 <li>
-                    <a href="#" class="white-text">teke vs. OLX</a>
+                    <a href="#">News and Press</a>
                 </li>
             </ul>
         </div>
-        <div class="col m3 s6 white-text">
-            <ul>
-                <li>
-                    <a href="#" class="white-text">About teke</a>
-                </li>
-                <li>
-                    <a href="#" class="white-text">Contact Us</a>
-                </li>
-                <li>
-                    <a href="#" class="white-text">Privacy Policy</a>
-                </li>
-                <li>
-                    <a href="#" class="white-text">News and Press</a>
-                </li>
-            </ul>
+        <div>
+            <center>
+                <p class="copyright">&copy; Copyright 2018, teke LLC</p>
+            </center>
         </div>
     </div>
 </div>

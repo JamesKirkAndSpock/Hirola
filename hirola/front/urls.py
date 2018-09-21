@@ -18,5 +18,6 @@ urlpatterns = [
     path('reset_password', views.reset_password_view, name='reset_password'),
     path('new_password', views.new_password_view, name='new_password'),
     path('checkout', views.checkout_view, name='checkout'),
-    path('dashboard', views.dashboard_view, name='dashboard')
+    path('dashboard', views.dashboard_view, name='dashboard'),
+    path('imei', views.imei_view, name='imei')
 ]

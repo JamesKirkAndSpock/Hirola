@@ -28,3 +28,17 @@ $(document).ready(function(){
 
 // trigger dropdown
 // $('.dropdown-trigger').dropdown();
+// Reinitialize the labels on the page for dynamically adding inputs
+$(document).ready(function () {
+    M.updateTextFields();
+});
+
+// initialize the materialize select
+$(document).ready(function () {
+    $('select').material_select();
+});
+
+// trigger modal
+$(document).ready(function () {
+    $('.modal').modal();
+});

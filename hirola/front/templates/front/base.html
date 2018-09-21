@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {% block styles %}
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> {% block styles %}
     <!-- Materialize css -->
     {% load static %}
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'front/css/base.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'front/css/footer.css' %}" />
-    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'front/css/footer.css' %}" /> {% endblock %}
     <!-- Application Title -->
     <title>{% block title %}Hirola!{% endblock %}</title>
     <!-- Load Static for Images and CSS -->
 </head>
+
 <body>
 <header>
     <div class="row navigation">
@@ -60,49 +61,61 @@
                                         <input id="search" type="search" required placeholder="Search...">
                                             <i class="material-icons white-text">search</i>
                                     </div>
-                                </form>
-                            </ul>
+                                    <div class="col m2 help">
+                                        <li>
+                                            <a href="#">Need help?</a>
+                                        </li>
+                                    </div>
+                                    <div class="col m2"></div>
+                                </ul>
+                            </div>
+                            <div class="col m3">
+                                <ul class=" hide-on-med-and-down">
+                                    <form>
+                                        <div class="input-field">
+                                            <input id="search" type="search" required placeholder="Search...">
+                                            <i class="material-icons white-text">search</i>
+                                        </div>
+                                    </form>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
+            <ul class="side-nav" id="nav-mobile">
+                {% for category in categories %}
+                <li>
+                    <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
+                </li>
+                {% endfor %}
+                <li>
+                    <a href="/about">About</a>
+                </li>
+                <li>
+                    <a href="#">Enquiry</a>
+                </li>
+
+                <li>
+                    <div class="divider"></div>
+                </li>
+                <li>
+                    <form>
+                        <div class="input-field">
+                            <input id="search" type="search" required placeholder="Search...">
+                            <i class="material-icons black-text">search</i>
+                        </div>
+                    </form>
+                </li>
+            </ul>
         </div>
-        <ul class="side-nav" id="nav-mobile">
-            {% for category in categories %}
-            <li>
-                <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
-            </li>
-            {% endfor %}
-            <li>
-                <a href="/about">About</a>
-            </li>
-            <li>
-                <a href="#">Enquiry</a>
-            </li>
+    </header>
 
-            <li>
-                <div class="divider"></div>
-            </li>
-            <li>
-                <form>
-                    <div class="input-field">
-                        <input id="search" type="search" required placeholder="Search...">
-                        <i class="material-icons black-text">search</i>
-                    </div>
-                </form>
-            </li>
-        </ul>
-    </div>
-</header>
-
-    {% block content %}
-
-    {% block scripts %}
+    {% block content %} {% block scripts %}
     <!-- scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script src="{% static 'front/js/material_init.js' %}"></script>
-    {% endblock %}
-    {% endblock %}
+    <script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %} {% endblock %}
 </body>
+
 </html>

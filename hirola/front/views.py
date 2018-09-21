@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import *
 from django.views import generic
 from django.core.cache import cache
+from .forms import UserCreationForm, AuthenticationForm
 
 
 def page_view(request):
@@ -55,6 +56,7 @@ def sizes(request):
     sizes = PhoneMemorySize.objects.all()
     list_sizes = {}
     size_key = 1
+    size_id = 0
     for size in sizes:
         list_sizes[size_key] = size.category
         size_key += 1
@@ -63,9 +65,12 @@ def sizes(request):
     else:
         filtered_sizes = PhoneMemorySize.objects.filter(
             category=request.GET["id"])
+        if PhoneList.objects.filter(pk=request.GET["id"]).first():
+            size_id = PhoneList.objects.filter(pk=request.GET["id"]).first().size_sku.pk
     data = {}
     for size in filtered_sizes:
         data[size.pk] = str(size)
+    data = {"size_id": size_id, "data": data}
     return JsonResponse(data)
 
 
@@ -75,15 +80,6 @@ def phone_profile_view(request):
 
 def phone_view(request):
     return render(request, 'front/phone.html')
-
-def about_view(request):
-    return render(request, 'front/about.html')
-
-def login_view(request):
-    return render(request, 'front/login.html')
-
-def signup_view(request):
-    return render(request, 'front/signup.html')
 
 def reset_password_view(request):
     return render(request, 'front/reset_password.html')
@@ -96,3 +92,41 @@ def checkout_view(request):
 
 def dashboard_view(request):
     return render(request, 'front/dashboard.html')
+
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(None, request.POST)
+        if form.is_valid():
+            return redirect('/')
+        args = {'form':  form}
+        return render(request, 'front/login.html', args)
+    else:
+        args = {'form':  AuthenticationForm()}
+        return render(request, 'front/login.html', args)
+
+
+def about_view(request):
+    phone_categories = cache.get('phone_categories') or set_cache(
+        PhoneCategoryList.objects.all(),
+        'phone_categories')
+    social_media = cache.get('social_media') or set_cache(
+        SocialMedia.objects.all(), 'social_media')
+    context = {"categories": phone_categories, "social_media": social_media}
+    return render(request, 'front/about.html', context=context)
+
+
+def signup_view(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+        args = {'form':  form}
+        return render(request, 'front/signup.html', args)
+    else:
+        args = {'form':  UserCreationForm()}
+        return render(request, 'front/signup.html', args)
+
+
+def imei_view(request):
+    return render(request, 'front/imei.html')
