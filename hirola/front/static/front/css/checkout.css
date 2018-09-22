@@ -21,6 +21,7 @@
     border-color: #E8E8E8;
     padding: 25px;
 }
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     opacity: 1;
@@ -31,10 +32,12 @@ input[type=number]::-webkit-outer-spin-button {
     border: solid 0.05em;
     border-color: #E8E8E8;
 }
+
 .confirmation .col {
     padding-left: 25px;
     padding-right: 25px;
 }
+
 .btn {
     width: 100%;
     margin-bottom: 10px;
@@ -44,4 +47,9 @@ input[type=number]::-webkit-outer-spin-button {
     border: solid 0.05em;
     border-color: #E8E8E8;
     padding: 25px;
+}
+
+.main-content {
+    margin-top: 100px;
+    flex: 1 0 auto;
 }

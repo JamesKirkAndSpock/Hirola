@@ -1,8 +1,9 @@
 {% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'front/css/checkout.css' %}" /> {% endblock %} {% block content %}
-<div class="row">
-    <div class="container">
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/checkout.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %} {% block content %}
+    <div class="container main-content">
         <h4>teke checkout</h4>
         <div class="row">
             <div class="col m7 goods">
@@ -87,5 +88,5 @@
             </div>
         </div>
     </div>
-</div>
-{% block scripts %} {{ block.super }} {% load static %} {% endblock %} {% endblock %}
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% endblock %}

@@ -20,46 +20,31 @@
 </head>
 
 <body>
-<header>
-    <div class="row navigation">
-        <div class="navbar-fixed">
-            <nav class="black">
-                <div class="nav-wrapper">
-                    <div class="row">
-                        <div class="col m1">
-                            <a href="/" class="brand-logo">teke</a>
-                            <a href="#" data-activates="nav-mobile" class="button-collapse">
-                                <i class="material-icons">menu</i>
-                            </a>
-                        </div>
-                        <div class="col m8">
-                            <ul class=" hide-on-med-and-down">
-                                {% for category in categories %}
-                                <div class="col m2">
-                                    <li>
-                                        <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
-                                    </li>
-                                </div>
-                                {% endfor %}
-                                <div class="col m2">
-                                    <li>
-                                        <a href="/about">About</a>
-                                    </li>
-                                </div>
-                                <div class="col m2 help">
-                                    <li>
-                                        <a href="#">Need help?</a>
-                                    </li>
-                                </div>
-                                <div class="col m2"></div>
-                            </ul>
-                        </div>
-                        <div class="col m3">
-                            <ul class=" hide-on-med-and-down">
-                                <form>
-                                    <div class="input-field">
-                                        <input id="search" type="search" required placeholder="Search...">
-                                            <i class="material-icons white-text">search</i>
+    <header>
+        <div class="row navigation">
+            <div class="navbar-fixed">
+                <nav class="black">
+                    <div class="nav-wrapper">
+                        <div class="row">
+                            <div class="col m1">
+                                <a href="/" class="brand-logo">teke</a>
+                                <a href="#" data-activates="nav-mobile" class="button-collapse">
+                                    <i class="material-icons">menu</i>
+                                </a>
+                            </div>
+                            <div class="col m8">
+                                <ul class=" hide-on-med-and-down">
+                                    {% for category in categories %}
+                                    <div class="col m2">
+                                        <li>
+                                            <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
+                                        </li>
+                                    </div>
+                                    {% endfor %}
+                                    <div class="col m2">
+                                        <li>
+                                            <a href="/about">About</a>
+                                        </li>
                                     </div>
                                     <div class="col m2 help">
                                         <li>
