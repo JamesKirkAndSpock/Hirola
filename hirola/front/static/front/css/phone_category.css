@@ -1,5 +1,6 @@
 .main-container {
-    display: flex
+    flex: 1 0 auto;
+    width: 100%;
 }
 
 .content {
@@ -10,12 +11,6 @@
     flex-grow: 1.2;
 }
 
-.storage {
-    padding: 10px;
-    border-bottom: solid 0.05em;
-    border-bottom-color: #E8E8E8;
-}
-
 .isDisabled {
     color: currentColor;
     cursor: not-allowed;
@@ -23,12 +18,13 @@
     text-decoration: none;
 }
 
-.storage .col {
-    text-align: center;
-    margin-bottom: 50px;
+.storage {
+    margin-right: 5%;
+    margin-left: 5%;
+    width: 90%;
 }
 
-.storage .s3 #size {
+.storage-item {
     border: solid 0.05em;
     border-color: #E8E8E8;
     background-color: whitesmoke;
@@ -61,6 +57,9 @@
         font-size: 4vw;
     }
     .storage h4 {
-        font-size: 7vw;
+        font-size: 5vw;
+    }
+    .storage .s3 #size {
+        margin-bottom: 20px;
     }
 }

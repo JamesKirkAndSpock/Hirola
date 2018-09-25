@@ -1,0 +1,97 @@
+.main-content {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+.content {
+    margin-top: 50px;
+}
+
+.tab-content {
+    margin-top: 50px;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.btn {
+    margin-top: 10px;
+}
+
+.field-row {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    padding: 20px;
+}
+
+form {
+    margin-bottom: 10px;
+}
+
+#pass-output,
+#name-output,
+#tel-output,
+#mail-output {
+    padding-top: 5px;
+}
+
+p {
+    margin: 0;
+}
+
+.checked {
+    color: orange;
+}
+
+.reviews .collection {
+    padding-left: 50px;
+}
+
+#orders {
+    /* background-color: rebeccapurple; */
+}
+
+.tab-heading {
+    border-bottom: solid 0.05em;
+    border-color: solid;
+}
+
+.order-row {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #E8E8E8;
+}
+
+#details {
+    margin-top: 50px;
+    display: none;
+    border-bottom: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+#status {
+    margin-top: 50px;
+    display: none;
+    border-bottom: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+#status .col {
+    border-right: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+#details .col {
+    border-right: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+@media only screen and (max-width: 600px) {
+    .reviews .collection {
+        padding-left: 5px;
+    }
+    .reviews .material-icons {
+        margin-right: 0;
+    }
+}

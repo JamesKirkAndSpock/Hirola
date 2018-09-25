@@ -81,6 +81,18 @@ def phone_profile_view(request):
 def phone_view(request):
     return render(request, 'front/phone.html')
 
+def reset_password_view(request):
+    return render(request, 'front/reset_password.html')
+
+def new_password_view(request):
+    return render(request, 'front/new_password.html')
+
+def checkout_view(request):
+    return render(request, 'front/checkout.html')
+
+def dashboard_view(request):
+    return render(request, 'front/dashboard.html')
+
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(None, request.POST)

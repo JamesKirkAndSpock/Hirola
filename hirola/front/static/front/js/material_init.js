@@ -13,8 +13,21 @@ $(document).ready(function () {
         }
 });
 
+// initialize side nav
 $(".button-collapse").sideNav();
 
+// initialize tabs
+$(document).ready(function(){
+    $('.tabs').tabs();
+});
+
+// initialize collapsible
+$(document).ready(function(){
+  $('.collapsible').collapsible();
+});
+
+// trigger dropdown
+// $('.dropdown-trigger').dropdown();
 // Reinitialize the labels on the page for dynamically adding inputs
 $(document).ready(function () {
     M.updateTextFields();
