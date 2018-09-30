@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('IP_ADDRESS')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 ALLOWED_HOSTS = [ "127.0.0.1", os.environ.get('HOST')]
@@ -139,3 +139,10 @@ AUTH_USER_MODEL = 'front.User'
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
 
 TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')

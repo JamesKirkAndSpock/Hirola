@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.http import JsonResponse
 from .models import *
 from django.views import generic
 from django.core.cache import cache
 from .forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.views import (PasswordResetView,
+ PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+)
 
 
 def page_view(request):
@@ -130,3 +134,18 @@ def signup_view(request):
 
 def imei_view(request):
     return render(request, 'front/imei.html')
+
+
+class PasswordResetViewTailored(PasswordResetView):
+
+    success_url = reverse_lazy('password_reset_done', urlconf='front.urls')
+
+class PasswordResetConfirmViewTailored(PasswordResetConfirmView):
+
+    success_url = reverse_lazy('password_reset_complete', urlconf='front.urls')
+    
+    def get_context_data(self, **kwargs):
+        context = super(PasswordResetConfirmViewTailored, self).get_context_data(**kwargs)
+        context['user'] = self.user
+        return context
+ 
