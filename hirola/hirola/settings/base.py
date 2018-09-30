@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('IP_ADDRESS')
 
 
-ALLOWED_HOSTS = [os.environ.get('IP_ADDRESS'), os.environ.get('HOST')]
+ALLOWED_HOSTS = [ "127.0.0.1", os.environ.get('HOST')]
 
 # Application definition
 
