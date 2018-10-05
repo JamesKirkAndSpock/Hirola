@@ -87,6 +87,10 @@ p {
     border-color: #E8E8E8;
 }
 
+.breadcrumbs {
+    margin-bottom: 40px !important;
+}
+
 @media only screen and (max-width: 600px) {
     .reviews .collection {
         padding-left: 5px;

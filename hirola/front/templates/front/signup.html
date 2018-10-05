@@ -11,7 +11,7 @@
         <nav class="this-black">
             <div class="nav-wrapper">
                 <div class="col s12">
-                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="/" class="breadcrumb">teke</a>
                     <a href="#!" class="breadcrumb" id="last-link">signup</a>
                 </div>
             </div>
@@ -57,6 +57,7 @@
                         <div class="input-field col s6">
                             <label for="{{ form.phone_number.id_for_label }}">Phone number</label>
                             {{ form.phone_number }}
+                            <span class="helper-text" data-error="wrong" data-success="right">7** ** ***</span>
                         </div>
                       </div>
                     {% if form.phone_number.errors %}
