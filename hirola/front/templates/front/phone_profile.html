@@ -1,41 +1,34 @@
 {% extends "front/base.html" %} {% block styles %} {{ block.super }} {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_profile.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> {% endblock %} {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/slick.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/slick-theme.css' %}" />
+{% endblock %} {% block content %}
 <div class="main-content">
-    <div class="container navrow">
-        <nav class="black">
+    <div class="container">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
             <div class="nav-wrapper">
                 <div class="col s12">
-                    <a href="#!" class="breadcrumb">teke</a>
-                    <a href="#!" class="breadcrumb">iphones</a>
-                    <a class="breadcrumb">Iphone 6s</a>
+                    <a href="/" class="breadcrumb">teke</a>
+                    <a href="/iPhone" class="breadcrumb">iPhone</a>
+                    <a href="/iPhone 6s" class="breadcrumb" id="last-link">iPhone 6s</a>
                 </div>
             </div>
         </nav>
     </div>
-    <div class="container phone-details">
+    <div class="row phone-details">
         <div class="row">
             <div class="col m5 s12 main-img">
                 <div class="row">
                     <div class="col m1"></div>
                     <div class="col s12 m10 center">
-                        <div class="card z-depth-1">
-                            <div class="card-image">
-                                <img src="{% static 'front/moto-g5.png' %}" height="350" width="200">
-                                <span class="card-title white-text">Iphone 6s</span>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="row">
-                                <div class="col s4">
-                                    <img src="{% static 'front/moto-g5.png' %}" height="100" width="60">
-                                </div>
-                                <div class="col s4">
-                                    <img src="{% static 'front/moto-g5.png' %}" height="100" width="60">
-                                </div>
-                                <div class="col s4">
-                                    <img src="{% static 'front/moto-g5.png' %}" height="100" width="60">
+                        <div class="card z-depth-0">
+                            <div class="card-content">
+                                <div class="profile-img">
+                                    <img src="{% static 'front/category_phones.png' %}" class="responsive-img">
+                                    <img src="{% static 'front/category_iphones.png' %}" class="responsive-img">
                                 </div>
                             </div>
                         </div>
@@ -45,7 +38,7 @@
             </div>
             <div class="col m4 s12 profile">
                 <div class="row">
-                    <p id="intro">Donec rutrum congue leo eget malesuada.</p>
+                    <p id="intro"><b>Apple iPhone 6s 16 GB.</b></p>
                     <div class="stars">
                         <span class="fa fa-star checked"></span>
                         <span class="fa fa-star checked"></span>
@@ -55,22 +48,31 @@
                         <span>3</span>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <select>
+                            <option value="" disabled selected>Choose your color</option>
+                            <option value="1">Grey</option>
+                            <option value="2">Silver</option>
+                            <option value="3">Gold</option>
+                            <option value="3">Rose Gold</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="row features">
                     <p>
                         <b>Key Features</b>
                     </p>
-                    <ul>
-                        <li>Nulla porttitor accumsan tincidunt.</li>
-                        <li>Nulla porttitor accumsan tincidunt.</li>
-                        <li>Nulla porttitor accumsan tincidunt.</li>
-                        <li>Nulla porttitor accumsan tincidunt.</li>
-                        <li>Nulla porttitor accumsan tincidunt.</li>
+                    <ul style="list-style-type:disc"></ul>
+                        <li>4.7-inch Retina HD display.</li>
+                        <li>12-mexapixel iSight camera now includes Live Photos allowing you to capture a still photo, together with what happens
+                            before and after your picture.</li>
+                        <li>5-megapixel FaceTime HD camera.</li>
                     </ul>
-                    <p>Nulla porttitor accumsan tincidunt. Curabitur aliquet quam id dui posuere blandit. Nulla porttitor accumsan
-                        tincidunt. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</p>
                 </div>
             </div>
             <div class="col m3 s12 action">
+                <h5 class="green-text"><b>Ksh. 30,000</b></h5>
                 <p>
                     <i class="medium material-icons inline-icon">local_atm</i>
                     Pay cash on delivery
@@ -86,14 +88,19 @@
                 <form class="col s12" action="#">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="qty" type="number" value="1">
+                            <select>
+                                <option value="" disabled selected>Quantity</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
                         </div>
+
                     </div>
                     <div class="row">
-                        <p>Total Ksh. 30 000 (Shipping included)</p>
-                    </div>
-                    <div class="row">
-                        <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Add to cart
+                        <button class="btn waves-effect waves-light green" type="submit" name="action">Add to cart
                             <i class="material-icons left">add_shopping_cart</i>
                         </button>
                     </div>
@@ -101,11 +108,13 @@
             </div>
         </div>
     </div>
-    <div class="container more-details">
+    <div class="row more-details">
         <div class="row">
-            <p>
-                <b>Product Info</b>
-            </p>
+                <p>
+                    <b>Product Information</b>
+                </p>
+        </div>
+        <div class="row">
             <div class="col m6 s12 details-container">
                 <div class="row detail">
                     <div class="col s6" id="title">Network</div>
@@ -127,16 +136,16 @@
             <div class="col m1"></div>
             <div class="col m5 warranty">
                 <div class="row">
-                    <h4>Warranty and Support</h4>
-                    <h5>Product Warranty: 7 day free return</h5>
+                    <p><b><u>Warranty and Support</u></b></p>
+                    <p>Product Warranty: 7 day free return</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container reviews">
-        <ul class="collection">
-            <li class="collection-header">
-                <h4>Customer Reviews</h4>
+    <div class="row reviews">
+        <ul class="collection with-header">
+            <li class="collection-item avatar review-head">
+                <h5 class="left">Customer Reviews</h5>
             </li>
             <li class="collection-item avatar">
                 <img src="{% static 'front/moto-g5.png' %}" alt="User 1" class="circle">
@@ -146,7 +155,10 @@
                 <i class="material-icons left checked">grade</i>
                 <i class="material-icons left">grade</i>
                 <br><br>
-                <p>Wasee dundeni teke maze, ngai woi! </p>
+                <p>
+                    22-08-2017<br>
+                    Wasee dundeni teke maze, ngai woi! </p>
+                <br
             </li>
             <li class="collection-item avatar">
                 <img src="{% static 'front/moto-g5.png' %}" alt="User 1" class="circle">
@@ -157,7 +169,9 @@
                 <i class="material-icons left checked">grade</i>
                 <br>
                 <br>
-                <p>Wasee dundeni teke maze, ngai woi! </p>
+                <p>
+                    22-08-2017<br>
+                    Wasee dundeni teke maze, ngai woi! </p>
             </li>
             <li class="collection-item avatar">
                 <img src="{% static 'front/moto-g5.png' %}" alt="User 1" class="circle">
@@ -168,8 +182,20 @@
                 <i class="material-icons left">grade</i>
                 <br>
                 <br>
-                <p>Hao jamaa ni wakora! </p>
+                <p>
+                    22-08-2017<br>
+                    Hao jamaa ni wakora! </p>
             </li>
+            </ul>
+    </div>
     </div>
 </div>
-{% block footer %} {% include 'front/footer.html' %} {% endblock %} {% endblock %}
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %}
+{{ block.super }}
+{% load static %}
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="{% static 'front/js/slick.min.js' %}"></script>
+<script src="{% static 'front/js/profile_slick.js' %}"></script>
+{% endblock %}
+{% endblock %}
