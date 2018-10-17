@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 from .models import *
-from .forms import *
+from .forms.model_forms import *
+from .forms.user_forms import *
 
 
 class LandingPageImageAdmin(admin.ModelAdmin):
@@ -51,3 +52,6 @@ admin.site.register(Currency)
 admin.site.register(SocialMedia)
 admin.site.register(User, UserAdmin)
 admin.site.register(AreaCode)
+admin.site.register(OrderStatus)
+admin.site.register(Orders)
+admin.site.register(Reviews)
