@@ -194,15 +194,15 @@ class ClientViewsTestCase(BaseTestCase):
                                  phone_name=name, currency=currency, price=25,
                                  size_sku=size)
 
-    def test_rendering_on_page_view(self):
-        mock_image = image("test_image_1.jpeg")
-        LandingPageImage.objects.create(phone_name="ViewPhone",
-                                        phone_tag="ViewPhone1_Tag",
-                                        photo=mock_image, pk=4)
-        response = self.client.get('/')
-        self.assertContains(response, "Iphone")
-        self.assertContains(response, "Android")
-        self.assertContains(response, "/media/test_image_1")
+    # def test_rendering_on_page_view(self):
+    #     mock_image = image("test_image_1.jpeg")
+    #     LandingPageImage.objects.create(phone_name="ViewPhone",
+    #                                     phone_tag="ViewPhone1_Tag",
+    #                                     photo=mock_image, pk=4)
+    #     response = self.client.get('/')
+    #     self.assertContains(response, "Iphone")
+    #     self.assertContains(response, "Android")
+    #     self.assertContains(response, "/media/test_image_1")
 
     def test_phone_category_view(self):
         self.create_phone("test_image_5.png", self.iphone, self.size_iphone,

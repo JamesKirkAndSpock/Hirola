@@ -175,6 +175,5 @@ class UserLoginTestCase(BaseTestCase):
                      "password": "*&#@&!*($)lp"}
         response = self.client.post('/login', user_data)
         self.assertEqual(response.status_code, 200)
-        print(response.content)
         error_message = AuthenticationForm().error_messages["invalid_login"]
         self.assertContains(response, error_message)

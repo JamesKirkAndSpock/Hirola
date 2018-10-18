@@ -27,7 +27,11 @@
                     <div class="nav-wrapper">
                         <div class="row">
                             <div class="col m1">
-                                <a href="/" class="brand-logo">teke</a>
+                                <!-- if not logged in, link below -->
+                                <!-- <a href="/" class="brand-logo">teke</a> -->
+                                <!-- if logged in this link -->
+                                <!-- <a href="#user"><img class="circle" src="{% static 'front/lg-g6.png' %}"></a> -->
+                                <a href="/dashboard"><span class="white-text email">dancrispeet@gmail.com</span></a>
                                 <a href="#" data-activates="nav-mobile" class="button-collapse">
                                     <i class="material-icons">menu</i>
                                 </a>
@@ -36,18 +40,18 @@
                                 <ul class=" hide-on-med-and-down">
                                     {% for category in categories %}
                                     <div class="col m2">
-                                        <li>
+                                        <li class="right">
                                             <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
                                         </li>
                                     </div>
                                     {% endfor %}
                                     <div class="col m2">
-                                        <li>
+                                        <li class="right">
                                             <a href="/about">About</a>
                                         </li>
                                     </div>
                                     <div class="col m2 help">
-                                        <li>
+                                        <li class="right">
                                             <a href="#">Need help?</a>
                                         </li>
                                     </div>
@@ -78,7 +82,7 @@
                     <a href="/about">About</a>
                 </li>
                 <li>
-                    <a href="#">Enquiry</a>
+                    <a href="#">Need help?</a>
                 </li>
 
                 <li>

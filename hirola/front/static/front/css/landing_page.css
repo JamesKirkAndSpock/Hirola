@@ -1,11 +1,95 @@
-html,
-body {
-    height: 100%;
+.main-content {
+    margin-top: 50px;
+    flex: 1 0 auto;
+}
+
+.main-head {
+    margin-bottom: 20px !important;
+}
+
+h5 {
+    font-weight: bold;
+}
+
+.center-content {
+    margin-top: 50px;
+    border-bottom: solid 0.05em;
+    border-bottom-color: #E8E8E8;
+    border-top: solid 0.05em;
+    border-top-color: #E8E8E8;
+}
+
+.material-icons {
+    display: inline-flex;
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+.hot-deals {
+    margin-top: 50px !important;
+}
+
+.card {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+.land-imgs .card {
+    border: none;
+    /* width: 60% !important; */
+    /* height: 60% !important; */
+}
+
+.card:hover {
+    box-shadow: 0px 0px 4px 2px #E8E8E8;
+}
+
+.card-content img {
+    padding-bottom: 20px;
+}
+
+.card-content {
+    padding-bottom: 0 !important;
+}
+
+.card-action {
+    margin-bottom: 0 !important;
+    border-top: none !important;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+}
+
+.card-action a {
+    margin: 0 !important;
+    text-transform: capitalize !important;
+    color: black !important;
+    font-style: bold !important;
+}
+
+.land-imgs a {
+    font-size: 1.4em;
+}
+
+.card-title-text {
+    font-size: 125%;
+}
+
+.deals-row {
+    padding: 5px !important;
 }
 
 .carousel {
     height: auto;
     height: 93.3vh;
+}
+
+#money {
+    text-transform: capitalize;
+    font-size: 120%;
 }
 
 .content {
@@ -23,14 +107,22 @@ body {
 .item-text {
     margin-top: 300px;
 }
-
+.hot-deals .heading {
+    padding-left: 20px !important;
+}
 @media only screen and (max-width: 767px) {
     .carousel {
         height: 91vh;
     }
-}
-
-.row {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+    .center-content {
+        font-size: 75%;
+    }
+    .material-icons {
+        margin-right: 2px;
+        font-size: 14px;
+        /* margin-block-start: 0 !important; */
+    }
+    .center-content .s4 {
+        padding: 0!important;
+    }
 }
