@@ -1,6 +1,7 @@
 from front.base_test import *
 from front.errors import *
 from front.forms.user_forms import AuthenticationForm
+from django.conf import settings
 
 
 class UserSignupTestCase(BaseTestCase):
@@ -177,3 +178,22 @@ class UserLoginTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         error_message = AuthenticationForm().error_messages["invalid_login"]
         self.assertContains(response, error_message)
+
+    def test_user_remebered(self):
+        '''
+        Test that when a user chooses to be remembered that:
+            - His session is equal to the settings variable
+            SESSION_COOKIE_AGE_REMEMBER
+        '''
+        user_data = {"email": "urieltimanko@example.cm",
+                     "password": "*&#@&!*($)lp",
+                     "remember-user": "on"
+                     }
+        self.client.post('/login', user_data)
+        self.assertEqual (self.client.session.get_expiry_age(), settings.SESSION_COOKIE_AGE_REMEMBER)
+        self.client.logout()
+        user_data_2 = {"email": "urieltimanko@example.cm",
+                     "password": "*&#@&!*($)lp"
+                     }
+        self.client.post('/login', user_data_2)
+        self.assertEqual (self.client.session.get_expiry_age(), settings.SESSION_COOKIE_AGE)
