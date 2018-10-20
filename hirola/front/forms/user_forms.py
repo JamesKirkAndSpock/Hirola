@@ -1,53 +1,14 @@
-'''
-Forms
-'''
-from django import forms
-from django.core.files.images import get_image_dimensions
-from django.core.exceptions import ValidationError
-from django.conf import settings
+from front.forms.base_form import *
 from django.contrib.auth import authenticate
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
-from .models import PhoneCategoryList
-from .errors import *
-from .models import User
-
-
-class LandingPageImageForm(forms.ModelForm):
-
-    def clean_photo(self):
-        data = self.cleaned_data['photo']
-        width, height = get_image_dimensions(data)
-
-        if width < 1280 and height < 700:
-            raise ValidationError(landing_page_error.format(width, height))
-        return data
-
-
-class PhoneCategoryListForm(forms.ModelForm):
-
-    def clean(self):
-        data = self.cleaned_data
-        category = self.cleaned_data["phone_category"]
-        if PhoneCategoryList.objects.count() >= 4 and self.instance.pk is None:
-            raise ValidationError(phone_category_error)
-        if PhoneCategoryList.objects.filter(phone_category=category):
-            error_message = phone_category_error_2.format(category)
-            raise ValidationError(error_message)
-        return data
-
-
-class PhoneListForm(forms.ModelForm):
-
-    def clean_phone_image(self):
-        data = self.cleaned_data['phone_image']
-        width, height = get_image_dimensions(data)
-        if height > 150 or height < 150 or width > 81 or width < 70:
-            raise ValidationError(phone_list_error.format(width, height))
-        return data
+from front.models import AreaCode
+from front.twilio import TwilioValidation
+from front.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 class UserCreationForm(forms.ModelForm):
@@ -91,25 +52,7 @@ class UserCreationForm(forms.ModelForm):
     def clean_phone_number(self):
         area_code = self.cleaned_data.get("area_code")
         phone_number = self.cleaned_data.get("phone_number")
-        if area_code and phone_number:
-            phone_check = str(area_code.area_code) + str(phone_number)
-            account_sid = settings.TWILIO_ACCOUNT_SID
-            auth_token = settings.TWILIO_AUTH_TOKEN
-            client = Client(account_sid, auth_token)
-            try:
-                client.lookups.phone_numbers("+" + phone_check).fetch()
-                return phone_number
-            except TwilioRestException as etwilio:
-                if etwilio.code == 20404:
-                    raise forms.ValidationError(
-                        self.error_messages['invalid_number'],
-                        code='invalid_number',
-                    )
-                else:
-                    raise forms.ValidationError(
-                        self.error_messages['unknown error'],
-                        code='unknown error',
-                    )
+        return TwilioValidation().phone_validation(area_code, phone_number)
 
     def _post_clean(self):
         super()._post_clean()
@@ -153,6 +96,95 @@ class UserChangeForm(forms.ModelForm):
 
     def clean_password(self):
         return self.initial["password"]
+
+
+class UserForm(forms.ModelForm):
+    password = ReadOnlyPasswordHashField(
+        label=_("Password"),
+        help_text=_(
+            "Raw passwords are not stored, so there is no way to see this "
+            "user's password, but you can change the passowrd using "
+            "<a href=\"{}\">this form</a>."
+        )
+    )
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'area_code', 'phone_number', 'password')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        """
+        Save this form's self.instance object if commit=True. Otherwise, add
+        a save_m2m() method to the form which can be called after the instance
+        is saved manually at a later time. Return the model instance.
+        """
+        self.instance = self.fill_fields()
+        if self.errors:
+            raise ValueError(
+                "The %s could not be %s because the data didn't validate." % (
+                    self.instance._meta.object_name,
+                    'created' if self.instance._state.adding else 'changed',
+                )
+            )
+        if commit:
+            # If committing, save the instance and the m2m data immediately.
+            self.instance.save()
+            self._save_m2m()
+        else:
+            # If not committing, add a method to the form to allow deferred
+            # saving of m2m data.
+            self.save_m2m = self._save_m2m
+        return self.instance
+
+    def fill_fields(self):
+        initial_fields = self.fields.keys() - self.data.keys()
+        for field in initial_fields:
+            if field == "area_code":
+                setattr(self.instance, field,
+                        AreaCode.objects.get(pk=self.initial[field]))
+            else:
+                setattr(self.instance, field, self.initial[field])
+        return self.instance
+
+    def clean_phone_number(self):
+        area_code = AreaCode.objects.get(pk=self.initial["area_code"])
+        phone_number = self.initial["phone_number"]
+        return TwilioValidation().phone_validation(area_code, phone_number)
+
+
+class OldPasswordForm(forms.Form):
+    """
+    A form that lets a user change their password by entering their old
+    password.
+    """
+    error_messages = {
+        'password_incorrect': _("Your old password was entered incorrectly. Please enter it again."),
+    }
+    old_password = forms.CharField(
+        label=_("Old password"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autofocus': True}),
+    )
+
+    field_order = ['old_password']
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_old_password(self):
+        """
+        Validate that the old_password field is correct.
+        """
+        old_password = self.cleaned_data["old_password"]
+        if not self.user.check_password(old_password):
+            raise forms.ValidationError(
+                self.error_messages['password_incorrect'],
+                code='password_incorrect',
+            )
+        return old_password
 
 
 class AuthenticationForm(forms.Form):

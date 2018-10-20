@@ -60,6 +60,9 @@ class BaseTestCase(TestCase):
         form = landing_page_form(mock_image, 2, ["red", "white"])
         self.elena.post(add_url, form)
 
+    def tearDown(self):
+        cache.clear()
+
 
 def landing_page_form(image, num, color):
     if isinstance(num, int):

@@ -9,10 +9,10 @@ urlpatterns = [
     path('phone_category/<int:category_id>/', views.phone_category_view,
          name='phone_category'),
     path('profile', views.phone_profile_view, name='profile'),
-    path('phone', views.phone_view, name='phone'),
     path('phone_category/<int:category_id>/<int:size>/',
          views.phone_category_size_view, name='phone_category_size'),
     path('sizes', views.sizes, name='sizes'),
+    path('area_codes', views.area_codes, name='area_codes'),
     path('about', views.about_view, name='about'),
     path('signup', views.signup_view, name='signup'),
     path('login', views.login_view, name='login'),
@@ -28,4 +28,6 @@ urlpatterns = [
         name='password_reset_confirm'),
     path('reset_password/done/', views.PasswordResetCompleteView.as_view(),
          name='password_reset_complete'),
+    path('change_password', views.change_password_view, name='password_change'),
+    path('old_password', views.old_password_view, name='password_change_old'),
 ]

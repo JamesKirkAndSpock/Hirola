@@ -1,5 +1,6 @@
 from front.base_test import *
 from front.errors import *
+from .test_users import UserSignupTestCase
 
 
 class LandingPageImagesViewsTestCase(BaseTestCase):
@@ -124,6 +125,20 @@ class PhoneCategoryListViewsTestCase(BaseTestCase):
         self.assertContains(response, "Phone Categories")
         self.assertContains(response, "Phones")
         self.assertContains(response, "Currencies")
+
+    def test_social_media_on_view(self):
+        '''
+        Test that Social Media Links can be seen on the Phone categories view.
+        '''
+        add_url = "/admin/front/socialmedia/add/"
+        data = {"url_link": "https://facebook.com", "icon": "fa fa-facebook",
+                "name": "Facebook"}
+        self.elena.post(add_url, data)
+        response = self.client.get('/phone_category/{}/'.format(self.iphone.id))
+        facebook_url = "<a href=\"https://facebook.com\" target=\"_blank\">"
+        facebook_data_icon_name = "<i class=\"fa fa-facebook\"></i> Facebook</a>"
+        self.assertContains(response, facebook_url)
+        self.assertContains(response, facebook_data_icon_name)
 
 
 class PhoneListViewsTestCase(BaseTestCase):
@@ -319,3 +334,179 @@ class FooterViewTestCase(BaseTestCase):
         response = self.elena.get("/admin/front/socialmedia/")
         self.assertContains(response, "Example")
         
+
+class UserDashboardTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(UserDashboardTestCase, self).setUp()
+        user_data = UserSignupTestCase().generate_user_data({})
+        response = self.client.post('/signup', user_data)
+        self.assertRedirects(response, "/", 302)
+        self.uriel = Client()
+        user = User.objects.get(email="urieltimanko@example.com")
+        self.uriel.force_login(user)
+
+    def test_user_data_on_dashboard(self):
+        '''
+        Test that when a logged in user accesses the /dashboard page that:
+            - The page contains all the Phone Categories of the site
+            - The page contains Social media links
+            - The user is able to see his or her Firstname, LastName, Phone
+            number, Area Code, Country 
+        '''
+        response = self.uriel.get('/dashboard')
+        self.assertContains(response, "Iphone")
+        self.assertContains(response, "Android")
+        self.assertContains(response, "Tablet")
+        self.assertContains(response, "Uriel")
+        self.assertContains(response, "Timanko")
+        self.assertContains(response, 722000000)
+        self.assertContains(response, 254)
+        self.assertContains(response, "Kenya")
+
+    def test_review_data_on_dashboard(self):
+        '''
+        Test that when a logged in user accesses the dashboard that:
+            - The user is able to view his or her reviews on an item he or she 
+            bought.
+        '''
+        (owner, order) = self.generate_review_data()
+        data = {"stars": 5, "comments": "Great job guys", "owner": owner.id,
+        "orders": order.id }
+        response = self.elena.post('/admin/front/reviews/add/', data)
+        self.assertEqual(response.status_code, 302)
+        get_response = self.uriel.get('/dashboard')
+        self.assertContains(get_response, "Great job guys",)
+
+    def test_stars_counter(self):
+        '''
+        Test that when a user visits the dashboard view to view ratings:
+            - That the stars are rendered properly in terms of checked and
+            unchecked stars
+        '''
+        (owner, order) = self.generate_review_data()
+        data = []
+        for i in range(5):
+            data.append({"stars": i+1, "comments": "Great job guys", "owner": owner.id,
+            "orders": order.id })
+        checked_star = (
+            "<i class=\"material-icons left checked\">grade</i>\n             "
+            "               \n                            "
+        )
+        unchecked_star = (
+            "<i class=\"material-icons left\">grade</i>\n      "
+            "                      \n                            "
+        )
+        checked_counter = 1
+        unchecked_counter = 4
+        for i in range(5):
+            self.elena.post('/admin/front/reviews/add/', data[i])
+            response = self.uriel.get('/dashboard')
+            self.assertContains(response, checked_star*(i+1))
+            self.assertContains(response, unchecked_star*(4-i))
+            Reviews.objects.get(stars=i+1).delete()
+
+    def test_name_edition(self):
+        '''
+        Test that when a logged in user edits his first and last name by
+        entering the data correctly that:
+            - The user remains on the dashboard page.
+            - The first name is changed properly
+            - The last name is changed properly
+        '''
+        first_name_data = {"first_name": "Britney"}
+        response = self.uriel.post('/dashboard', first_name_data)
+        self.assertEqual(response.status_code, 200)
+        get_response = self.uriel.get('/dashboard')
+        self.assertContains(get_response, "Britney")
+        last_name_data = {"last_name": "Delila"}
+        response = self.uriel.post('/dashboard', last_name_data)
+        self.assertEqual(response.status_code, 200)
+        get_response = self.uriel.get('/dashboard')
+        self.assertContains(get_response, "Delila")
+
+    def test_contact_edition(self):
+        '''
+        Test that when a logged in user edits his area code and phone number
+        by entering the data correctly that:
+            - The user remains on the dashboard page.
+            - The area code is changed properly
+            - The last name is changed properly
+        '''
+        AreaCode.objects.create(area_code=256, country="Uganda")
+        area_code = AreaCode.objects.filter(area_code=256).first()
+        area_code_data = {"area_code": area_code.id}
+        response = self.uriel.post('/dashboard', area_code_data)
+        self.assertEqual(response.status_code, 200)
+        get_response = self.uriel.get('/dashboard')
+        self.assertContains(get_response, str(area_code))
+        phone_data = {"phone_number": 220000}
+        response = self.uriel.post('/dashboard', phone_data)
+        self.assertEqual(response.status_code, 200)
+        get_response = self.uriel.get('/dashboard')
+        self.assertContains(get_response, 220000)
+
+    def test_old_password_validation(self):
+        '''
+        Test that when a user enters the wrong old password:
+            - The user remains on the same page and is not redirected.
+            - The user is prompted with an error message
+        Test that when a user enters the correct old password:
+            - The user is redirected to a page to edit the password
+        '''
+        response = self.uriel.post('/old_password', {"old_password": "wrong_password"})
+        self.assertEqual(response.status_code, 200)
+        error_message = "Your old password was entered incorrectly. Please enter it again."
+        self.assertContains(response, error_message)
+        response_1 = self.uriel.post('/old_password', {"old_password": "*&#@&!*($)lp"})
+        self.assertRedirects(response_1, "/change_password", 302)
+
+    def test_view_login_required(self):
+        '''
+        Test that if a user has not been logged in that:
+            - He cannot access the dashboard view.
+            - He cannot access the old password view.
+            - He cannot access the change password view.
+            - He is redirected to the login view
+        '''
+        old_password_view = self.client.get("/old_password")
+        self.assertRedirects(old_password_view, "/login?next=/old_password", 302)
+        dashboard_view = self.client.get('/dashboard')
+        self.assertRedirects(dashboard_view, "/login?next=/dashboard", 302)
+        change_password_view = self.client.get('/change_password')
+        self.assertRedirects(change_password_view, "/login?next=/change_password", 302)
+
+    def test_change_password_old_password_validation(self):
+        '''
+        Test that when a logged in user manually goes to the change_password
+        view that:
+            - He cannot access the view
+            - He is redirected to the old_password view inorder to insert his
+            old password.
+        '''
+        change_password_view = self.uriel.get('/change_password')
+        self.assertRedirects(change_password_view, "/old_password", 302)
+
+    def test_change_password(self):
+        '''
+        Test that when a user is changing a password that:
+            - He is redirected to the login page
+        '''
+        self.uriel.post('/old_password', {"old_password": "*&#@&!*($)lp"})
+        response = self.uriel.post('/change_password',
+            {"new_password1": "!@£$!@£$!@£$£!@$!@£$!@3",
+             "new_password2": "!@£$!@£$!@£$£!@$!@£$!@3"})
+        self.assertRedirects(response, "/login", 302)
+
+    def generate_review_data(self):
+        owner = User.objects.get(email="urieltimanko@example.com")
+        PhoneList.objects.create(category=self.iphone,
+            phone_image=image('test_image_5.png'),
+            phone_name="Samsung", currency=self.currency_v,
+            price=25000)
+        OrderStatus.objects.create(status="Pending")
+        phone = PhoneList.objects.get(phone_name="Samsung")
+        status = OrderStatus.objects.get(status="Pending")
+        Orders.objects.create(owner=owner, date="2018-10-13", phone=phone , status=status)
+        order = Orders.objects.get(owner=owner)
+        return (owner, order)

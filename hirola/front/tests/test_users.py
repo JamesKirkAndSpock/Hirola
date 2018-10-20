@@ -1,6 +1,6 @@
 from front.base_test import *
 from front.errors import *
-from front.forms import AuthenticationForm
+from front.forms.user_forms import AuthenticationForm
 
 
 class UserSignupTestCase(BaseTestCase):

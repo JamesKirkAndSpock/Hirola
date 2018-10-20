@@ -18,3 +18,5 @@ test_image_4_*
 test_image_5_*
 migrations
 Makefile
+# User Data
+hirola/front/fixtures/data.json

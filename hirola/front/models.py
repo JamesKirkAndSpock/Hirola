@@ -76,6 +76,14 @@ class User(AbstractBaseUser, PermissionsMixin):
             'Unselect this instead of deleting accounts.'
         ),
     )
+    is_change_allowed = models.BooleanField(
+        _('change_allowed'),
+        default=False,
+        help_text=_(
+            'Designates whether this user has been authorized to change his own'
+            'password, in the change_password view.'
+        ),
+    )
     area_code = models.ForeignKey(AreaCode,
                                   on_delete=models.SET_NULL, null=True,
                                   blank=True)
@@ -176,6 +184,9 @@ class PhoneList(models.Model):
     size_sku = models.ForeignKey(PhoneMemorySize, on_delete=models.SET_NULL,
                                  null=True, blank=True)
 
+    def __str__(self):
+        return self.phone_name
+
     def save(self, *args, **kwargs):
         if self.pk and self.category is None:
             delete_cache(PhoneList, self.pk, 'phones_{}')
@@ -199,6 +210,56 @@ class SocialMedia(models.Model):
     def save(self, *args, **kwargs):
         cache.delete('social_media')
         super(SocialMedia, self).save(*args, **kwargs)
+
+
+class OrderStatus(models.Model):
+    status = models.CharField(max_length=20, blank=False, default=None)
+
+    class Meta:
+        verbose_name_plural = "Order Status'"
+
+    def __str__(self):
+        return self.status
+
+
+class Orders(models.Model):
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
+    status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Orders"
+
+    def __str__(self):
+        return str(self.phone)
+
+
+class IntegerRangeField(models.IntegerField):
+
+    def __init__(self, min_value=None, max_value=None, **kwargs):
+        self.min_value, self.max_value = min_value, max_value
+        models.IntegerField.__init__(self, **kwargs)
+
+    def formfield(self, **kwargs):
+        defaults = {'min_value': self.min_value, 'max_value':self.max_value}
+        defaults.update(kwargs)
+        return super(IntegerRangeField, self).formfield(**defaults)
+
+
+class Reviews(models.Model):
+    stars = IntegerRangeField(min_value=1, max_value=5)
+    comments = models.TextField()
+    orders = models.ForeignKey(Orders, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name_plural = "Reviews"
+
+    def __str__(self):
+        return str(self.owner) + ": " + str(self.stars) + " stars: " + self.comments
+
 
 
 def delete_cache(model_class, object_id, cache_name):
