@@ -15,13 +15,10 @@ from .decorators import old_password_required, remember_user
 
 
 def page_view(request):
-    images = cache.get('landing_page_images') or set_cache(
-        LandingPageImage.objects.all(),
-        'landing_page_images')
-    phone_categories = cache.get('phone_categories') or set_cache(
-        PhoneCategoryList.objects.all(),
-        'phone_categories')
-    context = {'images': images, 'categories': phone_categories}
+    (phone_categories, social_media) = various_caches()
+    hot_deals = cache.get('hot_deals') or set_cache(
+        HotDeal.objects.all(), 'hot_deals')
+    context = {'categories': phone_categories, 'social_media': social_media, 'hot_deals': hot_deals}
     return render(request, 'front/landing_page.html', context)
 
 
@@ -41,7 +38,7 @@ def phone_category_size_view(request, category_id, size):
 
 def shared_phone_view(request, phones, category_id, message=""):
     category_pk = cache.get('category_{}'.format(category_id)) or set_cache(
-        PhoneCategoryList.objects.get(pk=category_id),
+        PhoneCategory.objects.get(pk=category_id),
         'category_{}'.format(category_id))
     (phone_categories, social_media) = various_caches()
     sizes = cache.get('sizes_{}'.format(category_id)) or set_cache(
@@ -123,7 +120,7 @@ def dashboard_view(request):
                    "social_media": social_media}
         return render(request, 'front/dashboard.html', context=context)
     context = {"form": UserForm(instance=request.user),
-               "reviews": Reviews.objects.filter(owner=request.user),
+               "reviews": Review.objects.filter(owner=request.user),
                'categories': phone_categories, "social_media": social_media}
     return render(request, 'front/dashboard.html', context=context)
 
@@ -182,7 +179,7 @@ class PasswordResetViewTailored(PasswordResetView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = cache.get('phone_categories') or set_cache(
-            PhoneCategoryList.objects.all(),
+            PhoneCategory.objects.all(),
             'phone_categories')
         context['social_media'] = cache.get('social_media') or set_cache(
             SocialMedia.objects.all(), 'social_media')
@@ -238,7 +235,7 @@ def old_password_view(request):
 
 def various_caches():
     phone_categories = cache.get('phone_categories') or set_cache(
-        PhoneCategoryList.objects.all(),
+        PhoneCategory.objects.all(),
         'phone_categories')
     social_media = cache.get('social_media') or set_cache(
         SocialMedia.objects.all(), 'social_media')

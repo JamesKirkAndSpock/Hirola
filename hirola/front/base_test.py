@@ -15,6 +15,7 @@ class BaseTestCase(TestCase):
         self.create_phone_sizes()
         self.create_currency()
         self.create_landing_page_image()
+        self.create_phones()
 
     def create_admin(self):
         # Elena is an admin who has admin privilidges
@@ -29,10 +30,10 @@ class BaseTestCase(TestCase):
         # Create Phone Categories
         phone_list = ["Iphone", "Android", "Tablet"]
         for item in phone_list:
-            PhoneCategoryList.objects.create(phone_category=item)
-        self.iphone = PhoneCategoryList.objects.get(phone_category="Iphone")
-        self.android = PhoneCategoryList.objects.get(phone_category="Android")
-        self.tablet = PhoneCategoryList.objects.get(phone_category="Tablet")
+            PhoneCategory.objects.create(phone_category=item)
+        self.iphone = PhoneCategory.objects.get(phone_category="Iphone")
+        self.android = PhoneCategory.objects.get(phone_category="Android")
+        self.tablet = PhoneCategory.objects.get(phone_category="Tablet")
 
     def create_phone_sizes(self):
         # Create Phone Memory Sizes
@@ -59,6 +60,16 @@ class BaseTestCase(TestCase):
         mock_image = image('test_image_2.jpeg')
         form = landing_page_form(mock_image, 2, ["red", "white"])
         self.elena.post(add_url, form)
+
+    def create_phones(self):
+        ItemIcon.objects.create(item_icon="iphone_icon")
+        icon = ItemIcon.objects.get(item_icon="iphone_icon")
+        PhoneList.objects.create(category=self.iphone, currency=self.currency_v,
+                                 price=300000, phone_name="Iphone 6", icon=icon)
+        self.iphone_6 = PhoneList.objects.get(phone_name="Iphone 6")
+        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+                                 price=250000, phone_name="Samsung J7")
+        self.samsung_j_7 = PhoneList.objects.get(phone_name="Samsung J7")
 
     def tearDown(self):
         cache.clear()

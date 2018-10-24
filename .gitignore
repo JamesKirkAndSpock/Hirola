@@ -16,6 +16,7 @@ test_image_2_*
 test_image_3_*
 test_image_4_*
 test_image_5_*
+test_image_6_*
 migrations
 Makefile
 # User Data

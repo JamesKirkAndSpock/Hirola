@@ -102,34 +102,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-class LandingPageImage(models.Model):
-    CAROUSEL_COLORS = (
-        ('red', 'red'),
-        ('amber', 'amber'),
-        ('green', 'green'),
-    )
-    TEXT_COLORS = (
-        ('white', 'white'),
-        ('black', 'black'),
-    )
-    photo = models.ImageField()
-    carousel_color = models.CharField(default='red', max_length=10,
-                                      choices=CAROUSEL_COLORS)
-    phone_name = models.CharField(max_length=20, default='', blank=True)
-    phone_tag = models.CharField(max_length=30, default='', blank=True)
-    text_color = models.CharField(default='white', max_length=10,
-                                  choices=TEXT_COLORS)
-
-    def save(self, *args, **kwargs):
-        cache.delete('landing_page_images')
-        super(LandingPageImage, self).save(*args, **kwargs)
-
-
-class PhoneCategoryList(models.Model):
+class PhoneCategory(models.Model):
     class Meta:
         verbose_name_plural = "Phone Categories"
     phone_category = models.CharField(default=None, max_length=15, blank=False,
                                       unique=True)
+    category_image = models.ImageField(blank=True, null=True, upload_to="phone_categories")
 
     def __str__(self):
         return self.phone_category
@@ -138,13 +116,13 @@ class PhoneCategoryList(models.Model):
         cache.delete('phone_categories')
         if self.pk:
             cache.delete('category_{}'.format(self.pk))
-        super(PhoneCategoryList, self).save(*args, **kwargs)
+        super(PhoneCategory, self).save(*args, **kwargs)
 
 
 class PhoneMemorySize(models.Model):
     abbreviation = models.CharField(max_length=10)
     size_number = models.IntegerField(blank=True, null=True)
-    category = models.ForeignKey(PhoneCategoryList,
+    category = models.ForeignKey(PhoneCategory,
                                  on_delete=models.SET_NULL, null=True,
                                  blank=True)
 
@@ -171,18 +149,26 @@ class Currency(models.Model):
         return str(self.currency_abbreviation)
 
 
+class ItemIcon(models.Model):
+    item_icon = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.item_icon
+
+
 class PhoneList(models.Model):
     class Meta:
         verbose_name_plural = "Phones"
-    category = models.ForeignKey(PhoneCategoryList, on_delete=models.SET_NULL,
+    category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL,
                                  null=True, blank=True)
-    phone_image = models.ImageField()
+    phone_image = models.ImageField(upload_to="phones")
     phone_name = models.CharField(max_length=20, blank=False, default=None)
     currency = models.ForeignKey(Currency, on_delete=models.SET_NULL,
                                  null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=0)
     size_sku = models.ForeignKey(PhoneMemorySize, on_delete=models.SET_NULL,
                                  null=True, blank=True)
+    icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.phone_name
@@ -222,15 +208,12 @@ class OrderStatus(models.Model):
         return self.status
 
 
-class Orders(models.Model):
+class Order(models.Model):
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name_plural = "Orders"
 
     def __str__(self):
         return str(self.phone)
@@ -248,18 +231,25 @@ class IntegerRangeField(models.IntegerField):
         return super(IntegerRangeField, self).formfield(**defaults)
 
 
-class Reviews(models.Model):
+class Review(models.Model):
     stars = IntegerRangeField(min_value=1, max_value=5)
     comments = models.TextField()
-    orders = models.ForeignKey(Orders, on_delete=models.CASCADE)
+    orders = models.ForeignKey(Order, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name_plural = "Reviews"
 
     def __str__(self):
         return str(self.owner) + ": " + str(self.stars) + " stars: " + self.comments
 
+
+class HotDeal(models.Model):
+    item = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.item.phone_name
+
+    def save(self, *args, **kwargs):
+        cache.delete('hot_deals')
+        super(HotDeal, self).save(*args, **kwargs)
 
 
 def delete_cache(model_class, object_id, cache_name):
@@ -268,12 +258,7 @@ def delete_cache(model_class, object_id, cache_name):
         cache.delete(cache_name.format(model_object.category.id))
 
 
-@receiver(pre_delete, sender=LandingPageImage)
-def clear_landing_page_cache(sender, **kwargs):
-    cache.delete('landing_page_images')
-
-
-@receiver(pre_delete, sender=PhoneCategoryList)
+@receiver(pre_delete, sender=PhoneCategory)
 def clear_phone_categories_cache(sender, **kwargs):
     cache.delete('phone_categories')
     cache.delete("category_{}".format(kwargs["instance"].id))
@@ -294,6 +279,11 @@ def clear_phone_mem_size_cache(sender, **kwargs):
 @receiver(pre_delete, sender=SocialMedia)
 def clear_social_media_cache(sender, **kwargs):
     cache.delete('social_media')
+
+
+@receiver(pre_delete, sender=HotDeal)
+def clear_hot_deals_cache(sender, **kwargs):
+    cache.delete('hot_deals')
 
 
 def cache_delete(cache_name, cache_id):
