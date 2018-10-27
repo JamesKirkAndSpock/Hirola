@@ -14,7 +14,7 @@ $(document).ready(function () {
 });
 
 // initialize side nav
-$(".button-collapse").sideNav();
+// $(".button-collapse").sideNav();
 
 // initialize tabs
 $(document).ready(function(){
@@ -27,7 +27,6 @@ $(document).ready(function(){
 });
 
 // trigger dropdown
-// $('.dropdown-trigger').dropdown();
 // Reinitialize the labels on the page for dynamically adding inputs
 $(document).ready(function () {
     M.updateTextFields();
@@ -41,4 +40,11 @@ $(document).ready(function () {
 // trigger modal
 $(document).ready(function () {
     $('.modal').modal();
+});
+
+// trigger side-nav
+$(document).ready(function(){
+    $('.sidenav').sidenav({
+        edge: 'right'
+    });
 });

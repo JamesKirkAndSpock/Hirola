@@ -65,5 +65,12 @@
     </div>
 </div>
 </div>
-{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block footer %}
+{% include 'front/footer.html' %}
+{% endblock %}
+{% block scripts %}
+{{ block.super }}
+{% load static %}
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+{% endblock %}
 {% endblock %}
