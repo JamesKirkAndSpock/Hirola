@@ -243,3 +243,12 @@ def various_caches():
     social_media = cache.get('social_media') or set_cache(
         SocialMedia.objects.all(), 'social_media')
     return (phone_categories, social_media)
+
+def press_view(request):
+    return render(request, 'front/news_press.html')
+
+def help_view(request):
+    return render(request, 'front/help.html')
+
+def teke_vs_others_view(request):
+    return render(request, 'front/teke_vs_others.html')

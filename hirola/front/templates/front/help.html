@@ -1,0 +1,80 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/help.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb" id="last-link">news</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row content">
+        <div class="row need-help">
+            <h5><b>How can we help you?</b></h5>
+            <p>teke has a fantastic support. Our customer support team is always ready to answer your questions and</p>
+            <p>make sure our phones meet the highest quality standards.</p>
+        </div>
+        <div class="row faqs">
+            <h5><b>Commonly Asked questions</b></h5>
+            <ul class="collapsible z-depth-0">
+                <li class="active">
+                    <div class="collapsible-header active"><i class="material-icons">keyboard_arrow_right</i>How long does it take to ship phones</div>
+                    <div class="collapsible-body"><span>Depends. Sometimes, if we have the item in our inventory, we can ship it as soon as an order is placed</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">keyboard_arrow_right</i>What is the return policy</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">keyboard_arrow_right</i>Do you sell laptops</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">keyboard_arrow_right</i>When will you begin shipping to Nakuru</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">keyboard_arrow_right</i>How can I order a phone not listed on the site</div>
+                    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                </li>
+            </ul>
+        </div>
+        <div class="row contact">
+            <h5><b>Contact our support team</b></h5>
+            <h6>You can fill the form below or contact our support team at <b>support@gmail.com</b></h6>
+            <div class="row">
+                <form class="col s12 m6">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="Name (optional)" id="name" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input placeholder="Email or phone number" id="tel" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="message" class="materialize-textarea"></textarea>
+                        </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col s6 right">
+                            <button class="btn waves-effect waves-light right" type="submit" name="action">Send
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}

@@ -30,4 +30,7 @@ urlpatterns = [
          name='password_reset_complete'),
     path('change_password', views.change_password_view, name='password_change'),
     path('old_password', views.old_password_view, name='password_change_old'),
+    path('news', views.press_view, name='news'),
+    path('help', views.help_view, name='help'),
+    path('teke_vs_others', views.teke_vs_others_view, name='teke_vs_others'),
 ]
