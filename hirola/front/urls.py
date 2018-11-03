@@ -33,4 +33,7 @@ urlpatterns = [
     path('news', views.press_view, name='news'),
     path('help', views.help_view, name='help'),
     path('teke_vs_others', views.teke_vs_others_view, name='teke_vs_others'),
+    path('error', views.error_view, name='error'),
+    path('review', views.review_view, name='review'),
+    path('review_submit', views.review_submit_view, name='review_submit'),
 ]

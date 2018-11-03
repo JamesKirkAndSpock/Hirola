@@ -1,0 +1,43 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/error.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb">Search</a>
+                    <a href="#!" class="breadcrumb" id="last-link">Simu mkebe</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row content">
+        <div class="row">
+            <div class="col m8 push-m2">
+                <h5>Oops! we cant seem to find the page you were looking for</h5>
+                <p>Here is what you can do</p>
+                <ol>
+                    <li>Report this page as missing to the teke <a href="/help">Help Center</a></li>
+                    <li><a>Request a phone or tablet</a> that's not on our site</li>
+                    <li>Go back to the <a href="/home">homepage</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col m8 push-m2">
+                <div class="row center">
+                    <div class="col m6 s12">
+                        <i class="material-icons large green-text">android</i>
+                    </div>
+                </div>
+                <p>Click <a href="/teke_vs_others">here</a> to learn how we distinguish ourselves</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}
