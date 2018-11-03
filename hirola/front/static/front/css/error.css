@@ -1,0 +1,12 @@
+.main-content {
+    margin-top: 100px;
+    flex: 1 0 auto;
+}
+
+.content {
+    padding: 20px;
+}
+
+.content a {
+    color: #4caf50;
+}

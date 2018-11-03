@@ -252,3 +252,12 @@ def help_view(request):
 
 def teke_vs_others_view(request):
     return render(request, 'front/teke_vs_others.html')
+
+def error_view(request):
+    return render(request, 'front/error.html')
+
+def review_view(request):
+    return render(request, 'front/review.html')
+
+def review_submit_view(request):
+    return render(request, 'front/review_submit.html')
