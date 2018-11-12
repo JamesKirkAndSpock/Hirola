@@ -36,4 +36,6 @@ urlpatterns = [
     path('error', views.error_view, name='error'),
     path('review', views.review_view, name='review'),
     path('review_submit', views.review_submit_view, name='review_submit'),
+    path('privacy', views.privacy_view, name='privacy'),
+
 ]

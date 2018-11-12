@@ -261,3 +261,6 @@ def review_view(request):
 
 def review_submit_view(request):
     return render(request, 'front/review_submit.html')
+
+def privacy_view(request):
+    return render(request, 'front/privacy.html')
