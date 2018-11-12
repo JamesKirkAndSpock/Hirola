@@ -4,11 +4,18 @@
 }
 
 .landing-content {
-    font-size: 14pt;
-    padding: 5px;
+    /* font-size: 14pt; */
+    padding: 30px;
+    text-align: center;
 }
 
 .card {
     border: solid 0.05em;
     border-color: #E8E8E8;
+}
+
+@media only screen and (max-width: 767px) {
+    .landing-content {
+        text-align: left;
+    }
 }
