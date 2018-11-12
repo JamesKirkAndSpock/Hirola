@@ -17,7 +17,7 @@ def remember_user(function=None):
     @wraps(function)
     def decorator(request, *args, **kwargs):
         if request.POST.get('remember-user'):
-            request.session.set_expiry(settings.SESSION_COOKIE_AGE_REMEMBER)
+            request.session.set_expiry(1209600)
             return function(request, *args, **kwargs)
         return function(request, *args, **kwargs)
     return decorator
