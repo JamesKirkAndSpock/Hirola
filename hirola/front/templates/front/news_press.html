@@ -1,0 +1,47 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/press.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb" id="last-link">help</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row content">
+        <div class="row landing">
+            <div class="landing-content center">
+                <h4>teke news and press</h4>
+                <p>teke is the online store that sells mint condition phones to the Kenya community</p>
+                <p>We are revolutionizing the phone & tech industry, one quality phone at a time</p>
+            </div>
+        </div>
+        <div class="row news">
+            <div class="col m8 push-m2">
+                <div class="row item">
+                    <div class="col m4">Daily Nation</div>
+                    <div class="col m4"><a href="#">Best place to buy used iPhones</a></div>
+                    <div class="col m4">September, 30 2018</div>
+                </div>
+                <div class="row item">
+                    <div class="col m4">Nairobi Tech</div>
+                    <div class="col m4"><a href="#">The teke buzz</a></div>
+                    <div class="col m4">September, 30 2018</div>
+                </div>
+                <div class="row item">
+                    <div class="col m4">Techhub</div>
+                    <div class="col m4"><a href="#">The tekeprenuers journey</a></div>
+                    <div class="col m4">September, 30 2018</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}

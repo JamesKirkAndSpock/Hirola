@@ -1,0 +1,48 @@
+.main-content {
+    margin-top: 100px;
+    flex: 1 0 auto;
+}
+
+.content {
+    padding: 20px;
+}
+
+.collapsible-header.active i {
+    -ms-transform: rotate(90deg);
+    /* IE 9 */
+    -webkit-transform: rotate(90deg);
+    /* Chrome, Safari, Opera */
+    transform: rotate(90deg);
+}
+
+.collapsible {
+    border: none;
+}
+
+.collapsible-header {
+    border: none;
+}
+
+.btn {
+    margin-top: 10px;
+    background: #4caf50;
+}
+
+.collapsible i {
+    font-weight: bold;
+}
+
+/* label focus color */
+
+.input-field input[type=text]:focus+label,
+.materialize-textarea:focus:not([readonly])+label {
+    color: #4caf50 !important;
+}
+
+/* label underline focus color */
+
+.input-field input[type=text]:focus,
+.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #4caf50 !important;
+    box-shadow: 0 1px 0 0 #4caf50 !important;
+}
