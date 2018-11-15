@@ -91,18 +91,10 @@ p {
     margin-bottom: 40px !important;
 }
 
-.tabs .indicator {
-    background-color: #4caf50;
-}
-
-.tabs li a{
+#order a {
+    text-decoration: underline !important;
     text-transform: capitalize !important;
 }
-
-.material-icons {
-    color: #4caf50;
-}
-
 @media only screen and (max-width: 600px) {
     .reviews .collection {
         padding-left: 5px;
