@@ -95,6 +95,15 @@ p {
     text-decoration: underline !important;
     text-transform: capitalize !important;
 }
+
+.material-icons {
+    color: #4caf50;
+}
+
+#order a {
+    text-decoration: underline !important;
+    text-transform: capitalize !important;
+}
 @media only screen and (max-width: 600px) {
     .reviews .collection {
         padding-left: 5px;
