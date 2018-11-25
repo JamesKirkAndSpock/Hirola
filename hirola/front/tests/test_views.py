@@ -3,95 +3,64 @@ from front.errors import *
 from .test_users import UserSignupTestCase
 
 
-class LandingPageImagesViewsTestCase(BaseTestCase):
+class LandingPageViewsTestCase(BaseTestCase):
     def setUp(self):
-        super(LandingPageImagesViewsTestCase, self).setUp()
-        self.add_url = "/admin/front/landingpageimage/add/"
+        super(LandingPageViewsTestCase, self).setUp()
 
-    def test_creation_of_entry(self):
+
+    def test_hot_deals_rendering(self):
         '''
-        Test that an image is created and added to the database.
-        Test tha carousel colors appear
+        Test that Hot Deals are rendered on the landing page.
+        '''
+        before_response = self.client.get("/")
+        self.assertNotContains(before_response, "Hot deals!")
+        self.elena.post('/admin/front/hotdeal/add/', {"item": self.iphone_6.pk})
+        response = self.client.get("/")
+        self.assertContains(response, "Hot deals!")
+        self.assertContains(response, "Iphone 6")
+        self.assertContains(response, 30)
+        self.assertContains(response, "iphone_icon")
+
+    def test_limit_on_image_size(self):
+        '''
+        Test that when adding a category, with an image of dimensions 225 by 225:
+            - The page will not redirect as the image cannot be added
+            - An error message is raised
+        Test that when adding a category, with an image of dimensions 200 by 200:
+            - The page will redirect as the image has been added
         '''
         mock_image = image('test_image_1.jpeg')
-        form = landing_page_form(mock_image, 1, ["red", "white"])
-        response = self.elena.post(self.add_url, form)
-        self.assertRedirects(response, '/admin/front/landingpageimage/', 302)
-        get_images = LandingPageImage.objects.all()
-        self.assertEqual(len(get_images), 2)
-        get_image = LandingPageImage.objects.get(phone_name='test_phone_name1')
-        self.assertEqual(get_image.phone_tag, 'test_phone_tag1')
-        response = self.client.get('/')
-        self.assertContains(response, "red")
-        self.assertContains(response, "white")
-
-    def test_edition_of_entry(self):
-        '''
-        Test that all fields for a created image are editable.
-        '''
-        get_image = LandingPageImage.objects.get(phone_name='test_phone_name2')
-        self.assertEqual(get_image.phone_tag, 'test_phone_tag2')
-        self.assertEqual(get_image.carousel_color, 'red')
-        self.assertEqual(get_image.text_color, 'white')
-        edit_url = "/admin/front/landingpageimage/{}/change/"
-        mock_image = image('test_image_3.jpeg')
-        form = landing_page_form(mock_image, 3, ["green", "black"])
-        response2 = self.elena.post(edit_url.format(get_image.pk), form)
-        get_edited_image = LandingPageImage.objects.get(pk=get_image.pk)
-        self.assertEqual(get_edited_image.phone_name, 'test_phone_name3')
-        self.assertEqual(get_edited_image.phone_tag, 'test_phone_tag3')
-        self.assertEqual(get_edited_image.carousel_color, 'green')
-        self.assertEqual(get_edited_image.text_color, 'black')
-        self.assertRedirects(response2, '/admin/front/landingpageimage/', 302)
-
-    def test_tag_name_limits(self):
-        '''
-        Test that the phone name cannot have more that 30 characters
-        Test that the phone tag cannot have more than 60 characters
-        '''
-        mock_image = image('test_image_1.jpeg')
-        long_phone_name = ('a long phone name for creation of an entry of an '
-                           'image')
-        form = landing_page_form(mock_image, [long_phone_name,
-                                 "test_phone_tag2"], ["green", "black"])
-        response = self.elena.post(self.add_url, form)
-        e_mess_1 = b"Ensure this value has at most 20 characters (it has 54)"
-        self.assertIn(e_mess_1, response.content)
-        self.assertEqual(response.status_code, 200)
-        long_phone_tag = ('a long phone tag for creation of an entry of an '
-                          'image with more that 60 characters')
-        form = {"photo": mock_image, "carousel_color": "red",
-                "phone_name": "test_name", "phone_tag": long_phone_tag,
-                "text_color": "white"}
-        response2 = self.elena.post(self.add_url, form)
-        e_mess_2 = b"Ensure this value has at most 30 characters (it has 82)"
-        self.assertIn(e_mess_2, response2.content)
-        self.assertEqual(response2.status_code, 200)
-
-    def test_image_size_check(self):
-        '''
-        Test that an image of width pixel lower than 1280 and height pixel
-        lower than 700 cannot be added.
-        '''
-        mock_image = image('test_image_4.jpeg')
-        form = landing_page_form(mock_image, 4, ["red", "white"])
-        response = self.elena.post(self.add_url, form)
-        self.assertIn(str.encode(landing_page_error.format(225, 225)),
+        form = {"category_image": mock_image, "phone_category": "CategoryTest1"}
+        response = self.elena.post('/admin/front/phonecategory/add/', form)
+        self.assertIn(str.encode(category_image_error.format(959, 1280 )),
                       response.content)
         self.assertEqual(response.status_code, 200)
+        mock_image_2 = image('test_image_6.png')
+        form_2 = {"category_image": mock_image_2, "phone_category": "CategoryTest1"}
+        response = self.elena.post('/admin/front/phonecategory/add/', form_2)
+        self.assertRedirects(response, "/admin/front/phonecategory/", 302)
+
+    def test_category_image_rendering_on_view(self):
+        mock_image_2 = image('test_image_6.png')
+        form_2 = {"category_image": mock_image_2, "phone_category": "CategoryTest1"}
+        self.elena.post('/admin/front/phonecategory/add/', form_2)
+        response = self.client.get("/")
+        self.assertContains(response, "src=\"/media/phone_categories/test_image_6")
 
 
-class PhoneCategoryListViewsTestCase(BaseTestCase):
+
+class PhoneCategoryViewsTestCase(BaseTestCase):
     def setUp(self):
-        super(PhoneCategoryListViewsTestCase, self).setUp()
-        self.add_url = "/admin/front/phonecategorylist/add/"
+        super(PhoneCategoryViewsTestCase, self).setUp()
+        self.category_image = image('test_image_6.png')
+        self.add_url = "/admin/front/phonecategory/add/"
 
     def test_uniqueness(self):
         '''
         Test  that it informs the admin user that the entered value should be
         unique hence preventing the presence of two similar names.
         '''
-        form = {"phone_category": "Iphone"}
+        form = {"phone_category": "Iphone", "category_image": self.category_image}
         response = self.elena.post(self.add_url, form)
         e_mess_1 = "The phone category Iphone already exists"
         self.assertContains(response, e_mess_1)
@@ -101,8 +70,8 @@ class PhoneCategoryListViewsTestCase(BaseTestCase):
         Test that a limitation exists to the number of Phone Categories that
         can be added.
         '''
-        form1 = {"phone_category": "Phone1"}
-        form2 = {"phone_category": "Phone2"}
+        form1 = {"phone_category": "Phone1", "category_image": self.category_image}
+        form2 = {"phone_category": "Phone2", "category_image": self.category_image}
         response1 = self.elena.post(self.add_url, form1)
         response2 = self.elena.post(self.add_url, form2)
         self.assertEqual(response1.status_code, 302)
@@ -113,7 +82,7 @@ class PhoneCategoryListViewsTestCase(BaseTestCase):
         Test that Phone categories are being displayed on the front page of
         the application
         '''
-        self.elena.post(self.add_url, {'phone_category': "Extra"})
+        self.elena.post(self.add_url, {'phone_category': "Extra", "category_image": self.category_image})
         response = self.client.get('/')
         self.assertContains(response, "Iphone")
         self.assertContains(response, "Android")
@@ -227,7 +196,7 @@ class ClientViewsTestCase(BaseTestCase):
         self.assertContains(response, "V$")
         self.assertContains(response, 25)
         self.assertContains(response, "LaIphone")
-        self.assertContains(response, "/media/test_image_5")
+        self.assertContains(response, "/media/phones/test_image_5")
 
     def test_phone_category_size_view(self):
         test_variables = {"a": [self.iphone.pk, "8 GB", "16 GB"],
@@ -373,7 +342,7 @@ class UserDashboardTestCase(BaseTestCase):
         (owner, order) = self.generate_review_data()
         data = {"stars": 5, "comments": "Great job guys", "owner": owner.id,
         "orders": order.id }
-        response = self.elena.post('/admin/front/reviews/add/', data)
+        response = self.elena.post('/admin/front/review/add/', data)
         self.assertEqual(response.status_code, 302)
         get_response = self.uriel.get('/dashboard')
         self.assertContains(get_response, "Great job guys",)
@@ -400,11 +369,11 @@ class UserDashboardTestCase(BaseTestCase):
         checked_counter = 1
         unchecked_counter = 4
         for i in range(5):
-            self.elena.post('/admin/front/reviews/add/', data[i])
+            self.elena.post('/admin/front/review/add/', data[i])
             response = self.uriel.get('/dashboard')
             self.assertContains(response, checked_star*(i+1))
             self.assertContains(response, unchecked_star*(4-i))
-            Reviews.objects.get(stars=i+1).delete()
+            Review.objects.get(stars=i+1).delete()
 
     def test_name_edition(self):
         '''
@@ -507,6 +476,6 @@ class UserDashboardTestCase(BaseTestCase):
         OrderStatus.objects.create(status="Pending")
         phone = PhoneList.objects.get(phone_name="Samsung")
         status = OrderStatus.objects.get(status="Pending")
-        Orders.objects.create(owner=owner, date="2018-10-13", phone=phone , status=status)
-        order = Orders.objects.get(owner=owner)
+        Order.objects.create(owner=owner, date="2018-10-13", phone=phone , status=status)
+        order = Order.objects.get(owner=owner)
         return (owner, order)

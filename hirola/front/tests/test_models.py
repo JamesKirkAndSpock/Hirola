@@ -1,51 +1,11 @@
 from front.base_test import *
 from django.db import IntegrityError, DataError
+from front.errors import *
 
 
-class LandingPageImageModelsTestCase(TestCase):
+class PhoneCategoryModelsTestCase(BaseTestCase):
     def setUp(self):
-        LandingPageImage.objects.create(pk=1)
-        LandingPageImage.objects.create(phone_name="Phone1",
-                                        phone_tag="Phone1_Tag", pk=2,)
-        LandingPageImage.objects.create(phone_name="Phone2",
-                                        phone_tag="Phone2_Tag", pk=3,)
-
-    def test_that_default_values_are_picked(self):
-        """
-        Test that a landing page image is created with default values
-        """
-        get_object = LandingPageImage.objects.get(pk=1)
-        self.assertEqual(get_object.carousel_color, 'red')
-        self.assertEqual(get_object.text_color, 'white')
-        self.assertEqual(get_object.phone_name, '')
-        self.assertEqual(get_object.phone_tag, '')
-
-    def test_deletion(self):
-        """
-        Test that a landing page image can be deleted
-        """
-        self.assertEqual(len(LandingPageImage.objects.all()), 3)
-        get_object = LandingPageImage.objects.get(phone_name="Phone1")
-        get_object.delete()
-        self.assertEqual(len(LandingPageImage.objects.all()), 2)
-
-    def test_edition(self):
-        get_object = LandingPageImage.objects.get(pk=3)
-        self.assertEqual(get_object.phone_name, "Phone2")
-        self.assertEqual(get_object.phone_tag, "Phone2_Tag")
-        get_object.phone_name = "Phone2_Prime"
-        get_object.phone_tag = "Phone2_Tag_Prime"
-        get_object.save()
-        get_edited_object = LandingPageImage.objects.get(pk=3)
-        self.assertNotEqual(get_edited_object.phone_name, "Phone2")
-        self.assertNotEqual(get_edited_object.phone_tag, "Phone2_Tag")
-        self.assertEqual(get_edited_object.phone_name, "Phone2_Prime")
-        self.assertEqual(get_edited_object.phone_tag, "Phone2_Tag_Prime")
-
-
-class PhoneCategoryListModelsTestCase(BaseTestCase):
-    def setUp(self):
-        super(PhoneCategoryListModelsTestCase, self).setUp()
+        super(PhoneCategoryModelsTestCase, self).setUp()
 
     def test_object_returned_string(self):
         '''
@@ -61,7 +21,7 @@ class PhoneCategoryListModelsTestCase(BaseTestCase):
         Test that an integrity error is raised
         '''
         with self.assertRaises(IntegrityError):
-            PhoneCategoryList.objects.create(phone_category="Iphone")
+            PhoneCategory.objects.create(phone_category="Iphone")
 
     def test_limit_of_phone_category(self):
         '''
@@ -69,7 +29,17 @@ class PhoneCategoryListModelsTestCase(BaseTestCase):
         The model should raise a data error if this is the case.
         '''
         with self.assertRaises(DataError):
-            PhoneCategoryList.objects.create(phone_category="abcdefghijklmnop")
+            PhoneCategory.objects.create(phone_category="abcdefghijklmnop")
+
+    def test_phone_category_edit(self):
+        '''
+        Test that when a phone category is edited:
+            - The page redirects successfully
+        '''
+        mock_image = image('test_image_6.png')
+        form = {"phone_category": "Iphone", "category_image": mock_image}
+        response = self.elena.post("/admin/front/phonecategory/{}/change/".format(self.iphone.pk), form)
+        self.assertRedirects(response, "/admin/front/phonecategory/", 302)
 
 
 class PhoneMemorySizeModelsTestCase(BaseTestCase):
@@ -105,3 +75,19 @@ class PhoneListModelTestCase(TestCase):
     def test_limit_of_phone_name(self):
         with self.assertRaises(DataError):
             PhoneList.objects.create(phone_name="abcdefghijklmnopqrstuvwxy")
+
+
+class HotDealModelsTestCase(BaseTestCase):
+    def setUp(self):
+        super(HotDealModelsTestCase, self).setUp()
+
+    def test_uniqueness_of_hot_deal_category(self):
+        '''
+        Test that if a Hot Deal object already exists and I create another one with the same Phone
+        object
+            - That a validation error is raised
+        '''
+        HotDeal.objects.create(item=self.iphone_6)
+        response = self.elena.post("/admin/front/hotdeal/add/", {"item": self.iphone_6.pk})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, hot_deal_error.format(self.iphone_6))

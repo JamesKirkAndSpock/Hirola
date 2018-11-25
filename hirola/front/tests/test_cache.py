@@ -10,15 +10,15 @@ class LandingPageCacheTest(BaseTestCase):
         super(LandingPageCacheTest, self).setUp()
 
     def tearDown(self):
-        cache.delete_many(['landing_page_images', 'phone_categories'])
+        cache.delete_many(['social_media', 'phone_categories', 'hot_deals'])
 
-    def landing_pg_image_cache_exists(self):
+    def social_media_cache_exists(self):
         '''
         Access the landing page and determine that a cache for landing page
         images is created after accessing the page.
         '''
         self.client.get('/')
-        cache_after_access = cache.get('landing_page_images')
+        cache_after_access = cache.get('social_media')
         self.assertNotEqual(cache_after_access, None)
 
     def phone_category_cache_exists(self):
@@ -30,16 +30,28 @@ class LandingPageCacheTest(BaseTestCase):
         cache_after_access = cache.get('phone_categories')
         self.assertNotEqual(cache_after_access, None)
 
+    def deals_category_cache_exists(self):
+        '''
+        Access the landing page and determine that a cache for hot deals
+        is created after accessing the page.
+        '''
+        self.client.get('/')
+        cache_after_access = cache.get('hot_deals')
+        self.assertNotEqual(cache_after_access, None)
+
     def test_cache_set_on_client_access(self):
         '''
         Test that the cache is set after a client accesses the page_view url.
         '''
-        lp_cache_before_access = cache.get('landing_page_images')
-        self.assertEqual(lp_cache_before_access, None)
+        sm_cache_before_access = cache.get('social_media')
+        self.assertEqual(sm_cache_before_access, None)
         pc_cache_before_access = cache.get('phone_categories')
         self.assertEqual(pc_cache_before_access, None)
-        self.landing_pg_image_cache_exists()
+        hd_cache_before_access = cache.get('hot_deals')
+        self.assertEqual(hd_cache_before_access, None)
+        self.social_media_cache_exists()
         self.phone_category_cache_exists()
+        self.deals_category_cache_exists()
 
     def test_cache_cleared_on_add(self):
         '''
@@ -47,18 +59,9 @@ class LandingPageCacheTest(BaseTestCase):
         page image is added. Ideally the test should operate in a scenario
         where the cache already exists.
         '''
-        self.landing_pg_image_cache_exists()
-        mock_image = image('test_image_1.jpeg')
-        form = landing_page_form(mock_image, 5, ["amber", "black"])
-        add_url = "/admin/front/landingpageimage/add/"
-        response = self.elena.post(add_url, form)
-        get_image = LandingPageImage.objects.get(phone_name="test_phone_name5")
-        self.assertEqual(get_image.phone_tag, "test_phone_tag5")
-        cache_after_add = cache.get('landing_page_images')
-        self.assertEqual(cache_after_add, None)
         self.phone_category_cache_exists()
-        category_add_url = "/admin/front/phonecategorylist/add/"
-        category_form = {"phone_category": "Phone1"}
+        category_add_url = "/admin/front/phonecategory/add/"
+        category_form = {"phone_category": "Phone1", "category_image": image('test_image_6.png')}
         response = self.elena.post(category_add_url, category_form)
         self.assertEqual(response.status_code, 302)
         category_cache_after_add = cache.get('phone_categories')
@@ -70,18 +73,9 @@ class LandingPageCacheTest(BaseTestCase):
         page image is edited. Ideally the test should operate in a scenario
         where the cache already exists.
         '''
-        self.landing_pg_image_cache_exists()
-        get_image = LandingPageImage.objects.get(phone_name='test_phone_name2')
-        self.assertEqual(get_image.phone_tag, 'test_phone_tag2')
-        edit_url = "/admin/front/landingpageimage/{}/change/"
-        mock_image = image('test_image_3.jpeg')
-        form = landing_page_form(mock_image, 3, ["green", "black"])
-        response = self.elena.post(edit_url.format(get_image.pk), form)
-        cache_after_add = cache.get('landing_page_images')
-        self.assertEqual(cache_after_add, None)
         self.phone_category_cache_exists()
-        category_edit_url = "/admin/front/phonecategorylist/{}/change/"
-        category_form = {"phone_category": "Phone1"}
+        category_edit_url = "/admin/front/phonecategory/{}/change/"
+        category_form = {"phone_category": "Phone1", "category_image": image('test_image_6.png')}
         response = self.elena.post(category_edit_url.format(self.iphone.pk),
                                    category_form)
         self.assertEqual(response.status_code, 302)
@@ -90,19 +84,44 @@ class LandingPageCacheTest(BaseTestCase):
 
     def test_cache_cleared_on_delete(self):
         '''
-        Test that the cache for landing page images is deleted when a landing
-        page image is deleted. Ideally the test should operate in a scenario
-        where the cache already exists.
+        Test that the cache for social is deleted when a social media object is deleted. 
+        Ideally the test should operate in a scenario where the cache already exists.
         '''
-        self.landing_pg_image_cache_exists()
-        get_image = LandingPageImage.objects.get(phone_name='test_phone_name2')
-        get_image.delete()
-        cache_after_delete = cache.get('landing_page_images')
-        self.assertEqual(cache_after_delete, None)
         self.phone_category_cache_exists()
         self.iphone.delete()
         category_cache_after_delete = cache.get('phone_categories')
         self.assertEqual(category_cache_after_delete, None)
+
+    def test_deal_cache_cleared_on_add(self):
+        '''
+        Test that when a cache for hot_deals already exists, and a hot deal is added that
+            - The cache for hot deals becomes None
+        '''
+        self.deals_category_cache_exists()
+        response = self.elena.post("/admin/front/hotdeal/add/", {"item": self.iphone_6.pk})
+        hd_cache_after_add = cache.get('hot_deals')
+        self.assertEqual(hd_cache_after_add, None)
+
+    def test_deal_cache_cleared_on_edit(self):
+        '''
+        Test that when a cache for hot deals already exists, and a hot deal is edited that
+            - The cache for hot deals becomes None
+        '''
+        self.deals_category_cache_exists()
+        self.elena.post("/admin/front/hotdeal/add/", {"item": self.iphone_6.pk})
+        response = self.elena.post("/admin/front/hotdeal/{}/change/".format(self.iphone_6.pk),
+                                   {"item": self.samsung_j_7.pk})
+        hd_cache_after_edit = cache.get('hot_deals')
+        self.assertEqual(hd_cache_after_edit, None)
+
+    def test_deal_cache_cleared_on_delete(self):
+        self.deals_category_cache_exists()
+        self.elena.post("/admin/front/hotdeal/add/", {"item": self.iphone_6.pk})
+        hot_deal = HotDeal.objects.get(item=self.iphone_6.pk)
+        hot_deal.delete()
+        hd_cache_after_delete = cache.get('hot_deals')
+        self.assertEqual(hd_cache_after_delete, None)
+
 
 
 class PhoneCategoryViewCacheTest(BaseTestCase):
@@ -283,11 +302,11 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
         cache_after_access = cache.get('category_{}'.format(self.iphone.pk))
         self.assertNotEqual(cache_after_access, None)
         iphone_id = self.iphone.pk
-        form = {"phone_category": "New Category"}
-        category_edit_url = "/admin/front/phonecategorylist/{}/change/"
+        form = {"phone_category": "New Category", "category_image": image('test_image_6.png')}
+        category_edit_url = "/admin/front/phonecategory/{}/change/"
         response = self.elena.post(category_edit_url.format(iphone_id), form)
         self.assertEqual(response.status_code, 302)
-        edited_category = PhoneCategoryList.objects.get(pk=self.iphone.pk)
+        edited_category = PhoneCategory.objects.get(pk=self.iphone.pk)
         self.assertEqual(str(edited_category), "New Category")
         cache_after_delete = cache.get('category_{}'.format(self.iphone.pk))
         self.assertEqual(cache_after_delete, None)

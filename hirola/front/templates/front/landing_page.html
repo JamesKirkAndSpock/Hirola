@@ -13,47 +13,18 @@
     <h6>at affordable prices</h6>
   </div>
   <div class="row center land-imgs">
+    {% for category in categories %}
       <div class="col m3 s6 center">
-        <div class="card">
-          <div class="card-content">
-            <a href="#user"><img class="responsive-img" src="{% static 'front/category_iphones.png' %}"></a>
-          </div>
-          <div class="card-action">
-            <a href="#">iPhones</a>
+          <div class="card">
+            <div class="card-content">
+              <a href="/phone_category/{{category.id}}"><img class="responsive-img" src="{{ MEDIA_URL }}{{ category.category_image }}"></a>
+            </div>
+            <div class="card-action">
+              <a href="/phone_category/{{category.id}}">{{ category.phone_category}}</a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col m3 s6 center">
-        <div class="card">
-          <div class="card-content">
-            <a href="#user"><img class="responsive-img" src="{% static 'front/category_phones.png' %}"></a>
-          </div>
-          <div class="card-action">
-            <a href="#">Phones</a>
-          </div>
-        </div>
-      </div>
-      <div class="col m3 s6 center">
-        <div class="card">
-          <div class="card-content">
-            <a href="#user"><img class="responsive-img" src="{% static 'front/category_tablets.png' %}"></a>
-          </div>
-          <div class="card-action">
-            <a href="#">Tablets</a>
-          </div>
-        </div>
-      </div>
-      <div class="col m3 s6 center">
-        <div class="card">
-          <div class="card-content">
-            <a href="#user"><img class="responsive-img" src="{% static 'front/home_tech_square.png' %}"></a>
-          </div>
-          <div class="card-action">
-            <a href="#">Home Tech</a>
-          </div>
-        </div>
-      </div>
-  </div>
+    {% endfor %}
 </div>
 <div class="row center-content center">
   <div class="col m4 s4 l3">
@@ -69,119 +40,33 @@
     <p><i id="quality-icon" class="material-icons green-text">local_shipping</i><span>Free Shipping</span></p>
   </div>
 </div>
+{% if hot_deals %}
 <div class="row hot-deals">
   <div class="row heading">
     <h5>Hot deals!</h5>
   </div>
   <div class="row deals-row">
+    {% for hot_deal in hot_deals %}
     <div class="col m3 s6 hot-img">
         <div class="row">
           <div class="col s12 m12">
             <div class="card">
               <div class="card-content center">
-                <a href="#user"><img class="responsive-img" src="{% static 'front/moto-g5.png' %}"></a><br>
-                <span class="card-title-text"><b>Apple iPhone 6s</b></span>
+                <a href="#user"><img class="responsive-img" src="{{ MEDIA_URL }}{{ hot_deal.item.phone_image }}"></a><br>
+                <span class="card-title-text"><b>{{ hot_deal.item }}</b></span>
               </div>
               <div class="card-action">
                     <a href="#">
-                    <p><i id="quality-icon" class="material-icons grey-text right">android</i><span class="green-text" id="money"><b>Ksh 19,000</b></span></p>
+                    <p><i id="quality-icon" class="material-icons grey-text right">{{ hot_deal.item.icon}}</i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
                     </a>
               </div>
             </div>
           </div>
         </div>
     </div>
-      <div class="col m3 s6 hot-img">
-        <div class="row">
-          <div class="col s12 m12">
-            <div class="card">
-              <div class="card-content center">
-                <a href="#user"><img class="responsive-img" src="{% static 'front/moto-g5.png' %}"></a><br>
-                <span class="card-title-text"><b>Apple iPhone 6s</b></span>
-              </div>
-              <div class="card-action">
-                <a href="#">
-                  <p><i id="quality-icon" class="material-icons grey-text right">android</i><span class="green-text" id="money"><b>Ksh
-                        19,000</b></span></p>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-        <div class="col m3 s6 hot-img">
-          <div class="row">
-            <div class="col s12 m12">
-              <div class="card">
-                <div class="card-content center">
-                  <a href="#user"><img class="responsive-img" src="{% static 'front/moto-g5.png' %}"></a><br>
-                  <span class="card-title-text"><b>Apple iPhone 6s</b></span>
-                </div>
-                <div class="card-action">
-                  <a href="#">
-                    <p><i id="quality-icon" class="material-icons grey-text right">android</i><span class="green-text" id="money"><b>Ksh
-                          19,000</b></span></p>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-          <div class="col m3 s6 hot-img">
-            <div class="row">
-              <div class="col s12 m12">
-                <div class="card">
-                  <div class="card-content center">
-                    <a href="#user"><img class="responsive-img" src="{% static 'front/moto-g5.png' %}"></a><br>
-                    <span class="card-title-text"><b>Apple iPhone 6s</b></span>
-                  </div>
-                  <div class="card-action">
-                    <a href="#">
-                      <p><i id="quality-icon" class="material-icons grey-text right">android</i><span class="green-text" id="money"><b>Ksh
-                            19,000</b></span></p>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-            <div class="col m3 s6 hot-img">
-              <div class="row">
-                <div class="col s12 m12">
-                  <div class="card">
-                    <div class="card-content center">
-                      <a href="#user"><img class="responsive-img" src="{% static 'front/moto-g5.png' %}"></a><br>
-                      <span class="card-title-text"><b>Apple iPhone 6s</b></span>
-                    </div>
-                    <div class="card-action">
-                      <a href="#">
-                        <p><i id="quality-icon" class="material-icons grey-text right">android</i><span class="green-text" id="money"><b>Ksh
-                              19,000</b></span></p>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-              <div class="col m3 s6 hot-img">
-                <div class="row">
-                  <div class="col s12 m12">
-                    <div class="card">
-                      <div class="card-content center">
-                        <a href="#user"><img class="responsive-img" src="{% static 'front/moto-g5.png' %}"></a><br>
-                        <span class="card-title-text"><b>Apple iPhone 6s</b></span>
-                      </div>
-                      <div class="card-action">
-                        <a href="#">
-                          <p><i id="quality-icon" class="material-icons grey-text right">android</i><span class="green-text" id="money"><b>Ksh
-                                19,000</b></span></p>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+    {% endfor %}
   </div>
+  {% endif %}
 </div>
 </div>
 {% block footer %}

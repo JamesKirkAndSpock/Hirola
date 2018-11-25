@@ -6,12 +6,8 @@ from .forms.model_forms import *
 from .forms.user_forms import *
 
 
-class LandingPageImageAdmin(admin.ModelAdmin):
-    form = LandingPageImageForm
-
-
-class PhoneCategoryListAdmin(admin.ModelAdmin):
-    form = PhoneCategoryListForm
+class PhoneCategoryAdmin(admin.ModelAdmin):
+    form = PhoneCategoryForm
 
 
 class PhoneListAdmin(admin.ModelAdmin):
@@ -44,8 +40,11 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ('groups', 'user_permissions')
 
 
-admin.site.register(LandingPageImage, LandingPageImageAdmin)
-admin.site.register(PhoneCategoryList, PhoneCategoryListAdmin)
+class HotDealAdmin(admin.ModelAdmin):
+    form = HotDealForm
+
+
+admin.site.register(PhoneCategory, PhoneCategoryAdmin)
 admin.site.register(PhoneList, PhoneListAdmin)
 admin.site.register(PhoneMemorySize)
 admin.site.register(Currency)
@@ -53,5 +52,7 @@ admin.site.register(SocialMedia)
 admin.site.register(User, UserAdmin)
 admin.site.register(AreaCode)
 admin.site.register(OrderStatus)
-admin.site.register(Orders)
-admin.site.register(Reviews)
+admin.site.register(Order)
+admin.site.register(Review)
+admin.site.register(HotDeal, HotDealAdmin)
+admin.site.register(ItemIcon)
