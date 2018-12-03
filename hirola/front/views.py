@@ -87,8 +87,17 @@ def area_codes(request):
     return JsonResponse(data)
 
 
-def phone_profile_view(request):
-    return render(request, 'front/phone_profile.html')
+def phone_profile_view(request, phone_id):
+    if request.method == "POST":
+        item = request.POST['cart_item_add']
+        return redirect("/checkout")
+    phone = PhoneList.objects.filter(pk=phone_id).first()
+    if not phone:
+        return redirect("/error")
+    context = {"phone": phone, "image_list": phone.phone_images.all(),
+               "customer_reviews": phone.phone_reviews.all(),
+               "features": phone.phone_features.all(), "infos": phone.phone_information.all()}
+    return render(request, 'front/phone_profile.html', context)
 
 
 def phone_view(request):
@@ -241,23 +250,30 @@ def various_caches():
         SocialMedia.objects.all(), 'social_media')
     return (phone_categories, social_media)
 
+
 def press_view(request):
     return render(request, 'front/news_press.html')
+
 
 def help_view(request):
     return render(request, 'front/help.html')
 
+
 def teke_vs_others_view(request):
     return render(request, 'front/teke_vs_others.html')
+
 
 def error_view(request):
     return render(request, 'front/error.html')
 
+
 def review_view(request):
     return render(request, 'front/review.html')
 
+
 def review_submit_view(request):
     return render(request, 'front/review_submit.html')
+
 
 def privacy_view(request):
     return render(request, 'front/privacy.html')

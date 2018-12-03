@@ -3,7 +3,7 @@ Models
 '''
 from django.db import models
 from django.core.cache import cache
-from django.db.models.signals import pre_delete
+from django.db.models.signals import pre_delete, post_delete, post_save
 from django.dispatch import receiver
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
@@ -52,42 +52,23 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(
-        _('email address'), unique=True,
-        error_messages={
-            'unique': _(
-                "The email address you entered has already been registered.",),
-            },
-        max_length=255)
+    email = models.EmailField(_('email address'), unique=True, error_messages={
+            'unique': _("The email address you entered has already been registered.",), },
+                        max_length=255)
     first_name = models.CharField(_('first_name'), max_length=30, blank=True)
     last_name = models.CharField(_('last_name'), max_length=30, blank=True)
     date_joined = models.DateTimeField(_('date_joined'), default=timezone.now)
-    is_staff = models.BooleanField(
-        _('staff status'),
-        default=False,
-        help_text=_(
-            'Designates whether the user can log into this admin site.'),
-    )
-    is_active = models.BooleanField(
-        _('active'),
-        default=True,
-        help_text=_(
+    is_staff = models.BooleanField(_('staff status'), default=False, help_text=_(
+        'Designates whether the user can log into this admin site.'),)
+    is_active = models.BooleanField(_('active'), default=True, help_text=_(
             'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'
-        ),
-    )
-    is_change_allowed = models.BooleanField(
-        _('change_allowed'),
-        default=False,
-        help_text=_(
+            'Unselect this instead of deleting accounts.'), )
+    is_change_allowed = models.BooleanField(_('change_allowed'), default=False, help_text=_(
             'Designates whether this user has been authorized to change his own'
-            'password, in the change_password view.'
-        ),
-    )
-    area_code = models.ForeignKey(AreaCode,
-                                  on_delete=models.SET_NULL, null=True,
-                                  blank=True)
+            'password, in the change_password view.'),)
+    area_code = models.ForeignKey(AreaCode, on_delete=models.SET_NULL, null=True, blank=True)
     phone_number = models.IntegerField(blank=True, null=True)
+    photo = models.ImageField(blank=True, null=True)
 
     objects = UserManager()
 
@@ -105,8 +86,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class PhoneCategory(models.Model):
     class Meta:
         verbose_name_plural = "Phone Categories"
-    phone_category = models.CharField(default=None, max_length=15, blank=False,
-                                      unique=True)
+    phone_category = models.CharField(default=None, max_length=15, blank=False, unique=True)
     category_image = models.ImageField(blank=True, null=True, upload_to="phone_categories")
 
     def __str__(self):
@@ -122,9 +102,7 @@ class PhoneCategory(models.Model):
 class PhoneMemorySize(models.Model):
     abbreviation = models.CharField(max_length=10)
     size_number = models.IntegerField(blank=True, null=True)
-    category = models.ForeignKey(PhoneCategory,
-                                 on_delete=models.SET_NULL, null=True,
-                                 blank=True)
+    category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return str(self.size_number) + " " + self.abbreviation
@@ -159,16 +137,14 @@ class ItemIcon(models.Model):
 class PhoneList(models.Model):
     class Meta:
         verbose_name_plural = "Phones"
-    category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL,
-                                 null=True, blank=True)
-    phone_image = models.ImageField(upload_to="phones")
+    category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL, null=True, blank=True)
     phone_name = models.CharField(max_length=20, blank=False, default=None)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL,
-                                 null=True, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=0)
-    size_sku = models.ForeignKey(PhoneMemorySize, on_delete=models.SET_NULL,
-                                 null=True, blank=True)
+    size_sku = models.ForeignKey(PhoneMemorySize, on_delete=models.SET_NULL, null=True, blank=True)
     icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL, null=True, blank=True)
+    average_review = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
+    main_image = models.ImageField(upload_to="phones")
 
     def __str__(self):
         return self.phone_name
@@ -216,7 +192,7 @@ class Order(models.Model):
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.phone)
+        return str(self.phone) + ": " + str(self.owner) + " date: " + str(self.date)
 
 
 class IntegerRangeField(models.IntegerField):
@@ -226,7 +202,7 @@ class IntegerRangeField(models.IntegerField):
         models.IntegerField.__init__(self, **kwargs)
 
     def formfield(self, **kwargs):
-        defaults = {'min_value': self.min_value, 'max_value':self.max_value}
+        defaults = {'min_value': self.min_value, 'max_value': self.max_value}
         defaults.update(kwargs)
         return super(IntegerRangeField, self).formfield(**defaults)
 
@@ -234,8 +210,9 @@ class IntegerRangeField(models.IntegerField):
 class Review(models.Model):
     stars = IntegerRangeField(min_value=1, max_value=5)
     comments = models.TextField()
-    orders = models.ForeignKey(Order, on_delete=models.CASCADE)
+    phone = models.ForeignKey(PhoneList,  related_name='phone_reviews', on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    time = models.DateField(auto_now=True)
 
     def __str__(self):
         return str(self.owner) + ": " + str(self.stars) + " stars: " + self.comments
@@ -250,6 +227,22 @@ class HotDeal(models.Model):
     def save(self, *args, **kwargs):
         cache.delete('hot_deals')
         super(HotDeal, self).save(*args, **kwargs)
+
+
+class PhoneImage(models.Model):
+    phone = models.ForeignKey(PhoneList, related_name='phone_images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="phones")
+
+
+class Feature(models.Model):
+    phone = models.ForeignKey(PhoneList, related_name='phone_features', on_delete=models.CASCADE)
+    feature = models.TextField()
+
+
+class ProductInformation(models.Model):
+    phone = models.ForeignKey(PhoneList, related_name='phone_information', on_delete=models.CASCADE)
+    feature = models.CharField(max_length=256)
+    value = models.CharField(max_length=256)
 
 
 def delete_cache(model_class, object_id, cache_name):
@@ -284,6 +277,32 @@ def clear_social_media_cache(sender, **kwargs):
 @receiver(pre_delete, sender=HotDeal)
 def clear_hot_deals_cache(sender, **kwargs):
     cache.delete('hot_deals')
+
+
+@receiver(post_save, sender=Review)
+def adjust_average_review(sender, **kwargs):
+    average_review(kwargs["instance"].phone_id)
+
+
+@receiver(post_delete, sender=Review)
+def adjust_average_review_delete(sender, **kwargs):
+    average_review(kwargs["instance"].phone_id)
+
+
+def average_review(phone_id):
+    reviews = Review.objects.filter(phone=phone_id)
+    if reviews:
+        counter = 0
+        for review in reviews:
+            counter += review.stars
+        average = counter / reviews.count()
+        phone = PhoneList.objects.get(pk=phone_id)
+        phone.average_review = average
+        phone.save()
+    else:
+        phone = PhoneList.objects.get(pk=phone_id)
+        phone.average_review = 5.0
+        phone.save()
 
 
 def cache_delete(cache_name, cache_id):

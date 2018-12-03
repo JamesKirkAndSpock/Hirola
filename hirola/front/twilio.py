@@ -4,6 +4,7 @@ from django.conf import settings
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+
 class TwilioValidation():
     error_messages = {
         'invalid_number': _("The phone number entered is invalid."),

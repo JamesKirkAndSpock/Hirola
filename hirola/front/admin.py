@@ -10,8 +10,28 @@ class PhoneCategoryAdmin(admin.ModelAdmin):
     form = PhoneCategoryForm
 
 
+class PhoneImageInline(admin.TabularInline):
+    model = PhoneImage
+    extra = 3
+
+
+class PhoneReviewInline(admin.TabularInline):
+    model = Review
+    extra = 1
+
+
+class PhoneFeatureInline(admin.TabularInline):
+    model = Feature
+    extra = 1
+
+
+class PhoneProductInline(admin.StackedInline):
+    model = ProductInformation
+    extra = 1
+
+
 class PhoneListAdmin(admin.ModelAdmin):
-    form = PhoneListForm
+    inlines = [PhoneImageInline, PhoneReviewInline, PhoneFeatureInline, PhoneProductInline, ]
     change_form_template = 'admin/front/phone_list.html'
 
 
@@ -42,7 +62,6 @@ class UserAdmin(BaseUserAdmin):
 
 class HotDealAdmin(admin.ModelAdmin):
     form = HotDealForm
-
 
 admin.site.register(PhoneCategory, PhoneCategoryAdmin)
 admin.site.register(PhoneList, PhoneListAdmin)

@@ -190,10 +190,8 @@ class UserLoginTestCase(BaseTestCase):
                      "remember-user": "on"
                      }
         self.client.post('/login', user_data)
-        self.assertEqual (self.client.session.get_expiry_age(), settings.SESSION_COOKIE_AGE_REMEMBER)
+        self.assertEqual(self.client.session.get_expiry_age(), settings.SESSION_COOKIE_AGE_REMEMBER)
         self.client.logout()
-        user_data_2 = {"email": "urieltimanko@example.cm",
-                     "password": "*&#@&!*($)lp"
-                     }
+        user_data_2 = {"email": "urieltimanko@example.cm", "password": "*&#@&!*($)lp"}
         self.client.post('/login', user_data_2)
-        self.assertEqual (self.client.session.get_expiry_age(), settings.SESSION_COOKIE_AGE)
+        self.assertEqual(self.client.session.get_expiry_age(), settings.SESSION_COOKIE_AGE)

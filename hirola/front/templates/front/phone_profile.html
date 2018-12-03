@@ -5,15 +5,17 @@
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/slick.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/slick-theme.css' %}" />
 {% endblock %} {% block content %}
+{% load stars_counter %}
+{% load humanize %}
 <div class="main-content">
     <div class="container">
     <div class="row breadcrumbs">
         <nav class="this-black">
             <div class="nav-wrapper">
                 <div class="col s12">
-                    <a href="/" class="breadcrumb">teke</a>
-                    <a href="/iPhone" class="breadcrumb">iPhone</a>
-                    <a href="/iPhone 6s" class="breadcrumb" id="last-link">iPhone 6s</a>
+                    <a href="/" id="profile-main-page" class="breadcrumb">teke</a>
+                    <a href="/phone_category/{{ phone.category.id }}" class="breadcrumb">{{ phone.category }}</a>
+                    <a href="/profile/{{ phone.id }}" class="breadcrumb" id="last-link">{{ phone }}</a>
                 </div>
             </div>
         </nav>
@@ -27,8 +29,10 @@
                         <div class="card z-depth-0">
                             <div class="card-content">
                                 <div class="profile-img">
-                                    <img src="{% static 'front/category_phones.png' %}" class="responsive-img">
-                                    <img src="{% static 'front/category_iphones.png' %}" class="responsive-img">
+                                    <img src="{{ MEDIA_URL }}{{ phone.main_image }}" class="responsive-img">
+                                    {% for image in image_list%}
+                                    <img src="{{ MEDIA_URL }}{{ image.image }}" class="responsive-img">
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -38,14 +42,15 @@
             </div>
             <div class="col m4 s12 profile">
                 <div class="row">
-                    <p id="intro"><b>Apple iPhone 6s 16 GB.</b></p>
+                    <p id="intro"><b>{{ phone }} {% if phone.size_sku %}{{ phone.size_sku }}{% endif %}</b></p>
                     <div class="stars">
+                        {% for star in phone.average_review|round_off|checked_star_range %}
                         <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
+                        {% endfor %}
+                        {% for star in phone.average_review|round_off|unchecked_star_range %}
                         <span class="fa fa-star"></span>
-                        <span>3</span>
+                        {% endfor %}
+                        <span>{{ phone.average_review|round_off }}</span>
                     </div>
                 </div>
                 <div class="row">
@@ -64,15 +69,14 @@
                         <b>Key Features</b>
                     </p>
                     <ul style="list-style-type:disc"></ul>
-                        <li>4.7-inch Retina HD display.</li>
-                        <li>12-mexapixel iSight camera now includes Live Photos allowing you to capture a still photo, together with what happens
-                            before and after your picture.</li>
-                        <li>5-megapixel FaceTime HD camera.</li>
+                        {% for feature in features %}
+                        <li>{{ feature.feature }}.</li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
             <div class="col m3 s12 action">
-                <h5 class="green-text"><b>Ksh. 30,000</b></h5>
+                <h5 class="green-text"><b>{{ phone.currency }} {{ phone.price|intcomma }}</b></h5>
                 <p>
                     <i class="medium material-icons inline-icon">local_atm</i>
                     Pay cash on delivery
@@ -85,7 +89,9 @@
                     <i class="medium material-icons inline-icon">check</i>
                     Genuine product
                 </p>
-                <form class="col s12" action="#">
+                <form class="col s12" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="cartItem" name="cart_item_add" value="{{ phone.id }}">
                     <div class="row">
                         <div class="input-field col s12">
                             <select>
@@ -97,10 +103,9 @@
                                 <option value="5">5</option>
                             </select>
                         </div>
-
                     </div>
                     <div class="row">
-                        <button class="btn waves-effect waves-light green" type="submit" name="action">Add to cart
+                        <button class="btn waves-effect waves-light green" id="add-to-cart-button" type="submit" name="action">Add to cart
                             <i class="material-icons left">add_shopping_cart</i>
                         </button>
                     </div>
@@ -116,22 +121,12 @@
         </div>
         <div class="row">
             <div class="col m6 s12 details-container">
+                {% for info in infos %}
                 <div class="row detail">
-                    <div class="col s6" id="title">Network</div>
-                    <div class="col s6">GSM</div>
-                </div>
-                <div class="row detail">
-                    <div class="col s6" id="title">Speed</div>
-                    <div class="col s6">GSM</div>
-                </div>
-                <div class="row detail">
-                    <div class="col s6" id="title">Status</div>
-                    <div class="col s6">GSM</div>
-                </div>
-                <div class="row detail">
-                    <div class="col s6" id="title">Dimesions</div>
-                    <div class="col s6">GSM</div>
-                </div>
+                        <div class="col s6" id="title">{{ info.feature }}</div>
+                        <div class="col s6">{{ info.value }}</div>
+                    </div>
+                {% endfor %}
             </div>
             <div class="col m1"></div>
             <div class="col m5 warranty">
@@ -147,45 +142,23 @@
             <li class="collection-item avatar review-head">
                 <h5 class="left">Customer Reviews</h5>
             </li>
+            {% for customer_review in customer_reviews%}
             <li class="collection-item avatar">
                 <img src="{% static 'front/moto-g5.png' %}" alt="User 1" class="circle">
+                {% for star in customer_review.stars|checked_star_range %}
                 <i class="material-icons left checked">grade</i>
-                <i class="material-icons left checked">grade</i>
-                <i class="material-icons left checked">grade</i>
-                <i class="material-icons left checked">grade</i>
+                {% endfor %}
+                {% for star in customer_review.stars|unchecked_star_range %}
                 <i class="material-icons left">grade</i>
-                <br><br>
+                {% endfor %}
+                <br>
+                <br>
+                <b><em>{{ customer_review.owner.first_name }}  {{ customer_review.owner.last_name }}</em></b><br>
                 <p>
-                    22-08-2017<br>
-                    Wasee dundeni teke maze, ngai woi! </p>
-                <br
+                    {{ customer_review.time }}<br>
+                    {{ customer_review.comments }} </p>
             </li>
-            <li class="collection-item avatar">
-                <img src="{% static 'front/moto-g5.png' %}" alt="User 1" class="circle">
-                <i class="material-icons left checked">grade</i>
-                <i class="material-icons left checked">grade</i>
-                <i class="material-icons left checked">grade</i>
-                <i class="material-icons left checked">grade</i>
-                <i class="material-icons left checked">grade</i>
-                <br>
-                <br>
-                <p>
-                    22-08-2017<br>
-                    Wasee dundeni teke maze, ngai woi! </p>
-            </li>
-            <li class="collection-item avatar">
-                <img src="{% static 'front/moto-g5.png' %}" alt="User 1" class="circle">
-                <i class="material-icons left checked">grade</i>
-                <i class="material-icons left">grade</i>
-                <i class="material-icons left">grade</i>
-                <i class="material-icons left">grade</i>
-                <i class="material-icons left">grade</i>
-                <br>
-                <br>
-                <p>
-                    22-08-2017<br>
-                    Hao jamaa ni wakora! </p>
-            </li>
+            {%  endfor %}
             </ul>
     </div>
     </div>
