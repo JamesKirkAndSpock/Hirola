@@ -65,7 +65,8 @@ class BaseTestCase(TestCase):
         ItemIcon.objects.create(item_icon="iphone_icon")
         icon = ItemIcon.objects.get(item_icon="iphone_icon")
         PhoneList.objects.create(category=self.iphone, currency=self.currency_v,
-                                 price=300000, phone_name="Iphone 6", icon=icon)
+                                 price=300000, phone_name="Iphone 6", icon=icon,
+                                 main_image=image("test_image_5.png"))
         self.iphone_6 = PhoneList.objects.get(phone_name="Iphone 6")
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=250000, phone_name="Samsung J7")

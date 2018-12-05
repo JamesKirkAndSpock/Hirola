@@ -23,16 +23,6 @@ class PhoneCategoryForm(forms.ModelForm):
         return data
 
 
-class PhoneListForm(forms.ModelForm):
-
-    def clean_phone_image(self):
-        data = self.cleaned_data['phone_image']
-        width, height = get_image_dimensions(data)
-        if height > 150 or height < 150 or width > 81 or width < 70:
-            raise ValidationError(phone_list_error.format(height, width))
-        return data
-
-
 class HotDealForm(forms.ModelForm):
 
     def clean(self):

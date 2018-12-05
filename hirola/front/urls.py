@@ -8,7 +8,7 @@ urlpatterns = [
     path('', views.page_view, name='landing_page'),
     path('phone_category/<int:category_id>/', views.phone_category_view,
          name='phone_category'),
-    path('profile', views.phone_profile_view, name='profile'),
+    path('profile/<int:phone_id>/', views.phone_profile_view, name='profile'),
     path('phone_category/<int:category_id>/<int:size>/',
          views.phone_category_size_view, name='phone_category_size'),
     path('sizes', views.sizes, name='sizes'),
@@ -37,5 +37,4 @@ urlpatterns = [
     path('review', views.review_view, name='review'),
     path('review_submit', views.review_submit_view, name='review_submit'),
     path('privacy', views.privacy_view, name='privacy'),
-
 ]

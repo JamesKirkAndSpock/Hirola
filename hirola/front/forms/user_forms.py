@@ -107,6 +107,7 @@ class UserForm(forms.ModelForm):
             "<a href=\"{}\">this form</a>."
         )
     )
+
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'area_code', 'phone_number', 'password')
@@ -160,7 +161,8 @@ class OldPasswordForm(forms.Form):
     password.
     """
     error_messages = {
-        'password_incorrect': _("Your old password was entered incorrectly. Please enter it again."),
+        'password_incorrect': _("Your old password was entered incorrectly."
+                                " Please enter it again."),
     }
     old_password = forms.CharField(
         label=_("Old password"),

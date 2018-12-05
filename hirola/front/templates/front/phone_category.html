@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/slick-theme.css' %}" />
 {% endblock %}
 {% block content %}
+{% load stars_counter %}
 <div class="row main-container">
   <div class="container content">
     <div class="row breadcrumbs">
@@ -45,8 +46,8 @@
           <div class="col s12">
             <div class="card image-div z-depth-0">
               <div class="center">
-                <a href="#" class="image">
-                  <img src="{{ MEDIA_URL }}{{ phone.phone_image }}">
+                <a href="/profile/{{ phone.id }}/" class="image">
+                  <img src="{{ MEDIA_URL }}{{ phone.main_image }}">
                 </a>
               </div>
               <div class="card-content">

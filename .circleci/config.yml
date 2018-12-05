@@ -12,6 +12,14 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Selenium Setup
+          command: |
+            wget https://chromedriver.storage.googleapis.com/2.44/chromedriver_linux64.zip
+            unzip chromedriver_linux64.zip
+            sudo mv chromedriver /usr/bin/chromedriver
+            sudo chown root:root /usr/bin/chromedriver
+            sudo chmod +x /usr/bin/chromedriver
+      - run:
           name: run tests
           environment:
             SECRET_KEY: "simplestring"
@@ -29,6 +37,7 @@ jobs:
             python ./hirola/manage.py makemigrations front
             python ./hirola/manage.py migrate
             cd hirola && python manage.py test
+            python manage.py test --pattern=selenium*.py
           
 
   application-deployment:

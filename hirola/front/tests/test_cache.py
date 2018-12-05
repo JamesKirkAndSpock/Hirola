@@ -69,9 +69,8 @@ class LandingPageCacheTest(BaseTestCase):
 
     def test_cache_cleared_on_edit(self):
         '''
-        Test that the cache for landing page images is deleted when a landing
-        page image is edited. Ideally the test should operate in a scenario
-        where the cache already exists.
+        Test that the cache for landing page images is deleted when a landing page image is edited.
+        Ideally the test should operate in a scenario where the cache already exists.
         '''
         self.phone_category_cache_exists()
         category_edit_url = "/admin/front/phonecategory/{}/change/"
@@ -84,8 +83,8 @@ class LandingPageCacheTest(BaseTestCase):
 
     def test_cache_cleared_on_delete(self):
         '''
-        Test that the cache for social is deleted when a social media object is deleted. 
-        Ideally the test should operate in a scenario where the cache already exists.
+        Test that the cache for social is deleted when a social media object is deleted. Ideally
+        the test should operate in a scenario where the cache already exists.
         '''
         self.phone_category_cache_exists()
         self.iphone.delete()
@@ -121,7 +120,6 @@ class LandingPageCacheTest(BaseTestCase):
         hot_deal.delete()
         hd_cache_after_delete = cache.get('hot_deals')
         self.assertEqual(hd_cache_after_delete, None)
-
 
 
 class PhoneCategoryViewCacheTest(BaseTestCase):
@@ -313,8 +311,7 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
 
     def test_cache_size_created(self):
         '''
-        Test that the cache for sizes in a particular category is created by
-        visiting a view.
+        Test that the cache for sizes in a particular category is created by visiting a view.
         '''
         cache_before_access = cache.get('sizes_{}'.format(self.iphone.pk))
         self.assertEqual(cache_before_access, None)
@@ -324,8 +321,8 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
 
     def test_deletion_of_category_size(self):
         '''
-        Test that when a size is deleted with a particular Category that the
-        cache for size with the category id is deleted.
+        Test that when a size is deleted with a particular Category that the cache for size with
+        the category id is deleted.
         '''
         self.client.get('/phone_category/{}/'.format(self.iphone.pk))
         cache_after_access = cache.get('sizes_{}'.format(self.iphone.pk))
@@ -336,8 +333,7 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
 
     def test_deletion_of_non_category_size(self):
         '''
-        Test that this process does not affect the application deletion in any
-        negative manner.
+        Test that this process does not affect the application deletion in any negative manner.
         '''
         empty_size = PhoneMemorySize.objects.create(abbreviation="GB",
                                                     size_number=8)
@@ -350,8 +346,8 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
 
     def test_addition_of_size_with_category(self):
         '''
-        Test that when a size category is being added, the cache of sizes with
-        the respective category id needs to be deleted.
+        Test that when a size category is being added, the cache of sizes with the respective
+        category id needs to be deleted.
         '''
         self.client.get('/phone_category/{}/'.format(self.iphone.pk))
         cache_after_access = cache.get('sizes_{}'.format(self.iphone.pk))
@@ -558,8 +554,19 @@ class FooterViewCacheTest(BaseTestCase):
 
 def phone_form(category, currency, size):
     mock_image = image('test_image_5.png')
-    form = {"phone_image": mock_image, "phone_name": "Phone_ImageV",
-            "price": 250, "category": category,
-            "currency": currency,
-            "size_sku": size}
+    icon = ItemIcon.objects.filter(item_icon="android").first()
+    if not icon:
+        ItemIcon.objects.create(item_icon="android")
+        icon = ItemIcon.objects.filter(item_icon="android").first()
+    form = {"main_image": mock_image, "phone_name": "Phone_ImageV", "price": 250, 
+            "category": category, "currency": currency, "size_sku": size, "icon": icon.id,
+            "average_review": 5.0, "phone_information-TOTAL_FORMS": 1,
+            "phone_information-INITIAL_FORMS": 0, "phone_information-MIN_NUM_FORMS": 0,
+            "phone_information-MAX_NUM_FORMS": 1000, "phone_images-TOTAL_FORMS": 1,
+            "phone_images-INITIAL_FORMS": 0, "phone_images-MIN_NUM_FORMS": 0,
+            "phone_images-MAX_NUM_FORMS": 1000, "phone_reviews-TOTAL_FORMS": 1,
+            "phone_reviews-INITIAL_FORMS": 0, "phone_reviews-MIN_NUM_FORMS": 0,
+            "phone_reviews-MAX_NUM_FORMS": 1000, "phone_features-TOTAL_FORMS": 1,
+            "phone_features-INITIAL_FORMS": 0, "phone_features-MIN_NUM_FORMS": 0,
+            "phone_features-MAX_NUM_FORMS": 1000}
     return form

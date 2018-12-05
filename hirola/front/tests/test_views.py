@@ -1,12 +1,12 @@
 from front.base_test import *
 from front.errors import *
 from .test_users import UserSignupTestCase
+from .test_cache import phone_form
 
 
 class LandingPageViewsTestCase(BaseTestCase):
     def setUp(self):
         super(LandingPageViewsTestCase, self).setUp()
-
 
     def test_hot_deals_rendering(self):
         '''
@@ -32,7 +32,7 @@ class LandingPageViewsTestCase(BaseTestCase):
         mock_image = image('test_image_1.jpeg')
         form = {"category_image": mock_image, "phone_category": "CategoryTest1"}
         response = self.elena.post('/admin/front/phonecategory/add/', form)
-        self.assertIn(str.encode(category_image_error.format(959, 1280 )),
+        self.assertIn(str.encode(category_image_error.format(959, 1280)),
                       response.content)
         self.assertEqual(response.status_code, 200)
         mock_image_2 = image('test_image_6.png')
@@ -46,7 +46,6 @@ class LandingPageViewsTestCase(BaseTestCase):
         self.elena.post('/admin/front/phonecategory/add/', form_2)
         response = self.client.get("/")
         self.assertContains(response, "src=\"/media/phone_categories/test_image_6")
-
 
 
 class PhoneCategoryViewsTestCase(BaseTestCase):
@@ -82,7 +81,8 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         Test that Phone categories are being displayed on the front page of
         the application
         '''
-        self.elena.post(self.add_url, {'phone_category': "Extra", "category_image": self.category_image})
+        self.elena.post(self.add_url, {'phone_category': "Extra",
+                        "category_image": self.category_image})
         response = self.client.get('/')
         self.assertContains(response, "Iphone")
         self.assertContains(response, "Android")
@@ -125,26 +125,13 @@ class PhoneListViewsTestCase(BaseTestCase):
                                    .format(self.iphone.pk))
         self.assertContains(response, "£$Shs")
 
-    def test_limit_on_image_size(self):
-        '''
-        Test that an image of dimensions 225 by 225 cannot be added and that it
-        gives the correct error message.
-        '''
-        mock_image = image('test_image_4.jpeg')
-        form = {"phone_image": mock_image, "phone_name": "PhoneTest1"}
-        response = self.elena.post('/admin/front/phonelist/add/', form)
-        self.assertIn(str.encode(phone_list_error.format(225, 225)),
-                      response.content)
-
     def test_creation_of_entry(self):
         '''
         Test that an image can be created successfully for a phone list.
         '''
         mock_image = image('test_image_5.png')
-        form = {"phone_image": mock_image, "phone_name": "Phone_ImageV",
-                "price": 250, "category": self.android.pk,
-                "currency": self.currency_v.pk,
-                "size_sku":  self.size_android.pk}
+        form = phone_form(self.iphone.pk, self.currency_v.pk,
+                          self.size_iphone.pk)
         response = self.elena.post('/admin/front/phonelist/add/', form,
                                    follow=True)
         phone_object = PhoneList.objects.get(phone_name="Phone_ImageV")
@@ -174,7 +161,7 @@ class ClientViewsTestCase(BaseTestCase):
 
     def create_phone(self, image_name, category, size, name, currency):
         mock_image = image(image_name)
-        PhoneList.objects.create(category=category, phone_image=mock_image,
+        PhoneList.objects.create(category=category, main_image=mock_image,
                                  phone_name=name, currency=currency, price=25,
                                  size_sku=size)
 
@@ -302,7 +289,7 @@ class FooterViewTestCase(BaseTestCase):
         self.elena.post("/admin/front/socialmedia/add/", data)
         response = self.elena.get("/admin/front/socialmedia/")
         self.assertContains(response, "Example")
-        
+
 
 class UserDashboardTestCase(BaseTestCase):
 
@@ -321,7 +308,7 @@ class UserDashboardTestCase(BaseTestCase):
             - The page contains all the Phone Categories of the site
             - The page contains Social media links
             - The user is able to see his or her Firstname, LastName, Phone
-            number, Area Code, Country 
+            number, Area Code, Country
         '''
         response = self.uriel.get('/dashboard')
         self.assertContains(response, "Iphone")
@@ -336,12 +323,12 @@ class UserDashboardTestCase(BaseTestCase):
     def test_review_data_on_dashboard(self):
         '''
         Test that when a logged in user accesses the dashboard that:
-            - The user is able to view his or her reviews on an item he or she 
+            - The user is able to view his or her reviews on an item he or she
             bought.
         '''
         (owner, order) = self.generate_review_data()
         data = {"stars": 5, "comments": "Great job guys", "owner": owner.id,
-        "orders": order.id }
+                "phone": self.samsung_j_7.id}
         response = self.elena.post('/admin/front/review/add/', data)
         self.assertEqual(response.status_code, 302)
         get_response = self.uriel.get('/dashboard')
@@ -357,7 +344,7 @@ class UserDashboardTestCase(BaseTestCase):
         data = []
         for i in range(5):
             data.append({"stars": i+1, "comments": "Great job guys", "owner": owner.id,
-            "orders": order.id })
+                         "phone": self.iphone_6.id})
         checked_star = (
             "<i class=\"material-icons left checked\">grade</i>\n             "
             "               \n                            "
@@ -462,20 +449,17 @@ class UserDashboardTestCase(BaseTestCase):
             - He is redirected to the login page
         '''
         self.uriel.post('/old_password', {"old_password": "*&#@&!*($)lp"})
-        response = self.uriel.post('/change_password',
-            {"new_password1": "!@£$!@£$!@£$£!@$!@£$!@3",
-             "new_password2": "!@£$!@£$!@£$£!@$!@£$!@3"})
+        response = self.uriel.post('/change_password', {"new_password1": "!@£$!@£$!@£$£!@$!@£$!@3",
+                                   "new_password2": "!@£$!@£$!@£$£!@$!@£$!@3"})
         self.assertRedirects(response, "/login", 302)
 
     def generate_review_data(self):
         owner = User.objects.get(email="urieltimanko@example.com")
-        PhoneList.objects.create(category=self.iphone,
-            phone_image=image('test_image_5.png'),
-            phone_name="Samsung", currency=self.currency_v,
-            price=25000)
+        PhoneList.objects.create(category=self.iphone, main_image=image('test_image_5.png'),
+                                 phone_name="Samsung", currency=self.currency_v, price=25000)
         OrderStatus.objects.create(status="Pending")
         phone = PhoneList.objects.get(phone_name="Samsung")
         status = OrderStatus.objects.get(status="Pending")
-        Order.objects.create(owner=owner, date="2018-10-13", phone=phone , status=status)
+        Order.objects.create(owner=owner, date="2018-10-13", phone=phone, status=status)
         order = Order.objects.get(owner=owner)
         return (owner, order)

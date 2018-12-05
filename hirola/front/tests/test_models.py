@@ -38,7 +38,8 @@ class PhoneCategoryModelsTestCase(BaseTestCase):
         '''
         mock_image = image('test_image_6.png')
         form = {"phone_category": "Iphone", "category_image": mock_image}
-        response = self.elena.post("/admin/front/phonecategory/{}/change/".format(self.iphone.pk), form)
+        response = self.elena.post("/admin/front/phonecategory/{}/change/".format(self.iphone.pk),
+                                   form)
         self.assertRedirects(response, "/admin/front/phonecategory/", 302)
 
 
