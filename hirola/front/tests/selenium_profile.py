@@ -1,9 +1,7 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from .base_selenium import *
 
 
-class PhoneProfileLink(StaticLiveServerTestCase):
+class PhoneProfileLink(StaticLiveServerTestCase, TestCase):
     '''
     Test that buttons, and links on the profile page will redirect to the
     page intended
