@@ -18,7 +18,8 @@ class UserSignupTestCase(BaseTestCase):
         '''
         user_data = self.generate_user_data({})
         response = self.client.post('/signup', user_data)
-        self.assertRedirects(response, "/", 302)
+        html_content = "We have sent you a link to your email to activate your registration"
+        self.assertContains(response, html_content)
         user = User.objects.filter(first_name="Uriel").first()
         self.assertEqual(user.last_name, "Timanko")
         self.assertEqual(user.email, "urieltimanko@example.com")
@@ -91,7 +92,8 @@ class UserSignupTestCase(BaseTestCase):
         '''
         user_data = self.generate_user_data({})
         response = self.client.post('/signup', user_data)
-        self.assertRedirects(response, "/", 302)
+        html_content = "We have sent you a link to your email to activate your registration"
+        self.assertContains(response, html_content)
         user_2 = self.generate_user_data({"first_name": "Another",
                                           "last_name": "User"})
         response = self.client.post('/signup', user_2)
@@ -122,7 +124,11 @@ class UserLoginTestCase(BaseTestCase):
         super(UserLoginTestCase, self).setUp()
         user_data = UserSignupTestCase().generate_user_data({})
         response = self.client.post('/signup', user_data)
-        self.assertRedirects(response, "/", 302)
+        html_content = "We have sent you a link to your email to activate your registration"
+        self.assertContains(response, html_content)
+        user = User.objects.get(email="urieltimanko@example.com")
+        user.is_active = True
+        user.save()
 
     def test_successful_account_creation(self):
         '''

@@ -1,6 +1,5 @@
 from front.forms.base_form import *
-from django.contrib.auth import authenticate
-from django.contrib.auth import password_validation
+from django.contrib.auth import authenticate, password_validation
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
 from twilio.rest import Client
@@ -9,6 +8,12 @@ from front.models import AreaCode
 from front.twilio import TwilioValidation
 from front.models import User
 from django.contrib.auth.forms import PasswordChangeForm
+from django.template import loader
+from django.core.mail import EmailMultiAlternatives
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from front.token import account_activation_token
 
 
 class UserCreationForm(forms.ModelForm):
@@ -48,6 +53,30 @@ class UserCreationForm(forms.ModelForm):
                 code='password_mismatch',
             )
         return password2
+
+    def send_email(self, request, user):
+        current_site = get_current_site(request)
+        context = {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+            'token': account_activation_token.make_token(user),
+            'protocol': 'https' if request.is_secure() else 'http',
+        }
+        to_email = self.cleaned_data.get('email')
+        subject = loader.render_to_string("registration/signup_activation_subject.txt", context)
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string("registration/signup_activation_email.html", context)
+        email_message = EmailMultiAlternatives(subject, body, None, [to_email])
+        email_message.send()
+
+    def get_user(self, uidb64):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        return user
 
     def clean_phone_number(self):
         area_code = self.cleaned_data.get("area_code")

@@ -37,4 +37,6 @@ urlpatterns = [
     path('review', views.review_view, name='review'),
     path('review_submit', views.review_submit_view, name='review_submit'),
     path('privacy', views.privacy_view, name='privacy'),
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.activate, name='activate'),
 ]

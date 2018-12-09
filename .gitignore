@@ -18,7 +18,11 @@ test_image_4_*
 test_image_5_*
 test_image_6_*
 test_image_7_*
+phones/
+phone_categories
 migrations
 Makefile
 # User Data
 hirola/front/fixtures/data.json
+# test emails
+email/
