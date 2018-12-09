@@ -297,9 +297,12 @@ class UserDashboardTestCase(BaseTestCase):
         super(UserDashboardTestCase, self).setUp()
         user_data = UserSignupTestCase().generate_user_data({})
         response = self.client.post('/signup', user_data)
-        self.assertRedirects(response, "/", 302)
+        html_content = "We have sent you a link to your email to activate your registration"
+        self.assertContains(response, html_content)
         self.uriel = Client()
         user = User.objects.get(email="urieltimanko@example.com")
+        user.is_active = True
+        user.save()
         self.uriel.force_login(user)
 
     def test_user_data_on_dashboard(self):

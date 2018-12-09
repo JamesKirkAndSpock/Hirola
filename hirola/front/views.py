@@ -11,6 +11,7 @@ from django.contrib.auth.views import (
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
+from .token import account_activation_token
 from .decorators import old_password_required, remember_user
 
 
@@ -167,14 +168,26 @@ def signup_view(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('/')
+            user = form.save(commit=False)
+            user.is_active = False
+            user.save()
+            form.send_email(request, user)
+            return render(request, 'registration/signup_email_sent.html')
         args = {'form':  form, 'social_media': social_media, 'categories': phone_categories}
         return render(request, 'front/signup.html', args)
     else:
         args = {'form':  UserCreationForm(), 'social_media': social_media,
                 'categories': phone_categories}
         return render(request, 'front/signup.html', args)
+
+
+def activate(request, uidb64, token):
+    user = UserCreationForm().get_user(uidb64)
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return redirect('/dashboard')
+    return render(request, 'registration/signup_activation_invalid.html')
 
 
 def imei_view(request):
