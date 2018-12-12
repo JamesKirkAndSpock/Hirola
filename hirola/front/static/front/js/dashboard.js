@@ -41,3 +41,9 @@ function areaCodeSelector() {
         }
     })
 }
+
+// When the user clicks on <div>, open the popup
+function openPopup() {
+  var popup = document.getElementById("inactiveEmailPopup");
+  popup.classList.toggle("show");
+}

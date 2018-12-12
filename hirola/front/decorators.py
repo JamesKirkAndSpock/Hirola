@@ -21,3 +21,13 @@ def remember_user(function=None):
             return function(request, *args, **kwargs)
         return function(request, *args, **kwargs)
     return decorator
+
+
+def is_change_allowed_required(function=None):
+    @wraps(function)
+    def decorator(request, *args, **kwargs):
+        if request.user.is_change_allowed:
+            return function(request, *args, **kwargs)
+        else:
+            return redirect('/confirm_user')
+    return decorator

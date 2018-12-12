@@ -181,33 +181,28 @@
                     </div>
                     <div class="row field-row">
                         <form class="col s12" action="/dashboard">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
                             <div class="row" id="mail-output">
                                 <p>
                                     <b>Email</b>
                                 </p>
                                 <p>
-                                    makos.makende@gmail.com
+                                    {{ user.email }}
                                     <span class="right">
-                                        <a href="#" onclick="editName('mail-input', 'mail-output');">
+                                        <a href="/confirm_user">
                                             <i class="material-icons right">edit</i>
                                         </a>
                                     </span>
                                 </p>
-                            </div>
-                            <div class="row hidden-input" id="mail-input">
-                                <div class="input-field col s6">
-                                    <input id="email" type="text" placeholder="Email" class="validate">
-                                </div>
-                                <div class="input-field col s3">
-                                    <button class="btn waves-effect waves-light" type="submit" name="action">save
-                                        <i class="material-icons right">save</i>
+                                {% if user.change_email %}
+                                <p>
+                                    <span style="background-color: LightGray">{{ user.change_email }}</span>
+                                    <button class="popup" onmouseover="openPopup()" type="button">In active!
+                                        <span class="popuptext" id="inactiveEmailPopup">Email not activated !</span>
                                     </button>
-                                </div>
-                                <div class="input-field col s3">
-                                    <button class="btn waves-effect waves-light" type="button" onclick="editName('mail-output', 'mail-input');">cancel
-                                        <i class="material-icons right">cancel</i>
-                                    </button>
-                                </div>
+                                </p>
+                                {% endif %}
                             </div>
                         </form>
                     </div>

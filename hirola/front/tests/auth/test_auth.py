@@ -1,8 +1,7 @@
 from front.base_test import BaseTestCase
-from django.test import override_settings, RequestFactory
+from django.test import RequestFactory
 from front.forms.user_forms import UserCreationForm, loader, get_current_site, urlsafe_base64_encode, force_bytes, account_activation_token
 from front.models import User, AreaCode
-from hirola.settings.base import BASE_DIR
 from django.core import mail
 from django.conf import settings
 import os
