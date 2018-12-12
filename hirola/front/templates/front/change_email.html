@@ -1,0 +1,39 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %} />
+{% endblock %}
+{% block content%}
+<div class="container main-content">
+    <div class="row content">
+        <div class="col m2"></div>
+        <div class="col m8">
+            <div class="col s12 form-content">
+                <h5>Please provide new email for {{ user.email }}</h5>
+                <form method="post">
+                  {% csrf_token %}
+                    <div class="row">
+                        <div class="col s12">
+                            {{ form.email.errors }}
+                        </div>
+                        <div class="input-field col s12">
+                            {{ form.email }}
+                            <label for="{{ form.email.id_for_label }}">New Email</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <button class="btn waves-effect waves-light red accent-4" type="submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col m2"></div>
+    </div>
+</div>
+{% block footer %} 
+{% include 'front/footer.html' %} 
+{% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+{% endblock %} 
+{% endblock %}

@@ -13,7 +13,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
-from front.token import account_activation_token
+from front.token import account_activation_token, email_activation_token
 
 
 class UserCreationForm(forms.ModelForm):
@@ -238,6 +238,9 @@ class AuthenticationForm(forms.Form):
             "fields may be case-sensitive."
         ),
         'inactive': _("This account is inactive."),
+        'invalid_email': _(
+            "You entered an incorrect email!!!"
+        ),
     }
 
     def __init__(self, request=None, *args, **kwargs):
@@ -286,3 +289,59 @@ class AuthenticationForm(forms.Form):
             self.error_messages['invalid_login'],
             code='invalid_login',
         )
+
+
+class ChangeEmailForm(forms.ModelForm):
+    """
+    A form that lets a user change their email
+    """
+
+    error_messages = {
+        'invalid_email': _(
+            "The email you have entered looks similar to your former email!"
+        ),
+    }
+
+    class Meta:
+        model = User
+        fields = ('email',)
+
+    def send_email(self, request, user):
+        current_site = get_current_site(request)
+        context = {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+            'token': email_activation_token.make_token(user),
+            'protocol': 'https' if request.is_secure() else 'http',
+        }
+        to_email = self.cleaned_data.get('email')
+        subject = loader.render_to_string("front/change_email_activation_subject.txt", context)
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string("front/change_email_activation_email.html", context)
+        email_message = EmailMultiAlternatives(subject, body, None, [to_email])
+        email_message.send()
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if self.initial["email"] == email:
+            raise forms.ValidationError(
+                self.error_messages['invalid_email'],
+                code='invalid_email',
+            )
+        return email
+
+
+class EmailAuthenticationForm(AuthenticationForm):
+    """
+    Base class for authenticating users.
+    """
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email != self.request.user.email:
+            raise forms.ValidationError(
+                self.error_messages['invalid_email'],
+                code='invalid_email',
+            )
+        return email

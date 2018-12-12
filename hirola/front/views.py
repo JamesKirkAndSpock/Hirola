@@ -4,15 +4,18 @@ from django.http import JsonResponse
 from .models import *
 from django.views import generic
 from django.core.cache import cache
-from .forms.user_forms import UserCreationForm, AuthenticationForm, UserForm, OldPasswordForm
+from .forms.user_forms import (
+    UserCreationForm, AuthenticationForm, UserForm, OldPasswordForm, ChangeEmailForm,
+    EmailAuthenticationForm)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
-from .token import account_activation_token
-from .decorators import old_password_required, remember_user
+from .token import account_activation_token, email_activation_token
+from .decorators import old_password_required, remember_user, is_change_allowed_required
+from django.utils import timezone
 
 
 def page_view(request):
@@ -253,6 +256,60 @@ def old_password_view(request):
     args = {"form": OldPasswordForm(request.user), 'social_media': social_media,
             'categories': phone_categories}
     return render(request, 'front/old_password.html', args)
+
+
+@login_required
+def confirm_user_view(request):
+    (phone_categories, social_media) = various_caches()
+    if request.method == 'POST':
+        form = EmailAuthenticationForm(request, request.POST)
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(request, email=email, password=password)
+        if form.is_valid() and user is not None:
+            user = User.objects.get(email=request.user.email)
+            user.is_change_allowed = True
+            user.save()
+            return redirect('/change_email')
+        args = {'form':  form, 'social_media': social_media, 'categories': phone_categories}
+        return render(request, 'front/confirm_user.html', args)
+    args = {"form": EmailAuthenticationForm(), 'social_media': social_media,
+            'categories': phone_categories}
+    return render(request, 'front/confirm_user.html', args)
+
+
+@login_required
+@is_change_allowed_required
+def change_email_view(request):
+    (phone_categories, social_media) = various_caches()
+    if request.method == 'POST':
+        form = ChangeEmailForm(request.POST, instance=request.user)
+        user = User.objects.get(email=request.user.email)
+        if form.is_valid() and user is not None:
+            user.is_change_allowed = False
+            user.change_email = form.cleaned_data.get('email')
+            user.change_email_tracker = timezone.now()
+            user.save()
+            form.send_email(request, user)
+            return render(request, 'front/change_email_sent.html')
+        args = {"form": form, 'social_media': social_media, 'categories': phone_categories}
+        return render(request, 'front/change_email.html', args)
+    args = {"form": ChangeEmailForm(), 'social_media': social_media,
+            'categories': phone_categories}
+    return render(request, 'front/change_email.html', args)
+
+
+def activate_new_email(request, uidb64, token):
+    user = UserCreationForm().get_user(uidb64)
+    if user is not None and email_activation_token.check_token(user, token):
+        user.former_email = user.email
+        user.email = user.change_email
+        user.change_email = None
+        user.is_change_allowed = True
+        user.change_email_tracker = None
+        user.save()
+        return redirect('/dashboard')
+    return render(request, 'registration/signup_activation_invalid.html')
 
 
 def various_caches():

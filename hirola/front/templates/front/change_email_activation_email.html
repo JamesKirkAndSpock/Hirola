@@ -1,0 +1,9 @@
+{% autoescape off %}
+Hi {{ user.first_name }},
+Please click on the link below to confirm your registration,
+{{ protocol }}://{{ domain }}{% url 'front:activate_new_email' uidb64=uid token=token %}
+
+Kind Regards,
+
+The Teke Team.
+{% endautoescape %}

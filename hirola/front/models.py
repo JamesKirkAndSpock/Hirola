@@ -69,6 +69,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     area_code = models.ForeignKey(AreaCode, on_delete=models.SET_NULL, null=True, blank=True)
     phone_number = models.IntegerField(blank=True, null=True)
     photo = models.ImageField(blank=True, null=True)
+    change_email = models.EmailField(_('email address'), unique=True, error_messages={
+            'unique': _("The email address you entered has already been registered.",), },
+                        max_length=255, default=None, blank=True, null=True)
+    change_email_tracker = models.DateTimeField(_('change_email_tracker'), default=None, blank=True,
+                                                null=True)
+    former_email = models.EmailField(_('email address'), max_length=255, default=None, blank=True,
+                                     null=True)
 
     objects = UserManager()
 
