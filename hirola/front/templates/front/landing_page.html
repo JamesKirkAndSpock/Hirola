@@ -52,11 +52,11 @@
           <div class="col s12 m12">
             <div class="card">
               <div class="card-content center">
-                <a href="#user"><img class="responsive-img" src="{{ MEDIA_URL }}{{ hot_deal.item.phone_image }}"></a><br>
+                <a href="/profile/{{ hot_deal.item.pk }}/" ><img class="responsive-img" src="{{ MEDIA_URL }}{{ hot_deal.item.main_image }}"></a><br>
                 <span class="card-title-text"><b>{{ hot_deal.item }}</b></span>
               </div>
               <div class="card-action">
-                    <a href="#">
+                    <a href="/profile/{{ hot_deal.item.pk }}/">
                     <p><i id="quality-icon" class="material-icons grey-text right">{{ hot_deal.item.icon}}</i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
                     </a>
               </div>
