@@ -20,6 +20,8 @@ class LandingPageViewsTestCase(BaseTestCase):
         self.assertContains(response, "Iphone 6")
         self.assertContains(response, 30)
         self.assertContains(response, "iphone_icon")
+        self.assertContains(response, "/media/phones/test_image_5_")
+        self.assertContains(response, "/profile/{}/".format(self.iphone_6.pk))
 
     def test_limit_on_image_size(self):
         '''
