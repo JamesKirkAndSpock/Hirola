@@ -26,7 +26,6 @@ $(document).ready(function(){
   $('.collapsible').collapsible();
 });
 
-// trigger dropdown
 // Reinitialize the labels on the page for dynamically adding inputs
 $(document).ready(function () {
     M.updateTextFields();
