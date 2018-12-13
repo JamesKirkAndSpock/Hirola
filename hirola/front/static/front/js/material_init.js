@@ -33,9 +33,9 @@ $(document).ready(function () {
 });
 
 // initialize the materialize select
-$(document).ready(function () {
-    $('select').material_select();
-});
+ $(document).ready(function () {
+     $('select').formSelect();
+ });
 
 // trigger modal
 $(document).ready(function () {

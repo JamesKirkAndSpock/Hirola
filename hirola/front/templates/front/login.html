@@ -50,11 +50,17 @@
                     </div>
                     <div class="row check">
                         <div class="col s6">
-                            <input type="checkbox" name="remember-user" class="filled-in" id="filled-in-box" />
-                            <label for="filled-in-box">Remember me</label>
+                            <p>
+                                <label>
+                                    <input type="checkbox" class="filled-in" checked="checked" />
+                                    <span>Remember me</span>
+                                </label>
+                            </p>
                         </div>
                         <div class="col s6">
-                            <a href="{% url 'front:password_reset' %}" class="right" style="color:red;">Forgot password?</a>
+                            <p>
+                                <a href="{% url 'front:password_reset' %}" class="right red-text" style="color:red;">Forgot password?</a>
+                            </p>
                         </div>
                     </div>
                     <div class="row center">
@@ -79,7 +85,7 @@
                             </div>
                         </div> -->
                         <div class="row">
-                            <p class="center" style="margin-bottom: 20px;">Don't have an account? <a href="{% url 'front:signup' %}" style="color:green;">sign up</a></p>
+                            <p class="center" style="margin-bottom: 20px;">Don't have an account? <a href="{% url 'front:signup' %}" class="red-text" style="color:green;">sign up</a></p>
                         </div>
                     </div>
                 </form>
