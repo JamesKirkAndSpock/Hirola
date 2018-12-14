@@ -14,7 +14,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from .token import account_activation_token, email_activation_token
-from .decorators import old_password_required, remember_user, is_change_allowed_required
+from .decorators import (
+    old_password_required, remember_user, is_change_allowed_required, get_request_inhibit)
 from django.utils import timezone
 
 
@@ -347,3 +348,11 @@ def review_submit_view(request):
 
 def privacy_view(request):
     return render(request, 'front/privacy.html')
+
+
+@get_request_inhibit
+def search_view(request):
+    search_name = request.POST.get("search-name")
+    results = PhoneList.objects.filter(phone_name__icontains=search_name)
+    args = {"results": results}
+    return render(request, 'front/search.html', args)

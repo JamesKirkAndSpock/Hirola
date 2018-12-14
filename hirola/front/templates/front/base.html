@@ -37,9 +37,10 @@
                           </div>
                       </div>
                       <div class="col m8 s12">
-                        <form>
+                        <form method="POST" action="/search">
+                            {% csrf_token %}
                             <div class="input-field">
-                                <input id="search" type="search" required placeholder="Search for android, iphones, tablets or more...">
+                                <input id="search" name="search-name" type="search" required placeholder="Search for android, iphones, tablets or more...">
                                 <label class="label-icon" for="search">
                                     <i class="material-icons green-text">search</i>
                                 </label>
