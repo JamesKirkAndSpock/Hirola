@@ -165,8 +165,8 @@ class PhoneProfileLogic(BaseTestCase):
 
     def test_non_existent_phone_profile(self):
         '''
-        Tes that when a customer looks fro a non existent phone profile
-        - That he gets a 404 error message
+        Test that when a customer looks for a non existent phone profile
+            - That he gets a 404 error message
         '''
-        response = self.client.get("/profile/123/")
+        response = self.client.get("/profile/123456789/")
         self.assertRedirects(response, "/error", 302)
