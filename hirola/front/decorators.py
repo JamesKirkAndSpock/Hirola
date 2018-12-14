@@ -31,13 +31,3 @@ def is_change_allowed_required(function=None):
         else:
             return redirect('/confirm_user')
     return decorator
-
-
-def get_request_inhibit(function=None):
-    @wraps(function)
-    def decorator(request, *args, **kwargs):
-        if request.method == "GET":
-            return redirect("/")
-        else:
-            return function(request, *args, **kwargs)
-    return decorator

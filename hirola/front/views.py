@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
 from .token import account_activation_token, email_activation_token
 from .decorators import (
-    old_password_required, remember_user, is_change_allowed_required, get_request_inhibit)
+    old_password_required, remember_user, is_change_allowed_required)
 from django.utils import timezone
 
 
@@ -350,9 +350,19 @@ def privacy_view(request):
     return render(request, 'front/privacy.html')
 
 
-@get_request_inhibit
 def search_view(request):
-    search_name = request.POST.get("search-name")
-    results = PhoneList.objects.filter(phone_name__icontains=search_name)
-    args = {"results": results}
+    if request.method == "POST":
+        search_name = request.POST.get("search-name")
+        results = list(PhoneList.objects.filter(phone_name__icontains=search_name))
+        results += list(PhoneList.objects.filter(category__phone_category__icontains=search_name))
+        results += list(PhoneList.objects.filter(phone_features__feature__icontains=search_name))
+        results += list(PhoneList.objects.filter(phone_information__feature__icontains=search_name))
+        results += list(PhoneList.objects.filter(phone_information__value__icontains=search_name))
+        results += list(PhoneList.objects.filter(phone_reviews__comments__icontains=search_name))
+        results += list(PhoneList.objects.filter(price__icontains=search_name))
+        results += list(PhoneList.objects.filter(size_sku__size_number__icontains=search_name))
+        results = list(set(results))
+        args = {"results": results, "instructions": False}
+        return render(request, 'front/search.html', args)
+    args = {"instructions": True}
     return render(request, 'front/search.html', args)
