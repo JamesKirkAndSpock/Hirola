@@ -92,3 +92,12 @@ class HotDealModelsTestCase(BaseTestCase):
         response = self.elena.post("/admin/front/hotdeal/add/", {"item": self.iphone_6.pk})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, hot_deal_error.format(self.iphone_6))
+
+
+class NewsItemsTestCase(BaseTestCase):
+    def setUp(self):
+        super(NewsItemsTestCase, self).setUp()
+
+    def test_object_returned_correct_link(self):
+        """Test that the object returns the correct link."""
+        self.assertEqual(str(self.link), "https://www.sde.com")
