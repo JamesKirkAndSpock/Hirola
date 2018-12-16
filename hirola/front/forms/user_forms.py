@@ -143,6 +143,7 @@ class UserForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["area_code"].required = False
 
     def save(self, commit=True):
         """

@@ -48,9 +48,6 @@ p {
     padding-left: 50px;
 }
 
-#orders {
-    /* background-color: rebeccapurple; */
-}
 
 .tab-heading {
     border-bottom: solid 0.05em;
@@ -94,10 +91,6 @@ p {
 #order a {
     text-decoration: underline !important;
     text-transform: capitalize !important;
-}
-
-.material-icons {
-    color: #4caf50;
 }
 
 #order a {

@@ -73,10 +73,6 @@ class PhoneListModelTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             PhoneList.objects.create(price=10)
 
-    def test_limit_of_phone_name(self):
-        with self.assertRaises(DataError):
-            PhoneList.objects.create(phone_name="abcdefghijklmnopqrstuvwxy")
-
 
 class HotDealModelsTestCase(BaseTestCase):
     def setUp(self):
@@ -101,3 +97,40 @@ class NewsItemsTestCase(BaseTestCase):
     def test_object_returned_correct_link(self):
         """Test that the object returns the correct link."""
         self.assertEqual(str(self.link), "https://www.sde.com")
+class UserModelsTestCase(BaseTestCase):
+
+    def setUp(self):
+        self.area_code = get_default()
+        super(UserModelsTestCase, self).setUp()
+
+    def test_admin_created_with_area_code(self):
+        '''
+        Test that when an admin is created:
+            - The admin automatically gets assigned the default area code. This is to prevent any
+            bugs that may be created in case an admin visits the dashboard page.
+        '''
+        admin = User.objects.get(email='test@example.com')
+        self.assertEqual(admin.area_code, self.area_code)
+
+    def test_user_created_with_area_code(self):
+        '''
+        Test that when a normal user of the webapp gets created:
+            - That the user automatically gets assigned the default area code.
+        '''
+        user = User.objects.create_user(email="equatorial@gmail.com", password="secret")
+        self.assertEqual(user.area_code, self.area_code)
+
+
+class AreaCodeModelsTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(AreaCodeModelsTestCase, self).setUp()
+
+    def test_area_code_uniqueness(self):
+        '''
+        Test that when you create an area code that has either the same area code number or
+        country:
+            - That an error is raised on uniqueness
+        '''
+        with self.assertRaises(IntegrityError):
+            AreaCode.objects.create(area_code=254, country="Kenya")
