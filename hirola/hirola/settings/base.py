@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'django_nose',
 ]
 
 MIDDLEWARE = [
@@ -149,5 +148,3 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
 LOGIN_URL='/login'
-
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
