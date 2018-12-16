@@ -468,3 +468,18 @@ class UserDashboardTestCase(BaseTestCase):
         Order.objects.create(owner=owner, date="2018-10-13", phone=phone, status=status)
         order = Order.objects.get(owner=owner)
         return (owner, order)
+
+
+class NewsItemTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(NewsItemTestCase, self).setUp()
+
+    def test_news_items_rendered(self):
+        """
+        Test that news item from db has been rendered on the newd page.
+        """
+        response = self.client.get('/news')
+        self.assertContains(response, 'Teke rocks')
+        self.assertContains(response, 'The standard online')
+        self.assertContains(response, 'https://www.sde.com')

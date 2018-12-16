@@ -18,80 +18,90 @@
     <title>{% block title %}Hirola!{% endblock %}</title>
     <!-- Load Static for Images and CSS -->
 </head>
+
 <body>
     <header>
         <div class="row navigation white ">
             <div class="navbar-fixed">
-            <nav class="nav-extended white">
-                <div class="container">
-                <div class="nav-wrapper black-text">
-                    <div class="row">
-                      <div class="col m2 s12">
-                          <div class="row">
-                            <div class="col s6">
-                                <a href="/" id="base-main-page" class="">teke</a>
-                            </div>
-                            <div class="col s6">
-                                <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="col m8 s12">
-                        <form method="POST" action="/search">
-                            {% csrf_token %}
-                            <div class="input-field">
-                                <input id="search" name="search-name" type="search" required placeholder="Search for android, iphones, tablets or more...">
-                                <label class="label-icon" for="search">
-                                    <i class="material-icons green-text">search</i>
-                                </label>
-                                <i class="material-icons">close</i>
-                            </div>
-                        </form>
-                        </div>
-                      <div class="col m1 hide-on-med-and-down">
-                          <a href="/help" class="right">FAQs</a>
-                      </div>
-                    <div class="col m1 hide-on-med-and-down">
-                            <a href="/dashboard" class="right">My Teke</a>
-                    </div>
-                    </div>
-                </div>
-                <div class="nav-content">
-                    <div class="row">
-                        <div class="col m2"></div>
-                        <div class="col m8 center">
-                            <ul class="hide-on-med-and-down">
-                                {% for category in categories %}
-                                <div class="col m3 right">
-                                    <li class="a-divider">
-                                        <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
-                                    </li>
+                <nav class="nav-extended white">
+                    <div class="container">
+                        <div class="nav-wrapper black-text">
+                            <div class="row">
+                                <div class="col m1 s12">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <a href="/" id="base-main-page" class="">teke</a>
+                                        </div>
+                                        <div class="col s6">
+                                            <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i
+                                                    class="material-icons">menu</i></a>
+                                        </div>
+                                    </div>
                                 </div>
-                                {% endfor %}
-                            </ul>
+                                <div class="col m1 s12 hide-on-med-and-down">
+                                    <div class="row">
+                                        <a href="/news" id="base-main-page" class="">News</a>
+                                    </div>
+                                </div>
+                                <div class="col m8 s12">
+                                    <form method="POST" action="/search">
+                                        {% csrf_token %}
+                                        <div class="input-field">
+                                            <input id="search" name="search-name" type="search" required placeholder="Search for android, iphones, tablets or more...">
+                                            <label class="label-icon" for="search">
+                                                <i class="material-icons green-text">search</i>
+                                            </label>
+                                            <i class="material-icons">close</i>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col m1 hide-on-med-and-down">
+                                    <a href="/help" class="right">FAQs</a>
+                                </div>
+                                <div class="col m1 hide-on-med-and-down">
+                                    <a href="/dashboard" class="right">My Teke</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col m2"></div>
-                    </div>
-                </div>
+                        <div class="nav-content">
+                            <div class="row">
+                                <div class="col m2"></div>
+                                <div class="col m8 center">
+                                    <ul class="hide-on-med-and-down">
+                                        {% for category in categories %}
+                                        <div class="col m3 right">
+                                            <li class="a-divider">
+                                                <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
+                                            </li>
+                                        </div>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="col m2"></div>
+                            </div>
+                        </div>
                 </nav>
-        </div>
-        <ul class="sidenav" id="mobile-demo">
-            {% for category in categories %}
-            <li>
-                <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
-                <div class="divider"></div>
-            </li>
-            {% endfor %}
-            <li>
-                <a href="/dashboard">My Teke</a>
-            </li>
-            <li>
-                <div class="divider"></div>
-            </li>
-            <li>
-                <a href="/help">FAQs</a>
-            </li>
-        </ul>
+            </div>
+            <ul class="sidenav" id="mobile-demo">
+                {% for category in categories %}
+                <li>
+                    <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
+                    <div class="divider"></div>
+                </li>
+                {% endfor %}
+                <li>
+                    <a href="/dashboard">My Teke</a>
+                </li>
+                <li>
+                    <div class="divider"></div>
+                </li>
+                <li>
+                    <a href="/news">News</a>
+                </li>
+                <li>
+                    <a href="/help">FAQs</a>
+                </li>
+            </ul>
         </div>
     </header>
     {% block content %}

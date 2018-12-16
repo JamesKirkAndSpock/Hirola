@@ -16,6 +16,7 @@ class BaseTestCase(TestCase):
         self.create_currency()
         self.create_landing_page_image()
         self.create_phones()
+        self.create_news_item()
 
     def create_admin(self):
         # Elena is an admin who has admin privilidges
@@ -54,6 +55,15 @@ class BaseTestCase(TestCase):
         Currency.objects.create(currency_abbreviation="V$",
                                 currency_long_form="V-dollar")
         self.currency_v = Currency.objects.get(currency_abbreviation="V$")
+
+    def create_news_item(self):
+        NewsItem.objects.create(
+            title="Teke rocks",
+            source="The standard online",
+            link="https://www.sde.com"
+        )
+        self.link = NewsItem.objects.get(link="https://www.sde.com")
+
 
     def create_landing_page_image(self):
         add_url = "/admin/front/landingpageimage/add/"

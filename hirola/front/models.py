@@ -252,6 +252,16 @@ class ProductInformation(models.Model):
     value = models.CharField(max_length=256)
 
 
+class NewsItem(models.Model):
+    title = models.CharField(max_length=256)
+    source = models.CharField(max_length=256)
+    link = models.CharField(max_length=256)
+    date_created = models.DateTimeField(_('date_created'), default=timezone.now)
+
+    def __str__(self):
+        return str(self.link)
+
+
 def delete_cache(model_class, object_id, cache_name):
     model_object = model_class.objects.get(pk=object_id)
     if model_object.category:

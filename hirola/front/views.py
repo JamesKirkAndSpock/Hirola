@@ -323,7 +323,9 @@ def various_caches():
 
 
 def press_view(request):
-    return render(request, 'front/news_press.html')
+    news = NewsItem.objects.all()
+    context = {'news': news}
+    return render(request, 'front/news_press.html', context)
 
 
 def help_view(request):
