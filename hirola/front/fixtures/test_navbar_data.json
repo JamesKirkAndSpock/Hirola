@@ -1,0 +1,10 @@
+[{
+        "model": "front.NewsItem",
+        "pk": 1,
+        "fields": {
+            "title": "Teke rocks",
+            "source": "The standard online",
+            "link": "https://www.sde.com"
+        }
+    }
+]
