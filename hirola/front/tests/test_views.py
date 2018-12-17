@@ -14,7 +14,8 @@ class LandingPageViewsTestCase(BaseTestCase):
         '''
         before_response = self.client.get("/")
         self.assertNotContains(before_response, "Hot deals!")
-        self.elena.post('/admin/front/hotdeal/add/', {"item": self.iphone_6.pk})
+        self.elena.post('/admin/front/hotdeal/add/',
+                        {"item": self.iphone_6.pk})
         response = self.client.get("/")
         self.assertContains(response, "Hot deals!")
         self.assertContains(response, "Iphone 6")
@@ -32,22 +33,26 @@ class LandingPageViewsTestCase(BaseTestCase):
             - The page will redirect as the image has been added
         '''
         mock_image = image('test_image_1.jpeg')
-        form = {"category_image": mock_image, "phone_category": "CategoryTest1"}
+        form = {"category_image": mock_image,
+                "phone_category": "CategoryTest1"}
         response = self.elena.post('/admin/front/phonecategory/add/', form)
         self.assertIn(str.encode(category_image_error.format(959, 1280)),
                       response.content)
         self.assertEqual(response.status_code, 200)
         mock_image_2 = image('test_image_6.png')
-        form_2 = {"category_image": mock_image_2, "phone_category": "CategoryTest1"}
+        form_2 = {"category_image": mock_image_2,
+                  "phone_category": "CategoryTest1"}
         response = self.elena.post('/admin/front/phonecategory/add/', form_2)
         self.assertRedirects(response, "/admin/front/phonecategory/", 302)
 
     def test_category_image_rendering_on_view(self):
         mock_image_2 = image('test_image_6.png')
-        form_2 = {"category_image": mock_image_2, "phone_category": "CategoryTest1"}
+        form_2 = {"category_image": mock_image_2,
+                  "phone_category": "CategoryTest1"}
         self.elena.post('/admin/front/phonecategory/add/', form_2)
         response = self.client.get("/")
-        self.assertContains(response, "src=\"/media/phone_categories/test_image_6")
+        self.assertContains(
+            response, "src=\"/media/phone_categories/test_image_6")
 
 
 class PhoneCategoryViewsTestCase(BaseTestCase):
@@ -61,7 +66,8 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         Test  that it informs the admin user that the entered value should be
         unique hence preventing the presence of two similar names.
         '''
-        form = {"phone_category": "Iphone", "category_image": self.category_image}
+        form = {"phone_category": "Iphone",
+                "category_image": self.category_image}
         response = self.elena.post(self.add_url, form)
         e_mess_1 = "The phone category Iphone already exists"
         self.assertContains(response, e_mess_1)
@@ -71,8 +77,10 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         Test that a limitation exists to the number of Phone Categories that
         can be added.
         '''
-        form1 = {"phone_category": "Phone1", "category_image": self.category_image}
-        form2 = {"phone_category": "Phone2", "category_image": self.category_image}
+        form1 = {"phone_category": "Phone1",
+                 "category_image": self.category_image}
+        form2 = {"phone_category": "Phone2",
+                 "category_image": self.category_image}
         response1 = self.elena.post(self.add_url, form1)
         response2 = self.elena.post(self.add_url, form2)
         self.assertEqual(response1.status_code, 302)
@@ -84,7 +92,7 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         the application
         '''
         self.elena.post(self.add_url, {'phone_category': "Extra",
-                        "category_image": self.category_image})
+                                       "category_image": self.category_image})
         response = self.client.get('/')
         self.assertContains(response, "Iphone")
         self.assertContains(response, "Android")
@@ -105,7 +113,8 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         data = {"url_link": "https://facebook.com", "icon": "fa fa-facebook",
                 "name": "Facebook"}
         self.elena.post(add_url, data)
-        response = self.client.get('/phone_category/{}/'.format(self.iphone.id))
+        response = self.client.get(
+            '/phone_category/{}/'.format(self.iphone.id))
         facebook_url = "<a href=\"https://facebook.com\" target=\"_blank\">"
         facebook_data_icon_name = "<i class=\"fa fa-facebook\"></i> Facebook</a>"
         self.assertContains(response, facebook_url)
@@ -165,7 +174,7 @@ class ClientViewsTestCase(BaseTestCase):
         mock_image = image(image_name)
         PhoneList.objects.create(category=category, main_image=mock_image,
                                  phone_name=name, currency=currency, price=25,
-                                 size_sku=size)
+                                 size_sku=size, quantity=2)
 
     # def test_rendering_on_page_view(self):
     #     mock_image = image("test_image_1.jpeg")
@@ -415,11 +424,13 @@ class UserDashboardTestCase(BaseTestCase):
         Test that when a user enters the correct old password:
             - The user is redirected to a page to edit the password
         '''
-        response = self.uriel.post('/old_password', {"old_password": "wrong_password"})
+        response = self.uriel.post(
+            '/old_password', {"old_password": "wrong_password"})
         self.assertEqual(response.status_code, 200)
         error_message = "Your old password was entered incorrectly. Please enter it again."
         self.assertContains(response, error_message)
-        response_1 = self.uriel.post('/old_password', {"old_password": "*&#@&!*($)lp"})
+        response_1 = self.uriel.post(
+            '/old_password', {"old_password": "*&#@&!*($)lp"})
         self.assertRedirects(response_1, "/change_password", 302)
 
     def test_view_login_required(self):
@@ -431,11 +442,13 @@ class UserDashboardTestCase(BaseTestCase):
             - He is redirected to the login view
         '''
         old_password_view = self.client.get("/old_password")
-        self.assertRedirects(old_password_view, "/login?next=/old_password", 302)
+        self.assertRedirects(
+            old_password_view, "/login?next=/old_password", 302)
         dashboard_view = self.client.get('/dashboard')
         self.assertRedirects(dashboard_view, "/login?next=/dashboard", 302)
         change_password_view = self.client.get('/change_password')
-        self.assertRedirects(change_password_view, "/login?next=/change_password", 302)
+        self.assertRedirects(change_password_view,
+                             "/login?next=/change_password", 302)
 
     def test_change_password_old_password_validation(self):
         '''
@@ -455,7 +468,7 @@ class UserDashboardTestCase(BaseTestCase):
         '''
         self.uriel.post('/old_password', {"old_password": "*&#@&!*($)lp"})
         response = self.uriel.post('/change_password', {"new_password1": "!@£$!@£$!@£$£!@$!@£$!@3",
-                                   "new_password2": "!@£$!@£$!@£$£!@$!@£$!@3"})
+                                                        "new_password2": "!@£$!@£$!@£$£!@$!@£$!@3"})
         self.assertRedirects(response, "/login", 302)
 
     def generate_review_data(self):
@@ -465,7 +478,8 @@ class UserDashboardTestCase(BaseTestCase):
         OrderStatus.objects.create(status="Pending")
         phone = PhoneList.objects.get(phone_name="Samsung")
         status = OrderStatus.objects.get(status="Pending")
-        Order.objects.create(owner=owner, date="2018-10-13", phone=phone, status=status)
+        Order.objects.create(owner=owner, date="2018-10-13",
+                             phone=phone, status=status)
         order = Order.objects.get(owner=owner)
         return (owner, order)
 
@@ -477,7 +491,7 @@ class NewsItemTestCase(BaseTestCase):
 
     def test_news_items_rendered(self):
         """
-        Test that news item from db has been rendered on the newd page.
+        Test that news item from db has been rendered on the news page.
         """
         response = self.client.get('/news')
         self.assertContains(response, 'Teke rocks')
