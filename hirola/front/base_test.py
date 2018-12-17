@@ -76,10 +76,10 @@ class BaseTestCase(TestCase):
         icon = ItemIcon.objects.get(item_icon="iphone_icon")
         PhoneList.objects.create(category=self.iphone, currency=self.currency_v,
                                  price=300000, phone_name="Iphone 6", icon=icon,
-                                 main_image=image("test_image_5.png"))
+                                 main_image=image("test_image_5.png"), quantity=3)
         self.iphone_6 = PhoneList.objects.get(phone_name="Iphone 6")
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=250000, phone_name="Samsung J7")
+                                 price=250000, phone_name="Samsung J7", quantity=10)
         self.samsung_j_7 = PhoneList.objects.get(phone_name="Samsung J7")
 
     def tearDown(self):

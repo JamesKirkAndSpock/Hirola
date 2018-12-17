@@ -93,13 +93,15 @@
                     {% csrf_token %}
                     <input type="hidden" id="cartItem" name="cart_item_add" value="{{ phone.id }}">
                     <div class="row">
-                        <select class="browser-default">
+                        <select class="browser-default" id="quantity">
                             <option value="" disabled selected>Quantity</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
+                            {% if phone.quantity > 1 %}
+                            {% for i in "b"|ljust:phone.quantity %}
+                            <option value={{ forloop.counter }}>{{ forloop.counter }}</option>
+                            {% endfor %}
+                            {% else %}
+                            <option value="1">{{ phone.quantity }}</option>
+                            {% endif %}
                         </select>
                     </div>
                     <div class="row">
