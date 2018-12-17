@@ -106,7 +106,6 @@ class UserSignupTestCase(BaseTestCase):
         '''
         Generate data for a user to be posted to the signup page
         '''
-        AreaCode.objects.create(area_code=254, country="Kenya")
         area_code = AreaCode.objects.filter(area_code=254).first()
         user_data = {"first_name": data.get('first_name') or "Uriel",
                      "last_name": data.get('last_name') or "Timanko",
@@ -201,3 +200,10 @@ class UserLoginTestCase(BaseTestCase):
         user_data_2 = {"email": "urieltimanko@example.cm", "password": "*&#@&!*($)lp"}
         self.client.post('/login', user_data_2)
         self.assertEqual(self.client.session.get_expiry_age(), settings.SESSION_COOKIE_AGE)
+
+    def test_remember_user_html_rendered(self):
+        '''
+        Test that the 'remember-me' name is rendered on the login html page
+        '''
+        response = self.client.get("/login")
+        self.assertContains(response, "name=\"remember-user\"")

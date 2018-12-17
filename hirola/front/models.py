@@ -11,12 +11,16 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
 
+def get_default():
+    return AreaCode.objects.get_or_create(area_code=254, country="Kenya")[0]
+
+
 class AreaCode(models.Model):
     '''
     Area code Numbers
     '''
-    area_code = models.IntegerField(blank=True, null=True)
-    country = models.CharField(max_length=30, blank=True)
+    area_code = models.IntegerField(default=254, unique=True)
+    country = models.CharField(max_length=255, default="Kenya", unique=True)
 
     def __str__(self):
         return "+" + str(self.area_code) + " " + self.country
@@ -37,6 +41,8 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
+        if not extra_fields.get('area_code'):
+            extra_fields.setdefault('area_code', get_default())
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password=None, **extra_fields):
@@ -47,6 +53,8 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
+        if not extra_fields.get('area_code'):
+            extra_fields.setdefault('area_code', get_default())
 
         return self._create_user(email, password, **extra_fields)
 
@@ -127,15 +135,15 @@ class PhoneMemorySize(models.Model):
 class Currency(models.Model):
     class Meta:
         verbose_name_plural = "Currencies"
-    currency_abbreviation = models.CharField(max_length=5)
-    currency_long_form = models.CharField(max_length=15)
+    currency_abbreviation = models.CharField(max_length=30)
+    currency_long_form = models.CharField(max_length=50)
 
     def __str__(self):
         return str(self.currency_abbreviation)
 
 
 class ItemIcon(models.Model):
-    item_icon = models.CharField(max_length=40)
+    item_icon = models.CharField(max_length=50)
 
     def __str__(self):
         return self.item_icon
@@ -145,13 +153,14 @@ class PhoneList(models.Model):
     class Meta:
         verbose_name_plural = "Phones"
     category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL, null=True, blank=True)
-    phone_name = models.CharField(max_length=20, blank=False, default=None)
+    phone_name = models.CharField(max_length=255, blank=False, default=None)
     currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=0)
     size_sku = models.ForeignKey(PhoneMemorySize, on_delete=models.SET_NULL, null=True, blank=True)
     icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL, null=True, blank=True)
     average_review = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
     main_image = models.ImageField(upload_to="phones")
+
 
     def __str__(self):
         return self.phone_name
@@ -170,8 +179,8 @@ class SocialMedia(models.Model):
     class Meta:
         verbose_name_plural = "Social Media"
     url_link = models.URLField()
-    icon = models.CharField(max_length=40, blank=True, default='')
-    name = models.CharField(max_length=20, blank=False, default=None)
+    icon = models.CharField(max_length=60, blank=True, default='')
+    name = models.CharField(max_length=60, blank=False, default=None)
 
     def __str__(self):
         return self.name
@@ -182,7 +191,7 @@ class SocialMedia(models.Model):
 
 
 class OrderStatus(models.Model):
-    status = models.CharField(max_length=20, blank=False, default=None)
+    status = models.CharField(max_length=60, blank=False, default=None)
 
     class Meta:
         verbose_name_plural = "Order Status'"
