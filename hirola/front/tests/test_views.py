@@ -131,7 +131,7 @@ class PhoneListViewsTestCase(BaseTestCase):
                                 currency_long_form="Pound")
         currency = Currency.objects.get(currency_long_form="Pound")
         PhoneList.objects.create(category=self.iphone, currency=currency,
-                                 price=30, phone_name="Iphone 6")
+                                 price=30, phone_name="Iphone 6", quantity=5)
         response = self.client.get("/phone_category/{}/"
                                    .format(self.iphone.pk))
         self.assertContains(response, "£$Shs")
@@ -174,7 +174,7 @@ class ClientViewsTestCase(BaseTestCase):
         mock_image = image(image_name)
         PhoneList.objects.create(category=category, main_image=mock_image,
                                  phone_name=name, currency=currency, price=25,
-                                 size_sku=size, quantity=2)
+                                 size_sku=size, quantity=5)
 
     # def test_rendering_on_page_view(self):
     #     mock_image = image("test_image_1.jpeg")
@@ -474,7 +474,7 @@ class UserDashboardTestCase(BaseTestCase):
     def generate_review_data(self):
         owner = User.objects.get(email="urieltimanko@example.com")
         PhoneList.objects.create(category=self.iphone, main_image=image('test_image_5.png'),
-                                 phone_name="Samsung", currency=self.currency_v, price=25000)
+                                 phone_name="Samsung", currency=self.currency_v, price=25000, quantity=5)
         OrderStatus.objects.create(status="Pending")
         phone = PhoneList.objects.get(phone_name="Samsung")
         status = OrderStatus.objects.get(status="Pending")
