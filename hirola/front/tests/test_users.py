@@ -24,7 +24,7 @@ class UserSignupTestCase(BaseTestCase):
         self.assertEqual(user.last_name, "Timanko")
         self.assertEqual(user.email, "urieltimanko@example.com")
         self.assertEqual(user.phone_number, 722000000)
-        self.assertEqual(user.area_code.id, user_data["area_code"])
+        self.assertEqual(user.country_code.id, user_data["country_code"])
         response = self.elena.get("/admin/front/user/")
         self.assertContains(response, "Uriel")
 
@@ -106,10 +106,10 @@ class UserSignupTestCase(BaseTestCase):
         '''
         Generate data for a user to be posted to the signup page
         '''
-        area_code = AreaCode.objects.filter(area_code=254).first()
+        country_code = CountryCode.objects.filter(country_code=254).first()
         user_data = {"first_name": data.get('first_name') or "Uriel",
                      "last_name": data.get('last_name') or "Timanko",
-                     "area_code": area_code.id,
+                     "country_code": country_code.id,
                      "phone_number": data.get('phone_number') or 722000000,
                      "email": data.get('email') or "urieltimanko@example.com",
                      "password1": data.get('password1') or "*&#@&!*($)lp",

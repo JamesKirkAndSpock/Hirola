@@ -44,7 +44,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email',
-                                         'area_code', 'phone_number', 'photo',)}),
+                                         'country_code', 'phone_number', 'photo',)}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
@@ -69,7 +69,7 @@ admin.site.register(PhoneMemorySize)
 admin.site.register(Currency)
 admin.site.register(SocialMedia)
 admin.site.register(User, UserAdmin)
-admin.site.register(AreaCode)
+admin.site.register(CountryCode)
 admin.site.register(OrderStatus)
 admin.site.register(Order)
 admin.site.register(Review)

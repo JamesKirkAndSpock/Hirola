@@ -313,7 +313,7 @@ class UserDashboardTestCase(BaseTestCase):
             - The page contains all the Phone Categories of the site
             - The page contains Social media links
             - The user is able to see his or her Firstname, LastName, Phone
-            number, Area Code, Country
+            number, Country Code, Country
         '''
         response = self.uriel.get('/dashboard')
         self.assertContains(response, "Iphone")
@@ -388,19 +388,19 @@ class UserDashboardTestCase(BaseTestCase):
 
     def test_contact_edition(self):
         '''
-        Test that when a logged in user edits his area code and phone number
+        Test that when a logged in user edits his country code and phone number
         by entering the data correctly that:
             - The user remains on the dashboard page.
-            - The area code is changed properly
+            - The country code is changed properly
             - The last name is changed properly
         '''
-        AreaCode.objects.create(area_code=256, country="Uganda")
-        area_code = AreaCode.objects.filter(area_code=256).first()
-        area_code_data = {"area_code": area_code.id}
-        response = self.uriel.post('/dashboard', area_code_data)
+        CountryCode.objects.create(country_code=256, country="Uganda")
+        country_code = CountryCode.objects.filter(country_code=256).first()
+        country_code_data = {"country_code": country_code.id}
+        response = self.uriel.post('/dashboard', country_code_data)
         self.assertEqual(response.status_code, 200)
         get_response = self.uriel.get('/dashboard')
-        self.assertContains(get_response, str(area_code))
+        self.assertContains(get_response, str(country_code))
         phone_data = {"phone_number": 220000}
         response = self.uriel.post('/dashboard', phone_data)
         self.assertEqual(response.status_code, 200)

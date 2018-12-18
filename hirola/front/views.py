@@ -82,13 +82,13 @@ def sizes(request):
     return JsonResponse(data)
 
 
-def area_codes(request):
-    area_code_data = AreaCode.objects.all()
-    users_area_code = request.user.area_code.id
+def country_codes(request):
+    country_code_data = CountryCode.objects.all()
+    users_country_code = request.user.country_code.id
     data = {}
-    for area_code in area_code_data:
-        data[area_code.pk] = str(area_code)
-    data = {"users_area_code": users_area_code, "data": data}
+    for country_code in country_code_data:
+        data[country_code.pk] = str(country_code)
+    data = {"users_country_code": users_country_code, "data": data}
     return JsonResponse(data)
 
 

@@ -1,7 +1,7 @@
 from front.base_test import BaseTestCase
 from django.test import RequestFactory
 from front.forms.user_forms import UserCreationForm, loader, get_current_site, urlsafe_base64_encode, force_bytes, account_activation_token
-from front.models import User, AreaCode
+from front.models import User, CountryCode
 from django.core import mail
 from django.conf import settings
 import os
@@ -20,9 +20,9 @@ class SignupTestCase(BaseTestCase):
             - That on the first click it redirects you to a login page.
             - That on the second click it informs you that the activation link is invalid
         '''
-        area_code_k = AreaCode.objects.get(country="Kenya")
+        country_code_k = CountryCode.objects.get(country="Kenya")
         user_data = {"email": "test_user@gmail.com", "first_name": "Test", "last_name": "User",
-                     "area_code": area_code_k.pk, "phone_number": 718217411,
+                     "country_code": country_code_k.pk, "phone_number": 718217411,
                      "password1": "*&#@&!*($)lp", "password2": "*&#@&!*($)lp"}
         request = self.factory.post('/signup', data=user_data)
         form = UserCreationForm(request.POST)
@@ -60,9 +60,9 @@ class SignupTestCase(BaseTestCase):
         Test that when you provide a uid for a user that exists to the get_user method:
             - That the correct user is returned.
         '''
-        area_code_k = AreaCode.objects.get(country="Kenya")
+        country_code_k = CountryCode.objects.get(country="Kenya")
         User.objects.create_user(email="test_user_2@gmail.com", first_name="Test",
-                                 last_name="User_2", area_code=area_code_k,
+                                 last_name="User_2", country_code=country_code_k,
                                  phone_number=718217411)
         user = User.objects.get(email="test_user_2@gmail.com")
         uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()

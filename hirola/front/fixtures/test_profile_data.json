@@ -1,25 +1,25 @@
 [
     {
-      "model": "front.AreaCode",
+      "model": "front.CountryCode",
       "pk": 1,
       "fields": {
-        "area_code": 254,
+        "country_code": 254,
         "country": "Kenya"
       }
     },
     {
-      "model": "front.AreaCode",
+      "model": "front.CountryCode",
       "pk": 2,
       "fields": {
-        "area_code": 256,
+        "country_code": 256,
         "country": "Uganda"
       }
     },
     {
-        "model": "front.AreaCode",
+        "model": "front.CountryCode",
         "pk": 2,
         "fields": {
-          "area_code": 255,
+          "country_code": 255,
           "country": "Tanzania"
         }
       },
