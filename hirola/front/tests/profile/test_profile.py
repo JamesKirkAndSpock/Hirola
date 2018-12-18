@@ -11,7 +11,8 @@ class PhoneProfileTemplate(BaseTestCase):
     def setUp(self):
         User.objects.create(email="example@gmail.com", first_name="Example",
                             last_name="User", is_staff=False, is_active=True,
-                            is_change_allowed=False, phone_number=718217411, )
+                            is_change_allowed=False, phone_number=718217411,
+                            photo=image("test_image_5.png") )
         self.user = User.objects.get(first_name="Example")
         super(PhoneProfileTemplate, self).setUp()
 
@@ -103,6 +104,14 @@ class PhoneProfileTemplate(BaseTestCase):
         '''
         get_response = self.client.get("/profile/{}/".format(self.iphone_6.id))
         self.assertContains(get_response, "V$ 300,000")
+
+    def test_user_image_rendered(self):
+        '''
+        Test that when you visit a page for the profile:
+            - That the user image is rendered
+        '''
+        get_response = self.client.get("/profile/{}/".format(self.iphone_6.id))
+        self.assertContains(get_response, "/media/phones/test_image_5_")
 
 
 class PhoneProfileLogic(BaseTestCase):
