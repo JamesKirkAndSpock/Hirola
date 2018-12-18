@@ -97,9 +97,10 @@ def phone_profile_view(request, phone_id):
         item = request.POST['cart_item_add']
         return redirect("/checkout")
     phone = PhoneList.objects.filter(pk=phone_id).first()
+    colors = PhonesColor.objects.filter(phone=phone_id)
     if not phone:
         return redirect("/error")
-    context = {"phone": phone, "image_list": phone.phone_images.all(),
+    context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
                "customer_reviews": phone.phone_reviews.all(),
                "features": phone.phone_features.all(), "infos": phone.phone_information.all()}
     return render(request, 'front/phone_profile.html', context)
