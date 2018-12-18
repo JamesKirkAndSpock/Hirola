@@ -11,8 +11,8 @@ class TwilioValidation():
         'unknown_error': _("There was an error validating your number."),
     }
 
-    def phone_validation(self, area_code, phone_number):
-        phone_check = str(area_code.area_code) + str(phone_number)
+    def phone_validation(self, country_code, phone_number):
+        phone_check = str(country_code.country_code) + str(phone_number)
         account_sid = settings.TWILIO_ACCOUNT_SID
         auth_token = settings.TWILIO_AUTH_TOKEN
         client = Client(account_sid, auth_token)

@@ -4,7 +4,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
-from front.models import AreaCode
+from front.models import CountryCode
 from front.twilio import TwilioValidation
 from front.models import User
 from django.contrib.auth.forms import PasswordChangeForm
@@ -41,7 +41,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'area_code',
+        fields = ('email', 'first_name', 'last_name', 'country_code',
                   'phone_number')
 
     def clean_password2(self):
@@ -79,9 +79,9 @@ class UserCreationForm(forms.ModelForm):
         return user
 
     def clean_phone_number(self):
-        area_code = self.cleaned_data.get("area_code")
+        country_code = self.cleaned_data.get("country_code")
         phone_number = self.cleaned_data.get("phone_number")
-        return TwilioValidation().phone_validation(area_code, phone_number)
+        return TwilioValidation().phone_validation(country_code, phone_number)
 
     def _post_clean(self):
         super()._post_clean()
@@ -139,11 +139,11 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'area_code', 'phone_number', 'password')
+        fields = ('first_name', 'last_name', 'country_code', 'phone_number', 'password')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["area_code"].required = False
+        self.fields["country_code"].required = False
 
     def save(self, commit=True):
         """
@@ -172,17 +172,17 @@ class UserForm(forms.ModelForm):
     def fill_fields(self):
         initial_fields = self.fields.keys() - self.data.keys()
         for field in initial_fields:
-            if field == "area_code":
+            if field == "country_code":
                 setattr(self.instance, field,
-                        AreaCode.objects.get(pk=self.initial[field]))
+                        CountryCode.objects.get(pk=self.initial[field]))
             else:
                 setattr(self.instance, field, self.initial[field])
         return self.instance
 
     def clean_phone_number(self):
-        area_code = AreaCode.objects.get(pk=self.initial["area_code"])
+        country_code = CountryCode.objects.get(pk=self.initial["country_code"])
         phone_number = self.initial["phone_number"]
-        return TwilioValidation().phone_validation(area_code, phone_number)
+        return TwilioValidation().phone_validation(country_code, phone_number)
 
 
 class OldPasswordForm(forms.Form):

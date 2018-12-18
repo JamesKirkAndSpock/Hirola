@@ -12,18 +12,18 @@ from django.utils import timezone
 
 
 def get_default():
-    return AreaCode.objects.get_or_create(area_code=254, country="Kenya")[0]
+    return CountryCode.objects.get_or_create(country_code=254, country="Kenya")[0]
 
 
-class AreaCode(models.Model):
+class CountryCode(models.Model):
     '''
-    Area code Numbers
+    Country code Numbers
     '''
-    area_code = models.IntegerField(default=254, unique=True)
+    country_code = models.IntegerField(default=254, unique=True)
     country = models.CharField(max_length=255, default="Kenya", unique=True)
 
     def __str__(self):
-        return "+" + str(self.area_code) + " " + self.country
+        return "+" + str(self.country_code) + " " + self.country
 
 
 class UserManager(BaseUserManager):
@@ -41,8 +41,8 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        if not extra_fields.get('area_code'):
-            extra_fields.setdefault('area_code', get_default())
+        if not extra_fields.get('country_code'):
+            extra_fields.setdefault('country_code', get_default())
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password=None, **extra_fields):
@@ -53,8 +53,8 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
-        if not extra_fields.get('area_code'):
-            extra_fields.setdefault('area_code', get_default())
+        if not extra_fields.get('country_code'):
+            extra_fields.setdefault('country_code', get_default())
 
         return self._create_user(email, password, **extra_fields)
 
@@ -74,7 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_change_allowed = models.BooleanField(_('change_allowed'), default=False, help_text=_(
             'Designates whether this user has been authorized to change his own'
             'password, in the change_password view.'),)
-    area_code = models.ForeignKey(AreaCode, on_delete=models.SET_NULL, null=True, blank=True)
+    country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL, null=True, blank=True)
     phone_number = models.IntegerField(blank=True, null=True)
     photo = models.ImageField(blank=True, null=True)
     change_email = models.EmailField(_('email address'), unique=True, error_messages={

@@ -111,23 +111,23 @@
                         <form class="col s12" method="post">
                             {% csrf_token %}
                             {{ form.non_field_errors }}
-                            <div class="row" id="areacode-output">
+                            <div class="row" id="countrycode-output">
                                 <p><b>Country Code</b></p>
-                                {{ user.area_code }}
+                                {{ user.country_code }}
                                 <span class="right">
-                                    <a href="#" onclick="editName('areacode-input', 'areacode-output');">
+                                    <a href="#" onclick="editName('countrycode-input', 'countrycode-output');">
                                         <i class="material-icons right">edit</i>
                                     </a>
                                 </span>
-                                    {% if form.area_code.errors %}
-                                        {% for error in form.area_code.errors %}
+                                    {% if form.country_code.errors %}
+                                        {% for error in form.country_code.errors %}
                                         <li><strong>{{ error|escape }}</strong></li>
                                         {% endfor %}
                                     {% endif %}
                                 </div>
-                                <div class="row hidden-input" id="areacode-input">
+                                <div class="row hidden-input" id="countrycode-input">
                                     <div class="input-field col m6 s12">
-                                        {{ form.area_code }}
+                                        {{ form.country_code }}
                                     </div>
                                     <div class="input-field col m3 s6">
                                         <button class="btn waves-effect waves-light" type="submit" name="action">save
@@ -135,7 +135,7 @@
                                         </button>
                                     </div>
                                     <div class="input-field col m3 s6">
-                                        <button class="btn waves-effect waves-light" type="button" onclick="editName('areacode-output', 'areacode-input');">cancel
+                                        <button class="btn waves-effect waves-light" type="button" onclick="editName('countrycode-output', 'countrycode-input');">cancel
                                             <i class="material-icons right">cancel</i>
                                         </button>
                                     </div>

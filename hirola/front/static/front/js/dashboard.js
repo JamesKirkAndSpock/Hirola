@@ -27,12 +27,12 @@ var currentDate = document.getElementById('current-date');
 var now = new Date();
 currentDate.innerHTML = now;
 
-$(document).ready(areaCodeSelector);
-function areaCodeSelector() {
-    $.getJSON("/area_codes", {id: $('#id_area_code').val(), view: 'json'}, function(j) {
+$(document).ready(countryCodeSelector);
+function countryCodeSelector() {
+    $.getJSON("/country_codes", {id: $('#id_country_code').val(), view: 'json'}, function(j) {
         var options = '<option value="">--------&nbsp;</option>';
         for (var i in j["data"]) {
-          if ( j["users_area_code"] == i ) {
+          if ( j["users_country_code"] == i ) {
             options += '<option value="' + i + '" selected>' + j["data"][i] + '</option>';
           }
           else {

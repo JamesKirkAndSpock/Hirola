@@ -100,37 +100,37 @@ class NewsItemsTestCase(BaseTestCase):
 class UserModelsTestCase(BaseTestCase):
 
     def setUp(self):
-        self.area_code = get_default()
+        self.country_code = get_default()
         super(UserModelsTestCase, self).setUp()
 
-    def test_admin_created_with_area_code(self):
+    def test_admin_created_with_country_code(self):
         '''
         Test that when an admin is created:
-            - The admin automatically gets assigned the default area code. This is to prevent any
+            - The admin automatically gets assigned the default country code. This is to prevent any
             bugs that may be created in case an admin visits the dashboard page.
         '''
         admin = User.objects.get(email='test@example.com')
-        self.assertEqual(admin.area_code, self.area_code)
+        self.assertEqual(admin.country_code, self.country_code)
 
-    def test_user_created_with_area_code(self):
+    def test_user_created_with_country_code(self):
         '''
         Test that when a normal user of the webapp gets created:
-            - That the user automatically gets assigned the default area code.
+            - That the user automatically gets assigned the default country code.
         '''
         user = User.objects.create_user(email="equatorial@gmail.com", password="secret")
-        self.assertEqual(user.area_code, self.area_code)
+        self.assertEqual(user.country_code, self.country_code)
 
 
-class AreaCodeModelsTestCase(BaseTestCase):
+class CountryCodeModelsTestCase(BaseTestCase):
 
     def setUp(self):
-        super(AreaCodeModelsTestCase, self).setUp()
+        super(CountryCodeModelsTestCase, self).setUp()
 
-    def test_area_code_uniqueness(self):
+    def test_country_code_uniqueness(self):
         '''
-        Test that when you create an area code that has either the same area code number or
+        Test that when you create an country code that has either the same country code number or
         country:
             - That an error is raised on uniqueness
         '''
         with self.assertRaises(IntegrityError):
-            AreaCode.objects.create(area_code=254, country="Kenya")
+            CountryCode.objects.create(country_code=254, country="Kenya")
