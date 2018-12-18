@@ -142,7 +142,7 @@
             </li>
             {% for customer_review in customer_reviews%}
             <li class="collection-item avatar">
-                <img src="{% static 'front/moto-g5.png' %}" alt="User 1" class="circle">
+                <img src="{{ MEDIA_URL }}{{ customer_review.owner.photo }}" alt="User 1" class="circle">
                 {% for star in customer_review.stars|checked_star_range %}
                 <i class="material-icons left checked">grade</i>
                 {% endfor %}
