@@ -134,3 +134,16 @@ class AreaCodeModelsTestCase(BaseTestCase):
         '''
         with self.assertRaises(IntegrityError):
             AreaCode.objects.create(area_code=254, country="Kenya")
+
+
+class ColorsTestCase(BaseTestCase):
+    def setUp(self):
+        super(ColorsTestCase, self).setUp()
+
+    def test_color_created(self):
+        self.assertEqual(str(self.color_one), "Red")
+
+    def test_color_assigned(self):
+        for color in self.iphone6_colors:
+            self.assertEqual(str(self.iphone6_colors[0].color), str(self.color_one))
+            self.assertEqual(str(self.iphone6_colors[1].color), str(self.color_two))

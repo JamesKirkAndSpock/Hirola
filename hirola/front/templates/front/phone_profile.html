@@ -54,13 +54,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s12 m6">
+                    <div class="input-field col s12 m8">
                         <select>
                             <option value="" disabled selected>Choose your color</option>
-                            <option value="1">Grey</option>
-                            <option value="2">Silver</option>
-                            <option value="3">Gold</option>
-                            <option value="3">Rose Gold</option>
+                            {% if colors %}
+                            {% for color in colors %}
+                            <option value={{ forloop.counter }}>{{ color.color }}</option>
+                            {% endfor %}
+                            {% endif %}
                         </select>
                     </div>
                 </div>
@@ -93,7 +94,7 @@
                     {% csrf_token %}
                     <input type="hidden" id="cartItem" name="cart_item_add" value="{{ phone.id }}">
                     <div class="row">
-                        <select class="browser-default" id="quantity">
+                        <select id="quantity">
                             <option value="" disabled selected>Quantity</option>
                             {% if phone.quantity > 1 %}
                             {% for i in "b"|ljust:phone.quantity %}
