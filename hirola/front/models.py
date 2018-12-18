@@ -160,7 +160,7 @@ class PhoneList(models.Model):
     icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL, null=True, blank=True)
     average_review = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
     main_image = models.ImageField(upload_to="phones")
-    quantity = models.IntegerField(blank=False, null=False)
+    quantity = models.IntegerField(blank=False)
 
 
     def __str__(self):
