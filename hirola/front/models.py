@@ -267,7 +267,7 @@ class NewsItem(models.Model):
     title = models.CharField(max_length=256)
     source = models.CharField(max_length=256)
     link = models.CharField(max_length=256)
-    date_created = models.DateField(_('date_created'), default=datetime.date.today())
+    date_created = models.DateField(_('date_created'))
 
     def __str__(self):
         return str(self.link)
