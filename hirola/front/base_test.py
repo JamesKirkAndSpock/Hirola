@@ -62,7 +62,8 @@ class BaseTestCase(TestCase):
         NewsItem.objects.create(
             title="Teke rocks",
             source="The standard online",
-            link="https://www.sde.com"
+            link="https://www.sde.com",
+            date_created="2018-12-10"
         )
         self.link = NewsItem.objects.get(link="https://www.sde.com")
 
