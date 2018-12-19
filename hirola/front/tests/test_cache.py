@@ -559,8 +559,8 @@ def phone_form(category, currency, size):
         ItemIcon.objects.create(item_icon="android")
         icon = ItemIcon.objects.filter(item_icon="android").first()
     form = {"main_image": mock_image, "phone_name": "Phone_ImageV", "price": 250,
-            "category": category, "currency": currency, "size_sku": size, "icon": icon.id,
-            "average_review": 5.0, "phone_information-TOTAL_FORMS": 1,
+            "category": category, "currency": currency, "size_sku": size, "quantity": 5,
+            "icon": icon.id, "average_review": 5.0, "phone_information-TOTAL_FORMS": 1,
             "phone_information-INITIAL_FORMS": 0, "phone_information-MIN_NUM_FORMS": 0,
             "phone_information-MAX_NUM_FORMS": 1000, "phone_images-TOTAL_FORMS": 1,
             "phone_images-INITIAL_FORMS": 0, "phone_images-MIN_NUM_FORMS": 0,
