@@ -84,7 +84,8 @@
           "size_sku": 1,
           "icon": 1,
           "average_review": 5.0,
-          "main_image": "phones/test_image_5.png"
+          "main_image": "phones/test_image_5.png",
+          "quantity": 5
         }
       },
       {
@@ -98,7 +99,8 @@
           "size_sku": 2,
           "icon": 2,
           "average_review": 4.0,
-          "main_image": "phones/test_image_7.png"
+          "main_image": "phones/test_image_7.png",
+          "quantity": 5
         }
       }
 ]
