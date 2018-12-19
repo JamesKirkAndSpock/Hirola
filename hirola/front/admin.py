@@ -30,9 +30,19 @@ class PhoneProductInline(admin.StackedInline):
     extra = 1
 
 
+class ShippingAddressInline(admin.StackedInline):
+    model = ShippingAddress
+    extra = 1
+    max_num = 1
+
+
 class PhoneListAdmin(admin.ModelAdmin):
     inlines = [PhoneImageInline, PhoneReviewInline, PhoneFeatureInline, PhoneProductInline, ]
     change_form_template = 'admin/front/phone_list.html'
+
+
+class OrderAdmin(admin.ModelAdmin):
+    inlines = [ShippingAddressInline, ]
 
 
 class UserAdmin(BaseUserAdmin):
@@ -71,8 +81,9 @@ admin.site.register(SocialMedia)
 admin.site.register(User, UserAdmin)
 admin.site.register(CountryCode)
 admin.site.register(OrderStatus)
-admin.site.register(Order)
+admin.site.register(Order, OrderAdmin)
 admin.site.register(Review)
 admin.site.register(HotDeal, HotDealAdmin)
 admin.site.register(ItemIcon)
 admin.site.register(NewsItem)
+admin.site.register(ShippingAddress)

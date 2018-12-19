@@ -124,6 +124,7 @@ def checkout_view(request):
 @login_required
 def dashboard_view(request):
     (phone_categories, social_media) = various_caches()
+    orders = Order.objects.filter(owner=request.user.pk)
     if request.method == "POST":
         form = UserForm(request.POST, instance=request.user)
         if form.is_valid():
@@ -131,11 +132,11 @@ def dashboard_view(request):
             redirect("/dashboard")
         user = User.objects.get(email=request.user.email)
         context = {"form": form, "user": user, 'categories': phone_categories,
-                   "social_media": social_media}
+                   "social_media": social_media, 'orders':orders}
         return render(request, 'front/dashboard.html', context=context)
     context = {"form": UserForm(instance=request.user),
                "reviews": Review.objects.filter(owner=request.user),
-               'categories': phone_categories, "social_media": social_media}
+               'categories': phone_categories, "social_media": social_media, 'orders': orders}
     return render(request, 'front/dashboard.html', context=context)
 
 

@@ -47,3 +47,18 @@ function openPopup() {
   var popup = document.getElementById("inactiveEmailPopup");
   popup.classList.toggle("show");
 }
+
+function openDisplay(value) {
+    var x = document.getElementById("details-"+value);
+    switch (x.style.display) {
+        case "":
+        x.style.display = "block";
+          break;
+        case "none":
+        x.style.display = "block";
+          break;
+        case "block":
+        x.style.display = "none";
+          break;
+      }
+  }
