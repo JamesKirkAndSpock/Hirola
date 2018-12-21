@@ -38,7 +38,7 @@ jobs:
             python ./hirola/manage.py migrate
             cd hirola
             # python manage.py test
-            sudo apt-get remove memcached
+            sudo apt-get remove --auto-remove memcached
             python manage.py test --pattern=selenium*.py
           
 
