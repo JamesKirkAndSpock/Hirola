@@ -1,26 +1,20 @@
 [
     {
-      "model": "front.CountryCode",
+      "model": "front.SocialMedia",
       "pk": 1,
       "fields": {
-        "country_code": 254,
-        "country": "Kenya"
+        "url_link": "https://facebook.com",
+        "icon": "fa fa-facebook",
+        "name": "Facebook"
       }
     },
     {
-      "model": "front.CountryCode",
-      "pk": 2,
-      "fields": {
-        "country_code": 256,
-        "country": "Uganda"
-      }
-    },
-    {
-        "model": "front.CountryCode",
+        "model": "front.SocialMedia",
         "pk": 2,
         "fields": {
-          "country_code": 255,
-          "country": "Tanzania"
+          "url_link": "https://instagram.com",
+          "icon": "fa fa-instagram",
+          "name": "Instagram"
         }
       },
       {
@@ -32,12 +26,29 @@
         }
       },
       {
+        "model": "front.PhoneCategory",
+        "pk": 2,
+        "fields": {
+          "phone_category": "Android",
+          "category_image": "phone_categories/test_image_6.png"
+        }
+      },
+      {
         "model": "front.PhoneMemorySize",
         "pk": 1,
         "fields": {
           "abbreviation": "GB",
           "size_number": 8,
           "category": 1
+        }
+      },
+      {
+        "model": "front.PhoneMemorySize",
+        "pk": 2,
+        "fields": {
+          "abbreviation": "GB",
+          "size_number": 16,
+          "category": 2
         }
       },
       {
@@ -56,6 +67,13 @@
         }
       },
       {
+        "model": "front.ItemIcon",
+        "pk": 2,
+        "fields": {
+            "item_icon": "android"
+        }
+      },
+      {
         "model": "front.PhoneList",
         "pk": 1,
         "fields": {
@@ -69,6 +87,20 @@
           "main_image": "phones/test_image_5.png",
           "quantity": 5
         }
+      },
+      {
+        "model": "front.PhoneList",
+        "pk": 2,
+        "fields": {
+          "category": 2,
+          "phone_name": "Android Example1",
+          "currency": 1,
+          "price": 35000.00,
+          "size_sku": 2,
+          "icon": 2,
+          "average_review": 4.0,
+          "main_image": "phones/test_image_7.png",
+          "quantity": 5
+        }
       }
-
 ]
