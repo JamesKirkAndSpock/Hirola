@@ -1,6 +1,7 @@
 '''
 Models
 '''
+import datetime
 from django.db import models
 from django.core.cache import cache
 from django.db.models.signals import pre_delete, post_delete, post_save
@@ -304,7 +305,7 @@ class NewsItem(models.Model):
     title = models.CharField(max_length=256)
     source = models.CharField(max_length=256)
     link = models.CharField(max_length=256)
-    date_created = models.DateTimeField(_('date_created'), default=timezone.now)
+    date_created = models.DateField(_('date_created'), default=datetime.date.today())
 
     def __str__(self):
         return str(self.link)
