@@ -8,6 +8,14 @@ class FooterLink(BaseSeleniumTestCase):
 
     def setUp(self):
         super(FooterLink, self).setUp()
+        self.driver = webdriver.Chrome()
+        self.driver.implicitly_wait(30)
+        self.create_social_media()
+        self.create_phone_category()
+        self.create_phone_memory_size()
+        self.create_currency()
+        self.create_item_icon()
+        self.create_phone_list()
 
     def test_news_link(self):
         '''
