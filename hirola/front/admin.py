@@ -25,6 +25,10 @@ class PhoneFeatureInline(admin.TabularInline):
     extra = 1
 
 
+# class PhoneColorInline(admin.TabularInline):
+#     model = Color
+
+
 class PhoneProductInline(admin.StackedInline):
     model = ProductInformation
     extra = 1
@@ -88,3 +92,5 @@ admin.site.register(ItemIcon)
 admin.site.register(NewsItem)
 admin.site.register(ShippingAddress)
 admin.site.register(InactiveUser)
+admin.site.register(Color)
+admin.site.register(PhonesColor)

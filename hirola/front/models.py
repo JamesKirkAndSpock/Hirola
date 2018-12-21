@@ -182,7 +182,7 @@ class PhoneList(models.Model):
     icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL, null=True, blank=True)
     average_review = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
     main_image = models.ImageField(upload_to="phones")
-    quantity = models.IntegerField(blank=False)
+    quantity = models.IntegerField(blank=False, null=False)
 
 
     def __str__(self):
@@ -308,6 +308,21 @@ class NewsItem(models.Model):
 
     def __str__(self):
         return str(self.link)
+
+
+class Color(models.Model):
+    color = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.color
+
+
+class PhonesColor(models.Model):
+    phone = models.ForeignKey(
+        PhoneList, on_delete=models.SET_NULL, null=True, blank=True)
+    color = models.ForeignKey(
+        Color, on_delete=models.SET_NULL, null=True, blank=True)
+
 
 
 def delete_cache(model_class, object_id, cache_name):
