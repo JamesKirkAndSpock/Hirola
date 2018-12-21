@@ -9,7 +9,7 @@ class SearchTest(BaseTestCase):
         self.sivanna = Client()
         super(SearchTest, self).setUp()
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="LG Razor J7")
+                                 price=8000, phone_name="LG Razor J7", quantity=5)
         self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
 
     def test_search_get_request(self):

@@ -1,3 +1,4 @@
+import time
 from .base_selenium import *
 
 
@@ -20,7 +21,7 @@ class NewsTestCase(StaticLiveServerTestCase, TestCase):
         """
         driver = self.driver
         driver.get('%s%s' % (self.live_server_url, '/'))
-        driver.find_element_by_link_text("News").click()
+        driver.find_element_by_link_text("News and Press").click()
         self.assertEqual(driver.current_url, '%s%s' %
                          (self.live_server_url, '/news'))
 
@@ -31,11 +32,13 @@ class NewsTestCase(StaticLiveServerTestCase, TestCase):
         """
         driver = self.driver
         driver.get('%s%s' % (self.live_server_url, '/'))
-        driver.find_element_by_link_text("News").click()
+        driver.find_element_by_link_text("News and Press").click()
         self.assertEqual(driver.current_url, '%s%s' %
                          (self.live_server_url, '/news'))
         driver.find_element_by_link_text("Teke rocks").click()
-        self.assertEqual(driver.current_url, "https://www.sde.com/")
+        time.sleep(2)
+        driver.switch_to.window(driver.window_handles[1])
+        self.assertEqual(driver.current_url, "https://www.tuko.co.ke/")
 
     def test_news_page_news_link(self):
         """
@@ -44,7 +47,7 @@ class NewsTestCase(StaticLiveServerTestCase, TestCase):
         """
         driver = self.driver
         driver.get('%s%s' % (self.live_server_url, '/'))
-        driver.find_element_by_link_text("News").click()
+        driver.find_element_by_link_text("News and Press").click()
         self.assertEqual(driver.current_url, '%s%s' %
                          (self.live_server_url, '/news'))
         driver.find_element_by_link_text("news").click()
