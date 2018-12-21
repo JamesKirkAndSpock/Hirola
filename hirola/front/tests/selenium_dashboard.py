@@ -45,3 +45,6 @@ class MyOrders(StaticLiveServerTestCase, TestCase):
         self.assertEqual(order_1.get_attribute('style'), "display: block;")
         order_details_link.click()
         self.assertEqual(order_1.get_attribute('style'), "display: none;")
+
+    def tearDown(self):
+        self.driver.close()

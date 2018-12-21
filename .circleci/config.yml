@@ -36,7 +36,9 @@ jobs:
             pip install -r ./hirola/requirements.txt
             python ./hirola/manage.py makemigrations front
             python ./hirola/manage.py migrate
-            cd hirola && python manage.py test
+            cd hirola
+            # python manage.py test
+            sudo apt-get remove memcached
             python manage.py test --pattern=selenium*.py
           
 
