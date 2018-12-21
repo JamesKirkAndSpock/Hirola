@@ -1,17 +1,17 @@
 from .base_selenium import *
 
 
-class Navbar(StaticLiveServerTestCase, TestCase):
+class Navbar(BaseSeleniumTestCase):
     """
     Test that links on the navbar will redirect to the
     page intended
     """
-    fixtures = ['test_navbar_data.json']
 
     def setUp(self):
+        super(Navbar, self).setUp()
         self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(30)
-        super(Navbar, self).setUp()
+        self.create_news()
 
     def test_news_page_link(self):
         """

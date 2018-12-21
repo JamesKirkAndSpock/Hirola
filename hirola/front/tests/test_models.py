@@ -1,6 +1,7 @@
 from front.base_test import *
 from django.db import IntegrityError, DataError
 from front.errors import *
+from front.tests.dashboard.test_views import DashboardTemplate
 
 
 class PhoneCategoryModelsTestCase(BaseTestCase):
@@ -134,3 +135,29 @@ class CountryCodeModelsTestCase(BaseTestCase):
         '''
         with self.assertRaises(IntegrityError):
             CountryCode.objects.create(country_code=254, country="Kenya")
+
+
+class OrderModelsTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(OrderModelsTestCase, self).setUp()
+
+    def test_get_address_method(self):
+        '''
+        Test that when you access the get_address method:
+            - That it returns None if a Shipping address does not have one.
+            - That it returns the shipping address if an order has one.
+        '''
+        User.objects.create_user(email="example@gmail.com")
+        owner = User.objects.get(email="example@gmail.com")
+        PhoneList.objects.create(category=self.iphone, main_image=image('test_image_5.png'),
+                                 phone_name="Samsung", currency=self.currency_v, price=25000)
+        OrderStatus.objects.create(status="Pending")
+        phone = PhoneList.objects.get(phone_name="Samsung")
+        status = OrderStatus.objects.get(status="Pending")
+        Order.objects.create(
+            owner=owner, phone=phone, status=status, quantity=2, total_price=80000)
+        order = Order.objects.get(owner=owner)
+        self.assertEqual(order.get_address, None)
+        ShippingAddress.objects.create(order=order, location="Kiambu Road", pickup="Evergreen Center")
+        self.assertEqual(order.get_address.location, "Kiambu Road")

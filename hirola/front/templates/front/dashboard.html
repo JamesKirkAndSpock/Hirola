@@ -233,135 +233,57 @@
                 <div class="row tab-heading">
                     <h5>MY ORDERS</h5>
                 </div>
+                {% for order in orders %}
                 <div id="order" class="row">
-                        <div class="row order-row">
-                            <div class="col m6 s6">
-                                <div class="row">
-                                    <div class="col s6">
-                                        <p>
-                                            <b>Iphone S</b>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col m6 s6">
-                                <div class="row">
-                                    <a href="#" id="details-link" class="green-text">Order Details</a>
+                    <div class="row order-row">
+                        <div class="col m6 s6">
+                            <div class="row">
+                                <div class="col s6">
+                                    <p>
+                                        <b>{{ order.phone.phone_name }}</b>
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                        <div class="row" id="status">
-                            <div class="col m4 s12">
-                                <p><b>Product Name</b></p>
-                                <p>Samsun Galaxy 28</p>
-                            </div>
-                            <div class="col m4 s12">
-                                <p><b>Quantity</b></p>
-                                <p>2</p>
-                            </div>
-                            <div class="col m4 s12">
-                                <p><b>Current Status</b></p>
-                                <p id="current-date"></p>
-                                <br>
-                                <p>Your Item is on transit</p>
-                            </div>
-
-                        </div>
-                        <div class="row" id="details">
-                            <div class="col m4 s12">
-                                <p><b>Order No.</b><span> #123333</span></p>
-                                <p><b>Payment Method</b><span> Mpesa</span></p>
-                                <p><b>Price</b><span> 23,000</span></p>
-                                <p><b>Quantity</b><span> 2</span></p>
-                                <p><b>Current Status </b><span id="current-date"></span><span> Your Item is in transit</span>
-                            </div>
-                            <div class="col m4 s12">
-                                <p>
-                                    <b>Shipping Address</b>
-                                </p>
-                                <ul>
-                                    <li>Peter Ndungu</li>
-                                    <li>Pick up: Posta Mbagathi</li>
-                                    <li>Location: Langata</li>
-                                    <li>Date: 23/9/2020</li>
-                                </ul>
-
-                            </div>
-                            <div class="col m4 s12 center">
-                                <p>
-                                    <b>Item</b>
-                                </p>
-                                <div class="img">
-                                    <img src="{% static 'front/moto-g5.png' %}" height="200" width="200">
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                    <div id="order" class="row">
-                        <div class="row order-row">
-                            <div class="col m6 s6">
-                                <div class="row">
-                                    <div class="col s6">
-                                        <p>
-                                            <b>Samsung Galaxy</b>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col m6 s6">
-                                <div class="row">
-                                    <a href="#" id="details-link" class="green-text">Order Details</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" id="status">
-                            <div class="col m4 s12">
-                                <p><b>Product Name</b></p>
-                                <p>Samsun Galaxy 28</p>
-                            </div>
-                            <div class="col m4 s12">
-                                <p><b>Quantity</b></p>
-                                <p>2</p>
-                            </div>
-                            <div class="col m4 s12">
-                                <p><b>Current Status</b></p>
-                                <p id="current-date"></p>
-                                <br>
-                                <p>Your Item is on transit</p>
-                            </div>
-
-                        </div>
-                        <div class="row" id="details">
-                            <div class="col m4 s12">
-                                <p><b>Order No.</b><span> #123333</span></p>
-                                <p><b>Payment Method</b><span> Mpesa</span></p>
-                                <p><b>Price</b><span> 23,000</span></p>
-                                <p><b>Quantity</b><span> 2</span></p>
-                                <p><b>Current Status </b><span id="current-date"></span><span> Your Item is in transit</span>
-                            </div>
-                            <div class="col m4 s12">
-                                <p>
-                                    <b>Shipping Address</b>
-                                </p>
-                                <ul>
-                                    <li>Peter Ndungu</li>
-                                    <li>Pick up: Posta Mbagathi</li>
-                                    <li>Location: Langata</li>
-                                    <li>Date: 23/9/2020</li>
-                                </ul>
-
-                            </div>
-                            <div class="col m4 s12 center">
-                                <p>
-                                    <b>Item</b>
-                                </p>
-                                <div class="img">
-                                    <img src="{% static 'front/moto-g5.png' %}" height="200" width="200">
-                                </div>
+                        <div class="col m6 s6">
+                            <div class="row">
+                                <button id="order-details-button" value="{{ order.pk }}" onclick="openDisplay(this.value)" class="green-text waves-effect waves-teal btn-flat">Order Details</button>
                             </div>
                         </div>
                     </div>
+                    <div class="row details-row" id="details-{{order.pk}}">
+                        <div class="col m4 s12">
+                            <p><b>Order No.</b><span> #{{ order.pk }}</span></p>
+                            <p><b>Payment Method</b><span> {{ order.payment_method }}</span></p>
+                            <p><b>Quantity</b><span> {{ order.quantity }}</span></p>
+                            <p><b>Total Price</b><span> {{ order.total_price }}</span></p>
+                            <p><b>Current Status </b><span id="current-date"></span><span> {{ order.status }}</span>
+                            <p><b>Purchase Date </b><span> {{ order.date }}</span>
+                        </div>
+                        <div class="col m4 s12">
+                            <p>
+                                <b>Shipping Address</b>
+                            </p>
+                            <ul>
+                                <li>Recepient: {% if order.get_address.recepient %}{{ order.get_address.recepient }}{% else %}{{ order.owner }}
+                                               {% endif %}                
+                                </li>
+                                <li>Pick up: {{ order.get_address.pickup }}</li>
+                                <li>Location: {{ order.get_address.location }}</li>
+                            </ul>
 
+                        </div>
+                        <div class="col m4 s12 center">
+                            <p>
+                                <b>Item</b>
+                            </p>
+                            <div class="img">
+                                <img src="{{ MEDIA_URL }}{{ order.phone.main_image }}" height="200" width="200">
+                            </div>
+                        </div>
+                    </div>
+            </div>
+                {% endfor %}
         </div>
         <div id="reviews" class="col s12 tab-content">
             <div class="row reviews">

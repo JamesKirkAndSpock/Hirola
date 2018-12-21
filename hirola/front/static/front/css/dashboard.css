@@ -148,6 +148,14 @@ p {
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s
   }
+
+  .details-row {
+    display: none;
+  }
+
+  .green-text {
+    text-decoration: underline;
+  }
   
   /* Add animation (fade in the popup) */
   @-webkit-keyframes fadeIn {

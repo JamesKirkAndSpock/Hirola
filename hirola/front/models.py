@@ -200,17 +200,6 @@ class OrderStatus(models.Model):
         return self.status
 
 
-class Order(models.Model):
-
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
-    phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
-    status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.phone) + ": " + str(self.owner) + " date: " + str(self.date)
-
-
 class IntegerRangeField(models.IntegerField):
 
     def __init__(self, min_value=None, max_value=None, **kwargs):
@@ -222,6 +211,27 @@ class IntegerRangeField(models.IntegerField):
         defaults.update(kwargs)
         return super(IntegerRangeField, self).formfield(**defaults)
 
+
+class PaymentMethod(models.Model):
+    payment_method = models.CharField(max_length=255, default="Cash")
+
+
+class Order(models.Model):
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
+    status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
+    quantity = IntegerRangeField(min_value=1)
+    total_price = IntegerRangeField(min_value=0)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.phone) + ": " + str(self.owner) + " date: " + str(self.date)
+
+    @property
+    def get_address(order):
+        return ShippingAddress.objects.filter(order=order).first()
 
 class Review(models.Model):
     stars = IntegerRangeField(min_value=1, max_value=5)
@@ -253,6 +263,12 @@ class PhoneImage(models.Model):
 class Feature(models.Model):
     phone = models.ForeignKey(PhoneList, related_name='phone_features', on_delete=models.CASCADE)
     feature = models.TextField()
+
+class ShippingAddress(models.Model):
+    order = models.ForeignKey(Order, related_name='shipping_address', on_delete=models.CASCADE)
+    pickup = models.CharField(max_length=255, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    recepient = models.CharField(max_length=255, blank=True, null=True)
 
 
 class ProductInformation(models.Model):

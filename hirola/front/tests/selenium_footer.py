@@ -1,17 +1,21 @@
 from .base_selenium import *
 
 
-class FooterLink(StaticLiveServerTestCase, TestCase):
+class FooterLink(BaseSeleniumTestCase):
     '''
-    Test that buttons, and links on the footers will redirect to the
-    page intended
+    Test that buttons, and links on the footers will redirect to the page intended
     '''
-    fixtures = ['test_footer_data.json']
 
     def setUp(self):
+        super(FooterLink, self).setUp()
         self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(30)
-        super(FooterLink, self).setUp()
+        self.create_social_media()
+        self.create_phone_category()
+        self.create_phone_memory_size()
+        self.create_currency()
+        self.create_item_icon()
+        self.create_phone_list()
 
     def test_news_link(self):
         '''
@@ -70,11 +74,11 @@ class FooterLink(StaticLiveServerTestCase, TestCase):
             - That the links redirect to their respective phone category link.
         '''
         categories = ["iPhone", "Android"]
-        category_pk = 1
         for category in categories:
             driver = self.driver
             driver.get('%s%s' % (self.live_server_url, '/'))
             driver.find_element_by_link_text("Buy {}".format(category)).click()
+            category_pk = PhoneCategory.objects.get(phone_category=category).pk
             self.assertEqual(driver.current_url,
                              '%s%s' % (self.live_server_url,
                                        '/phone_category/{}/'.format(category_pk)))
