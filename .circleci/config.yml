@@ -39,7 +39,8 @@ jobs:
             cd hirola
             # python manage.py test
             sudo apt-get remove --auto-remove memcached
-            python manage.py test --pattern=selenium*.py
+            python manage.py test front.tests.selenium_footer
+            # python manage.py test --pattern=selenium*.py
           
 
   application-deployment:

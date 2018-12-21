@@ -23,7 +23,6 @@ def page_view(request):
     (phone_categories, social_media) = various_caches()
     hot_deals = cache.get('hot_deals') or set_cache(
         HotDeal.objects.all(), 'hot_deals')
-    print(phone_categories)
     context = {'categories': phone_categories, 'social_media': social_media, 'hot_deals': hot_deals}
     return render(request, 'front/landing_page.html', context)
 
@@ -316,7 +315,6 @@ def activate_new_email(request, uidb64, token):
 
 
 def various_caches():
-    print("Cache of phone categories:", cache.get('phone_categories'))
     phone_categories = cache.get('phone_categories') or set_cache(
         PhoneCategory.objects.all(),
         'phone_categories')
