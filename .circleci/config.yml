@@ -55,6 +55,6 @@ workflows:
   deploy-application:
     jobs:
       - test
-      - application-deployment:
-          requires:
-            - test
+      # - application-deployment:
+      #     requires:
+      #       - test
