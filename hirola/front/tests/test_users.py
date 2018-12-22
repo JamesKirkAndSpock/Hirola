@@ -157,14 +157,13 @@ class UserLoginTestCase(BaseTestCase):
         '''
         Test that when a user enters a wrong email but a correct password that:
             - The page does not redirect
-            - The user gets a descriptive message explaining that the password
-            and email does not match
+            - The user gets a descriptive message explaining that the email account does not exist
         '''
         user_data = {"email": "urieltimanko@example.cm",
                      "password": "*&#@&!*($)lp"}
         response = self.client.post('/login', user_data)
         self.assertEqual(response.status_code, 200)
-        error_message = AuthenticationForm().error_messages["invalid_login"]
+        error_message = AuthenticationForm().error_messages["non_existent"]
         self.assertContains(response, error_message)
 
     def test_user_cannot_login_if_inactive(self):
