@@ -13,7 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         users = User.objects.exclude(change_email=None)
         for user in users:
-            check_time = user.change_email_tracker + timedelta(minutes=5)
+            check_time = user.change_email_tracker + timedelta(minutes=settings.CHANGE_EMAIL_EXPIRY_MINUTES_TIME)
             if timezone.now() > check_time:
                 user.change_email = None
                 user.change_email_tracker = None
