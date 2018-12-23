@@ -22,7 +22,7 @@ class Command(BaseCommand):
         except Exception:
             raise CommandError("Error resetting the changeemail command")
         self.stdout.write(self.style.SUCCESS(
-            'Time: {} changeemail command run successfully'.format(timezone.now())))
+            'Time: {} changeemail command run successful'.format(timezone.now())))
 
     def get_users(self):
         try:

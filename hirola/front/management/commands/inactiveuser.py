@@ -27,7 +27,7 @@ class Command(BaseCommand):
             except Exception:
                 raise CommandError("Error flushing users to Inactive User table")
         self.stdout.write(self.style.SUCCESS(
-            'Time: {} inactiveuser command run successfully'.format(timezone.now())))
+            'Time: {} inactiveuser command run successful'.format(timezone.now())))
 
     def get_users(self):
         try:
