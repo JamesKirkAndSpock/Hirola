@@ -20,7 +20,7 @@ class Command(BaseCommand):
                     user.change_email_tracker = None
                     user.save()
         except Exception:
-            raise CommandError("Error flushing users to Inactive User table")
+            raise CommandError("Error resetting the changeemail command")
         self.stdout.write(self.style.SUCCESS(
             'Time: {} changeemail command run successfully'.format(timezone.now())))
 
