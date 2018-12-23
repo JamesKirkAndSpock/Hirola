@@ -27,11 +27,11 @@ class EmailTest(BaseTestCase):
         User.objects.create(email="sivanna@gmail.com", first_name="Sivanna", last_name="Turimo",
                             is_staff=False, is_active=True, change_email="turimo@gmail.com",
                             change_email_tracker=timezone.now()-timedelta(minutes=minutes),
-                            phone_number=718217411, )
+                            phone_number=72200000, )
         User.objects.create(email="tripona@gmail.com", first_name="Tripona", last_name="Tirachi",
                             is_staff=False, is_active=True, change_email="tirachi@gmail.com",
                             change_email_tracker=timezone.now()-timedelta(minutes=minutes),
-                            phone_number=718217411, )
+                            phone_number=72200000, )
         sivanna_before = User.objects.get(first_name="Sivanna")
         tripona_before = User.objects.get(first_name="Tripona")
         self.assertTrue(sivanna_before.change_email)
@@ -56,11 +56,11 @@ class EmailTest(BaseTestCase):
         User.objects.create(email="sivanna@gmail.com", first_name="Sivanna", last_name="Turimo",
                             is_staff=False, is_active=True, change_email="turimo@gmail.com",
                             change_email_tracker=timezone.now(),
-                            phone_number=718217411, )
+                            phone_number=72200000, )
         User.objects.create(email="tripona@gmail.com", first_name="Tripona", last_name="Tirachi",
                             is_staff=False, is_active=True, change_email="tirachi@gmail.com",
                             change_email_tracker=timezone.now(),
-                            phone_number=718217411, )
+                            phone_number=72200000, )
         sivanna_before = User.objects.get(first_name="Sivanna")
         tripona_before = User.objects.get(first_name="Tripona")
         self.assertTrue(sivanna_before.change_email)

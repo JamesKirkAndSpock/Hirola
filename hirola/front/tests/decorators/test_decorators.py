@@ -10,7 +10,7 @@ class DecoratorsTest(BaseTestCase):
     def setUp(self):
         User.objects.create(email="sivanna@gmail.com", first_name="Sivanna", last_name="Turimo",
                             is_staff=False, is_active=True, is_change_allowed=False,
-                            phone_number=718217411, )
+                            phone_number=72200000, )
         self.user = User.objects.get(first_name="Sivanna")
         self.sivanna = Client()
         self.sivanna.force_login(self.user)

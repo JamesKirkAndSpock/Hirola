@@ -22,7 +22,7 @@ class SignupTestCase(BaseTestCase):
         '''
         country_code_k = CountryCode.objects.get(country="Kenya")
         user_data = {"email": "test_user@gmail.com", "first_name": "Test", "last_name": "User",
-                     "country_code": country_code_k.pk, "phone_number": 718217411,
+                     "country_code": country_code_k.pk, "phone_number": 722000000,
                      "password1": "*&#@&!*($)lp", "password2": "*&#@&!*($)lp"}
         request = self.factory.post('/signup', data=user_data)
         form = UserCreationForm(request.POST)
@@ -63,7 +63,7 @@ class SignupTestCase(BaseTestCase):
         country_code_k = CountryCode.objects.get(country="Kenya")
         User.objects.create_user(email="test_user_2@gmail.com", first_name="Test",
                                  last_name="User_2", country_code=country_code_k,
-                                 phone_number=718217411)
+                                 phone_number=72200000)
         user = User.objects.get(email="test_user_2@gmail.com")
         uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
         user_get = UserCreationForm().get_user(uid)
