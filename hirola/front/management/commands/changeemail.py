@@ -11,10 +11,21 @@ class Command(BaseCommand):
             )
 
     def handle(self, *args, **options):
-        users = User.objects.exclude(change_email=None)
-        for user in users:
-            check_time = user.change_email_tracker + timedelta(minutes=5)
-            if timezone.now() > check_time:
-                user.change_email = None
-                user.change_email_tracker = None
-                user.save()
+        users = self.get_users()
+        try:
+            for user in users:
+                check_time = user.change_email_tracker + timedelta(minutes=settings.CHANGE_EMAIL_EXPIRY_MINUTES_TIME)
+                if timezone.now() > check_time:
+                    user.change_email = None
+                    user.change_email_tracker = None
+                    user.save()
+        except Exception:
+            raise CommandError("Error resetting the changeemail command")
+        self.stdout.write(self.style.SUCCESS(
+            'Time: {} changeemail command run successful'.format(timezone.now())))
+
+    def get_users(self):
+        try:
+            return User.objects.exclude(change_email=None)
+        except Exception:
+            raise CommandError("Error getting users from the application")

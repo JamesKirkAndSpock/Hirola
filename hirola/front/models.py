@@ -98,6 +98,28 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
+class InactiveUser(models.Model):
+    email = models.EmailField(_('email address'), max_length=255)
+    first_name = models.CharField(_('first_name'), max_length=30, blank=True)
+    last_name = models.CharField(_('last_name'), max_length=30, blank=True)
+    date_joined = models.DateTimeField(_('date_joined'), default=timezone.now)
+    country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL, null=True, blank=True)
+    phone_number = models.IntegerField(blank=True, null=True)
+    photo = models.ImageField(blank=True, null=True)
+    change_email = models.EmailField(_('email address'), 
+                        max_length=255, default=None, blank=True, null=True)
+    change_email_tracker = models.DateTimeField(_('change_email_tracker'), default=None, blank=True,
+                                                null=True)
+    former_email = models.EmailField(_('email address'), max_length=255, default=None, blank=True,
+                                     null=True)
+    password = models.CharField(max_length=100, default=None, blank=True, null=True)
+
+    def __str__(self):
+        if self.first_name and self.last_name:
+            full_name = '%s %s' % (self.first_name, self.last_name)
+            return full_name.strip()
+        return self.email
+
 class PhoneCategory(models.Model):
     class Meta:
         verbose_name_plural = "Phone Categories"

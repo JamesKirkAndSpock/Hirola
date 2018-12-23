@@ -1,4 +1,4 @@
-from .base_selenium import *
+from front.tests.base_selenium import *
 
 
 class MyOrders(BaseSeleniumTestCase):

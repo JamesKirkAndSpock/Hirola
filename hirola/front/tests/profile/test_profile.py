@@ -8,7 +8,7 @@ class PhoneProfileLogic(BaseTestCase):
     def setUp(self):
         User.objects.create(email="example@gmail.com", first_name="Example",
                             last_name="User", is_staff=False, is_active=True,
-                            is_change_allowed=False, phone_number=718217411, )
+                            is_change_allowed=False, phone_number=72200000, )
         self.user = User.objects.get(first_name="Example")
         super(PhoneProfileLogic, self).setUp()
         Review.objects.create(stars=4, comments="Good job guys", phone=self.iphone_6,

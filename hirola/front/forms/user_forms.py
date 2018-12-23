@@ -242,6 +242,7 @@ class AuthenticationForm(forms.Form):
         'invalid_email': _(
             "You entered an incorrect email!!!"
         ),
+        'non_existent': _("We cannot find an account with that email address."),
     }
 
     def __init__(self, request=None, *args, **kwargs):
@@ -266,6 +267,16 @@ class AuthenticationForm(forms.Form):
             else:
                 self.confirm_login_allowed(self.user_cache)
         return self.cleaned_data
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        user = User.objects.filter(email=email).first()
+        if not user:
+            raise forms.ValidationError(
+                self.error_messages['non_existent'],
+                code='non_existent',
+            )
+        return email
 
     def confirm_login_allowed(self, user):
         """
