@@ -10,7 +10,7 @@ class UserTest(BaseTestCase):
     def setUp(self):
         super(UserTest, self).setUp()
 
-    def test_cron_change_email_delete(self):
+    def test_cron_inactive_user_delete(self):
         '''
         Test that if you have users with is_active set to False and that they have joined a period
         longer than settings.INACTIVE_EMAIL_EXPIRY_MINUTES_TIME.
@@ -28,6 +28,8 @@ class UserTest(BaseTestCase):
                             change_email_tracker=timezone.now()-timedelta(minutes=minutes),
                             date_joined=timezone.now()-timedelta(minutes=minutes),
                             phone_number=72200000, )
+        sivanna_user = User.objects.get(email="sivanna@gmail.com")
+        triponna_user = User.objects.get(email="tripona@gmail.com")
         self.assertTrue(User.objects.filter(first_name="Sivanna").first())
         self.assertTrue(User.objects.filter(first_name="Tripona").first())
         management.call_command('inactiveuser')
@@ -35,8 +37,34 @@ class UserTest(BaseTestCase):
         self.assertFalse(User.objects.filter(first_name="Tripona").first())
         self.assertTrue(InactiveUser.objects.filter(first_name="Sivanna").first())
         self.assertTrue(InactiveUser.objects.filter(first_name="Tripona").first())
+        inactive_sivanna = InactiveUser.objects.get(first_name="Sivanna")
+        inactive_triponna = InactiveUser.objects.get(first_name="Tripona")
+        self.assertEqual(inactive_sivanna.email, sivanna_user.email)
+        self.assertEqual(inactive_sivanna.first_name, sivanna_user.first_name)
+        self.assertEqual(inactive_sivanna.last_name, sivanna_user.last_name)
+        self.assertEqual(inactive_sivanna.date_joined, sivanna_user.date_joined)
+        self.assertEqual(inactive_sivanna.country_code, sivanna_user.country_code)
+        self.assertEqual(inactive_sivanna.phone_number, sivanna_user.phone_number)
+        self.assertEqual(inactive_sivanna.photo, sivanna_user.photo)
+        self.assertEqual(inactive_sivanna.change_email, sivanna_user.change_email)
+        self.assertEqual(inactive_sivanna.change_email_tracker, sivanna_user.change_email_tracker)
+        self.assertEqual(inactive_sivanna.former_email, sivanna_user.former_email)
+        self.assertEqual(inactive_sivanna.password, sivanna_user.password)
+        self.assertEqual(inactive_triponna.email, triponna_user.email)
+        self.assertEqual(inactive_triponna.first_name, triponna_user.first_name)
+        self.assertEqual(inactive_triponna.last_name, triponna_user.last_name)
+        self.assertEqual(inactive_triponna.date_joined, triponna_user.date_joined)
+        self.assertEqual(inactive_triponna.country_code, triponna_user.country_code)
+        self.assertEqual(inactive_triponna.phone_number, triponna_user.phone_number)
+        self.assertEqual(inactive_triponna.photo, triponna_user.photo)
+        self.assertEqual(inactive_triponna.change_email, triponna_user.change_email)
+        self.assertEqual(inactive_triponna.change_email_tracker, triponna_user.change_email_tracker)
+        self.assertEqual(inactive_triponna.former_email, triponna_user.former_email)
+        self.assertEqual(inactive_triponna.password, triponna_user.password)
 
-    def test_cron_change_email_non_delete(self):
+                        
+
+    def test_cron_inactive_user_non_delete(self):
         '''
         Test that if you have users with is_active set to True and that they have joined a period
         longer than settings.INACTIVE_EMAIL_EXPIRY_MINUTES_TIME.

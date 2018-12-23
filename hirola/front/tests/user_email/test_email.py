@@ -75,6 +75,15 @@ class EmailTest(BaseTestCase):
         self.assertTrue(sivanna_after.change_email_tracker)
         self.assertTrue(tripona_after.change_email_tracker)
 
+    def test_help_message_contains_the_time(self):
+        '''
+        Test that when you run the help command on the command inactiveuser
+            - That you get the minutes that were set for that command.
+        '''
+        command_class = management.load_command_class('front', 'changeemail')
+        self.assertIn('after {} minutes'.format(settings.CHANGE_EMAIL_EXPIRY_MINUTES_TIME),
+                      command_class.help)
+
     def test_email_match_check_fail(self):
         '''
         Test that when a user is logging in inorder to be able to edit his email that when enters
