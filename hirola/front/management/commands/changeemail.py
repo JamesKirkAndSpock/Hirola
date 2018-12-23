@@ -11,10 +11,7 @@ class Command(BaseCommand):
             )
 
     def handle(self, *args, **options):
-        try:
-            users = User.objects.exclude(change_email=None)
-        except Exception:
-            raise CommandError("Error getting users from the application")
+        users = self.get_users()
         try:
             for user in users:
                 check_time = user.change_email_tracker + timedelta(minutes=settings.CHANGE_EMAIL_EXPIRY_MINUTES_TIME)
@@ -26,3 +23,9 @@ class Command(BaseCommand):
             raise CommandError("Error flushing users to Inactive User table")
         self.stdout.write(self.style.SUCCESS(
             'Time: {} changeemail command run successfully'.format(timezone.now())))
+
+    def get_users(self):
+        try:
+            return User.objects.exclude(change_email=None)
+        except Exception:
+            raise CommandError("Error getting users from the application")
