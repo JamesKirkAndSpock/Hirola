@@ -11,16 +11,23 @@ class Command(BaseCommand):
             )
 
     def handle(self, *args, **options):
-        users = User.objects.exclude(is_active=True)
+        try:
+            users = User.objects.exclude(is_active=True)
+        except Exception:
+            raise CommandError("Error getting users from the application")
         for user in users:
-            check_time = user.date_joined + timedelta(minutes=settings.INACTIVE_EMAIL_EXPIRY_MINUTES_TIME)
-            if timezone.now() > check_time:
-                InactiveUser.objects.create(
-                    email=user.email, first_name=user.first_name, last_name=user.last_name,
-                    date_joined=user.date_joined, country_code=user.country_code,
-                    phone_number=user.phone_number, photo=user.photo, change_email=user.change_email,
-                    change_email_tracker=user.change_email_tracker, former_email=user.former_email,
-                    password=user.password
-                    )
-                user.delete()
-            print("Finished cleaning up inactive users")
+            try:
+                check_time = user.date_joined + timedelta(minutes=settings.INACTIVE_EMAIL_EXPIRY_MINUTES_TIME)
+                if timezone.now() > check_time:
+                    InactiveUser.objects.create(
+                        email=user.email, first_name=user.first_name, last_name=user.last_name,
+                        date_joined=user.date_joined, country_code=user.country_code,
+                        phone_number=user.phone_number, photo=user.photo, change_email=user.change_email,
+                        change_email_tracker=user.change_email_tracker, former_email=user.former_email,
+                        password=user.password
+                        )
+                    user.delete()
+            except Exception:
+                raise CommandError("Error flushing users to Inactive User table")
+        self.stdout.write(self.style.SUCCESS(
+            'Time: {} inactiveuser command run successfully'.format(timezone.now())))
