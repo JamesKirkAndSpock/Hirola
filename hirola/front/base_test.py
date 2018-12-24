@@ -70,12 +70,16 @@ class BaseTestCase(TestCase):
     def create_color(self):
         Color.objects.create(color="Red")
         Color.objects.create(color="RoseGold")
+        Color.objects.create(color="Silver")
         self.color_one = Color.objects.get(color="Red")
         self.color_two = Color.objects.get(color="RoseGold")
+        self.color_three = Color.objects.get(color="Silver")
 
     def add_phone_colors(self):
-        PhonesColor.objects.create(phone=self.iphone_6, color=self.color_one)
-        PhonesColor.objects.create(phone=self.iphone_6, color=self.color_two)
+        PhonesColor.objects.create(
+            phone=self.iphone_6, color=self.color_one, quantity=5, is_in_stock=True)
+        PhonesColor.objects.create(
+            phone=self.iphone_6, color=self.color_two, quantity=10, is_in_stock=True)
         self.iphone6_colors = PhonesColor.objects.filter(phone=self.iphone_6.pk)
         self.all_colors = PhonesColor.objects.all()
 
@@ -90,10 +94,10 @@ class BaseTestCase(TestCase):
         icon = ItemIcon.objects.get(item_icon="iphone_icon")
         PhoneList.objects.create(category=self.iphone, currency=self.currency_v,
                                  price=300000, phone_name="Iphone 6", icon=icon,
-                                 main_image=image("test_image_5.png"), quantity=5)
+                                 main_image=image("test_image_5.png"))
         self.iphone_6 = PhoneList.objects.get(phone_name="Iphone 6")
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=250000, phone_name="Samsung J7", quantity=5)
+                                 price=250000, phone_name="Samsung J7")
         self.samsung_j_7 = PhoneList.objects.get(phone_name="Samsung J7")
 
     def tearDown(self):

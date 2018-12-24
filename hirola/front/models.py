@@ -183,8 +183,6 @@ class PhoneList(models.Model):
     icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL, null=True, blank=True)
     average_review = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
     main_image = models.ImageField(upload_to="phones")
-    quantity = models.IntegerField(blank=False)
-
 
     def __str__(self):
         return self.phone_name
@@ -247,7 +245,7 @@ class Order(models.Model):
     phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
     quantity = IntegerRangeField(min_value=1)
-    total_price = IntegerRangeField(min_value=0)
+    total_price = IntegerRangeField(min_value=0, default=0)
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
@@ -323,7 +321,13 @@ class PhonesColor(models.Model):
         PhoneList, on_delete=models.SET_NULL, null=True, blank=True)
     color = models.ForeignKey(
         Color, on_delete=models.SET_NULL, null=True, blank=True)
+    quantity = IntegerRangeField(min_value=0)
+    is_in_stock = models.BooleanField(_('in_stock'), default=False, help_text=_(
+        'Designates whether this phone color is in stock. '
+        'Unselect this instead of deleting phone color.'), )
 
+    class Meta:
+        unique_together = ('phone', 'color')
 
 
 def delete_cache(model_class, object_id, cache_name):

@@ -21,17 +21,35 @@ from django.utils import timezone
 
 def page_view(request):
     (phone_categories, social_media) = various_caches()
-    hot_deals = cache.get('hot_deals') or set_cache(
+    deals = cache.get('hot_deals') or set_cache(
         HotDeal.objects.all(), 'hot_deals')
-    context = {'categories': phone_categories, 'social_media': social_media, 'hot_deals': hot_deals}
+    hot_deals = []
+    for deal in deals:
+        colors_list = PhonesColor.objects.all()
+        for color in colors_list:
+            if color.is_in_stock and color.quantity >= 1:
+                in_stock_id = color.phone
+                if str(in_stock_id) == str(deal.item):
+                    hot_deals.append(deal)
+    context = {'categories': phone_categories, 'social_media': social_media, 'hot_deals': list(set(hot_deals))}
     return render(request, 'front/landing_page.html', context)
 
 
 def phone_category_view(request, category_id):
-    phones = cache.get('phones_{}'.format(category_id)) or set_cache(
+    phones_list = cache.get('phones_{}'.format(category_id)) or set_cache(
         PhoneList.objects.filter(category=category_id),
         'phones_{}'.format(category_id))
-    return shared_phone_view(request, phones, category_id)
+    phones = []
+    for phone_object in phones_list:
+        pk = phone_object.pk
+        colors_list = PhonesColor.objects.filter(phone=pk)
+        for color in colors_list:
+            if color.is_in_stock and color.quantity >= 1:
+                existing_id = color.phone
+                if str(existing_id) == str(phone_object.phone_name):
+                    phones.append(phone_object)
+    # print(phones[1].currency, '****************')
+    return shared_phone_view(request, list(set(phones)), category_id)
 
 
 def phone_category_size_view(request, category_id, size):
@@ -52,6 +70,7 @@ def shared_phone_view(request, phones, category_id, message=""):
     context = {'categories': phone_categories, 'phones': phones,
                'category': category_pk, 'category_id': category_id,
                'size_message': message, 'sizes': sizes, "social_media": social_media}
+    print(context.get('phones')[1].currency, '*****')
     return render(request, 'front/phone_category.html', context)
 
 
@@ -97,7 +116,11 @@ def phone_profile_view(request, phone_id):
         item = request.POST['cart_item_add']
         return redirect("/checkout")
     phone = PhoneList.objects.filter(pk=phone_id).first()
-    colors = PhonesColor.objects.filter(phone=phone_id)
+    colors_list = PhonesColor.objects.filter(phone=phone_id)
+    colors = []
+    for color in colors_list:
+        if color.is_in_stock:
+            colors.append(color)
     if not phone:
         return redirect("/error")
     context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),

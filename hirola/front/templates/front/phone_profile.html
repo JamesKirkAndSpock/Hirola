@@ -55,11 +55,13 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12 m8">
-                        <select>
+                        <select id='color' class="materialSelect">
                             <option value="" disabled selected>Choose your color</option>
                             {% if colors %}
                             {% for color in colors %}
-                            <option value={{ forloop.counter }}>{{ color.color }}</option>
+                            {% if color.quantity >= 1 %}
+                                <option value={{ color.color.pk }}>{{ color.color }}</option>
+                            {% endif %}
                             {% endfor %}
                             {% endif %}
                         </select>
@@ -93,22 +95,16 @@
                 <form class="col s12" method="post">
                     {% csrf_token %}
                     <input type="hidden" id="cartItem" name="cart_item_add" value="{{ phone.id }}">
-                    <div class="row">
+                    <div class="row" id="quantityRow">
                         <select id="quantity">
                             <option value="" disabled selected>Quantity</option>
-                            {% if phone.quantity > 1 %}
-                            {% for i in "b"|ljust:phone.quantity %}
-                            <option value={{ forloop.counter }}>{{ forloop.counter }}</option>
-                            {% endfor %}
-                            {% else %}
-                            <option value="1">{{ phone.quantity }}</option>
-                            {% endif %}
                         </select>
                     </div>
                     <div class="row">
                         <button class="btn waves-effect waves-light green" id="add-to-cart-button" type="submit" name="action">Add to cart
                             <i class="material-icons left">add_shopping_cart</i>
                         </button>
+                            <p class="green" id="green"></p>
                     </div>
                 </form>
             </div>
@@ -164,6 +160,13 @@
     </div>
     </div>
 </div>
+<script type="text/javascript">
+    var quantities = [];
+    {% for quantity in colors %}
+        var color_object = {'color': '{{ quantity.color.pk|safe }}', 'quantity': '{{ quantity.quantity|safe }}'}
+        quantities.push(color_object);
+    {% endfor %}
+</script>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %}
 {{ block.super }}
@@ -172,5 +175,6 @@
 <script src="{% static 'front/js/slick.min.js' %}"></script>
 <script src="{% static 'front/js/profile_slick.js' %}"></script>
 <script src="{% static 'front/js/material_init.js' %}"></script>
+<script src="{% static 'front/js/phone_profile.js' %}"></script>
 {% endblock %}
 {% endblock %}

@@ -25,8 +25,10 @@ class PhoneFeatureInline(admin.TabularInline):
     extra = 1
 
 
-# class PhoneColorInline(admin.TabularInline):
-#     model = Color
+class PhoneColorInline(admin.TabularInline):
+    model = PhonesColor
+    extra = 1
+
 
 
 class PhoneProductInline(admin.StackedInline):
@@ -41,7 +43,7 @@ class ShippingAddressInline(admin.StackedInline):
 
 
 class PhoneListAdmin(admin.ModelAdmin):
-    inlines = [PhoneImageInline, PhoneReviewInline, PhoneFeatureInline, PhoneProductInline, ]
+    inlines = [PhoneImageInline, PhoneReviewInline, PhoneFeatureInline, PhoneProductInline, PhoneColorInline, ]
     change_form_template = 'admin/front/phone_list.html'
 
 
