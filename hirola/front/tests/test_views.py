@@ -166,8 +166,7 @@ class ClientViewsTestCase(BaseTestCase):
         PhoneList.objects.create(category=category, main_image=mock_image,
                                  phone_name=name, currency=currency, price=25,
                                  size_sku=size)
-        phone = PhoneList.objects.filter(phone_name=name)
-        phone = phone[0]
+        phone = PhoneList.objects.get(phone_name=name)
         PhonesColor.objects.create(phone=phone, color=self.color_one, quantity=5, is_in_stock=True)
 
     # def test_rendering_on_page_view(self):

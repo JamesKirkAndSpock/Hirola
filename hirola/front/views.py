@@ -70,7 +70,6 @@ def shared_phone_view(request, phones, category_id, message=""):
     context = {'categories': phone_categories, 'phones': phones,
                'category': category_pk, 'category_id': category_id,
                'size_message': message, 'sizes': sizes, "social_media": social_media}
-    print(context.get('phones')[1].currency, '*****')
     return render(request, 'front/phone_category.html', context)
 
 
