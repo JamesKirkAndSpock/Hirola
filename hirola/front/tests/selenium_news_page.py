@@ -2,17 +2,17 @@ import time
 from .base_selenium import *
 
 
-class NewsTestCase(StaticLiveServerTestCase, TestCase):
+class NewsTestCase(BaseSeleniumTestCase):
     """
     Test that links on the navbar will redirect to the
     page intended
     """
 
     def setUp(self):
-        super(Navbar, self).setUp()
+        super(NewsTestCase, self).setUp()
         self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(30)
-        super(NewsTestCase, self).setUp()
+        self.create_news()
 
     def test_news_page_link(self):
         """
@@ -38,7 +38,7 @@ class NewsTestCase(StaticLiveServerTestCase, TestCase):
         driver.find_element_by_link_text("Teke rocks").click()
         time.sleep(2)
         driver.switch_to.window(driver.window_handles[1])
-        self.assertEqual(driver.current_url, "https://www.tuko.co.ke/")
+        self.assertEqual(driver.current_url, "https://medium.com/")
 
     def test_news_page_news_link(self):
         """
