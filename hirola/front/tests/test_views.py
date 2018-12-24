@@ -122,9 +122,10 @@ class PhoneListViewsTestCase(BaseTestCase):
                                 currency_long_form="Pound")
         currency = Currency.objects.get(currency_long_form="Pound")
         PhoneList.objects.create(category=self.iphone, currency=currency,
-                                 price=30, phone_name="Iphone 6")
-        response = self.client.get("/phone_category/{}/"
-                                   .format(self.iphone.pk))
+                                 price=30, phone_name="Iphone 8S")
+        phone = PhoneList.objects.get(phone_name="Iphone 8S")
+        PhonesColor.objects.create(phone=phone, color=self.color_one, quantity=4, is_in_stock=True)
+        response = self.client.get("/phone_category/{}/".format(self.iphone.pk))
         self.assertContains(response, "£$Shs")
 
     def test_creation_of_entry(self):
