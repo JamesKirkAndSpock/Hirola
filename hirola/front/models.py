@@ -143,7 +143,7 @@ class PhoneMemorySize(models.Model):
     category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return str(self.size_number) + " " + self.abbreviation
+        return str(self.size_number) + " " + self.abbreviation + " " + str(self.category)
 
     def save(self, *args, **kwargs):
         if self.category:
