@@ -568,7 +568,7 @@ def phone_form(category, currency, size):
             "phone_reviews-INITIAL_FORMS": 0, "phone_reviews-MIN_NUM_FORMS": 0,
             "phone_reviews-MAX_NUM_FORMS": 1000, "phone_features-TOTAL_FORMS": 1,
             "phone_features-INITIAL_FORMS": 0, "phone_features-MIN_NUM_FORMS": 0,
-            "phone_features-MAX_NUM_FORMS": 1000, "phonescolor_set-TOTAL_FORMS": 1,
-            "phonescolor_set-INITIAL_FORMS": 0, "phonescolor_set-MIN_NUM_FORMS": 0,
-            "phonescolor_set-MAX_NUM_FORMS": 1000}
+            "phone_features-MAX_NUM_FORMS": 1000, "phone_color_quantity-TOTAL_FORMS": 1,
+            "phone_color_quantity-INITIAL_FORMS": 0, "phone_color_quantity-MIN_NUM_FORMS": 0,
+            "phone_color_quantity-MAX_NUM_FORMS": 1000}
     return form

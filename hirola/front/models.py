@@ -318,7 +318,7 @@ class Color(models.Model):
 
 class PhonesColor(models.Model):
     phone = models.ForeignKey(
-        PhoneList, on_delete=models.SET_NULL, null=True, blank=True)
+        PhoneList, related_name='phone_color_quantity', on_delete=models.SET_NULL, null=True, blank=True)
     color = models.ForeignKey(
         Color, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = IntegerRangeField(min_value=0)
