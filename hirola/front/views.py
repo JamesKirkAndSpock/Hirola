@@ -48,15 +48,23 @@ def phone_category_view(request, category_id):
                 existing_id = color.phone
                 if str(existing_id) == str(phone_object.phone_name):
                     phones.append(phone_object)
-    # print(phones[1].currency, '****************')
     return shared_phone_view(request, list(set(phones)), category_id)
 
 
 def phone_category_size_view(request, category_id, size):
-    phones = PhoneList.objects.filter(category=category_id, size_sku=size)
+    phones_list = PhoneList.objects.filter(category=category_id, size_sku=size)
     size_obj = PhoneMemorySize.objects.get(pk=size)
     size_message = "with a size of " + str(size_obj)
-    return shared_phone_view(request, phones, category_id, size_message)
+    phones = []
+    for phone_object in phones_list:
+        pk = phone_object.pk
+        colors_list = PhonesColor.objects.filter(phone=pk)
+        for color in colors_list:
+            if color.is_in_stock and color.quantity >= 1:
+                existing_id = color.phone
+                if str(existing_id) == str(phone_object.phone_name):
+                    phones.append(phone_object)
+    return shared_phone_view(request, list(set(phones)), category_id, size_message)
 
 
 def shared_phone_view(request, phones, category_id, message=""):
