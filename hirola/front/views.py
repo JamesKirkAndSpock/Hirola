@@ -21,50 +21,28 @@ from django.utils import timezone
 
 def page_view(request):
     (phone_categories, social_media) = various_caches()
-    deals = cache.get('hot_deals') or set_cache(
-        HotDeal.objects.all(), 'hot_deals')
-    hot_deals = []
-    for deal in deals:
-        colors_list = PhonesColor.objects.all()
-        for color in colors_list:
-            if color.is_in_stock and color.quantity >= 1:
-                in_stock_id = color.phone
-                if str(in_stock_id) == str(deal.item):
-                    hot_deals.append(deal)
+    hot_deals = cache.get('hot_deals') or set_cache(
+        HotDeal.objects.filter(item__phone_color_quantity__is_in_stock=True,
+                               item__phone_color_quantity__quantity__gte=1).distinct(),
+                               'hot_deals')
     context = {'categories': phone_categories, 'social_media': social_media, 'hot_deals': list(set(hot_deals))}
     return render(request, 'front/landing_page.html', context)
 
 
 def phone_category_view(request, category_id):
-    phones_list = cache.get('phones_{}'.format(category_id)) or set_cache(
-        PhoneList.objects.filter(category=category_id),
+    phones = cache.get('phones_{}'.format(category_id)) or set_cache(
+        PhoneList.objects.filter(category=1, phone_color_quantity__is_in_stock=True, phone_color_quantity__quantity__gte=1).distinct(),
         'phones_{}'.format(category_id))
-    phones = []
-    for phone_object in phones_list:
-        pk = phone_object.pk
-        colors_list = PhonesColor.objects.filter(phone=pk)
-        for color in colors_list:
-            if color.is_in_stock and color.quantity >= 1:
-                existing_id = color.phone
-                if str(existing_id) == str(phone_object.phone_name):
-                    phones.append(phone_object)
-    return shared_phone_view(request, list(set(phones)), category_id)
+    return shared_phone_view(request, phones, category_id)
 
 
 def phone_category_size_view(request, category_id, size):
-    phones_list = PhoneList.objects.filter(category=category_id, size_sku=size)
+    phones = PhoneList.objects.filter(
+        category=category_id, size_sku=size,phone_color_quantity__is_in_stock=True,
+        phone_color_quantity__quantity__gte=1).distinct()
     size_obj = PhoneMemorySize.objects.get(pk=size)
     size_message = "with a size of " + str(size_obj)
-    phones = []
-    for phone_object in phones_list:
-        pk = phone_object.pk
-        colors_list = PhonesColor.objects.filter(phone=pk)
-        for color in colors_list:
-            if color.is_in_stock and color.quantity >= 1:
-                existing_id = color.phone
-                if str(existing_id) == str(phone_object.phone_name):
-                    phones.append(phone_object)
-    return shared_phone_view(request, list(set(phones)), category_id, size_message)
+    return shared_phone_view(request, phones, category_id, size_message)
 
 
 def shared_phone_view(request, phones, category_id, message=""):
@@ -123,11 +101,7 @@ def phone_profile_view(request, phone_id):
         item = request.POST['cart_item_add']
         return redirect("/checkout")
     phone = PhoneList.objects.filter(pk=phone_id).first()
-    colors_list = PhonesColor.objects.filter(phone=phone_id)
-    colors = []
-    for color in colors_list:
-        if color.is_in_stock:
-            colors.append(color)
+    colors = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
     if not phone:
         return redirect("/error")
     context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
