@@ -23,6 +23,32 @@ class LandingPageViewsTestCase(BaseTestCase):
         self.assertContains(response, "/media/phones/test_image_5_")
         self.assertContains(response, "/profile/{}/".format(self.iphone_6.pk))
 
+    def test_non_hot_deals_rendering(self):
+        '''
+        Test that if a Hot Deal is not in stock or its quantity is zero:
+            - That it is  not rendered on the landing page
+            - That any hot deal with the opposite is rendered on the landing page
+        '''
+        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+                                 price=8000, phone_name="LG Razor J7", size_sku=self.size_android)
+        self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
+        PhonesColor.objects.create(phone=self.lg_razor, quantity=1, is_in_stock=True, color=self.color_one)
+        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+                                 price=8000, phone_name="Samsung S8", size_sku=self.size_android)
+        self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
+        PhonesColor.objects.create(phone=self.samsung_s8, quantity=0, is_in_stock=True, color=self.color_one)
+        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+                                 price=8000, phone_name="Samsung Note 5", size_sku=self.size_android)
+        self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
+        PhonesColor.objects.create(phone=self.samsung_n5, quantity=1, is_in_stock=False, color=self.color_one)
+        self.elena.post('/admin/front/hotdeal/add/', {"item": self.lg_razor.pk})
+        self.elena.post('/admin/front/hotdeal/add/', {"item": self.samsung_s8.pk})
+        self.elena.post('/admin/front/hotdeal/add/', {"item": self.samsung_n5.pk})
+        get_response = self.client.get("/")
+        self.assertContains(get_response, "LG Razor J7")
+        self.assertNotContains(get_response, "Samsung S8")
+        self.assertNotContains(get_response, "Samsung Note 5")
+
     def test_limit_on_image_size(self):
         '''
         Test that when adding a category, with an image of dimensions 225 by 225:
@@ -142,6 +168,24 @@ class PhoneListViewsTestCase(BaseTestCase):
         self.assertContains(response, str(phone_object))
         self.assertContains(response, "was added successfully.")
         self.assertRedirects(response, "/admin/front/phonelist/")
+
+    def test_phones_rendering(self):
+        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+                                 price=8000, phone_name="LG Razor J7", size_sku=self.size_android)
+        self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
+        PhonesColor.objects.create(phone=self.lg_razor, quantity=1, is_in_stock=True, color=self.color_one)
+        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+                                 price=8000, phone_name="Samsung S8", size_sku=self.size_android)
+        self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
+        PhonesColor.objects.create(phone=self.samsung_s8, quantity=0, is_in_stock=True, color=self.color_one)
+        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+                                 price=8000, phone_name="Samsung Note 5", size_sku=self.size_android)
+        self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
+        PhonesColor.objects.create(phone=self.samsung_n5, quantity=1, is_in_stock=False, color=self.color_one)
+        get_response = self.client.get("/phone_category/{}/".format(self.android.pk))
+        self.assertContains(get_response, "LG Razor J7")
+        self.assertNotContains(get_response, "Samsung S8")
+        self.assertNotContains(get_response, "Samsung Note 5")
 
 
 class PhoneMemorySizeViewsTestCase(BaseTestCase):
