@@ -1,6 +1,7 @@
 '''
 Models
 '''
+import datetime
 from django.db import models
 from django.core.cache import cache
 from django.db.models.signals import pre_delete, post_delete, post_save
@@ -142,7 +143,7 @@ class PhoneMemorySize(models.Model):
     category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return str(self.size_number) + " " + self.abbreviation
+        return str(self.size_number) + " " + self.abbreviation + " " + str(self.category)
 
     def save(self, *args, **kwargs):
         if self.category:
@@ -182,7 +183,6 @@ class PhoneList(models.Model):
     icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL, null=True, blank=True)
     average_review = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
     main_image = models.ImageField(upload_to="phones")
-
 
     def __str__(self):
         return self.phone_name
@@ -245,7 +245,7 @@ class Order(models.Model):
     phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
     quantity = IntegerRangeField(min_value=1)
-    total_price = IntegerRangeField(min_value=0)
+    total_price = IntegerRangeField(min_value=0, default=0)
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
@@ -303,10 +303,31 @@ class NewsItem(models.Model):
     title = models.CharField(max_length=256)
     source = models.CharField(max_length=256)
     link = models.CharField(max_length=256)
-    date_created = models.DateTimeField(_('date_created'), default=timezone.now)
+    date_created = models.DateField(_('date_created'))
 
     def __str__(self):
         return str(self.link)
+
+
+class Color(models.Model):
+    color = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.color
+
+
+class PhonesColor(models.Model):
+    phone = models.ForeignKey(
+        PhoneList, related_name='phone_color_quantity', on_delete=models.SET_NULL, null=True, blank=True)
+    color = models.ForeignKey(
+        Color, on_delete=models.SET_NULL, null=True, blank=True)
+    quantity = IntegerRangeField(min_value=0)
+    is_in_stock = models.BooleanField(_('in_stock'), default=False, help_text=_(
+        'Designates whether this phone color is in stock. '
+        'Unselect this instead of deleting phone color.'), )
+
+    class Meta:
+        unique_together = ('phone', 'color')
 
 
 def delete_cache(model_class, object_id, cache_name):

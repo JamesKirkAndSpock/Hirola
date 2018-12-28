@@ -22,20 +22,24 @@ from django.utils import timezone
 def page_view(request):
     (phone_categories, social_media) = various_caches()
     hot_deals = cache.get('hot_deals') or set_cache(
-        HotDeal.objects.all(), 'hot_deals')
-    context = {'categories': phone_categories, 'social_media': social_media, 'hot_deals': hot_deals}
+        HotDeal.objects.filter(item__phone_color_quantity__is_in_stock=True,
+                               item__phone_color_quantity__quantity__gte=1).distinct(),
+                               'hot_deals')
+    context = {'categories': phone_categories, 'social_media': social_media, 'hot_deals': list(set(hot_deals))}
     return render(request, 'front/landing_page.html', context)
 
 
 def phone_category_view(request, category_id):
     phones = cache.get('phones_{}'.format(category_id)) or set_cache(
-        PhoneList.objects.filter(category=category_id),
-        'phones_{}'.format(category_id))
+        PhoneList.objects.filter(category=category_id, phone_color_quantity__is_in_stock=True,
+        phone_color_quantity__quantity__gte=1).distinct(), 'phones_{}'.format(category_id))
     return shared_phone_view(request, phones, category_id)
 
 
 def phone_category_size_view(request, category_id, size):
-    phones = PhoneList.objects.filter(category=category_id, size_sku=size)
+    phones = PhoneList.objects.filter(
+        category=category_id, size_sku=size, phone_color_quantity__is_in_stock=True,
+        phone_color_quantity__quantity__gte=1).distinct()
     size_obj = PhoneMemorySize.objects.get(pk=size)
     size_message = "with a size of " + str(size_obj)
     return shared_phone_view(request, phones, category_id, size_message)
@@ -97,9 +101,10 @@ def phone_profile_view(request, phone_id):
         item = request.POST['cart_item_add']
         return redirect("/checkout")
     phone = PhoneList.objects.filter(pk=phone_id).first()
+    colors = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
     if not phone:
         return redirect("/error")
-    context = {"phone": phone, "image_list": phone.phone_images.all(),
+    context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
                "customer_reviews": phone.phone_reviews.all(),
                "features": phone.phone_features.all(), "infos": phone.phone_information.all()}
     return render(request, 'front/phone_profile.html', context)
@@ -356,14 +361,30 @@ def privacy_view(request):
 def search_view(request):
     if request.method == "POST":
         search_name = request.POST.get("search-name")
-        results = list(PhoneList.objects.filter(phone_name__icontains=search_name))
-        results += list(PhoneList.objects.filter(category__phone_category__icontains=search_name))
-        results += list(PhoneList.objects.filter(phone_features__feature__icontains=search_name))
-        results += list(PhoneList.objects.filter(phone_information__feature__icontains=search_name))
-        results += list(PhoneList.objects.filter(phone_information__value__icontains=search_name))
-        results += list(PhoneList.objects.filter(phone_reviews__comments__icontains=search_name))
-        results += list(PhoneList.objects.filter(price__icontains=search_name))
-        results += list(PhoneList.objects.filter(size_sku__size_number__icontains=search_name))
+        results = list(PhoneList.objects.filter(phone_name__icontains=search_name,
+                       phone_color_quantity__is_in_stock=True,
+                       phone_color_quantity__quantity__gte=1))
+        results += list(PhoneList.objects.filter(category__phone_category__icontains=search_name,
+                        phone_color_quantity__is_in_stock=True,
+                        phone_color_quantity__quantity__gte=1))
+        results += list(PhoneList.objects.filter(phone_features__feature__icontains=search_name,
+                        phone_color_quantity__is_in_stock=True,
+                        phone_color_quantity__quantity__gte=1))
+        results += list(PhoneList.objects.filter(phone_information__feature__icontains=search_name,
+                        phone_color_quantity__is_in_stock=True,
+                        phone_color_quantity__quantity__gte=1))
+        results += list(PhoneList.objects.filter(phone_information__value__icontains=search_name,
+                        phone_color_quantity__is_in_stock=True,
+                        phone_color_quantity__quantity__gte=1))
+        results += list(PhoneList.objects.filter(phone_reviews__comments__icontains=search_name,
+                        phone_color_quantity__is_in_stock=True,
+                        phone_color_quantity__quantity__gte=1))
+        results += list(PhoneList.objects.filter(price__icontains=search_name,
+                        phone_color_quantity__is_in_stock=True,
+                        phone_color_quantity__quantity__gte=1))
+        results += list(PhoneList.objects.filter(size_sku__size_number__icontains=search_name,
+                        phone_color_quantity__is_in_stock=True,
+                        phone_color_quantity__quantity__gte=1))
         results = list(set(results))
         args = {"results": results, "instructions": False}
         return render(request, 'front/search.html', args)

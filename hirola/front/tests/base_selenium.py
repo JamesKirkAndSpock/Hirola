@@ -86,8 +86,8 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
                                        location="Kiambu Road", recepient="Nala")
 
     def create_news(self):
-        NewsItem.objects.create(title="Teke rocks", source="The standard online",
-                                link="https://www.sde.com")
+        NewsItem.objects.create(title="Teke rocks", source="Medium",
+                                link="https://medium.com/", date_created="2018-12-12")
 
     def tearDown(self):
         cache.clear()

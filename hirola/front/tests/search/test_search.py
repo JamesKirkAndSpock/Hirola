@@ -11,6 +11,8 @@ class SearchTest(BaseTestCase):
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=8000, phone_name="LG Razor J7")
         self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
+        PhonesColor.objects.create(phone=self.lg_razor, color=self.color_one, quantity=1, is_in_stock=True)
+        PhonesColor.objects.create(phone=self.samsung_j_7, color=self.color_one, quantity=1, is_in_stock=True)
 
     def test_search_get_request(self):
         '''
@@ -104,3 +106,23 @@ class SearchTest(BaseTestCase):
         self.assertContains(response_2, self.samsung_j_7.phone_name)
         self.assertNotContains(response_2, self.lg_razor.phone_name)
         self.assertNotContains(response_2, self.iphone_6)
+
+    def test_not_in_stock_search(self):
+        '''
+        Test that for phones that are not in stock, or their quantity is zero:
+            - They won't be rendered on search
+        '''
+        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+                                 price=8000, phone_name="Samsung S8", size_sku=self.size_android)
+        self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
+        PhonesColor.objects.create(phone=self.samsung_s8, quantity=0, is_in_stock=True, color=self.color_one)
+        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+                                 price=8000, phone_name="Samsung Note 5", size_sku=self.size_android)
+        self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
+        PhonesColor.objects.create(phone=self.samsung_n5, quantity=1, is_in_stock=False, color=self.color_one)
+        post_response_1 = self.client.post("/search", {"search-name": "LG Raz"})
+        post_response_3 = self.client.post("/search", {"search-name": "Note"})
+        post_response_2 = self.client.post("/search", {"search-name": "S8"})
+        self.assertContains(post_response_1, "LG Razor J7")
+        self.assertNotContains(post_response_2, "Samsung S8")
+        self.assertNotContains(post_response_3, "Samsung Note 5")

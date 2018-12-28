@@ -17,6 +17,8 @@ class BaseTestCase(TestCase):
         self.create_landing_page_image()
         self.create_phones()
         self.create_news_item()
+        self.create_color()
+        self.add_phone_colors()
 
     def create_admin(self):
         # Elena is an admin who has admin privilidges
@@ -60,10 +62,26 @@ class BaseTestCase(TestCase):
         NewsItem.objects.create(
             title="Teke rocks",
             source="The standard online",
-            link="https://www.sde.com"
+            link="https://www.sde.com",
+            date_created="2018-12-10"
         )
         self.link = NewsItem.objects.get(link="https://www.sde.com")
 
+    def create_color(self):
+        Color.objects.create(color="Red")
+        Color.objects.create(color="RoseGold")
+        Color.objects.create(color="Silver")
+        self.color_one = Color.objects.get(color="Red")
+        self.color_two = Color.objects.get(color="RoseGold")
+        self.color_three = Color.objects.get(color="Silver")
+
+    def add_phone_colors(self):
+        PhonesColor.objects.create(
+            phone=self.iphone_6, color=self.color_one, quantity=5, is_in_stock=True)
+        PhonesColor.objects.create(
+            phone=self.iphone_6, color=self.color_two, quantity=10, is_in_stock=True)
+        self.iphone6_colors = PhonesColor.objects.filter(phone=self.iphone_6.pk)
+        self.all_colors = PhonesColor.objects.all()
 
     def create_landing_page_image(self):
         add_url = "/admin/front/landingpageimage/add/"
