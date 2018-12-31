@@ -33,7 +33,7 @@ class PhoneProfileTemplate(BaseTestCase):
         self.assertContains(get_response, star_reviews*4)
         self.assertNotContains(get_response, star_reviews*5)
         self.assertContains(get_response, "Good job guys")
-        self.assertContains(get_response, review.time.strftime("%b. %d, %Y"))
+        self.assertContains(get_response, review.time.strftime("%b."))
 
     def test_main_image_photos_rendered(self):
         '''
