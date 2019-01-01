@@ -54,7 +54,7 @@ class PhoneMemorySizeModelsTestCase(BaseTestCase):
         appreviation
         '''
         output = str(self.size_tablet)
-        self.assertEqual(output, "24 GB Tablet")
+        self.assertEqual(output, "24 GB")
 
 
 class CurrencyModelTestCase(BaseTestCase):
