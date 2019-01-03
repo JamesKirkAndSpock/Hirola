@@ -44,4 +44,6 @@ urlpatterns = [
     url(r'^activate_new_email/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate_new_email, name='activate_new_email'),
     path('search', views.search_view, name='search'),
+    url(r'^confirm_resend_email', views.confirm_resend_email, name='confirm_resend_email'),
+    url(r'^resend_email', views.resend_user_email, name='resend_email'),
 ]

@@ -9,23 +9,22 @@
     <div class="row">
         <div class="col m6 s12 message">
             <blockquote>
-                To activate this email, you need to click on the activation link that was sent on this email
-                address. In case you
+                The activation email, has been resent. In case you
                 cannot find it on your inbox, check your spam. <br>If the email has not been sent, click on the resend
                 button.
                 Otherwise,
                 this email will be deleted if not activated in the next 72 hours.
-            <cite>The Teke Team</cite>
+                <cite>The Teke Team</cite>
             </blockquote>
         </div>
     </div>
     <div class="row">
         <div class="col m6 s12">
-            <form method="POST" action="{% url 'front:confirm_resend_email' %}" class="col s12">
+            <form method="POST" action="{% url 'front:dashboard' %}" class="col s12">
                 {% csrf_token %}
                 <div class="row">
                     <div class="input-field s12">
-                        <button class="btn waves-effect green" type="submit">Resend Email</button>
+                        <button class="btn waves-effect green" type="submit">Home</button>
                     </div>
                 </div>
             </form>

@@ -2,11 +2,26 @@
 {% block styles %}
 {{ block.super }} {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/activate_email.css' %}" />
 {% endblock %}
 {% block content %}
-<p>We have sent you a link to your new email to activate it</p>
-<p>Open the message sent to your new email and click on the link to complete the activation.</p>
-<p>In case you do not find it in your inbox check your Spam folder.</p>
+<div class="main-content">
+    <div class="container">
+    <!-- <p>We have sent you a link to your new email to activate it</p>
+    <p>Open the message sent to your new email and click on the link to complete the activation.</p>
+    <p>In case you do not find it in your inbox check your Spam folder.</p> -->
+    <div class="row">
+        <div class="col m6 s12 message">
+        <p>
+            ""To activate this email, you need to click on the activation link that was sent on this email address. In case you
+            cannot find it on your inbox, check your spam. If the email has not been sent, click on the resend button.
+            Otherwise,
+            this email will be deleted if not activated in the next 72 hours.""
+        </p>
+        </div>
+    </div>
+    </div>
+</div>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %} {{ block.super }} {% load static %}
 <script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}

@@ -70,6 +70,7 @@ class UserCreationForm(forms.ModelForm):
         email_message = EmailMultiAlternatives(subject, body, None, [to_email])
         email_message.send()
 
+
     def get_user(self, uidb64):
         try:
             uid = urlsafe_base64_decode(uidb64).decode()
@@ -99,6 +100,24 @@ class UserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+class ResendActivationEmailLinkForm(forms.Form):
+    email = forms.EmailField(label=_("Email"), max_length=254)
+
+    def resend_email(self, request, user):
+        current_site = get_current_site(request)
+        context = {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+            'token': account_activation_token.make_token(user),
+            'protocol': 'https' if request.is_secure() else 'http',
+        }
+        to_email = self.cleaned_data.get('email')
+        subject = loader.render_to_string("registration/signup_activation_subject.txt", context)
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string("registration/signup_activation_email.html", context)
+        email_message = EmailMultiAlternatives(subject, body, None, [to_email])
+        email_message.send()
 
 class UserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField(

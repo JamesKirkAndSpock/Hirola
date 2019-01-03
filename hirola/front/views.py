@@ -6,7 +6,7 @@ from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (
     UserCreationForm, AuthenticationForm, UserForm, OldPasswordForm, ChangeEmailForm,
-    EmailAuthenticationForm)
+    EmailAuthenticationForm, ResendActivationEmailLinkForm)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
@@ -17,7 +17,6 @@ from .token import account_activation_token, email_activation_token
 from .decorators import (
     old_password_required, remember_user, is_change_allowed_required)
 from django.utils import timezone
-
 
 def page_view(request):
     (phone_categories, social_media) = various_caches()
@@ -390,3 +389,18 @@ def search_view(request):
         return render(request, 'front/search.html', args)
     args = {"instructions": True}
     return render(request, 'front/search.html', args)
+
+
+def confirm_resend_email(request):
+    return render(request, 'registration/confirm_resend_email.html', {'form': ResendActivationEmailLinkForm()})
+
+
+def resend_user_email(request):
+    if request.method == "POST":
+        form = ResendActivationEmailLinkForm(request.POST)
+        if form.is_valid():
+            email = request.POST['email']
+            user = User.objects.get(email=email)
+            form.resend_email(request, user)
+            return render(request, 'registration/email_resent.html')
+    return render(request, 'registration/signup_email_sent.html')
