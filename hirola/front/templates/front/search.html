@@ -3,10 +3,11 @@
 {{ block.super }}
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/search.css' %}" />
 {% endblock %}
 {% block content %}
-<div class="row main-content">
-<div class="container content">
+<div class="main-content">
+<div class="container">
 {% if instructions %}
 <p>
   Add something to the search bar to search for your items.
@@ -36,13 +37,14 @@
       {% endfor %}
     </div>
   {% else %}
-  <div>
+  <div class="error">
     <p>
       Oops! we did not find what you are looking for.
     </p>
   </div>
   {% endif %}
 {% endif %}
+</div>
 </div>
 </div>
 {% block footer %}
