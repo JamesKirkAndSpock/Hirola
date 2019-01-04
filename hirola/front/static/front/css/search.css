@@ -42,12 +42,5 @@
 }
 
 @media only screen and (max-width: 767px) {
-    .hot-deals {
-        font-size: 75%;
-    }
-     .material-icons {
-         margin-right: 2px;
-         font-size: 14px;
-         /* margin-block-start: 0 !important; */
-     }
+
 }
