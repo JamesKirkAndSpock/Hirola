@@ -41,14 +41,3 @@ body {
 #last-link {
     text-decoration: none;
 }
-
-.main-content {
-    margin-top: 100px;
-    flex: 1 0 auto;
-}
-
-.error p {
-    color: red;
-    font-size: 120%;
-    font-weight: bold;
-}
