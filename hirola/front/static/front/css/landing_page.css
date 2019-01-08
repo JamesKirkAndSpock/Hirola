@@ -1,5 +1,5 @@
 .main-content {
-    margin-top: 50px;
+    margin-top: 20px;
     flex: 1 0 auto;
 }
 
@@ -8,7 +8,12 @@
 }
 
 h5 {
-    font-weight: bold;
+    font-weight: 600;
+    margin-bottom: 0 !important;
+}
+
+h6 {
+    margin-top: 5px !important;
 }
 
 .center-content {
@@ -57,23 +62,25 @@ h5 {
     border-top: none !important;
     padding-bottom: 0 !important;
     padding-top: 0 !important;
-    padding-left: 4px !important;
-    padding-right: 4px !important;
+    padding-left: 10px !important;
+    padding-right: 5px !important;
 }
 
 .card-action a {
     margin: 0 !important;
-    text-transform: capitalize !important;
     color: black !important;
     font-style: bold !important;
+    text-transform: capitalize !important;
 }
 
+
 .land-imgs a {
-    font-size: 1.4em;
+    font-size: 1.2em;
 }
 
 .card-title-text {
     font-size: 125%;
+    text-transform: capitalize !important;
 }
 
 .deals-row {
@@ -87,7 +94,7 @@ h5 {
 
 #money {
     text-transform: capitalize;
-    font-size: 120%;
+    /* font-size: 110%; */
 }
 
 .content {
@@ -122,5 +129,14 @@ h5 {
     }
     .center-content .s4 {
         padding: 0!important;
+    }
+    .card-title-text {
+        font-size: 100%;
+    }
+    .material-icons {
+        margin-top: 2px;
+    }
+    .main-head {
+        padding-top: 25px !important;
     }
 }

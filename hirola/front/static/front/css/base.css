@@ -46,6 +46,9 @@ header {
     .sidenav {
         margin: 2px;
     }
+    .sidenav-trigger {
+        margin: 0 !important;
+    }
 }
 
 a {
