@@ -8,7 +8,7 @@ class DashboardTemplate(BaseTestCase):
         super(DashboardTemplate, self).setUp()
         user_data = UserSignupTestCase().generate_user_data({})
         response = self.client.post('/signup', user_data)
-        html_content = "We have sent you a link to your email to activate your registration"
+        html_content = "To activate this email, you need to click on the activation link that was sent on this email"
         self.assertContains(response, html_content)
         self.uriel = Client()
         user = User.objects.get(email="urieltimanko@example.com")
@@ -117,7 +117,7 @@ class DashboardTemplate(BaseTestCase):
     def test_order_data_with_recepient(self):
         '''
         Test that when you create a recepient for the Shipping Address:
-            - That the recepient's name is rendered rather than the owner's name. 
+            - That the recepient's name is rendered rather than the owner's name.
         '''
         (owner, order) = self.generate_review_data()
         shipping_address = ShippingAddress.objects.get(order=order)

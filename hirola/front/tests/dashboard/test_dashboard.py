@@ -7,14 +7,14 @@ class DashboardLogic(BaseTestCase):
         super(DashboardLogic, self).setUp()
         user_data = UserSignupTestCase().generate_user_data({})
         response = self.client.post('/signup', user_data)
-        html_content = "We have sent you a link to your email to activate your registration"
+        html_content = "To activate this email, you need to click on the activation link that was sent on this email"
         self.assertContains(response, html_content)
         self.uriel = Client()
         user = User.objects.get(email="urieltimanko@example.com")
         user.is_active = True
         user.save()
         self.uriel.force_login(user)
-    
+
     def test_name_edition(self):
         '''
         Test that when a logged in user edits his first and last name by

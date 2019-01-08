@@ -18,7 +18,7 @@ class UserSignupTestCase(BaseTestCase):
         '''
         user_data = self.generate_user_data({})
         response = self.client.post('/signup', user_data)
-        html_content = "We have sent you a link to your email to activate your registration"
+        html_content = "To activate this email, you need to click on the activation link that was sent on this email"
         self.assertContains(response, html_content)
         user = User.objects.filter(first_name="Uriel").first()
         self.assertEqual(user.last_name, "Timanko")
@@ -92,7 +92,7 @@ class UserSignupTestCase(BaseTestCase):
         '''
         user_data = self.generate_user_data({})
         response = self.client.post('/signup', user_data)
-        html_content = "We have sent you a link to your email to activate your registration"
+        html_content = "To activate this email, you need to click on the activation link that was sent on this email"
         self.assertContains(response, html_content)
         user_2 = self.generate_user_data({"first_name": "Another",
                                           "last_name": "User"})
@@ -123,7 +123,7 @@ class UserLoginTestCase(BaseTestCase):
         super(UserLoginTestCase, self).setUp()
         user_data = UserSignupTestCase().generate_user_data({})
         response = self.client.post('/signup', user_data)
-        html_content = "We have sent you a link to your email to activate your registration"
+        html_content = "To activate this email, you need to click on the activation link that was sent on this email"
         self.assertContains(response, html_content)
         user = User.objects.get(email="urieltimanko@example.com")
         user.is_active = True
