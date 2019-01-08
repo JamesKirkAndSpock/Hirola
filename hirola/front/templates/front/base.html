@@ -64,7 +64,7 @@
                                     </ul>
                                     {% if user.is_authenticated %}
                                         <ul>
-                                            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><span>My Teke<i class="material-icons right">arrow_drop_down</i></span></a></li>
+                                            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="dropdown">My Teke</span><i class="material-icons right">arrow_drop_down</i></a></li>
                                         </ul>
 
                                         {% else %}
@@ -74,9 +74,8 @@
                                             <li class="divider"></li>
                                             <li><a href="#!">FAQs</a></li>
                                         </ul>
-                                        <!-- <a href="/dashboard" class="right">My Teke</a> -->
                                         <ul>
-                                            <li><a class="dropdown-trigger" href="#!" data-target="dropdown2"><span>My Teke<i class="material-icons right">arrow_drop_down</i></span></a></li>
+                                            <li><a class="dropdown-trigger" href="#!" data-target="dropdown2"><span id="dropdown">My Teke</span><i class="material-icons right">arrow_drop_down</i></a></li>
                                         </ul>
                                     {% endif %}
                                 </div>
@@ -105,7 +104,7 @@
 
                 {% if user.is_authenticated %}
                         <li>
-                            <a href="/dashboard">My Profile</a>
+                            <a href="/dashboard" id="dropdown">My Profile</a>
                         </li>
                         <li>
                             <a href="/news">My Cart</a>
@@ -121,7 +120,7 @@
                         </li>
                     {% else %}
                         <li>
-                            <a href="/dashboard">Login</a>
+                            <a href="/dashboard" id="dropdown">Login</a>
                         </li>
                         <li>
                             <a href="#">My Cart</a>
