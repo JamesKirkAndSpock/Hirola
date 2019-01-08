@@ -29,7 +29,7 @@
                     <div class="container">
                         <div class="nav-wrapper black-text">
                             <div class="row">
-                                <div class="col m1 s12">
+                                <div class="col m2 s12">
                                     <div class="row">
                                         <div class="col s6">
                                             <a href="/" id="base-main-page">teke</a>
@@ -52,32 +52,40 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col m1 hide-on-med-and-down">
+                                <!-- <div class="col m1 hide-on-med-and-down">
                                     <a href="/help" class="right">FAQs</a>
-                                </div>
+                                </div> -->
                                 <div class="col m2 hide-on-med-and-down">
-                                    <ul id="dropdown1" class="dropdown-content">
-                                        <li><a href="/dashboard">My Profile</a></li>
-                                        <li><a href="#!">My Cart</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="#!">Signout</a></li>
-                                    </ul>
-                                    {% if user.is_authenticated %}
-                                        <ul>
-                                            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="dropdown">Hi {{ user.first_name }}</span><i class="material-icons right">arrow_drop_down</i></a></li>
-                                        </ul>
-
-                                        {% else %}
-                                        <ul id="dropdown2" class="dropdown-content">
-                                            <li><a href="/dashboard">Login</a></li>
+                                    <div class="right">
+                                        <ul id="dropdown1" class="dropdown-content">
+                                            <li><a href="/dashboard">My Profile</a></li>
+                                            <li class="divider"></li>
                                             <li><a href="#!">My Cart</a></li>
                                             <li class="divider"></li>
-                                            <li><a href="#!">FAQs</a></li>
+                                            <li><a href="/help">FAQs</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#!">Sign Out</a></li>
                                         </ul>
-                                        <ul>
-                                            <li><a class="dropdown-trigger" href="#!" data-target="dropdown2"><span id="dropdown">My Teke</span><i class="material-icons right">arrow_drop_down</i></a></li>
-                                        </ul>
-                                    {% endif %}
+                                        {% if user.is_authenticated %}
+                                            <ul>
+                                                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="dropdown">Hi {{ user.first_name }}</span><i class="material-icons right">arrow_drop_down</i></a></li>
+                                            </ul>
+
+                                            {% else %}
+                                            <ul id="dropdown2" class="dropdown-content">
+                                                <li><a href="/dashboard">Login</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="/dashboard">My Profile</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#!">My Cart</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#!">FAQs</a></li>
+                                            </ul>
+                                            <ul>
+                                                <li><a class="dropdown-trigger" href="#!" data-target="dropdown2"><span id="dropdown">My Teke</span><i class="material-icons right">arrow_drop_down</i></a></li>
+                                            </ul>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
