@@ -14,7 +14,7 @@
                 </div>
             </nav>
         </div>
-        <h4 class="center">teke checkout</h4>
+        <h4 class="center">kalapa checkout</h4>
         <div class="row">
             <div class="col m7 goods">
                 <div class="row shipping">
@@ -32,6 +32,13 @@
                 </div>
                 <div class="row payment">
                     <h5>2. Payment</h5>
+                    <div class="row">
+                        <div class="col s12">
+                            <p>At kalapa, we work on a pay and delivery system. When you complete this order, we will go to work to
+                                deliver your item. You will only pay once we ship your order to you. Shipping takes about one to two weeks.
+                            </p>
+                        </div>
+                    </div>
                     <form action="#" class="payment-form">
                         <div class="row">
                             <div class="input-field col s12">
@@ -81,17 +88,13 @@
                     <div class="col s6"><p>Kshs 67 000</p></div>
                 </div>
                 <div class="row">
-                    <div class="col s6">Shipping</div>
-                    <div class="col s6">Ksh 1000</div>
-                </div>
-                <div class="row">
                     <div class="col s6">Order Total</div>
-                    <div class="col s6">Ksh 68 000</div>
+                    <div class="col s6">Ksh 67 000</div>
                 </div>
                 <div class="row">
                     <div class="col s12">
-                        <p>By clicking Confirm and Pay, you agree to teke's <a>Privacy notice</a> and <a>Condition of use</a></p>
-                        <button class="btn waves-effect waves-light btg  blue darken-4" type="submit" name="action">Confirm and Pay
+                        <p>By clicking Confirm and Order, you agree to pay the full price of this item once its delivered to you</a></p>
+                        <button class="btn waves-effect waves-light btg  green" type="submit" name="action">Confirm and Order
                         </button>
                     </div>
                 </div>
@@ -99,4 +102,7 @@
         </div>
     </div>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script>
+{% endblock %}
 {% endblock %}
