@@ -188,18 +188,18 @@ class PhoneListViewsTestCase(BaseTestCase):
         self.assertNotContains(get_response, "Samsung Note 5")
 
 
-class PhoneMemorySizeViewsTestCase(BaseTestCase):
-    def setUp(self):
-        super(PhoneMemorySizeViewsTestCase, self).setUp()
+# class PhoneMemorySizeViewsTestCase(BaseTestCase):
+#     def setUp(self):
+#         super(PhoneMemorySizeViewsTestCase, self).setUp()
 
-    def test_views_according_to_phone_category(self):
-        data = {self.iphone.pk: ["8 GB", "24 GB"],
-                self.android.pk: ["16 GB", "8 GB"],
-                self.tablet.pk: ["24 GB", "16 GB"]}
-        for key in data:
-            response = self.client.get('/phone_category/{}/'.format(key))
-            self.assertContains(response, data[key][0])
-            self.assertNotContains(response, data[key][1])
+#     def test_views_according_to_phone_category(self):
+#         data = {self.iphone.pk: ["8 GB", "24 GB"],
+#                 self.android.pk: ["16 GB", "8 GB"],
+#                 self.tablet.pk: ["24 GB", "16 GB"]}
+#         for key in data:
+#             response = self.client.get('/phone_category/{}/'.format(key))
+#             self.assertContains(response, data[key][0])
+#             self.assertNotContains(response, data[key][1])
 
 
 class ClientViewsTestCase(BaseTestCase):
@@ -234,15 +234,15 @@ class ClientViewsTestCase(BaseTestCase):
         self.assertContains(response, "LaIphone")
         self.assertContains(response, "/media/phones/test_image_5")
 
-    def test_phone_category_size_view(self):
-        test_variables = {"a": [self.iphone.pk, "8 GB", "16 GB"],
-                          "b": [self.android.pk, "16 GB", "24 GB"],
-                          "c": [self.tablet.pk, "24 GB", "8 GB"]}
-        for key in test_variables:
-            response = self.client.get('/phone_category/{}/'
-                                       .format(test_variables[key][0]))
-            self.assertContains(response, test_variables[key][1])
-            self.assertNotContains(response, test_variables[key][2])
+    # def test_phone_category_size_view(self):
+    #     test_variables = {"a": [self.iphone.pk, "8 GB", "16 GB"],
+    #                       "b": [self.android.pk, "16 GB", "24 GB"],
+    #                       "c": [self.tablet.pk, "24 GB", "8 GB"]}
+    #     for key in test_variables:
+    #         response = self.client.get('/phone_category/{}/'
+    #                                    .format(test_variables[key][0]))
+    #         self.assertContains(response, test_variables[key][1])
+    #         self.assertNotContains(response, test_variables[key][2])
 
     def test_size_search(self):
         data_1 = {"a": [self.iphone, self.size_iphone, "Iphone1"],

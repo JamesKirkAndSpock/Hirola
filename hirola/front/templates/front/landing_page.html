@@ -20,7 +20,7 @@
               <a href="/phone_category/{{category.id}}"><img class="responsive-img" src="{{ MEDIA_URL }}{{ category.category_image }}"></a>
             </div>
             <div class="card-action">
-              <a href="/phone_category/{{category.id}}">{{ category.phone_category}}</a>
+              <a href="/phone_category/{{category.id}}"><b>{{ category.phone_category}}</b></a>
             </div>
           </div>
         </div>
@@ -57,7 +57,7 @@
               </div>
               <div class="card-action">
                     <a href="/profile/{{ hot_deal.item.pk }}/">
-                    <p><i id="quality-icon" class="material-icons grey-text right">{{ hot_deal.item.icon}}</i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
+                    <p><i id="quality-icon" class="material-icons grey-text right tiny">{{ hot_deal.item.icon}}</i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
                     </a>
               </div>
             </div>
