@@ -357,3 +357,23 @@ class EmailAuthenticationForm(AuthenticationForm):
                 code='invalid_email',
             )
         return email
+
+
+class ChangeActivationEmail(forms.Form):
+    email = forms.EmailField(label=_("Email"), max_length=254)
+
+    def resend_email(self, request, user):
+        current_site = get_current_site(request)
+        context = {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+            'token': account_activation_token.make_token(user),
+            'protocol': 'https' if request.is_secure() else 'http',
+        }
+        to_email = self.cleaned_data.get('email')
+        subject = loader.render_to_string("registration/signup_activation_subject.txt", context)
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string("registration/signup_activation_email.html", context)
+        email_message = EmailMultiAlternatives(subject, body, None, [to_email])
+        email_message.send()

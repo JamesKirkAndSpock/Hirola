@@ -1,0 +1,30 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="main-content">
+    <div class="container">
+        <div class="row">
+            <h5>Please enter the new email address</h5>
+            <form method="POST" action="{% url 'front:send_link_to_new_address' %}" class="col s6">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col s12 input-field">
+                        {{ form.email }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 input-field">
+                        <button class="btn waves-effect waves-ripple" type="submit">Send Link to new Adress</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% block scripts %}
+{{ block.super }}
+{% load static %}
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+{% endblock %}
+{% endblock %}

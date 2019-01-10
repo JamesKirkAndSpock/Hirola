@@ -6,7 +6,7 @@ from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (
     UserCreationForm, AuthenticationForm, UserForm, OldPasswordForm, ChangeEmailForm,
-    EmailAuthenticationForm)
+    EmailAuthenticationForm, ChangeActivationEmail)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
@@ -406,3 +406,20 @@ def search_view(request):
     args = {"instructions": True, 'categories': phone_categories,
             'social_media': social_media}
     return render(request, 'front/search.html', args)
+
+
+def change_activation_email(request):
+    return render(request, 'registration/change_activation_email.html',
+                  {'form': ChangeActivationEmail()})
+
+
+def send_link_to_new_address(request):
+    if request.method == "POST":
+        form = ChangeActivationEmail(request.POST)
+        if form.is_valid():
+            email = request.POST['email']
+            user = User.objects.get(email=email)
+            form.resend_email(request, user)
+            return render(request, 'registration/new_email_activation_sent.html')
+    print('Outsied expected block')
+    return render(request, 'registration/change_activation_email.html')
