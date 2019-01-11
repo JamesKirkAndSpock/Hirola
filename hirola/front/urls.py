@@ -44,7 +44,7 @@ urlpatterns = [
     url(r'^activate_new_email/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate_new_email, name='activate_new_email'),
     path('search', views.search_view, name='search'),
-    path(r'^change_activation_email', views.change_activation_email, name='change_activation_email'),
-    path(r'^send_link_to_new_address', views.send_link_to_new_address,
+    path('change_activation_email', views.change_activation_email, name='change_activation_email'),
+    path('send_link_to_new_address', views.send_link_to_new_address,
          name='send_link_to_new_address')
 ]
