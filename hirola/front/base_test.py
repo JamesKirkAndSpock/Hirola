@@ -90,7 +90,8 @@ class BaseTestCase(TestCase):
         self.elena.post(add_url, form)
 
     def create_phones(self):
-        ItemIcon.objects.create(item_icon="iphone_icon")
+        ItemIcon.objects.create(
+            item_icon="iphone_icon", item_icon_class="fab fa-apple")
         icon = ItemIcon.objects.get(item_icon="iphone_icon")
         PhoneList.objects.create(category=self.iphone, currency=self.currency_v,
                                  price=300000, phone_name="Iphone 6", icon=icon,

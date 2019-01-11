@@ -1,8 +1,4 @@
-{% extends "front/base.html" %}
-{% block styles %}
-{{ block.super }}
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% extends "front/base.html" %}{% block styles %}{{ block.super }}{% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/search.css' %}" />
 {% endblock %}
 {% block content %}
@@ -27,7 +23,7 @@
                 </div>
                 <div class="card-action">
                       <a href="/profile/{{ result.pk }}/">
-                      <p><i id="quality-icon" class="material-icons grey-text right">{{ result.icon}}</i><span class="green-text" id="money"><b>{{ result.currency }} {{ result.price}}</b></span></p>
+                      <p><i id="quality-icon" class="{{ result.icon.item_icon_class }} tiny grey-text right">{{ result.icon.item_icon_html|default_if_none:"" }}</i><span class="green-text" id="money"><b>{{ result.currency }} {{ result.price}}</b></span></p>
                       </a>
                 </div>
               </div>

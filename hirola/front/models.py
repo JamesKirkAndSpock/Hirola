@@ -107,7 +107,7 @@ class InactiveUser(models.Model):
     country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL, null=True, blank=True)
     phone_number = models.IntegerField(blank=True, null=True)
     photo = models.ImageField(blank=True, null=True)
-    change_email = models.EmailField(_('email address'), 
+    change_email = models.EmailField(_('email address'),
                         max_length=255, default=None, blank=True, null=True)
     change_email_tracker = models.DateTimeField(_('change_email_tracker'), default=None, blank=True,
                                                 null=True)
@@ -166,7 +166,9 @@ class Currency(models.Model):
 
 
 class ItemIcon(models.Model):
-    item_icon = models.CharField(max_length=50)
+    item_icon = models.CharField(max_length=50, null=True, blank=True)
+    item_icon_html = models.CharField(max_length=50, null=True, blank=True)
+    item_icon_class = models.CharField(max_length=50)
 
     def __str__(self):
         return self.item_icon
