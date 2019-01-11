@@ -330,16 +330,19 @@ def various_caches():
 
 def press_view(request):
     news = NewsItem.objects.all()
-    context = {'news': news}
+    (phone_categories, social_media) = various_caches()
+    context = {'news': news, 'categories': phone_categories}
     return render(request, 'front/news_press.html', context)
 
 
 def help_view(request):
-    return render(request, 'front/help.html')
+    (phone_categories, social_media) = various_caches()
+    return render(request, 'front/help.html', {'categories': phone_categories})
 
 
 def teke_vs_others_view(request):
-    return render(request, 'front/teke_vs_others.html')
+    (phone_categories, social_media) = various_caches()
+    return render(request, 'front/teke_vs_others.html', {'categories': phone_categories})
 
 
 def error_view(request):
@@ -355,7 +358,8 @@ def review_submit_view(request):
 
 
 def privacy_view(request):
-    return render(request, 'front/privacy.html')
+    (phone_categories, social_media) = various_caches()
+    return render(request, 'front/privacy.html', {'categories': phone_categories})
 
 
 def search_view(request):
@@ -386,7 +390,9 @@ def search_view(request):
                         phone_color_quantity__is_in_stock=True,
                         phone_color_quantity__quantity__gte=1))
         results = list(set(results))
-        args = {"results": results, "instructions": False}
+        (phone_categories, social_media) = various_caches()
+        args = {"results": results, "instructions": False, 'categories': phone_categories}
         return render(request, 'front/search.html', args)
-    args = {"instructions": True}
+    (phone_categories, social_media) = various_caches()
+    args = {"instructions": True, 'categories': phone_categories}
     return render(request, 'front/search.html', args)
