@@ -40,7 +40,7 @@
               <div class="card-title-text center"><b>{{ phone.phone_name}}</b></div>
               <div class="card-content">
                 <a href="/profile/{{ phone.id }}">
-                  <p><i id="quality-icon" class="{{ phone.icon.item_icon_class }} tiny grey-text right">{{ phone.icon.item_icon_html|default_if_none:"" }}</i><span class="green-text" id="money"><b>{{ phone.currency }} {{ phone.price}}</b></span></p>
+                  <p><i id="quality-icon" class="fab fa-{{ phone.icon }} tiny grey-text right"></i><span class="green-text" id="money"><b>{{ phone.currency }} {{ phone.price}}</b></span></p>
                 </a>
               </div>
             </div>

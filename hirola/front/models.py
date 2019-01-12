@@ -166,9 +166,7 @@ class Currency(models.Model):
 
 
 class ItemIcon(models.Model):
-    item_icon = models.CharField(max_length=50, null=True, blank=True)
-    item_icon_html = models.CharField(max_length=50, null=True, blank=True)
-    item_icon_class = models.CharField(max_length=50)
+    item_icon = models.CharField(max_length=50)
 
     def __str__(self):
         return self.item_icon

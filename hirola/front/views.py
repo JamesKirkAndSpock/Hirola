@@ -104,9 +104,11 @@ def phone_profile_view(request, phone_id):
     colors = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
     if not phone:
         return redirect("/error")
+    (phone_categories, social_media) = various_caches()
     context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
                "customer_reviews": phone.phone_reviews.all(),
-               "features": phone.phone_features.all(), "infos": phone.phone_information.all()}
+               "features": phone.phone_features.all(), "infos": phone.phone_information.all(),
+               'categories': phone_categories}
     return render(request, 'front/phone_profile.html', context)
 
 
@@ -123,7 +125,8 @@ def new_password_view(request):
 
 
 def checkout_view(request):
-    return render(request, 'front/checkout.html')
+    (phone_categories, social_media) = various_caches()
+    return render(request, 'front/checkout.html', {'categories': phone_categories})
 
 
 @login_required
@@ -201,7 +204,8 @@ def activate(request, uidb64, token):
 
 
 def imei_view(request):
-    return render(request, 'front/imei.html')
+    (phone_categories, social_media) = various_caches()
+    return render(request, 'front/imei.html', {'categories': phone_categories})
 
 
 class PasswordResetViewTailored(PasswordResetView):

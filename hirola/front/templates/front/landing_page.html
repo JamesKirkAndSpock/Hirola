@@ -57,7 +57,7 @@
               </div>
               <div class="card-action">
                     <a href="/profile/{{ hot_deal.item.pk }}/">
-                    <p><i id="quality-icon" class="{{ hot_deal.item.icon.item_icon_class }} grey-text right tiny">{{ hot_deal.item.icon.item_icon_html|default_if_none:""}}</i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
+                    <p><i id="quality-icon" class="fab fa-{{ hot_deal.item.icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
                     </a>
               </div>
             </div>

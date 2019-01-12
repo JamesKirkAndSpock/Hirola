@@ -23,7 +23,7 @@
                 </div>
                 <div class="card-action">
                       <a href="/profile/{{ result.pk }}/">
-                      <p><i id="quality-icon" class="{{ result.icon.item_icon_class }} tiny grey-text right">{{ result.icon.item_icon_html|default_if_none:"" }}</i><span class="green-text" id="money"><b>{{ result.currency }} {{ result.price}}</b></span></p>
+                      <p><i id="quality-icon" class="fab fa-{{ result.icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ result.currency }} {{ result.price}}</b></span></p>
                       </a>
                 </div>
               </div>
