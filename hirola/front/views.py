@@ -23,8 +23,7 @@ def page_view(request):
     (phone_categories, social_media) = various_caches()
     hot_deals = cache.get('hot_deals') or set_cache(
         HotDeal.objects.filter(item__phone_color_quantity__is_in_stock=True,
-                               item__phone_color_quantity__quantity__gte=1).distinct(),
-                               'hot_deals')
+                               item__phone_color_quantity__quantity__gte=1).distinct(), 'hot_deals')
     context = {'categories': phone_categories, 'social_media': social_media, 'hot_deals': list(set(hot_deals))}
     return render(request, 'front/landing_page.html', context)
 
@@ -32,7 +31,7 @@ def page_view(request):
 def phone_category_view(request, category_id):
     phones = cache.get('phones_{}'.format(category_id)) or set_cache(
         PhoneList.objects.filter(category=category_id, phone_color_quantity__is_in_stock=True,
-        phone_color_quantity__quantity__gte=1).distinct(), 'phones_{}'.format(category_id))
+                                 phone_color_quantity__quantity__gte=1).distinct(), 'phones_{}'.format(category_id))
     return shared_phone_view(request, phones, category_id)
 
 
@@ -108,7 +107,7 @@ def phone_profile_view(request, phone_id):
     context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
                "customer_reviews": phone.phone_reviews.all(),
                "features": phone.phone_features.all(), "infos": phone.phone_information.all(),
-               'categories': phone_categories}
+               'categories': phone_categories,  'social_media': social_media}
     return render(request, 'front/phone_profile.html', context)
 
 
@@ -126,7 +125,8 @@ def new_password_view(request):
 
 def checkout_view(request):
     (phone_categories, social_media) = various_caches()
-    return render(request, 'front/checkout.html', {'categories': phone_categories})
+    return render(request, 'front/checkout.html', {'categories': phone_categories,
+                                                   'social_media': social_media})
 
 
 @login_required
@@ -205,7 +205,8 @@ def activate(request, uidb64, token):
 
 def imei_view(request):
     (phone_categories, social_media) = various_caches()
-    return render(request, 'front/imei.html', {'categories': phone_categories})
+    return render(request, 'front/imei.html', {'categories': phone_categories,
+                                               'social_media': social_media})
 
 
 class PasswordResetViewTailored(PasswordResetView):
@@ -335,18 +336,21 @@ def various_caches():
 def press_view(request):
     news = NewsItem.objects.all()
     (phone_categories, social_media) = various_caches()
-    context = {'news': news, 'categories': phone_categories}
+    context = {'news': news, 'categories': phone_categories,
+               'social_media': social_media}
     return render(request, 'front/news_press.html', context)
 
 
 def help_view(request):
     (phone_categories, social_media) = various_caches()
-    return render(request, 'front/help.html', {'categories': phone_categories})
+    return render(request, 'front/help.html', {'categories': phone_categories,
+                                               'social_media': social_media})
 
 
 def teke_vs_others_view(request):
     (phone_categories, social_media) = various_caches()
-    return render(request, 'front/teke_vs_others.html', {'categories': phone_categories})
+    return render(request, 'front/teke_vs_others.html', {'categories': phone_categories,
+                                                         'social_media': social_media})
 
 
 def error_view(request):
@@ -363,10 +367,12 @@ def review_submit_view(request):
 
 def privacy_view(request):
     (phone_categories, social_media) = various_caches()
-    return render(request, 'front/privacy.html', {'categories': phone_categories})
+    return render(request, 'front/privacy.html', {'categories': phone_categories,
+                                                  'social_media': social_media})
 
 
 def search_view(request):
+    (phone_categories, social_media) = various_caches()
     if request.method == "POST":
         search_name = request.POST.get("search-name")
         results = list(PhoneList.objects.filter(phone_name__icontains=search_name,
@@ -394,9 +400,9 @@ def search_view(request):
                         phone_color_quantity__is_in_stock=True,
                         phone_color_quantity__quantity__gte=1))
         results = list(set(results))
-        (phone_categories, social_media) = various_caches()
-        args = {"results": results, "instructions": False, 'categories': phone_categories}
+        args = {"results": results, "instructions": False,
+                'categories': phone_categories,  'social_media': social_media}
         return render(request, 'front/search.html', args)
-    (phone_categories, social_media) = various_caches()
-    args = {"instructions": True, 'categories': phone_categories}
+    args = {"instructions": True, 'categories': phone_categories,
+            'social_media': social_media}
     return render(request, 'front/search.html', args)
