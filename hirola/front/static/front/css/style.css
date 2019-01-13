@@ -18,6 +18,8 @@ body {
     border-radius: 5px;
     background-color: #FFFFFF;
     padding: 0px 20px !important;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
 }
 
 .breadcrumb {

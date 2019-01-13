@@ -2,11 +2,10 @@
     margin-bottom: 20px;
 }
 
-form input {
+.search-bar form input {
     border-radius: 15px !important;
     border: solid 0.15em !important;
     border-color: #4caf50 !important;
-    /* border: none !important; */
 }
 
 form .input-field {

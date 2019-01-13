@@ -1,5 +1,4 @@
 {% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_category.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/slick.css' %}" />
@@ -41,7 +40,7 @@
               <div class="card-title-text center"><b>{{ phone.phone_name}}</b></div>
               <div class="card-content">
                 <a href="/profile/{{ phone.id }}">
-                  <p><i id="quality-icon" class="material-icons grey-text right">{{ phone.icon}}</i><span class="green-text" id="money"><b>{{ phone.currency }} {{ phone.price}}</b></span></p>
+                  <p><i id="quality-icon" class="fab fa-{{ phone.icon }} tiny grey-text right"></i><span class="green-text" id="money"><b>{{ phone.currency }} {{ phone.price}}</b></span></p>
                 </a>
               </div>
             </div>
@@ -56,7 +55,6 @@
 {% block scripts %}
 {{ block.super }}
 {% load static %}
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="{% static 'front/js/slick.min.js' %}"></script>
 <script src="{% static 'front/js/slick-init.js' %}"></script>
 {% endblock %}

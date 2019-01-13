@@ -57,7 +57,7 @@
               </div>
               <div class="card-action">
                     <a href="/profile/{{ hot_deal.item.pk }}/">
-                    <p><i id="quality-icon" class="material-icons grey-text right tiny">{{ hot_deal.item.icon}}</i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
+                    <p><i id="quality-icon" class="fab fa-{{ hot_deal.item.icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
                     </a>
               </div>
             </div>
@@ -72,10 +72,5 @@
 </div>
 {% block footer %}
 {% include 'front/footer.html' %}
-{% endblock %}
-{% block scripts %}
-{{ block.super }}
-{% load static %}
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 {% endblock %}
 {% endblock %}
