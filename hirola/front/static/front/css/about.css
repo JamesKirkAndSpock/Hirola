@@ -45,6 +45,13 @@
 p {
     font-size: 12pt;
 }
+
+hr {
+  border: 0; height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
+}
 .main-content {
     flex: 1 0 auto;
     width: 100%;
@@ -56,8 +63,8 @@ p {
 
 @media only screen and (max-width: 600px) {
     .row .s12 {
-        padding-left: 50px;
-        padding-right: 50px;
+        /* padding-left: 50px;
+        padding-right: 50px; */
     }
     .how-it-works {
         padding-left: 40px;

@@ -17,6 +17,7 @@
 
 .collapsible {
     border: none;
+    padding: 0;
 }
 
 .collapsible-header {
@@ -29,7 +30,7 @@
 }
 
 .collapsible i {
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 /* label focus color */
@@ -46,3 +47,19 @@
     border-bottom: 1px solid #4caf50 !important;
     box-shadow: 0 1px 0 0 #4caf50 !important;
 }
+
+hr {
+  border: 0; height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ul {
+  list-style-position: inside;
+  margin:0;
+  padding-left:1.2em;
+} */
+
+/* #inline-ul {
+  list-style: circle;
+} */
