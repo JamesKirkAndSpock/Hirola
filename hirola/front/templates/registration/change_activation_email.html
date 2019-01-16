@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <h5>Please enter the new email address</h5>
-            <form method="POST" action="{% url 'front:send_link_to_new_address' %}" class="col s6">
+            <form method="POST" action="/send_link_to_new_address/{{ old_email }}/" class="col s6">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col s12 input-field">
@@ -15,7 +15,7 @@
                 </div>
                 <div class="row">
                     <div class="col s12 input-field">
-                        <button class="btn waves-effect waves-ripple" type="submit">Send Link to new Adress</button>
+                        <button class="btn waves-effect waves-ripple green" type="submit">Send Link to new Adress</button>
                     </div>
                 </div>
             </form>

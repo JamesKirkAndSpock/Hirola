@@ -9,13 +9,38 @@
         <div class="row">
             <div class="col s12">
                 <h5><b>Please confirm your email address</b></h5>
-                <p>We have sent a link to the email adress you gave us<br>
+                <p>We have sent a link to <b>{{ user_email }}</b><br>
                    Please open your email and click on the link to continue with your registration</p>
             </div>
         </div>
         <div class="row">
             <div class="col s12">
-                <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+
+                {% if provider == 'gmail' %}
+                    <a href="https://mail.google.com/" target="_blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% elif provider == 'yahoo' %}
+                    <a href="https://overview.mail.yahoo.com/" target="_blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% elif provider == 'outlook' %}
+                    <a href="https://outlook.live.com/owa/" target=" _blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% elif provider == 'inbox' %}
+                    <a href="http://www.inbox.com/" target=" _blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% elif provider == 'icloud' %}
+                    <a href="https://www.icloud.com/" target=" _blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% else %}
+                    <a href="https://www.google.com/" target=" _blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% endif %}
             </div>
         </div>
         <div class="row">
@@ -23,8 +48,9 @@
                 <h6>Didn't recieve our email?</h6>
                 <ol>
                     <li>Check your spam folder</li>
-                    <li>Resend the activation email to your email address <a href="#" class="green-text">resend now</a></li>
-                    <li>Change to another email address <a href="{% url 'front:change_activation_email' %}" class="green-text"> change now</a> </li>
+                    <li>Resend the activation email to <b>{{ user_email }} </b><a href="/resend_activation_link/{{ user_email }}"
+                            class="green-text">resend now</a></li>
+                    <li>Change to another email address <a href="/change_activation_email/{{ user_email }}" class="green-text"> change now</a> </li>
                 </ol>
             </div>
         </div>

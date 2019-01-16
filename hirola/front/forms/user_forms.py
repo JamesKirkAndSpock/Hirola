@@ -377,3 +377,22 @@ class ChangeActivationEmail(forms.Form):
         body = loader.render_to_string("registration/signup_activation_email.html", context)
         email_message = EmailMultiAlternatives(subject, body, None, [to_email])
         email_message.send()
+
+
+def resend_email(request, user, email):
+    current_site = get_current_site(request)
+    context = {
+        'user': user,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+        'token': account_activation_token.make_token(user),
+        'protocol': 'https' if request.is_secure() else 'http',
+    }
+    to_email = email
+    subject = loader.render_to_string(
+        "registration/signup_activation_subject.txt", context)
+    subject = ''.join(subject.splitlines())
+    body = loader.render_to_string(
+        "registration/signup_activation_email.html", context)
+    email_message = EmailMultiAlternatives(subject, body, None, [to_email])
+    email_message.send()
