@@ -28,14 +28,14 @@
                 <nav class="nav-extended white">
                     <div class="container">
                         <div class="nav-wrapper black-text">
-                            <div class="row">
+                            <div class="row nav-row">
                                 <div class="col m2 s12">
                                     <div class="row">
                                         <div class="col s6">
-                                            <a href="/" id="base-main-page" class="">teke</a>
+                                            <a href="/" id="base-main-page">teke</a>
                                         </div>
                                         <div class="col s6">
-                                            <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i
+                                            <a href="#" data-target="mobile-demo" class="sidenav-trigger right hide-on-med-and-up"><i
                                                     class="material-icons">menu</i></a>
                                         </div>
                                     </div>
@@ -52,19 +52,18 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col m1 hide-on-med-and-down">
+                                <div class="col m1 hide-on-small-only faq">
                                     <a href="/help" class="right">FAQs</a>
                                 </div>
-                                <div class="col m1 hide-on-med-and-down">
+                                <div class="col m1 hide-on-small-only greeting" id="">
                                     <a href="/dashboard" class="right">My Teke</a>
                                 </div>
                             </div>
                         </div>
                         <div class="nav-content">
                             <div class="row">
-                                <div class="col m2"></div>
-                                <div class="col m8 center">
-                                    <ul class="hide-on-med-and-down">
+                                <div class="col m8 push-m2 center">
+                                    <ul class="hide-on-small-only">
                                         {% for category in categories %}
                                         <div class="col m3 right">
                                             <li class="a-divider">
@@ -74,7 +73,6 @@
                                         {% endfor %}
                                     </ul>
                                 </div>
-                                <div class="col m2"></div>
                             </div>
                         </div>
                 </nav>

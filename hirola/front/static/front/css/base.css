@@ -1,5 +1,6 @@
 .nav-wrapper {
     margin-bottom: 20px;
+    /* display: flex; */
 }
 
 .search-bar form input {
@@ -7,6 +8,14 @@
     border: solid 0.15em !important;
     border-color: #4caf50 !important;
 }
+
+/* .search-bar {
+    flex-shrink: 2;
+}
+
+.greeting {
+    flex-grow: 5;
+} */
 
 form .input-field {
     height: 64px;
