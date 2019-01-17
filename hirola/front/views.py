@@ -428,6 +428,7 @@ def send_link_to_new_address(request, old_email):
             user = User.objects.get(email=old_email)
             user_email = request.POST['email']
             User.objects.filter(pk=user.pk).update(email=user_email)
+            User.objects.filter(pk=user.pk).update(former_email=old_email)
             form.resend_email(request, user)
             return render(request, 'registration/signup_email_sent.html', {'user_email': user_email})
     return render(request, 'registration/change_activation_email.html')
