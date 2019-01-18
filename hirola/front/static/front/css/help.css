@@ -7,6 +7,7 @@
     padding: 20px;
 }
 
+
 .collapsible-header.active i {
     -ms-transform: rotate(90deg);
     /* IE 9 */
@@ -21,7 +22,20 @@
 }
 
 .collapsible-header {
-    border: none;
+  margin-left: 0!important;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  padding: 0!important;
+  border: 0!important;
+  font-size: 16px;
+
+}
+
+.collapsible-body {
+  font-size: 15px;
+  margin-left: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .btn {
@@ -54,12 +68,12 @@ hr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* ul {
-  list-style-position: inside;
-  margin:0;
-  padding-left:1.2em;
-} */
+.help-links {
+  text-decoration: underline;
+  text-decoration-color: green;
+}
 
-/* #inline-ul {
-  list-style: circle;
-} */
+p {
+  font-size: 16px;
+
+}

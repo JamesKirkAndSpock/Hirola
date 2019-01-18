@@ -14,14 +14,12 @@
     border-color: #E8E8E8;
 }
 
+.this-para {
+  font-size: 16px;
+}
+
 @media only screen and (max-width: 767px) {
     .landing-content {
         text-align: left;
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    .row .s4 {
-        flex: 1 0 auto;
     }
 }
