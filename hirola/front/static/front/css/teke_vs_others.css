@@ -19,3 +19,9 @@
         text-align: left;
     }
 }
+
+@media only screen and (max-width: 600px) {
+    .row .s4 {
+        flex: 1 0 auto;
+    }
+}
