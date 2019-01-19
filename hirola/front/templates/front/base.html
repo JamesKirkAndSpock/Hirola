@@ -52,10 +52,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col m1 hide-on-small-only faq">
-                                    <a href="/help" class="right">FAQs</a>
-                                </div>
-                                <div class="col m1 hide-on-small-only greeting" id="">
+                                <div class="col m2 hide-on-small-only greeting" id="">
                                     <a href="/dashboard" class="right">My Teke</a>
                                 </div>
                             </div>
@@ -63,15 +60,17 @@
                         <div class="nav-content">
                             <div class="row">
                                 <div class="col m8 push-m2 center">
-                                    <ul class="hide-on-small-only">
-                                        {% for category in categories %}
-                                        <div class="col m3 right">
-                                            <li class="a-divider">
-                                                <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
-                                            </li>
-                                        </div>
-                                        {% endfor %}
-                                    </ul>
+                                    <div class="row">
+                                        <ul class="hide-on-small-only">
+                                            {% for category in categories %}
+                                            <div class="col m3 right">
+                                                <li class="a-divider">
+                                                    <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
+                                                </li>
+                                            </div>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>

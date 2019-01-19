@@ -1,6 +1,5 @@
 .nav-wrapper {
     margin-bottom: 20px;
-    /* display: flex; */
 }
 
 .search-bar form input {
@@ -9,13 +8,6 @@
     border-color: #4caf50 !important;
 }
 
-/* .search-bar {
-    flex-shrink: 2;
-}
-
-.greeting {
-    flex-grow: 5;
-} */
 
 form .input-field {
     height: 64px;
@@ -65,5 +57,8 @@ a {
 
 .a-divider {
     border-bottom: solid 0.05em !important;
-    /* border-bottom-color: #E8E8E8 !important; */
+}
+
+.hide-on-small-only .m3{
+    padding: 0 !important;
 }
