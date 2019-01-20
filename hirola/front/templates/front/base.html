@@ -21,7 +21,7 @@
     <!-- Load Static for Images and CSS -->
 </head>
 
-<body>
+<body id="body">
     <header>
         <div class="row navigation white ">
             <div class="navbar-fixed">
@@ -61,11 +61,11 @@
                             <div class="row">
                                 <div class="col m8 push-m2 center">
                                     <div class="row">
-                                        <ul class="hide-on-small-only">
+                                        <ul class="hide-on-small-only categories">
                                             {% for category in categories %}
                                             <div class="col m3 right">
                                                 <li class="a-divider">
-                                                    <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
+                                                    <a href="/phone_category/{{category.id}}" id="{{ category.phone_category}}">{{ category.phone_category }}</a>
                                                 </li>
                                             </div>
                                             {% endfor %}
@@ -105,6 +105,7 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="{% static 'front/js/material_init.js' %}"></script>
+    <script src="{% static 'front/js/base.js' %}"></script>
     {% endblock %}
     {% endblock %}
 </body>
