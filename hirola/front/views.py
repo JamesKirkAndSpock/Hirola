@@ -432,6 +432,8 @@ def send_link_to_new_address(request, old_email):
         elif resend_email(request, user, user_email):
             User.objects.filter(pk=user.pk).update(former_email=old_email)
             User.objects.filter(pk=user.pk).update(email=user_email)
+            return render(request, 'registration/signup_email_sent.html',
+                          {'user_email': user_email})
         else:
             return render(request, 'registration/change_activation_email.html',
                                    {'error': 'Invalid Email', 'old_email': old_email})
