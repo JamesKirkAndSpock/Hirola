@@ -7,7 +7,7 @@ from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (
     UserCreationForm, AuthenticationForm, UserForm, OldPasswordForm, ChangeEmailForm,
-    EmailAuthenticationForm, ChangeActivationEmail, resend_email)
+    EmailAuthenticationForm, resend_email)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
@@ -418,19 +418,24 @@ def search_view(request):
 
 def change_activation_email(request, old_email):
     return render(request, 'registration/change_activation_email.html',
-                  {'form': ChangeActivationEmail(), 'old_email': old_email})
+                  {'old_email': old_email})
 
 
 def send_link_to_new_address(request, old_email):
     if request.method == "POST":
-        form = ChangeActivationEmail(request.POST)
-        if form.is_valid():
-            user = User.objects.get(email=old_email)
-            user_email = request.POST['email']
-            User.objects.filter(pk=user.pk).update(email=user_email)
-            User.objects.filter(pk=user.pk).update(former_email=old_email)
-            form.resend_email(request, user)
-            return render(request, 'registration/signup_email_sent.html', {'user_email': user_email})
+        user = User.objects.get(email=old_email)
+        user_email = request.POST['email']
+        if resend_email(request, user, user_email):
+            if not User.objects.filter(email=user_email).exists():
+                User.objects.filter(pk=user.pk).update(former_email=old_email)
+                User.objects.filter(pk=user.pk).update(email=user_email)
+                return render(request, 'registration/signup_email_sent.html',
+                                       {'user_email': user_email})
+            return render(request, 'registration/change_activation_email.html',
+                                   {'error': 'That Email is Already Registered',
+                                    'old_email': old_email})
+        return render(request, 'registration/change_activation_email.html',
+                               {'error': 'Invalid Email', 'old_email': old_email})
     return render(request, 'registration/change_activation_email.html')
 
 

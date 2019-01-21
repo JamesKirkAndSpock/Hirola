@@ -214,11 +214,10 @@ class UserChangeRegistrationEmail(BaseTestCase):
 
     def test_successful_change_of_registration_email(self):
         '''
-        Test that when a user serves correct input data to the signup form:
-            - The user is added to the database.
-            - The user is visible in the admin page.
-            - The data was entered correctly.
-            - The page redirects currently to the landing page
+        Test that when a user changes their email address:
+            - The user's main address is saved in the db.
+            - The user's former email is also saved.
+            - The page redirects to the signup_email_sent page
         '''
         user_data = self.generate_user_data({})
         response = self.client.post('/signup', user_data)
