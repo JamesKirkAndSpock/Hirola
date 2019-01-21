@@ -217,7 +217,6 @@ class UserChangeRegistrationEmail(BaseTestCase):
         Test that when a user changes their email address:
             - The user's main address is saved in the db.
             - The user's former email is also saved.
-            - The page redirects to the signup_email_sent page
         '''
         user_data = self.generate_user_data({})
         response = self.client.post('/signup', user_data)
@@ -229,7 +228,7 @@ class UserChangeRegistrationEmail(BaseTestCase):
         self.client.post('/change_activation_email/urieltimanko@example.com/')
         email = {'email': 'uriel@example2.com'}
         response = self.client.post('/send_link_to_new_address/urieltimanko@example.com/', email)
-        html_content = 'uriel@example2.com'
+        html_content = 'Please confirm your email address'
         self.assertContains(response, html_content)
         user = User.objects.filter(first_name="Uriel").first()
         self.assertEqual(user.last_name, "Timanko")
