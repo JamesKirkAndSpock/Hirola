@@ -133,31 +133,63 @@ h5 {
     .reviews .collection {
         padding-left: 0
     }
+    .card-content {
+        padding: 0 !important;
+    }
+    .phone-details {
+        padding: 20px !important;
+    }
 }
 
-.profile-img {
-    /* width: 500px; */
+ul#lightSlider{
+    margin-top: 10px !important;
 }
-/* 
-ul {
-    list-style: none outside none;
-    padding-left: 0;
-    margin-bottom: 0;
-}
-
-li {
-    display: block;
-    float: left;
-    margin-right: 6px;
-    cursor: pointer;
-}
-
-img {
-    display: block;
-    height: auto;
-    max-width: 100%;
-} */
 
 ul#lightSlider li {
     background: #cfd6d9 !important;
+    padding-top: 10px !important;
+}
+
+.profile-img{
+    margin: 0;
+}
+
+.lSSlideOuter {
+    margin-top: 10px !important;
+}
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lSSlideOuter .lSPager.lSGallery {
+    width: 100% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lSSlideOuter .lSPager.lSGallery li{
+    padding: 5px;
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #cfd6d9 !important;
+}
+
+.lSSlideOuter .lSPager.lSGallery li:last-child {
+    margin-right: 0 !important;
+}
+
+ul.lSPager.lSGallery{
+    width: 100% !important;
+}
+
+ul.lSGallery li img {
+    height: 50px !important;
+    text-align: center;
 }

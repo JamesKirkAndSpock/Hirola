@@ -14,13 +14,13 @@ $('.materialSelect').on('change', function () {
 });
 
 $(document).ready(function () {
-    $("#lightSlider").lightSlider();
     $('#lightSlider').lightSlider({
         gallery: true,
         item: 1,
         loop: true,
-        // slideMargin: 0,
-        // thumbItem: 9,
-        // autoWidth: false,
+        thumbItem: 9,
+        slideMargin: 0,
+        enableDrag: false,
+        currentPagerPosition: 'left'
     });
 });
