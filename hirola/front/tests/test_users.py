@@ -18,7 +18,7 @@ class UserSignupTestCase(BaseTestCase):
         '''
         user_data = self.generate_user_data({})
         response = self.client.post('/signup', user_data)
-        html_content = "We have sent you a link to your email to activate your registration"
+        html_content = "Please confirm your email address"
         self.assertContains(response, html_content)
         user = User.objects.filter(first_name="Uriel").first()
         self.assertEqual(user.last_name, "Timanko")
@@ -92,7 +92,7 @@ class UserSignupTestCase(BaseTestCase):
         '''
         user_data = self.generate_user_data({})
         response = self.client.post('/signup', user_data)
-        html_content = "We have sent you a link to your email to activate your registration"
+        html_content = "Please confirm your email address"
         self.assertContains(response, html_content)
         user_2 = self.generate_user_data({"first_name": "Another",
                                           "last_name": "User"})
@@ -123,7 +123,7 @@ class UserLoginTestCase(BaseTestCase):
         super(UserLoginTestCase, self).setUp()
         user_data = UserSignupTestCase().generate_user_data({})
         response = self.client.post('/signup', user_data)
-        html_content = "We have sent you a link to your email to activate your registration"
+        html_content = "Please confirm your email address"
         self.assertContains(response, html_content)
         user = User.objects.get(email="urieltimanko@example.com")
         user.is_active = True
@@ -206,3 +206,44 @@ class UserLoginTestCase(BaseTestCase):
         '''
         response = self.client.get("/login")
         self.assertContains(response, "name=\"remember-user\"")
+
+
+class UserChangeRegistrationEmail(BaseTestCase):
+    def setUp(self):
+        super(UserChangeRegistrationEmail, self).setUp()
+
+    def test_successful_change_of_registration_email(self):
+        '''
+        Test that when a user changes their email address:
+            - The user's main address is saved in the db.
+            - The user's former email is also saved.
+        '''
+        user_data = self.generate_user_data({})
+        response = self.client.post('/signup', user_data)
+        html_content = "urieltimanko@example.com"
+        self.assertContains(response, html_content)
+        user = User.objects.filter(first_name="Uriel").first()
+        self.assertEqual(user.last_name, "Timanko")
+        self.assertEqual(user.email, "urieltimanko@example.com")
+        self.client.post('/change_activation_email/urieltimanko@example.com/')
+        email = {'email': 'uriel@example2.com'}
+        response = self.client.post('/send_link_to_new_address/urieltimanko@example.com/', email)
+        html_content = 'Please confirm your email address'
+        self.assertContains(response, html_content)
+        user = User.objects.filter(first_name="Uriel").first()
+        self.assertEqual(user.last_name, "Timanko")
+        self.assertEqual(user.email, "uriel@example2.com")
+
+    def generate_user_data(self, data):
+        '''
+        Generate data for a user to be posted to the signup page
+        '''
+        country_code = CountryCode.objects.filter(country_code=254).first()
+        user_data = {"first_name": data.get('first_name') or "Uriel",
+                     "last_name": data.get('last_name') or "Timanko",
+                     "country_code": country_code.id,
+                     "phone_number": data.get('phone_number') or 722000000,
+                     "email": data.get('email') or "urieltimanko@example.com",
+                     "password1": data.get('password1') or "*&#@&!*($)lp",
+                     "password2": data.get('password2') or "*&#@&!*($)lp"}
+        return user_data

@@ -1,6 +1,6 @@
 from front.base_test import BaseTestCase
 from django.test import RequestFactory
-from front.forms.user_forms import UserCreationForm, loader, get_current_site, urlsafe_base64_encode, force_bytes, account_activation_token
+from front.forms.user_forms import UserCreationForm, loader, get_current_site, urlsafe_base64_encode, force_bytes, account_activation_token, resend_email
 from front.models import User, CountryCode
 from django.core import mail
 from django.conf import settings
@@ -85,3 +85,39 @@ class SignupTestCase(BaseTestCase):
         '''
         user_get = UserCreationForm().get_user("example")
         self.assertEqual(user_get, None)
+
+    def test_resend_email(self):
+        '''
+        Test that the resend_email method when given data to send:
+            - That it send the data it is expected to send to the recepient.
+        '''
+        country_code_k = CountryCode.objects.get(country="Kenya")
+        user_data = {"email": "test_user@gmail.com", "first_name": "Test", "last_name": "User",
+                     "country_code": country_code_k.pk, "phone_number": 722000000,
+                     "password1": "*&#@&!*($)lp", "password2": "*&#@&!*($)lp"}
+        request = self.factory.post('/signup', data=user_data)
+        form = UserCreationForm(request.POST)
+        self.assertEqual(form.is_valid(), True)
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
+        self.assertEqual(str(user), "Test User")
+        current_site = get_current_site(request)
+        context = {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+            'token': account_activation_token.make_token(user),
+            'protocol': 'https' if request.is_secure() else 'http',
+        }
+        subject = loader.render_to_string(
+            "registration/signup_activation_subject.txt", context)
+        subject = ''.join(subject.splitlines())
+        body = loader.render_to_string(
+            "registration/signup_activation_email.html", context)
+        form.send_email(request, user)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ['test_user@gmail.com'])
+        resend_email(request, user, user_data['email'])
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertEqual(mail.outbox[0].to, ['test_user@gmail.com'])

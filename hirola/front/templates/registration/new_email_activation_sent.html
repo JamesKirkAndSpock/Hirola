@@ -1,0 +1,35 @@
+{% extends "front/base.html" %}
+{% block styles %}
+{{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/signup_email_sent.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="main-content">
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h5><b>Please activate your new email address</b></h5>
+                <p>We have sent a link to the email adress you gave us<br>
+                    Please open your email and click on the link to activate your email</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <button class="btn waves-effect waves-ripple green">Activate Email</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <h6>Didn't recieve our email?</h6>
+                <ol>
+                    <li>Check your spam folder</li>
+                    <li>Resend the activation email to your email address <a href="#" class="green-text">resend now</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}

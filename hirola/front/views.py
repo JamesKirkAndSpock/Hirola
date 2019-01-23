@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse
@@ -6,7 +7,7 @@ from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (
     UserCreationForm, AuthenticationForm, UserForm, OldPasswordForm, ChangeEmailForm,
-    EmailAuthenticationForm)
+    EmailAuthenticationForm, resend_email)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
@@ -185,13 +186,20 @@ def signup_view(request):
             user.is_active = False
             user.save()
             form.send_email(request, user)
-            return render(request, 'registration/signup_email_sent.html')
+            args = {'user_email': user.email,
+                    'provider': get_user_email_provider(user.email)}
+            return render(request, 'registration/signup_email_sent.html', args)
         args = {'form':  form, 'social_media': social_media, 'categories': phone_categories}
         return render(request, 'front/signup.html', args)
     else:
         args = {'form':  UserCreationForm(), 'social_media': social_media,
                 'categories': phone_categories}
         return render(request, 'front/signup.html', args)
+
+
+def get_user_email_provider(email):
+    new_email = re.split(r'@|\.', email)
+    return new_email[1]
 
 
 def activate(request, uidb64, token):
@@ -406,3 +414,35 @@ def search_view(request):
     args = {"instructions": True, 'categories': phone_categories,
             'social_media': social_media}
     return render(request, 'front/search.html', args)
+
+
+def change_activation_email(request, old_email):
+    return render(request, 'registration/change_activation_email.html',
+                  {'old_email': old_email})
+
+
+def send_link_to_new_address(request, old_email):
+    user = User.objects.get(email=old_email)
+    user_email = request.POST['email']
+    if request.method == "POST":
+        if User.objects.filter(email=user_email).exists():
+            return render(request, 'registration/change_activation_email.html',
+                                   {'error': 'That Email is Already Registered',
+                                    'old_email': old_email})
+        elif resend_email(request, user, user_email):
+            User.objects.filter(pk=user.pk).update(former_email=old_email)
+            User.objects.filter(pk=user.pk).update(email=user_email)
+            return render(request, 'registration/signup_email_sent.html',
+                          {'user_email': user_email})
+        else:
+            return render(request, 'registration/change_activation_email.html',
+                                   {'error': 'Invalid Email', 'old_email': old_email})
+    return render(request, 'registration/change_activation_email.html')
+
+
+def resend_activation_link(request, email):
+    if email:
+        user = User.objects.get(email=email)
+        resend_email(request, user, email)
+        return redirect('/login')
+    return redirect('/signup')
