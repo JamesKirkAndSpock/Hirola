@@ -8,6 +8,7 @@
     border-color: #4caf50 !important;
 }
 
+
 form .input-field {
     height: 64px;
 }
@@ -56,5 +57,17 @@ a {
 
 .a-divider {
     border-bottom: solid 0.05em !important;
-    /* border-bottom-color: #E8E8E8 !important; */
+}
+
+.hide-on-small-only .m3{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+li.a-divider{
+    padding: 0 !important;
+}
+
+.categories a {
+    padding-right: 0 !important;
 }

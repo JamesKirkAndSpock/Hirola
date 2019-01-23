@@ -7,11 +7,6 @@
     margin-bottom: 20px !important;
 }
 
-h5 {
-    font-weight: 600;
-    margin-bottom: 0 !important;
-}
-
 h6 {
     margin-top: 5px !important;
 }
@@ -34,53 +29,12 @@ h6 {
     margin-top: 50px !important;
 }
 
-.card {
-    border: solid 0.05em;
-    border-color: #E8E8E8;
-    border-radius: 2px;
-    box-shadow: none;
-}
-
 .land-imgs .card {
     border: none;
 }
 
-.card:hover {
-    box-shadow: 0px 0px 4px 2px #E8E8E8;
-}
-
-.card-content img {
-    padding-bottom: 20px;
-}
-
-.card-content {
-    padding-bottom: 0 !important;
-}
-
-.card-action {
-    margin-bottom: 0 !important;
-    border-top: none !important;
-    padding-bottom: 0 !important;
-    padding-top: 0 !important;
-    padding-left: 10px !important;
-    padding-right: 5px !important;
-}
-
-.card-action a {
-    margin: 0 !important;
-    color: black !important;
-    font-style: bold !important;
-    text-transform: capitalize !important;
-}
-
-
 .land-imgs a {
     font-size: 1.2em;
-}
-
-.card-title-text {
-    font-size: 125%;
-    text-transform: capitalize !important;
 }
 
 .deals-row {
@@ -109,12 +63,15 @@ h6 {
     -moz-background-size: cover;
 }
 
+
 .item-text {
     margin-top: 300px;
 }
+
 .hot-deals .heading {
     padding-left: 20px !important;
 }
+
 @media only screen and (max-width: 767px) {
     .carousel {
         height: 91vh;
@@ -128,11 +85,9 @@ h6 {
         /* margin-block-start: 0 !important; */
     }
     .center-content .s4 {
-        padding: 0!important;
+        padding: 0 !important;
     }
-    .card-title-text {
-        font-size: 100%;
-    }
+
     .material-icons {
         margin-top: 2px;
     }

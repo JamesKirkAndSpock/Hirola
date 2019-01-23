@@ -5,9 +5,6 @@
 
 .content {
     margin-top: 50px;
-    padding: 20px;
-    border: solid 0.05em;
-    border-color: #E8E8E8;
     flex-grow: 1.2;
 }
 
@@ -27,48 +24,6 @@
     width: 80px;
 }
 
-.image-div {
-    padding-top: 40px;
-}
-
-.card {
-    border: solid 0.05em;
-    border-color: #E8E8E8;
-    border-radius: 2px;
-    box-shadow: none;
-}
-
-.card:hover {
-    box-shadow: 0px 0px 4px 2px #E8E8E8;
-}
-
-.heading {
-    padding-left: 10px !important;
-}
-
-.heading h5 {
-    font-weight: bold;
-}
-
-.images {
-    margin-left: 20px;
-}
-
-.card-title-text {
-    font-size: 125%;
-}
-
-.card-content {
-    padding-left: 5px !important;
-    padding-right: 5px !important;
-}
-
 .container {
     flex-shrink: 5;
-}
-
-@media only screen and (max-width: 767px) {
-    .heading h5 {
-        font-size: 5vw;
-    }
 }
