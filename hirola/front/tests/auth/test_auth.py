@@ -88,11 +88,8 @@ class SignupTestCase(BaseTestCase):
 
     def test_resend_email(self):
         '''
-        Test that the send_email method when given data to send:
+        Test that the resend_email method when given data to send:
             - That it send the data it is expected to send to the recepient.
-        # Test that when you click the activation link sent once and twice:
-        #     - That on the first click it redirects you to a login page.
-        #     - That on the second click it informs you that the activation link is invalid
         '''
         country_code_k = CountryCode.objects.get(country="Kenya")
         user_data = {"email": "test_user@gmail.com", "first_name": "Test", "last_name": "User",
