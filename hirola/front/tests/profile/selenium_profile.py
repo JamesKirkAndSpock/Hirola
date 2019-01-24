@@ -10,10 +10,10 @@ class PhoneProfileLink(BaseSeleniumTestCase):
 
     def setUp(self):
         super(PhoneProfileLink, self).setUp()
-        chrome_options = Options()
-        chrome_options.add_argument("--window-size=1920,1080")
-        self.driver = webdriver.Chrome(chrome_options=chrome_options)
-        # self.driver = webdriver.Chrome()
+        # chrome_options = Options()
+        # chrome_options.add_argument("--window-size=1920,1080")
+        # self.driver = webdriver.Chrome(chrome_options=chrome_options)
+        self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(30)
         self.create_country_code()
         self.create_phone_category()
