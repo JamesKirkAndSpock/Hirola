@@ -67,31 +67,41 @@
                         <button class="btn waves-effect waves-light bt green accent-4" type="submit" name="action">Login
                         </button>
                     </div>
+                </form>
                     <div class="row center">
-                        <!-- <div class="row">
+                        <div class="row">
                             <p class="center">Or login with your social media account
                             </p>
                         </div>
                         <div class="row social">
-                            <div class="col s6">
+                            <!-- <div class="col s6">
                                 <a href="#">
                                     <i class="fa fa-google fa-lg right"></i>
                                 </a>
-                            </div>
-                            <div class="col s6">
-                                <a href="#">
-                                    <i class="fa fa-facebook-square fa-lg left"></i>
-                                </a>
-                            </div>
-                        </div> -->
+                            </div> -->
+                            <form id="facebook_form" method="POST" action="/facebook_signup">
+                                {% csrf_token %}
+                                <input type="hidden" id="facebook_email" name="email">
+                                <input type="hidden" id="facebook_id" name="facebook_id">
+                                <input type="hidden" id="facebook_first_name" name="first_name">
+                                <input type="hidden" id="facebook_last_name" name="last_name">
+                                <div class="fb-login-button" onlogin="checkLoginState();" scope="public_profile, email" data-max-rows="1" data-size="large" data-button-type="login_with" data-auto-logout-link="true" data-use-continue-as="false"></div>
+                                <div id="status">
+                                </div>
+                            </form>
+                        </div>
                         <div class="row">
                             <p class="center" style="margin-bottom: 20px;">Don't have an account? <a href="{% url 'front:signup' %}" class="green-text" style="color:green;">Sign Up</a></p>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
         <div class="col m3"></div>
     </div>
 </div>
-{% block footer %} {% include 'front/footer.html' %} {% endblock %} {% endblock %}
+{% block footer %}
+{% include 'front/footer.html' %}
+{% load static %}
+<script src="{% static 'front/js/login.js' %}"></script>
+{% endblock %}
+{% endblock %}

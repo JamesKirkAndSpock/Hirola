@@ -13,6 +13,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
+from django.utils.html import mark_safe
 from front.token import account_activation_token, email_activation_token
 from django.core.validators import validate_email
 
@@ -387,3 +388,43 @@ def resend_email(request, user, email):
         email_message.send()
         return True
     return False
+
+class FacebookUserForm(forms.ModelForm):
+    """
+    A form that creates a user, with no privileges from the given facebook details
+    """
+
+    class Meta:
+        model = User
+        fields = ('email', 'first_name', 'last_name', 'facebook_id')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["email"].required = False
+        self.fields["facebook_id"].required = True
+
+
+class FacebookEmailEntryForm(forms.ModelForm):
+    """
+    A form that accepts an email field for a facebook user.
+    """
+    error_messages = {
+        'unique_forgot_password_message': mark_safe(_("If this is your email address and you do not remember "
+                                          "your password, click on "
+                                          "<a href=\"/reset_password\">Forgot password?</a>")),
+        'unique_login_message': mark_safe(_("If this is your email address and you remember your password"
+                                  " move on to the login page and insert your details. Click on"
+                                  " <a href=\"/login\">Login?</a>")),
+    }
+    
+
+    class Meta:
+        model = User
+        fields = ('email',)
+
+    def _post_clean(self):
+        super()._post_clean()
+        unique_error="The email address you entered has already been registered."
+        if unique_error in str(self._errors):
+            self.add_error('email', self.error_messages['unique_login_message'])
+            self.add_error('email', self.error_messages['unique_forgot_password_message'])

@@ -49,4 +49,6 @@ urlpatterns = [
          name='send_link_to_new_address'),
     path('resend_activation_link/<str:email>/', views.resend_activation_link,
          name='resend_activation_link'),
+    path('facebook_signup', views.facebook_signup, name='facebook_signup'),
+    path('facebook_email_signup', views.facebook_email_signup, name='facebook_email_signup'),
 ]

@@ -116,28 +116,41 @@
                         <button class="btn waves-effect waves-light green" type="submit" name="action">Register
                         </button>
                     </div>
-                    <!-- <div class="row center">
+                </form>
+                    <div class="col s12 row center">
                         <div class="row">
                         <p class="center">Or register with your social media account
                         </p>
                         </div>
                         <div class="row social">
-                            <div class="col s6">
+                            <!-- <div class="col s6">
                                 <a href="#">
                                     <i class="fa fa-google fa-lg right"></i>
                                 </a>
-                            </div>
-                            <div class="col s6">
-                                <a href="#">
-                                    <i class="fa fa-facebook-square fa-lg left"></i>
-                                </a>
-                            </div>
-                        </div> -->
+                            </div> -->
+                            <form id="facebook_form" method="POST" action="/facebook_signup">
+                                {% csrf_token %}
+                                <input type="hidden" id="facebook_email" name="email">
+                                <input type="hidden" id="facebook_id" name="facebook_id">
+                                <input type="hidden" id="facebook_first_name" name="first_name">
+                                <input type="hidden" id="facebook_last_name" name="last_name">
+                                <div class="fb-login-button" onlogin="checkLoginState();" scope="public_profile, email" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="false"></div>
+                                <div id="status">
+                                </div>
+                        {% if facebook_form.facebook_id.errors %}
+                            {% for error in form.facebook_id.errors %}
+                                <li><strong>{{ error|escape }}</strong></li>
+                            {% endfor %}
+
+                            <li><strong>There was an error signing you up using Facebook</strong></li>
+                        {% endif %}
+                            </form>
+                        </div>
                         <div class="row">
-                            <p class="center" style="margin-bottom: 20px;">Already have an account? <a href="/login" class="green-text">Log In</a></p>
+                            <p class="center" style="margin-bottom: 20px;">Already have an account? <a href="/login">Log in</a></p>
                         </div>
                     </div>
-                </form>
+
             </div>
         </div>
         <div class="col m3"></div>
@@ -148,5 +161,6 @@
 {{ block.super }}
 {% load static %}
 <script src="{% static 'front/js/material_init.js' %}"></script>
+<script src="{% static 'front/js/signup.js' %}"></script>
 {% endblock %}
 {% endblock %}

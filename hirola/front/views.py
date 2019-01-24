@@ -7,7 +7,7 @@ from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (
     UserCreationForm, AuthenticationForm, UserForm, OldPasswordForm, ChangeEmailForm,
-    EmailAuthenticationForm, resend_email)
+    EmailAuthenticationForm, resend_email, FacebookUserForm, FacebookEmailEntryForm)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
@@ -446,3 +446,59 @@ def resend_activation_link(request, email):
         resend_email(request, user, email)
         return redirect('/login')
     return redirect('/signup')
+def facebook_signup(request):
+    print("Passed here")
+    if request.method == 'POST':
+        return check_facebook_user_id_exists(request) 
+    (phone_categories, social_media) = various_caches()
+    args = {'social_media': social_media, 'categories': phone_categories}
+    return render(request, 'error/facebook_signup.html', args)
+
+def check_facebook_user_id_exists(request):
+    if request.POST.get("facebook_id"):
+        facebook_user = User.objects.filter(facebook_id=request.POST.get("facebook_id")).first()
+        if facebook_user:
+            check_email_update(request, facebook_user)
+            login(request, facebook_user)
+            return redirect("/dashboard")
+    return facebook_signup_logic(request)
+
+def check_email_update(request, facebook_user):
+    if request.POST.get("email"):
+        if request.POST.get("email") != facebook_user.email:
+            facebook_user.former_email = facebook_user.email
+            facebook_user.email = request.POST.get("email")
+            facebook_user.save()
+
+def facebook_signup_logic(request):
+    facebook_form = FacebookUserForm(request.POST)
+    if facebook_form.is_valid():
+        user = facebook_form.save(commit=False)
+        user.save()
+        return check_email_input(request)
+    (phone_categories, social_media) = various_caches()
+    args = {'form': UserCreationForm(), 'facebook_form': facebook_form,
+            'social_media': social_media, 'categories': phone_categories}
+    return render(request, 'front/signup.html', args)
+
+def check_email_input(request):
+    if not request.POST.get('email'):
+        return redirect("/facebook_email_signup")
+    facebook_user = User.objects.filter(facebook_id=request.POST.get("facebook_id")).first()
+    login(request, facebook_user)
+    return redirect('/dashboard')
+
+
+def facebook_email_signup(request):
+    if request.method == "POST":
+        form = FacebookEmailEntryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            facebook_user = User.objects.filter(email=form.cleaned_data.get("email")).first()
+            login(request, facebook_user)
+            return redirect("/dashboard")
+        args = {"form": form}
+        return render(request, 'registration/facebook_email_signup.html', args)
+    form = FacebookEmailEntryForm()
+    args = {"form": form}
+    return render(request, 'registration/facebook_email_signup.html', args)

@@ -10,6 +10,7 @@ from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.core.validators import MinValueValidator
 
 
 def get_default():
@@ -85,6 +86,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                                                 null=True)
     former_email = models.EmailField(_('email address'), max_length=255, default=None, blank=True,
                                      null=True)
+    facebook_id = models.BigIntegerField(validators=[MinValueValidator(0)], blank=True, null=True)
 
     objects = UserManager()
 

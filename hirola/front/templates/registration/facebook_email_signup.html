@@ -1,0 +1,40 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %}
+{% block content %}
+    <div class="container main-content">
+        <div class="row content">
+            <div class="col m2"></div>
+            <div class="col m8">
+                <div class="col s12 form-content">
+                    <h6>Please provide your email address to finish your signup</h6>
+                    <form method="post">
+                        {% csrf_token %}
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <div id="facebook_error_email_signup">
+                            </div>
+                            <i class="material-icons prefix">email</i>
+                            <label for="{{ form.email.id_for_label }}">Email</label>
+                            {{ form.email }}
+                            {{ form.email.errors }}
+                        </div>
+                    </div>
+                    <input type="hidden" id="facebook_id" name="id">
+                    <div class="row btn-group">
+                        <div class="col s6">
+                            <button class="btn waves-effect waves-light red accent-4 right" type="submit" name="action">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col m2"></div>
+        </div>
+    </div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %} {% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script>
+<script src="{% static 'front/js/facebook_email_signup.js' %}"></script>
+{% endblock %} {% endblock %}
