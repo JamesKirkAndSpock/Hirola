@@ -22,6 +22,7 @@ $(document).ready(function () {
         slideMargin: 0,
         enableDrag: false,
         currentPagerPosition: 'left',
-        controls: false
+        prevHtml: '<i class="fas fa-chevron-left fa-2x"></i>',
+        nextHtml: '<i class="fas fa-chevron-right fa-2x"></i>'
     });
 });
