@@ -47,3 +47,6 @@ $(document).ready(function(){
         edge: 'right'
     });
 });
+
+// trigger dropdown
+$(".dropdown-trigger").dropdown();

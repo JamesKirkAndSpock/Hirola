@@ -11,10 +11,10 @@ class EmailSentPageLinks(BaseSeleniumTestCase):
 
     def setUp(self):
         super(EmailSentPageLinks, self).setUp()
-        # chrome_options = Options()
-        # chrome_options.add_argument("--window-size=1920,1080")
-        # self.driver = webdriver.Chrome(chrome_options=chrome_options)
-        self.driver = webdriver.Chrome()
+        chrome_options = Options()
+        chrome_options.add_argument("--window-size=1920,1080")
+        self.driver = webdriver.Chrome(chrome_options=chrome_options)
+        # self.driver = webdriver.Chrome()
         self.create_country_code()
         self.driver.implicitly_wait(30)
 
@@ -48,7 +48,7 @@ class EmailSentPageLinks(BaseSeleniumTestCase):
         self.driver.find_element_by_name('first_name').send_keys('Peter')
         self.driver.find_element_by_name('last_name').send_keys('Ndungu')
         self.driver.find_element_by_class_name('select-wrapper').click()
-        self.driver.find_elements_by_tag_name('span')[1].click()
+        self.driver.find_elements_by_tag_name('span')[2].click()
         self.driver.find_element_by_name('phone_number').send_keys('712705422')
         self.driver.find_element_by_name(
             'email').send_keys('ndunguwanyinge@outlook.com')
@@ -67,7 +67,7 @@ class EmailSentPageLinks(BaseSeleniumTestCase):
         self.driver.find_element_by_name('first_name').send_keys('Peter')
         self.driver.find_element_by_name('last_name').send_keys('Ndungu')
         self.driver.find_element_by_class_name('select-wrapper').click()
-        self.driver.find_elements_by_tag_name('span')[1].click()
+        self.driver.find_elements_by_tag_name('span')[2].click()
         self.driver.find_element_by_name('phone_number').send_keys('712705422')
         self.driver.find_element_by_name(
             'email').send_keys('ndunguwanyinge@outlook.com')

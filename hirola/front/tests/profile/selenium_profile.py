@@ -1,4 +1,5 @@
 from front.tests.base_selenium import *
+from selenium.webdriver.chrome.options import Options
 
 
 class PhoneProfileLink(BaseSeleniumTestCase):
@@ -9,7 +10,10 @@ class PhoneProfileLink(BaseSeleniumTestCase):
 
     def setUp(self):
         super(PhoneProfileLink, self).setUp()
-        self.driver = webdriver.Chrome()
+        chrome_options = Options()
+        chrome_options.add_argument("--window-size=1920,1080")
+        self.driver = webdriver.Chrome(chrome_options=chrome_options)
+        # self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(30)
         self.create_country_code()
         self.create_phone_category()
@@ -17,7 +21,7 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         self.create_currency()
         self.create_item_icon()
         self.create_phone_list()
-        
+
     def test_teke_link(self):
         '''
         Test that the teke link redirects to the landing page
@@ -61,7 +65,8 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         '''
         driver = self.driver
         driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
-        driver.find_element_by_link_text("My Teke").click()
+        driver.find_element_by_id("dropdown").click()
+        driver.find_element_by_link_text("Login").click()
         self.assertEqual(driver.current_url,
                          '%s%s' % (self.live_server_url, '/login?next=/dashboard'))
 

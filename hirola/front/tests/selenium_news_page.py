@@ -1,5 +1,6 @@
 import time
 from .base_selenium import *
+from selenium.webdriver.chrome.options import Options
 
 
 class NewsTestCase(BaseSeleniumTestCase):
@@ -10,7 +11,10 @@ class NewsTestCase(BaseSeleniumTestCase):
 
     def setUp(self):
         super(NewsTestCase, self).setUp()
-        self.driver = webdriver.Chrome()
+        chrome_options = Options()
+        chrome_options.add_argument("--window-size=1920,1080")
+        self.driver = webdriver.Chrome(chrome_options=chrome_options)
+        # self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(30)
         self.create_news()
 

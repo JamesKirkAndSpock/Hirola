@@ -28,7 +28,7 @@
                 <nav class="nav-extended white">
                     <div class="container">
                         <div class="nav-wrapper black-text">
-                            <div class="row nav-row">
+                            <div class="row">
                                 <div class="col m2 s12">
                                     <div class="row">
                                         <div class="col s6">
@@ -52,8 +52,40 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col m2 hide-on-small-only greeting" id="">
-                                    <a href="/dashboard" class="right">My Teke</a>
+                                <!-- <div class="col m1 hide-on-med-and-down">
+                                    <a href="/help" class="right">FAQs</a>
+                                </div> -->
+                                <div class="col m2 hide-on-med-and-down">
+                                    <div class="right">
+                                        <ul id="dropdown1" class="dropdown-content">
+                                            <li><a href="/dashboard">My Profile</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#!">My Cart</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/help">FAQs</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#!">Sign Out</a></li>
+                                        </ul>
+                                        {% if user.is_authenticated %}
+                                            <ul>
+                                                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="dropdown">Hi {{ user.first_name }}</span><i class="material-icons right">arrow_drop_down</i></a></li>
+                                            </ul>
+
+                                            {% else %}
+                                            <ul id="dropdown2" class="dropdown-content">
+                                                <li><a href="/dashboard">Login</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="/dashboard">My Profile</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#!">My Cart</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#!">FAQs</a></li>
+                                            </ul>
+                                            <ul>
+                                                <li><a class="dropdown-trigger" href="#!" data-target="dropdown2"><span id="dropdown">My Teke</span><i class="material-icons right">arrow_drop_down</i></a></li>
+                                            </ul>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -77,24 +109,37 @@
                 </nav>
             </div>
             <ul class="sidenav" id="mobile-demo">
-                {% for category in categories %}
-                <li>
-                    <a href="/phone_category/{{category.id}}">{{ category.phone_category }}</a>
-                    <div class="divider"></div>
-                </li>
-                {% endfor %}
-                <li>
-                    <a href="/dashboard">My Teke</a>
-                </li>
-                <li>
-                    <div class="divider"></div>
-                </li>
-                <li>
-                    <a href="/news">News</a>
-                </li>
-                <li>
-                    <a href="/help">FAQs</a>
-                </li>
+
+                {% if user.is_authenticated %}
+                        <li>
+                            <a href="/dashboard" id="dropdown">My Profile</a>
+                        </li>
+                        <li>
+                            <a href="/news">My Cart</a>
+                        </li>
+                        <li>
+                            <a href="/help">FAQs</a>
+                        </li>
+                        <li>
+                            <div class="divider"></div>
+                        </li>
+                        <li>
+                            <a href="/help">Signout</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="/dashboard" id="dropdown">Login</a>
+                        </li>
+                        <li>
+                            <a href="#">My Cart</a>
+                        </li>
+                        <li>
+                            <div class="divider"></div>
+                        </li>
+                        <li>
+                            <a href="/help">FAQs</a>
+                        </li>
+                {% endif %}
             </ul>
         </div>
     </header>
