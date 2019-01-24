@@ -36,6 +36,19 @@ header {
     width: 100%;
 }
 
+.dropdown-trigger{
+    padding: 0 !important;
+}
+
+.dropdown-trigger .material-icons {
+    margin: 0 !important;
+}
+
+.dropdown-content{
+    padding-top: 8px;
+    width: 150px !important;
+}
+
 @media only screen and (max-width: 767px) {
     li {
         margin-right: 10px;
