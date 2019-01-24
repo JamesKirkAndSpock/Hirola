@@ -21,6 +21,7 @@ $(document).ready(function () {
         thumbItem: 9,
         slideMargin: 0,
         enableDrag: false,
-        currentPagerPosition: 'left'
+        currentPagerPosition: 'left',
+        controls: false
     });
 });

@@ -146,7 +146,7 @@ ul#lightSlider{
 }
 
 ul#lightSlider li {
-    background: #cfd6d9 !important;
+    /* background: #cfd6d9 !important; */
     padding-top: 10px !important;
 }
 
@@ -174,12 +174,19 @@ li {
 
 .lSSlideOuter .lSPager.lSGallery li{
     padding: 5px;
+    margin: 5px 5px 5px 5px !important;
     flex: 1 1 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #cfd6d9 !important;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
 }
+
+.lSSlideOuter .lSPager.lSGallery li.active,
+.lSSlideOuter .lSPager.lSGallery li:hover {
+    box-shadow: 0px 0px 4px 2px #E8E8E8;
+    }
 
 .lSSlideOuter .lSPager.lSGallery li:last-child {
     margin-right: 0 !important;
@@ -187,6 +194,7 @@ li {
 
 ul.lSPager.lSGallery{
     width: 100% !important;
+    padding: 0 2px 0 2px !important;
 }
 
 ul.lSGallery li img {
