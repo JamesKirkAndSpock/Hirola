@@ -11,10 +11,10 @@ class EmailSentPageLinks(BaseSeleniumTestCase):
 
     def setUp(self):
         super(EmailSentPageLinks, self).setUp()
-        # chrome_options = Options()
-        # chrome_options.add_argument("--window-size=1920,1080")
-        # self.driver = webdriver.Chrome(chrome_options=chrome_options)
-        self.driver = webdriver.Chrome()
+        chrome_options = Options()
+        chrome_options.add_argument("--window-size=1920,1080")
+        self.driver = webdriver.Chrome(chrome_options=chrome_options)
+        # self.driver = webdriver.Chrome()
         self.create_country_code()
         self.driver.implicitly_wait(30)
 
