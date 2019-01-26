@@ -472,6 +472,10 @@ def send_link_to_new_address(request, old_email):
     return render(request, 'registration/change_activation_email.html')
 
 
+def resend_activation_link(request):
+    user = request.user
+    resend_email(request, user, email)
+    return redirect('/login')
 def resend_activation_link(request, email):
     if email:
         user = User.objects.get(email=email)
