@@ -392,6 +392,7 @@ def resend_email(request, user, email):
         return True
     return False
 
+
 def resend_activation_email(request, user, email):
     """Resend link to activate email."""
     current_site = get_current_site(request)
