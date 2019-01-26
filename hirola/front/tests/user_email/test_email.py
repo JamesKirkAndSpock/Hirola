@@ -5,7 +5,7 @@ from datetime import timedelta
 from django.conf import settings
 from front.forms.user_forms import (
     EmailAuthenticationForm, ChangeEmailForm, loader, get_current_site, urlsafe_base64_encode,
-    force_bytes, email_activation_token)
+    force_bytes, email_activation_token, resend_activation_email)
 from django.test import RequestFactory
 from django import forms
 from django.core import mail
@@ -205,3 +205,20 @@ class EmailTest(BaseTestCase):
         response_2 = self.client.get(email, follow=True)
         self.assertContains(response_2, "The activation link is invalid!")
         self.assertEqual(response.status_code, 200)
+
+    def test_resend_new_email_activation_link(self):
+        '''
+        Test that the send_email method when given data to send:
+            - That it sends the data it is expected to send to the recepient.
+        Test that when you click the activation link sent once and twice:
+            - That on the first click it redirects you to a login page.
+            - That on the second click it informs you that the activation link is invalid
+        '''
+        request = RequestFactory()
+        request = request.post("", {'email': 'naisomia@gmail.com', 'password': 'secret'})
+        User.objects.create_user(email="sivanna@gmail.com", password="secret", )
+        user = User.objects.get(email="sivanna@gmail.com")
+        request.user = user
+        resend_activation_email(request, user, "ndungu@gmail.com")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ['ndungu@gmail.com'])

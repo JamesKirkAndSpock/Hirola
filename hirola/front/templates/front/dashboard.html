@@ -198,20 +198,21 @@
                             </div>
                             <div class="row">
                                 {% if user.change_email %}
-                                <p id="changeEmail">
+                                <p>
                                     <!-- <span style="background-color: LightGray">{{ user.change_email }}</span>
                                     <button class="popup" onmouseover="openPopup()" type="button">In active!
                                         <span class="popuptext" id="inactiveEmailPopup">Email not activated !</span>
                                     </button> -->
-
-                                    <span >
+                                    <span id="changeEmail">
                                         <span class="grey-text">
-                                        {{ user.change_email }}
+                                            {{ user.change_email }}
                                         </span>
-                                        <button class="btn right green pulse">Resend Link</button>
-                                        <i class="fas fa-info-circle red-text fa-2x tooltipped" data-position="top" data-tooltip="To activate this email, you need to click on the activation link that was sent on this email address. In
+                                        <span>
+                                        <i class="fas fa-info-circle red-text tooltipped" data-position="top" data-tooltip="To activate this email, you need to click on the activation link that was sent on this email address. In
                                                 case you cannot find it on your inbox, check your spam. If the email has not been sent, click on the resend button.
-                                                Otherwise, this email will be deleted if not activated in the next 72 hours."></i>
+                                                Otherwise, this email will be deleted if not activated in the next 72 hours.">
+                                        </i>
+                                        <a href="/resend_new_email_activation_link/{{ user.change_email }}/" class="green-text right">Resend link</a>
                                     </span>
                                 </p>
                                 {% endif %}
@@ -323,6 +324,14 @@
     </div>
 </div>
 </div>
+<script type="text/javascript">
+        var success_messages = []
+        {% if messages %}
+            {% for message in messages %}
+            success_messages.push('{{ message|safe }}');
+            {% endfor %}
+        {% endif %}
+    </script>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %} {% block scripts %} {{ block.super }} {% load static %}
 <script src="{% static 'front/js/material_init.js' %}"></script>
 <script src="{% static 'front/js/dashboard.js' %}"></script>
