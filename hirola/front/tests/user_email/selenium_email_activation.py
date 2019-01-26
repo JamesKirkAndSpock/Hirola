@@ -2,21 +2,21 @@ from front.tests.base_selenium import *
 import time
 
 
-class EmailSentPageLinks(BaseSeleniumTestCase):
-    """
-    Test that links on the signup page
-    behave as expected
-    """
+# class EmailSentPageLinks(BaseSeleniumTestCase):
+#     """
+#     Test that links on the signup page
+#     behave as expected
+#     """
 
-    def setUp(self):
-        super(EmailSentPageLinks, self).setUp()
-        self.driver = webdriver.Chrome()
-        self.create_country_code()
-        self.driver.implicitly_wait(30)
+#     def setUp(self):
+#         super(EmailSentPageLinks, self).setUp()
+#         self.driver = webdriver.Chrome()
+#         self.create_country_code()
+#         self.driver.implicitly_wait(30)
 
-    def tearDown(self):
-        self.driver.stop_client()
-        self.driver.close()
+#     def tearDown(self):
+#         self.driver.stop_client()
+#         self.driver.close()
 
     # def test_confirm_email_link(self):
     #     """Test link redirects to email provider page."""
@@ -81,9 +81,10 @@ class EmailSentPageLinks(BaseSeleniumTestCase):
     #     self.driver.find_element_by_tag_name('button').click()
     #     self.assertEqual(self.driver.current_url, '%s%s' %
     #                      (self.live_server_url, '/send_link_to_new_address/van@outlook.com/'))
-    def tearDown(self):
-        self.driver.stop_client()
-        self.driver.close()
+    #
+    # def tearDown(self):
+    #     self.driver.stop_client()
+    #     self.driver.close()
 
 
 class InactiveUserRedirect(BaseSeleniumTestCase):
