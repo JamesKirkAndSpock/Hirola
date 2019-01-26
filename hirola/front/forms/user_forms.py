@@ -370,6 +370,7 @@ def validate_user_email(email):
         return False
     return True
 
+
 def resend_email(request, user, email):
     if validate_user_email(email):
         current_site = get_current_site(request)
@@ -390,6 +391,7 @@ def resend_email(request, user, email):
         email_message.send()
         return True
     return False
+
 
 def resend_activation_email(request, user, email):
     """Resend link to activate email."""

@@ -5,10 +5,9 @@ from django.http import JsonResponse
 from .models import *
 from django.views import generic
 from django.core.cache import cache
-from .forms.user_forms import (
-    UserCreationForm, AuthenticationForm, UserForm, OldPasswordForm, ChangeEmailForm,
-    EmailAuthenticationForm, resend_email)
-    EmailAuthenticationForm, resend_activation_email)
+from .forms.user_forms import (UserCreationForm, AuthenticationForm, UserForm, OldPasswordForm,
+                               ChangeEmailForm, EmailAuthenticationForm, resend_email,
+                               EmailAuthenticationForm, resend_activation_email)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
