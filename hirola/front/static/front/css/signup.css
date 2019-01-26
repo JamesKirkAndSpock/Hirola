@@ -7,7 +7,7 @@
     padding: 0 20px 50px 20px;
     border: solid 0.05em;
     border-color: #E8E8E8;
-    border-radius: 50px;
+    border-radius: 5px;
 }
 .material-icons {
     color: green;
@@ -19,7 +19,7 @@
 .btn {
     margin: 30px 0px 30px 0px;
     width: 80%;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .material-icons {
