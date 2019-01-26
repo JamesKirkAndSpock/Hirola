@@ -14,19 +14,6 @@ function editName(hiddenInput, visibleInput){
 var detailsLink = document.getElementById('details-link');
 var detailsRow = document.getElementById('details');
 
-// detailsLink.addEventListener('click',() => {
-//     if(!detailsRow.style.display || detailsRow.style.display == 'none'){
-//         detailsRow.style.display = 'block';
-//     }else{
-//         detailsRow.style.display = 'none';
-//     }
-// });
-
-
-// var currentDate = document.getElementById('current-date');
-// var now = new Date();
-// currentDate.innerHTML = now;
-
 $(document).ready(countryCodeSelector);
 function countryCodeSelector() {
     $.getJSON("/country_codes", {id: $('#id_country_code').val(), view: 'json'}, function(j) {
@@ -67,7 +54,6 @@ function openDisplay(value) {
 $(document).ready(function () {
     var sPath = window.location.pathname;
     var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
-    console.log(sPage);
     success_messages.forEach(message => {
         if (sPage == 'dashboard'){
         M.toast({
