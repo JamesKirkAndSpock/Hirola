@@ -19,37 +19,37 @@
 
                 {% if provider == 'gmail' %}
                 <a href="https://mail.google.com/" target="_blank">
-                    <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    <button class="btn waves-effect waves-ripple green">Go to your Gmail account</button>
                 </a>
                 {% elif provider == 'yahoo' %}
                 <a href="https://overview.mail.yahoo.com/" target="_blank">
-                    <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    <button class="btn waves-effect waves-ripple green">Go to your Yahoo account</button>
                 </a>
                 {% elif provider == 'outlook' %}
                 <a href="https://outlook.live.com/owa/" target=" _blank">
-                    <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    <button class="btn waves-effect waves-ripple green">Go to your Outlook account</button>
                 </a>
                 {% elif provider == 'inbox' %}
                 <a href="http://www.inbox.com/" target=" _blank">
-                    <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    <button class="btn waves-effect waves-ripple green">Go to your Inbox account</button>
                 </a>
                 {% elif provider == 'icloud' %}
                 <a href="https://www.icloud.com/" target=" _blank">
-                    <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    <button class="btn waves-effect waves-ripple green">Go to your iCloud account</button>
                 </a>
                 {% else %}
                 <a href="https://www.google.com/" target=" _blank">
-                    <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    <button class="btn waves-effect waves-ripple green">Go to your account</button>
                 </a>
                 {% endif %}
             </div>
         </div>
         <div class="row">
             <div class="col s12">
-                    <p>In case you didn't recive our email please check your spam folder</p>
+                    <p>In case you didn't recive our email please check your spam folder.</p>
                     <p>Incase you cant find the email click<a href="/resend_activation_link/{{ user_email }}"
-                            class="green-text"> here </a>to resend the link to your address</p>
-                    <p>If you entered the wrong email click <a href="/change_activation_email/{{ user_email }}" class="green-text">here</a> to change</p>
+                            class="green-text"> here </a>to resend the link to your address.</p>
+                    <p>If you entered the wrong email click <a href="/change_activation_email/{{ user_email }}" class="green-text">here</a> to change.</p>
             </div>
         </div>
     </div>
