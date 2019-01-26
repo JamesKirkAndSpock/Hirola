@@ -180,8 +180,8 @@ class UserLoginTestCase(BaseTestCase):
                      "password": "*&#@&!*($)lp"}
         response = self.client.post('/login', user_data)
         self.assertEqual(response.status_code, 200)
-        error_message = AuthenticationForm().error_messages["invalid_login"]
-        self.assertContains(response, error_message)
+        html_content = 'Hey Uriel you are almost there!'
+        self.assertContains(response, html_content)
 
     def test_user_remebered(self):
         '''

@@ -15,7 +15,7 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
                                    name="Facebook")
         SocialMedia.objects.create(url_link="https://instagram.com", icon="fa fa-instagram",
                                    name="Instagram")
-    
+
     def create_phone_category(self):
         PhoneCategory.objects.create(phone_category="iPhone",
                                      category_image="phone_categories/test_image_6.png")
@@ -88,6 +88,14 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
     def create_news(self):
         NewsItem.objects.create(title="Teke rocks", source="Medium",
                                 link="https://medium.com/", date_created="2018-12-12")
+
+    def create_inactive_user(self):
+        User.objects.create(email="timon@gmail.com", first_name="timon", last_name="pumba",
+                            is_staff=False, is_active=False, is_change_allowed=False,
+                            country_code=self.country_code, phone_number=722000000)
+        self.timon = User.objects.get(email="timon@gmail.com")
+        self.timon.set_password("secrets")
+        self.timon.save()
 
     def tearDown(self):
         cache.clear()

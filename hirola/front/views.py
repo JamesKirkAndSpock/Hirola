@@ -156,12 +156,23 @@ def login_view(request):
         form = AuthenticationForm(None, request.POST)
         email = request.POST['email']
         password = request.POST['password']
-        user = authenticate(request, email=email, password=password)
-        if form.is_valid() and user is not None:
-            login(request, user)
-            return redirect('/')
+        # active_user = User.objects.get(email=email)
         args = {'form':  form, 'social_media': social_media, 'categories': phone_categories}
+        if User.objects.filter(email=email).exists():
+            active_user = User.objects.get(email=email)
+            if active_user.is_active:
+                user = authenticate(request, email=email, password=password)
+                if form.is_valid() and user is not None:
+                    login(request, user)
+                    return redirect('/')
+                return render(request, 'front/login.html', args)
+            return render(request, 'front/inactive_user.html',
+                          {'user_name': active_user.first_name, 'user_email': active_user.email,
+                           'provider': get_user_email_provider(active_user.email)})
+        args = {'form':  form, 'social_media': social_media, 'categories': phone_categories}
+
         return render(request, 'front/login.html', args)
+
     args = {'form':  AuthenticationForm(), 'social_media': social_media,
             'categories': phone_categories}
     return render(request, 'front/login.html', args)
