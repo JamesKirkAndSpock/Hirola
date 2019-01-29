@@ -30,7 +30,7 @@
     margin-top: 10px;
 }
 
-.card-content {
+.image-div .card-content {
     flex: 1;
 }
 
@@ -64,7 +64,7 @@
         font-size: 100%;
     }
 
-    .card {
+    .phone-content .card {
         height: 270px !important;
     }
 

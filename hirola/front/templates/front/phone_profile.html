@@ -1,9 +1,10 @@
 {% extends "front/base.html" %} {% block styles %} {{ block.super }} {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_profile.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="{% static 'front/css/slick.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'front/css/slick-theme.css' %}" />
+<link rel="stylesheet" href="{% static 'front/css/lightslider.css' %}">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="{% static 'front/js/lightslider.js' %}"></script>
+
 {% endblock %} {% block content %}
 {% load stars_counter %}
 {% load humanize %}
@@ -24,20 +25,24 @@
         <div class="row">
             <div class="col m5 s12 main-img">
                 <div class="row">
-                    <div class="col m1"></div>
-                    <div class="col s12 m10 center">
+                    <div class="col s12 m12 center">
                         <div class="card z-depth-0">
-                            <div class="card-content">
-                                <div class="profile-img">
-                                    <img src="{{ MEDIA_URL }}{{ phone.main_image }}" class="responsive-img">
-                                    {% for image in image_list%}
-                                    <img src="{{ MEDIA_URL }}{{ image.image }}" class="responsive-img">
-                                    {% endfor %}
-                                </div>
+                            <div class="card-content center">
+                                    <div class="profile-img">
+                                        <ul id="lightSlider">
+                                            <li data-thumb="{{ MEDIA_URL }}{{ phone.main_image }}">
+                                                <img src="{{ MEDIA_URL }}{{ phone.main_image }}" />
+                                            </li>
+                                            {% for image in image_list %}
+                                                <li data-thumb="{{ MEDIA_URL }}{{ image.image }}" class="center">
+                                                <img src="{{ MEDIA_URL }}{{ image.image }}" />
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col m1"></div>
                 </div>
             </div>
             <div class="col m4 s12 profile">
@@ -171,9 +176,6 @@
 {% block scripts %}
 {{ block.super }}
 {% load static %}
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="{% static 'front/js/slick.min.js' %}"></script>
-<script src="{% static 'front/js/profile_slick.js' %}"></script>
 <script src="{% static 'front/js/material_init.js' %}"></script>
 <script src="{% static 'front/js/phone_profile.js' %}"></script>
 {% endblock %}
