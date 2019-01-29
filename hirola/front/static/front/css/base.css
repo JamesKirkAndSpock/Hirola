@@ -64,7 +64,7 @@ header {
     }
 }
 
-a {
+.navigation a {
     color: black !important;
 }
 

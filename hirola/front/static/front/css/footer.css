@@ -10,6 +10,7 @@
 a {
     color: inherit;
     font-style: bold;
+    color: black !important;
 }
 
 #footer-container a:hover {
