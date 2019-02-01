@@ -5,17 +5,18 @@
 }
 
 .phone-details {
-    margin-top: 50px;
-    border: solid 0.05em;
-    border-color: #E8E8E8;
-    padding: 50px;
+    margin-top: 40px;
+    border: solid 0.05em #E8E8E8;
+    padding: 10px;
+    border-radius: 2px;
 }
 
 .more-details {
-    margin-top: 50px;
-    border: solid 0.05em;
-    border-color: #E8E8E8;
-    padding: 50px;
+    margin-top: 30px;
+    /* border: solid 0.05em;
+    border-color: #E8E8E8; */
+    padding: 0px !important;
+
 }
 
 .checked {
@@ -28,9 +29,10 @@
 }
 
 .stars {
-    font-size: 16pt;
+    font-size: 12pt;
     border-bottom: solid 0.05em;
     border-bottom-color: #E8E8E8;
+    padding-bottom: 5px;
 }
 .sample-form .row {
     margin: 5px;
@@ -53,8 +55,8 @@ h5 {
 }
 
 .details-container {
-    border: solid 0.05em;
-    border-color: #909090;
+    border: 0.05em solid #909090;
+    border-color: ;
     margin-bottom: 20px;
 }
 
@@ -80,6 +82,10 @@ h5 {
     font-size: 18px !important;
 }
 
+.warranty {
+  padding-left: 0;
+}
+
 .warranty .row {
     padding-top: 0 !important;
 }
@@ -89,13 +95,16 @@ h5 {
 }
 
 .features {
-    border-bottom: solid 0.05em;
-    border-bottom-color: #E8E8E8;
+    border: solid 0.05em #E8E8E8;
+    /* border-color: ; */
+    padding: 5px;
+    border-radius: 3px;
 }
 
 .action {
     border: solid 0.05em;
     border-color: #E8E8E8;
+    border-radius: 3px;
 }
 
 .action form {
@@ -104,8 +113,7 @@ h5 {
 }
 
 .profile {
-
-    padding-right: 40px !important;
+    padding-right: 30px !important;
 }
 
 .navrow {
@@ -120,8 +128,9 @@ h5 {
 #review-date {
     padding-top: 0 !important;
 }
-.reviews {
-    margin-top: 50px;
+row.reviews {
+    margin-top: 30px;
+    border-radius: 2px;
 }
 @media only screen and (max-width: 600px) {
     .container {
@@ -137,7 +146,7 @@ h5 {
         padding: 0 !important;
     }
     .phone-details {
-        padding: 20px !important;
+        padding: 10px !important;
     }
 }
 
@@ -200,4 +209,18 @@ ul.lSPager.lSGallery{
 ul.lSGallery li img {
     height: 50px !important;
     text-align: center;
+}
+
+.this-fields {
+  font-size: 10px !important;
+}
+
+.btn {
+  text-transform: none;
+  font-size: 16px;
+}
+
+.input-field {
+  font-size: 15px;
+
 }
