@@ -24,6 +24,7 @@
     <div class="row phone-details">
         <div class="row">
             <div class="col m5 s12 main-img">
+              <p id="intro"><b>{{ phone }} {% if phone.size_sku %}{{ phone.size_sku }}{% endif %}</b></p>
                 <div class="row">
                     <div class="col s12 m12 center">
                         <div class="card z-depth-0">
@@ -47,7 +48,7 @@
             </div>
             <div class="col m4 s12 profile">
                 <div class="row">
-                    <p id="intro"><b>{{ phone }} {% if phone.size_sku %}{{ phone.size_sku }}{% endif %}</b></p>
+                  <p></p>
                     <div class="stars">
                         {% for star in phone.average_review|round_off|checked_star_range %}
                         <span class="fa fa-star checked"></span>
@@ -59,9 +60,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s12 m8">
+                    <div class="input-field col s12 m9">
                         <select id='color' class="materialSelect">
-                            <option value="" disabled selected>Choose your color</option>
+                            <option value="" disabled selected>Color</option>
                             {% if colors %}
                             {% for color in colors %}
                             {% if color.quantity >= 1 %}
@@ -69,6 +70,12 @@
                             {% endif %}
                             {% endfor %}
                             {% endif %}
+                        </select>
+                        <select id="quantity">
+                            <option value="" disabled selected>Storage</option>
+                        </select>
+                        <select id="quantity">
+                            <option value="" disabled selected>Quantity</option>
                         </select>
                     </div>
                 </div>
@@ -87,30 +94,30 @@
                 <h5 class="green-text"><b>{{ phone.currency }} {{ phone.price|intcomma }}</b></h5>
                 <p>
                     <i class="medium material-icons inline-icon">local_atm</i>
-                    Pay cash on delivery
-                </p>
-                <p>
+                    Pay on delivery<br>
                     <i class="medium material-icons inline-icon">loop</i>
-                    7 day free return
-                </p>
-                <p>
+                    7 day free return<br>
                     <i class="medium material-icons inline-icon">check</i>
-                    Genuine product
+                    Genuine product<br>
+                    <i class="material-icons inline-icon">sentiment_very_satisfied</i>
+                    Free shipping
                 </p>
                 <form class="col s12" method="post">
                     {% csrf_token %}
                     <input type="hidden" id="cartItem" name="cart_item_add" value="{{ phone.id }}">
-                    <div class="row" id="quantityRow">
-                        <select id="quantity">
-                            <option value="" disabled selected>Quantity</option>
-                        </select>
-                    </div>
+                    <p class="green" id="green"></p>
                     <div class="row">
-                        <button class="btn waves-effect waves-light green" id="add-to-cart-button" type="submit" name="action">Add to cart
-                            <i class="material-icons left">add_shopping_cart</i>
+                        <button class="btn waves-effect waves-light green" id="add-to-cart-button" type="submit" name="action">Buy Now
                         </button>
                             <p class="green" id="green"></p>
                     </div>
+                    <div class="row">
+                        <button class="btn waves-effect waves-light green darken-2" id="add-to-cart-button2" type="submit" name="action">Add to Cart
+                            <i class="material-icons tiny left">add_shopping_cart</i>
+                        </button>
+                            <p class="green" id="green"></p>
+                    </div>
+
                 </form>
             </div>
         </div>
@@ -133,7 +140,7 @@
             <div class="col m1"></div>
             <div class="col m5 warranty">
                 <div class="row">
-                    <p><b><u>Warranty and Support</u></b></p>
+                    <p><b>Warranty and Support</b></p>
                     <p>Product Warranty: 7 day free return</p>
                 </div>
             </div>
@@ -142,7 +149,9 @@
     <div class="row reviews">
         <ul class="collection with-header">
             <li class="collection-item avatar review-head">
-                <h5 class="left">Customer Reviews</h5>
+                <p class="left">
+                  <b>Customer Reviews</b>
+                  </p>
             </li>
             {% for customer_review in customer_reviews%}
             <li class="collection-item avatar">
