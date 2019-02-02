@@ -1,16 +1,31 @@
 .nav-wrapper {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+}
+
+.search-bar {
+  margin-top: 10px;
 }
 
 .search-bar form input {
-    border-radius: 15px !important;
+    border-radius: 5px !important;
     border: solid 0.15em !important;
     border-color: #4caf50 !important;
+
+}
+
+input[type="search"] {
+  height: 40px !important;
+
+}
+
+#search {
+  font-size: 13px;
 }
 
 
+
 form .input-field {
-    height: 64px;
+    height: 48px;
 }
 
 nav {
@@ -54,7 +69,7 @@ header {
         margin-right: 10px;
     }
     form .input-field {
-        height: 48px;
+        height: 36px;
     }
     .sidenav {
         margin: 2px;
@@ -70,6 +85,7 @@ header {
 
 .a-divider {
     border-bottom: solid 0.05em !important;
+<<<<<<< current
 }
 
 .hide-on-small-only .m3{
@@ -83,4 +99,11 @@ li.a-divider{
 
 .categories a {
     padding-right: 0 !important;
+<<<<<<< Updated upstream
+=======
+    font-size: 13px !important;
+>>>>>>> Stashed changes
+=======
+    /* border-bottom-color: #E8E8E8 !important; */
+>>>>>>> before discard
 }
