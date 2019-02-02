@@ -111,9 +111,9 @@ def phone_profile_view(request, phone_id):
         return add_cart_session_data(request)
     phone = PhoneList.objects.filter(pk=phone_id).first()
     colors = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
-    phone_sizes = PhoneMemorySize.objects.filter(category=phone.category)
     if not phone:
         return redirect("/error")
+    phone_sizes = PhoneMemorySize.objects.filter(category=phone.category)    
     (phone_categories, social_media) = various_caches()
     context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
                "customer_reviews": phone.phone_reviews.all(),
