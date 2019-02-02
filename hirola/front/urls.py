@@ -16,6 +16,7 @@ urlpatterns = [
     path('about', views.about_view, name='about'),
     path('signup', views.signup_view, name='signup'),
     path('login', views.login_view, name='login'),
+#     path('login_user', views.login_view, name='login_user'),
     path('checkout', views.checkout_view, name='checkout'),
     path('dashboard', views.dashboard_view, name='dashboard'),
     path('imei', views.imei_view, name='imei'),
@@ -47,6 +48,6 @@ urlpatterns = [
     path('change_activation_email/<str:old_email>/', views.change_activation_email, name='change_activation_email'),
     path('send_link_to_new_address/<str:old_email>/', views.send_link_to_new_address,
          name='send_link_to_new_address'),
-    path('resend_activation_link/<str:email>/', views.resend_activation_link,
+    path('resend_activation_link', views.resend_activation_link,
          name='resend_activation_link'),
 ]

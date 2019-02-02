@@ -183,6 +183,16 @@ class UserLoginTestCase(BaseTestCase):
         html_content = 'Hey Uriel you are almost there!'
         self.assertContains(response, html_content)
 
+    def test_active_user_login(self):
+        user = User.objects.get(email="urieltimanko@example.com")
+        user.is_active = True
+        user.save()
+        user_data = {"email": "urieltimanko@example.com",
+                     "password": "*&#@&!*($)lp"}
+        response = self.client.post('/login', user_data)
+        self.assertRedirects(response, "/", 302)
+
+
     def test_user_remebered(self):
         '''
         Test that when a user chooses to be remembered that:
