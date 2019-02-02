@@ -18,3 +18,4 @@ def unchecked_star_range(value):
 @register.filter
 def round_off(value):
     return round(value)
+

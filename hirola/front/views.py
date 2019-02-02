@@ -99,20 +99,26 @@ def country_codes(request):
     data = {"users_country_code": users_country_code, "data": data}
     return JsonResponse(data)
 
+def add_cart_session_data(request):
+    item = request.POST['cart_item_add']
+    request.session['item_id'] = item
+    quantity = request.POST['quantity']
+    request.session['quantity'] = quantity
+    return redirect("/before_checkout")  
 
 def phone_profile_view(request, phone_id):
     if request.method == "POST":
-        item = request.POST['cart_item_add']
-        return redirect("/checkout")
+        return add_cart_session_data(request)
     phone = PhoneList.objects.filter(pk=phone_id).first()
     colors = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
+    phone_sizes = PhoneMemorySize.objects.filter(category=phone.category)
     if not phone:
         return redirect("/error")
     (phone_categories, social_media) = various_caches()
     context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
                "customer_reviews": phone.phone_reviews.all(),
                "features": phone.phone_features.all(), "infos": phone.phone_information.all(),
-               'categories': phone_categories,  'social_media': social_media}
+               'categories': phone_categories,  'social_media': social_media, 'sizes': phone_sizes}
     return render(request, 'front/phone_profile.html', context)
 
 
@@ -133,6 +139,15 @@ def checkout_view(request):
     return render(request, 'front/checkout.html', {'categories': phone_categories,
                                                    'social_media': social_media})
 
+                                    
+def before_checkout_view(request):
+    (phone_categories, social_media) = various_caches()
+    phone = PhoneList.objects.filter(pk=request.session['item_id']).first()
+    infos = phone.phone_information.all()
+    return render(request, 'front/before_checkout.html', 
+                            {'categories': phone_categories,
+                             'social_media': social_media, 'item': phone, 
+                             'features': infos, 'price': phone.price})
 
 @login_required
 def dashboard_view(request):

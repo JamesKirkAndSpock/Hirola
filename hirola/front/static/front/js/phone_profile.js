@@ -26,3 +26,4 @@ $(document).ready(function () {
         nextHtml: '<i class="fas fa-chevron-right fa-2x"></i>'
     });
 });
+$("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: 'absolute'});

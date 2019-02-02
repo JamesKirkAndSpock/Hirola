@@ -353,3 +353,27 @@ class NewsItemTestCase(BaseTestCase):
         self.assertContains(response, 'Teke rocks')
         self.assertContains(response, 'The standard online')
         self.assertContains(response, 'https://www.sde.com')
+
+class ConfirmBeforeCartTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(ConfirmBeforeCartTestCase, self).setUp()
+
+    def test_selected_phone_details_shown(self):
+        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+                                 price=10000, phone_name="Mulika Mwizi", size_sku=self.size_android)
+        self.mulika = PhoneList.objects.get(phone_name="Mulika Mwizi")    
+        PhonesColor.objects.create(phone=self.mulika, quantity=5, is_in_stock=True, color=self.color_one)
+        
+        get_response = self.client.get("/phone_category/{}/".format(self.android.pk))
+        self.assertContains(get_response, 'Select your favorite Android')
+        self.assertContains(get_response, "Mulika Mwizi")
+        self.assertContains(get_response, "10000")
+        form = {'quantity': 3, 'cart_item_add': self.mulika.pk}
+        get_response_2 = self.client.post("/profile/{}/".format(self.mulika.pk), form, follow=True)
+        # print(get_response_2.content)
+        self.assertRedirects(get_response_2, "/before_checkout", 302)
+        self.assertContains(get_response_2, "Mulika Mwizi")
+        self.assertContains(get_response_2, "30000")
+
+

@@ -79,6 +79,18 @@
                         </select>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s12 m8">
+                        <select name="" id="size" class="materialSelect">
+                            <option value="" disabled selected>Select size</option>
+                            {% if sizes %}
+                            {% for size in sizes %}
+                            <option value={{ color.color.pk }}>{{ size }}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                </div>
                 <div class="row features">
                     <p>
                         <b>Key Features</b>
@@ -115,7 +127,6 @@
                         <button class="btn waves-effect waves-light green darken-2" id="add-to-cart-button2" type="submit" name="action">Add to Cart
                             <i class="material-icons tiny left">add_shopping_cart</i>
                         </button>
-                            <p class="green" id="green"></p>
                     </div>
 
                 </form>
