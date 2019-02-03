@@ -41,7 +41,7 @@
 }
 
 .rating-stars ul>li.star>i.fa {
-    font-size: 2em;
+    font-size: 1.4em;
     color: #ccc;
 }
 
@@ -55,7 +55,7 @@
 
 .rated-stars {
     color: #ccc;
-    font-size: 2em;
+    font-size: 1.4em;
 }
 
 .rated-stars .fa {
