@@ -22,6 +22,11 @@ input[type="search"] {
   font-size: 13px;
 }
 
+form .input-field .label-icon {
+  top: -8px;
+  left: 0;
+  color: blue;
+}
 
 
 form .input-field {
@@ -85,7 +90,7 @@ header {
 
 .a-divider {
     border-bottom: solid 0.05em !important;
-<<<<<<< current
+
 }
 
 .hide-on-small-only .m3{
@@ -99,11 +104,6 @@ li.a-divider{
 
 .categories a {
     padding-right: 0 !important;
-<<<<<<< Updated upstream
-=======
-    font-size: 13px !important;
->>>>>>> Stashed changes
-=======
-    /* border-bottom-color: #E8E8E8 !important; */
->>>>>>> before discard
+    font-size: 12px !important;
+
 }
