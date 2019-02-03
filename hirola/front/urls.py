@@ -16,7 +16,6 @@ urlpatterns = [
     path('about', views.about_view, name='about'),
     path('signup', views.signup_view, name='signup'),
     path('login', views.login_view, name='login'),
-#     path('login_user', views.login_view, name='login_user'),
     path('checkout', views.checkout_view, name='checkout'),
     path('dashboard', views.dashboard_view, name='dashboard'),
     path('imei', views.imei_view, name='imei'),
