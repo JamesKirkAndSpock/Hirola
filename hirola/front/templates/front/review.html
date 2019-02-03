@@ -23,7 +23,7 @@
             </p>
         </div>
         <div class="row">
-            <h6><b>Overall rating</b></h6>
+            <p><b>Overall rating</b></p>
             <div class="rated-stars">
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star checked"></span>
@@ -33,10 +33,10 @@
             </div>
         </div>
         <div class="row user-review">
-            <div class="row">
-                <h6><b>Add a photo</b></h6>
-                <p>Shoppers find images more helpful than text alone</p>
-            </div>
+            <!-- <div class="row"> -->
+                <p><b>Add a photo</b><br>
+                Shoppers find images more helpful than text alone</p>
+            <!-- </div> -->
             <div class="row"></div>
             <form action="#">
                 <div class="row">
@@ -88,6 +88,11 @@
                         </div>
                     </div>
                 </div>
+                <div class="row btn-group right">
+                    <div class="col s6">
+                        <button class="btn waves-effect waves-light green" type="submit" name="action">Submit</button>
+                    </div>
+                </div>
 
             </form>
         </div>
@@ -96,5 +101,6 @@
 </div>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %} {{ block.super }} {% load static %}
-<script src="{% static 'front/js/rate.js' %}"></script> {% endblock %}
+<script src="{% static 'front/js/rate.js' %}"></script>
+{% endblock %}
 {% endblock %}
