@@ -1,0 +1,59 @@
+{% extends "front/base.html" %}
+{% block styles %}
+{{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="main-content">
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h5><b>Hey {{ user_name }} you are almost there!</b></h5>
+                <p>We were able to save the details that you used to signup, but we need you to validate your email. <br>This will help you
+                    log in again in case you forget your password. <br>Visit the inbox or spam mail on your email address <b>{{ user_email }}</b>
+                        and click on the activation link that we sent you.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+
+                {% if provider == 'gmail' %}
+                <a href="https://mail.google.com/" target="_blank">
+                    <button class="btn waves-effect waves-ripple green">Go to your Gmail account</button>
+                </a>
+                {% elif provider == 'yahoo' %}
+                <a href="https://overview.mail.yahoo.com/" target="_blank">
+                    <button class="btn waves-effect waves-ripple green">Go to your Yahoo account</button>
+                </a>
+                {% elif provider == 'outlook' %}
+                <a href="https://outlook.live.com/owa/" target=" _blank">
+                    <button class="btn waves-effect waves-ripple green">Go to your Outlook account</button>
+                </a>
+                {% elif provider == 'inbox' %}
+                <a href="http://www.inbox.com/" target=" _blank">
+                    <button class="btn waves-effect waves-ripple green">Go to your Inbox account</button>
+                </a>
+                {% elif provider == 'icloud' %}
+                <a href="https://www.icloud.com/" target=" _blank">
+                    <button class="btn waves-effect waves-ripple green">Go to your iCloud account</button>
+                </a>
+                {% else %}
+                <a href="https://www.google.com/" target=" _blank">
+                    <button class="btn waves-effect waves-ripple green">Go to your account</button>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                    <p>In case you didn't receive our email please check your spam folder.</p>
+                    <p>Incase you cant find the email click<a href="/resend_activation_link"
+                            class="green-text"> here </a>to resend the link to your address.</p>
+                    <p>If you entered the wrong email click <a href="/change_activation_email/{{ user_email }}" class="green-text">here</a> to change.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}

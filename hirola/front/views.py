@@ -149,6 +149,14 @@ def dashboard_view(request):
     return render(request, 'front/dashboard.html', context=context)
 
 
+def check_inactive_user(request, email):
+    (phone_categories, social_media) = various_caches()
+    active_user = User.objects.filter(email=email).first()
+    return render(request, 'front/inactive_user.html', {'user_name': active_user.first_name,
+                  'user_email': active_user.email,
+                  'provider': get_user_email_provider(active_user.email)})
+
+
 @remember_user
 def login_view(request):
     (phone_categories, social_media) = various_caches()
@@ -157,12 +165,20 @@ def login_view(request):
         email = request.POST['email']
         password = request.POST['password']
         user = authenticate(request, email=email, password=password)
-        if form.is_valid() and user is not None:
-            login(request, user)
-            return redirect('/')
-        args = {'form':  form, 'social_media': social_media, 'categories': phone_categories}
-        return render(request, 'front/login.html', args)
+        return validate_active_user(request, form, user, email)
     args = {'form':  AuthenticationForm(), 'social_media': social_media,
+            'categories': phone_categories}
+    return render(request, 'front/login.html', args)
+
+
+def validate_active_user(request, form, user, email):
+    (phone_categories, social_media) = various_caches()
+    if form.is_valid() and user is not None:
+        login(request, user)
+        return redirect('/')
+    if form.redirect:
+        return check_inactive_user(request, email)
+    args = {'form':  form, 'social_media': social_media,
             'categories': phone_categories}
     return render(request, 'front/login.html', args)
 
@@ -440,9 +456,7 @@ def send_link_to_new_address(request, old_email):
     return render(request, 'registration/change_activation_email.html')
 
 
-def resend_activation_link(request, email):
-    if email:
-        user = User.objects.get(email=email)
-        resend_email(request, user, email)
-        return redirect('/login')
-    return redirect('/signup')
+def resend_activation_link(request):
+    user = request.user
+    resend_email(request, user, email)
+    return redirect('/login')

@@ -257,6 +257,7 @@ class AuthenticationForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['email'].widget.attrs['placeholder'] = 'Email'
         self.fields['password'].widget.attrs['placeholder'] = 'Password'
+        self.redirect = False
 
     def clean(self):
         email = self.cleaned_data.get('email')
@@ -278,6 +279,7 @@ class AuthenticationForm(forms.Form):
                 self.error_messages['non_existent'],
                 code='non_existent',
             )
+        self.confirm_login_allowed(user)
         return email
 
     def confirm_login_allowed(self, user):
@@ -290,6 +292,7 @@ class AuthenticationForm(forms.Form):
         If the given user may log in, this method should return None.
         """
         if not user.is_active:
+            self.redirect = True
             raise forms.ValidationError(
                 self.error_messages['inactive'],
                 code='inactive',
