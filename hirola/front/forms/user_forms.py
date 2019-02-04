@@ -400,7 +400,7 @@ def resend_activation_email(request, user, email):
         'user': user,
         'domain': current_site.domain,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-        'token': account_activation_token.make_token(user),
+        'token': email_activation_token.make_token(user),
         'protocol': 'https' if request.is_secure() else 'http',
     }
     to_email = email
@@ -408,7 +408,7 @@ def resend_activation_email(request, user, email):
         "front/change_email_activation_subject.txt", context)
     subject = ''.join(subject.splitlines())
     body = loader.render_to_string(
-        "registration/signup_activation_email.html", context)
+        "front/change_email_activation_email.html", context)
     email_message = EmailMultiAlternatives(subject, body, None, [to_email])
     email_message.send()
     return True

@@ -472,20 +472,17 @@ def send_link_to_new_address(request, old_email):
     return render(request, 'registration/change_activation_email.html')
 
 
-def resend_activation_link(request):
-    user = request.user
-    resend_email(request, user, email)
-    return redirect('/login')
 def resend_activation_link(request, email):
     if email:
         user = User.objects.get(email=email)
         resend_email(request, user, email)
         return redirect('/login')
     return redirect('/signup')
-def resend_new_email_activation_link(request, email):
+
+def resend_new_email_activation_link(request):
     user = User.objects.get(email=request.user.email)
-    if resend_activation_email(request, user, email):
-        messages.success(request, ('A new link has successfuly been sent to your {}'.format(email)))
+    if resend_activation_email(request, user, user.change_email):
+        messages.success(request, ('A new link has successfuly been sent to {}'.format(user.change_email)))
         return redirect('/dashboard')
     messages.error(request, ('Something went wrong!'))
     return redirect('/dashboard')
