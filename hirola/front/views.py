@@ -480,7 +480,7 @@ def resend_activation_link(request, email):
     return redirect('/signup')
 
 def resend_new_email_activation_link(request):
-    user = User.objects.get(email=request.user.email)
+    user = User.objects.filter(email=request.user.email).first()
     if resend_activation_email(request, user, user.change_email):
         messages.success(request, ('A new link has successfuly been sent to {}'.format(user.change_email)))
         return redirect('/dashboard')
