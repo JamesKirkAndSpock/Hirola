@@ -38,10 +38,10 @@ jobs:
             python ./hirola/manage.py migrate
             cd hirola
             coverage run manage.py test
-            coverage report --rcfile=../../.coveragerc
-            coverage html --rcfile=../../.coveragerc
+            coverage report --rcfile=../.coveragerc
+            coverage html --rcfile=../.coveragerc
             export COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN}
-            coveralls --rcfile=../../.coveragerc
+            coveralls --rcfile=../.coveragerc
             sudo apt-get remove --auto-remove memcached
             python manage.py test --pattern=selenium*.py
           
