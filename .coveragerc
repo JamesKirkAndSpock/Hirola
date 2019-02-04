@@ -3,3 +3,4 @@ omit =
     */venv/*
     */python3.7/*
     */migrations/*
+    */python3.6/*
