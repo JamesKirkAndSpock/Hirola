@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col m3">
                     <div class="card z-depth-0 center">
-                        <img src="{% static 'front/iphone-5s.png' %}" class="responsive-img">
+                        <img src="{{ MEDIA_URL }}{{ item.main_image }}" class="responsive-img">
                     </div>
                 </div>
                 <div class="col m3">
@@ -23,7 +23,7 @@
                     <p><i>mint</i></p>
                 </div>
                 <div class="col m3">
-                    <p>Quantity ({{ request.session.quantity|actualize_quantity }})</p>
+                    <p>Quantity ({{ request.session.quantity }})</p>
                 </div>
                 <div class="col m3">
                     <p>{{ price }}</p>
@@ -44,7 +44,7 @@
                     <a href="{% url 'front:checkout' %}">
                         <button class="btn green">Go to Checkout</button>
                     </a>
-                    <p>item ({{ request.session.quantity|actualize_quantity }}) <span class="right">{{ request.session.quantity|actualize_quantity|total_price:price }}</span></p>
+                    <p>item ({{ request.session.quantity }}) <span class="right">{{ request.session.quantity|total_price:price }}</span></p>
                     <p>shipping <i class="fas fa-info-circle tooltipped" data-position="top" data-tooltip="Shipping is free"></i> <span class="right">Free</span></p>
                     <h6>Total <span class="right">{{ request.session.quantity|total_price:price }}</span></h6>
                 </div>

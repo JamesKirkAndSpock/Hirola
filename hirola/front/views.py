@@ -104,21 +104,37 @@ def add_cart_session_data(request):
     request.session['item_id'] = item
     quantity = request.POST['quantity']
     request.session['quantity'] = quantity
-    return redirect("/before_checkout")  
+    return redirect("/before_checkout")
+
+
+def generate_profile_view_load(phone_id, form):
+    phone = PhoneList.objects.filter(pk=phone_id).first()
+    if not phone:
+        return redirect("/error")
+    form = form
+    colors = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
+    phone_sizes = PhoneMemorySize.objects.filter(category=phone.category)
+    (phone_categories, social_media) = various_caches()
+    context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
+            "customer_reviews": phone.phone_reviews.all(),
+            "features": phone.phone_features.all(), "infos": phone.phone_information.all(),
+            'categories': phone_categories,  'social_media': social_media,
+            'sizes': phone_sizes, 'form': form}
+    return context
+
 
 def phone_profile_view(request, phone_id):
     if request.method == "POST":
-        return add_cart_session_data(request)
+        form = PhoneProfileUserDataCollectionForm(request.POST)
+        if form.is_valid():
+            return add_cart_session_data(request)
+        context = generate_profile_view_load(phone_id, form)
+        return render(request, 'front/phone_profile.html', context)
     phone = PhoneList.objects.filter(pk=phone_id).first()
-    colors = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
     if not phone:
         return redirect("/error")
-    phone_sizes = PhoneMemorySize.objects.filter(category=phone.category)    
-    (phone_categories, social_media) = various_caches()
-    context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
-               "customer_reviews": phone.phone_reviews.all(),
-               "features": phone.phone_features.all(), "infos": phone.phone_information.all(),
-               'categories': phone_categories,  'social_media': social_media, 'sizes': phone_sizes}
+    form = PhoneProfileUserDataCollectionForm()
+    context = generate_profile_view_load(phone_id, form)
     return render(request, 'front/phone_profile.html', context)
 
 
@@ -139,14 +155,14 @@ def checkout_view(request):
     return render(request, 'front/checkout.html', {'categories': phone_categories,
                                                    'social_media': social_media})
 
-                                    
+
 def before_checkout_view(request):
     (phone_categories, social_media) = various_caches()
     phone = PhoneList.objects.filter(pk=request.session['item_id']).first()
     infos = phone.phone_information.all()
-    return render(request, 'front/before_checkout.html', 
+    return render(request, 'front/before_checkout.html',
                             {'categories': phone_categories,
-                             'social_media': social_media, 'item': phone, 
+                             'social_media': social_media, 'item': phone,
                              'features': infos, 'price': phone.price})
 
 @login_required

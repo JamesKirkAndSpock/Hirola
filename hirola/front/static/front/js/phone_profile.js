@@ -1,4 +1,4 @@
-$('.materialSelect').on('change', function () {
+$('#color').on('change', function () {
     $('#quantityRow option').not(':first').remove();
     var pk = this.value;
     Object.keys(quantities).forEach(function (key) {
@@ -6,7 +6,7 @@ $('.materialSelect').on('change', function () {
             var quantity = quantities[key].quantity;
             for (var i = 0; i <= quantity; i++) {
                 $('select').formSelect();
-                var $newOpt = $("<option>").attr("value", i).text(i + 1);
+                var $newOpt = $("<option>").attr("value", (i+1)).text(i + 1);
                 $("#quantity").append($newOpt);
             }
         }
@@ -26,4 +26,5 @@ $(document).ready(function () {
         nextHtml: '<i class="fas fa-chevron-right fa-2x"></i>'
     });
 });
+
 $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: 'absolute'});

@@ -224,3 +224,7 @@ ul.lSGallery li img {
   font-size: 15px;
 
 }
+ul.errorlist li{
+    font-weight: 600 !important;
+    color: red !important;
+}
