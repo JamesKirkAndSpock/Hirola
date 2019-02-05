@@ -26,3 +26,6 @@ Makefile
 hirola/front/fixtures/data.json
 # test emails
 email/
+# ignore coverage generated files
+.coverage
+htmlcov

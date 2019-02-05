@@ -1,11 +1,12 @@
-#### What does this PR do?
+#### Short description of what this resolves:
 
-#### Description of Task to be completed?
 
-#### How should this be manually tested?
+#### Changes proposed in this pull request:
 
-#### What are the relevant pivotal tracker stories?
+-
+-
+-
+#### Screenshots:
 
-#### Any background context you want to add?
+**Fixes**: #
 
-#### Screenshots

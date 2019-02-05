@@ -33,11 +33,15 @@ jobs:
             memcached -d
             virtualenv --python=python3 hi-venv
             source hi-venv/bin/activate
-            pip install -r ./hirola/requirements.txt
+            pip install -r ./hirola/dev-requirements.txt
             python ./hirola/manage.py makemigrations front
             python ./hirola/manage.py migrate
             cd hirola
-            python manage.py test
+            coverage run manage.py test
+            coverage report --rcfile=../.coveragerc
+            coverage html --rcfile=../.coveragerc
+            export COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN}
+            coveralls --rcfile=../.coveragerc
             sudo apt-get remove --auto-remove memcached
             python manage.py test --pattern=selenium*.py
           

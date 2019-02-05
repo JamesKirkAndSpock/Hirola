@@ -1,5 +1,4 @@
-# Hirola
-[![Maintainability](https://api.codeclimate.com/v1/badges/9c2bfbaf1910b72134d6/maintainability)](https://codeclimate.com/github/JamesKirkAndSpock/Hirola/maintainability)
+# Hirola[![Maintainability](https://api.codeclimate.com/v1/badges/9c2bfbaf1910b72134d6/maintainability)](https://codeclimate.com/github/JamesKirkAndSpock/Hirola/maintainability)[![Coverage Status](https://coveralls.io/repos/github/JamesKirkAndSpock/Hirola/badge.svg)](https://coveralls.io/github/JamesKirkAndSpock/Hirola)[![CircleCI](https://circleci.com/gh/JamesKirkAndSpock/Hirola.svg?style=svg)](https://circleci.com/gh/JamesKirkAndSpock/Hirola)[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
 ## Setup Application for Development
 
