@@ -210,9 +210,6 @@ class EmailTest(BaseTestCase):
         '''
         Test that the send_email method when given data to send:
             - That it sends the data it is expected to send to the recepient.
-        Test that when you click the activation link sent once and twice:
-            - That on the first click it redirects you to a login page.
-            - That on the second click it informs you that the activation link is invalid
         '''
         request = RequestFactory()
         request = request.post("", {'email': 'naisomia@gmail.com', 'password': 'secret'})
