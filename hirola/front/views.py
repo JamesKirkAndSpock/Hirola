@@ -5,10 +5,9 @@ from django.http import JsonResponse
 from .models import *
 from django.views import generic
 from django.core.cache import cache
-from .forms.user_forms import (UserCreationForm, AuthenticationForm, 
-                               UserForm, OldPasswordForm, ChangeEmailForm, 
-                               EmailAuthenticationForm, resend_email, 
-                               EmailAuthenticationForm, 
+from .forms.user_forms import (UserCreationForm, AuthenticationForm,
+                               UserForm, OldPasswordForm, ChangeEmailForm,
+                               EmailAuthenticationForm, resend_email,
                                resend_activation_email)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
@@ -485,8 +484,8 @@ def resend_activation_link(request, email):
 def resend_new_email_activation_link(request):
     user = User.objects.filter(email=request.user.email).first()
     if resend_activation_email(request, user, user.change_email):
-        messages.success(request, 
-                         ('A new link has successfuly been sent to {}'.\
+        messages.success(request,
+                         ('A new link has successfuly been sent to {}'.
                              format(user.change_email)))
         return redirect('/dashboard')
     messages.error(request, ('Something went wrong!'))

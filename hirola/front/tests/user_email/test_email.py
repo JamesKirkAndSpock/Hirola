@@ -213,7 +213,7 @@ class EmailTest(BaseTestCase):
         '''
         request = RequestFactory()
         request = request.post("", {
-                                    'email': 'naisomia@gmail.com', 
+                                    'email': 'naisomia@gmail.com',
                                     'password': 'secret'
                                     })
         User.objects.create_user(email="sivanna@gmail.com", password="secret", )
@@ -222,3 +222,4 @@ class EmailTest(BaseTestCase):
         resend_activation_email(request, user, "ndungu@gmail.com")
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, ['ndungu@gmail.com'])
+
