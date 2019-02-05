@@ -2,9 +2,9 @@ import re
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse
-from .models import (Color, CountryCode, Currency, User, PhoneCategory,
-                     PhoneMemorySize, PhonesColor, ItemIcon, PhoneList,
-                     SocialMedia, Review, HotDeal, PhoneImage, NewsItem, Order)
+from .models import (CountryCode, User, PhoneCategory,
+                     PhoneMemorySize, PhonesColor, PhoneList,
+                     SocialMedia, Review, HotDeal, NewsItem, Order)
 from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (UserCreationForm, AuthenticationForm,

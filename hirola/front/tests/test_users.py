@@ -192,6 +192,33 @@ class UserLoginTestCase(BaseTestCase):
         response = self.client.post('/login', user_data)
         self.assertRedirects(response, "/", 302)
 
+    def test_activation_link_resent_to_new_email(self):
+        """Test link resent to changed email address."""
+        user = User.objects.get(email="urieltimanko@example.com")
+        user.is_active = True
+        user.save()
+        user_data = {"email": "urieltimanko@example.com",
+                     "password": "*&#@&!*($)lp"}
+        response = self.client.post('/login', user_data)
+        self.assertRedirects(response, "/", 302)
+        response_1 = self.client.post('/dashboard')
+        self.assertEqual(response_1.status_code, 200)
+        response_2 = self.client.get('/confirm_user')
+        self.assertEqual(response_2.status_code, 200)
+        user_data = {"email": "urieltimanko@example.com",
+                     "password": "*&#@&!*($)lp"}
+        response_3 = self.client.post('/confirm_user', user_data)
+        self.assertRedirects(response_3, '/change_email', 302)
+        response_4 = self.client.post('/change_email', {'email': 'nyinge@gmail.com'})
+        self.assertEqual(response_4.status_code, 200)
+        response_5 = self.client.post('/dashboard')
+        self.assertEqual(response_5.status_code, 200)
+        self.assertContains(response_5, 'nyinge@gmail.com')
+        response_6 = self.client.post('/resend_new_email_activation_link/', follow=True)
+        self.assertRedirects(response_6, '/dashboard', 302)
+        message = list(response_6.context.get('messages'))[0]
+        self.assertEqual(message.tags, 'success')
+        self.assertTrue('A new link has successfuly been sent to nyinge@gmail.com' in message.message)
 
     def test_user_remebered(self):
         '''
@@ -257,3 +284,5 @@ class UserChangeRegistrationEmail(BaseTestCase):
                      "password1": data.get('password1') or "*&#@&!*($)lp",
                      "password2": data.get('password2') or "*&#@&!*($)lp"}
         return user_data
+
+
