@@ -212,7 +212,10 @@ class EmailTest(BaseTestCase):
             - That it sends the data it is expected to send to the recepient.
         '''
         request = RequestFactory()
-        request = request.post("", {'email': 'naisomia@gmail.com', 'password': 'secret'})
+        request = request.post("", {
+                                    'email': 'naisomia@gmail.com', 
+                                    'password': 'secret'
+                                    })
         User.objects.create_user(email="sivanna@gmail.com", password="secret", )
         user = User.objects.get(email="sivanna@gmail.com")
         request.user = user

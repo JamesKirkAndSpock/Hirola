@@ -54,7 +54,7 @@ function openDisplay(value) {
 $(document).ready(function () {
     var sPath = window.location.pathname;
     var sPage = sPath.substring(sPath.lastIndexOf('/') + 1);
-    success_messages.forEach(message => {
+    success_messages.forEach(function (message) {
         if (sPage == 'dashboard'){
         M.toast({
             html: message,
