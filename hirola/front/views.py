@@ -479,6 +479,7 @@ def resend_activation_link(request, email):
         return redirect('/login')
     return redirect('/signup')
 
+
 def resend_new_email_activation_link(request):
     user = User.objects.filter(email=request.user.email).first()
     if resend_activation_email(request, user, user.change_email):
