@@ -17,7 +17,7 @@ class LogoutViewTest(BaseTestCase):
     def test_logout_user(self):
         """
         Test that if a user has logged into a site and the user logs out
-            - That his status changes to unauthenticated. 
+            - That his status changes to unauthenticated.
         """
         after_login_response = self.flinstones.get("/")
         self.assertTrue(after_login_response.context["user"].is_authenticated)
@@ -39,7 +39,7 @@ class LogoutViewTest(BaseTestCase):
         """
         Test that if a user has logged out of any page on a browser that does
         not submit the HTTP_REFERER header
-            - That he is redirected to the home page. 
+            - That he is redirected to the home page.
         """
         get_help_response = self.flinstones.get("/help")
         self.assertEqual(get_help_response.request["PATH_INFO"], "/help")
