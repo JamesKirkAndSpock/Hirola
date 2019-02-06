@@ -1,5 +1,4 @@
 from front.base_test import User, BaseTestCase, CountryCode
-from front.errors import *
 from front.forms.user_forms import AuthenticationForm
 from django.conf import settings
 
@@ -220,8 +219,8 @@ class UserLoginTestCase(BaseTestCase):
         self.assertRedirects(response_6, '/dashboard', 302)
         message = list(response_6.context.get('messages'))[0]
         self.assertEqual(message.tags, 'success')
-        self.assertTrue('A new link has successfuly been sent to nyinge@gmail.com'
-                        in message.message)
+        s_msg = 'A new link has successfuly been sent to nyinge@gmail.com'
+        self.assertTrue('{}'.format(s_msg) in message.message)
 
     def test_user_remebered(self):
         '''
@@ -282,7 +281,8 @@ class UserRegistrationEmailTestCases(BaseTestCase):
         user = User.objects.filter(first_name="Uriel").first()
         self.assertEqual(user.last_name, "Timanko")
         self.assertEqual(user.email, "urieltimanko@example.com")
-        response_2 = self.client.post('/resend_activation_link/urieltimanko@example.com/')
+        link = '/resend_activation_link/urieltimanko@example.com/'
+        response_2 = self.client.post(link)
         self.assertRedirects(response_2, '/login', 302)
 
     def generate_user_data(self, data):
