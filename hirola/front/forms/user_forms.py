@@ -370,6 +370,7 @@ def validate_user_email(email):
         return False
     return True
 
+
 def resend_email(request, user, email):
     if validate_user_email(email):
         current_site = get_current_site(request)
@@ -390,3 +391,24 @@ def resend_email(request, user, email):
         email_message.send()
         return True
     return False
+
+
+def resend_activation_email(request, user, email):
+    """Resend link to activate email."""
+    current_site = get_current_site(request)
+    context = {
+        'user': user,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+        'token': email_activation_token.make_token(user),
+        'protocol': 'https' if request.is_secure() else 'http',
+    }
+    to_email = email
+    subject = loader.render_to_string(
+        "front/change_email_activation_subject.txt", context)
+    subject = ''.join(subject.splitlines())
+    body = loader.render_to_string(
+        "front/change_email_activation_email.html", context)
+    email_message = EmailMultiAlternatives(subject, body, None, [to_email])
+    email_message.send()
+    return True

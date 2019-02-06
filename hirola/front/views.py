@@ -2,12 +2,15 @@ import re
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse
-from .models import *
+from .models import (CountryCode, User, PhoneCategory,
+                     PhoneMemorySize, PhonesColor, PhoneList,
+                     SocialMedia, Review, HotDeal, NewsItem, Order)
 from django.views import generic
 from django.core.cache import cache
-from .forms.user_forms import (
-    UserCreationForm, AuthenticationForm, UserForm, OldPasswordForm, ChangeEmailForm,
-    EmailAuthenticationForm, resend_email)
+from .forms.user_forms import (UserCreationForm, AuthenticationForm,
+                               UserForm, OldPasswordForm, ChangeEmailForm,
+                               EmailAuthenticationForm, resend_email,
+                               resend_activation_email)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
@@ -18,6 +21,7 @@ from .token import account_activation_token, email_activation_token
 from .decorators import (
     old_password_required, remember_user, is_change_allowed_required)
 from django.utils import timezone
+from django.contrib import messages
 
 
 def page_view(request):
@@ -471,7 +475,20 @@ def send_link_to_new_address(request, old_email):
     return render(request, 'registration/change_activation_email.html')
 
 
-def resend_activation_link(request):
-    user = request.user
-    resend_email(request, user, email)
-    return redirect('/login')
+def resend_activation_link(request, email):
+    if email:
+        user = User.objects.get(email=email)
+        resend_email(request, user, email)
+        return redirect('/login')
+    return redirect('/signup')
+
+
+def resend_new_email_activation_link(request):
+    user = User.objects.filter(email=request.user.email).first()
+    if resend_activation_email(request, user, user.change_email):
+        messages.success(request,
+                         ('A new link has successfuly been sent to {}'.
+                             format(user.change_email)))
+        return redirect('/dashboard')
+    messages.error(request, ('Something went wrong!'))
+    return redirect('/dashboard')

@@ -1,5 +1,4 @@
-from front.base_test import *
-from front.errors import *
+from front.base_test import User, BaseTestCase, CountryCode
 from front.forms.user_forms import AuthenticationForm
 from django.conf import settings
 
@@ -192,6 +191,36 @@ class UserLoginTestCase(BaseTestCase):
         response = self.client.post('/login', user_data)
         self.assertRedirects(response, "/", 302)
 
+    def test_activation_link_resent_to_new_email(self):
+        """Test link resent to changed email address."""
+        user = User.objects.get(email="urieltimanko@example.com")
+        user.is_active = True
+        user.save()
+        user_data = {"email": "urieltimanko@example.com",
+                     "password": "*&#@&!*($)lp"}
+        response = self.client.post('/login', user_data)
+        self.assertRedirects(response, "/", 302)
+        response_1 = self.client.post('/dashboard')
+        self.assertEqual(response_1.status_code, 200)
+        response_2 = self.client.get('/confirm_user')
+        self.assertEqual(response_2.status_code, 200)
+        user_data = {"email": "urieltimanko@example.com",
+                     "password": "*&#@&!*($)lp"}
+        response_3 = self.client.post('/confirm_user', user_data)
+        self.assertRedirects(response_3, '/change_email', 302)
+        response_4 = self.client.post('/change_email',
+                                      {'email': 'nyinge@gmail.com'})
+        self.assertEqual(response_4.status_code, 200)
+        response_5 = self.client.post('/dashboard')
+        self.assertEqual(response_5.status_code, 200)
+        self.assertContains(response_5, 'nyinge@gmail.com')
+        response_6 = self.client.post('/resend_new_email_activation_link/',
+                                      follow=True)
+        self.assertRedirects(response_6, '/dashboard', 302)
+        message = list(response_6.context.get('messages'))[0]
+        self.assertEqual(message.tags, 'success')
+        s_msg = 'A new link has successfuly been sent to nyinge@gmail.com'
+        self.assertTrue('{}'.format(s_msg) in message.message)
 
     def test_user_remebered(self):
         '''
@@ -218,9 +247,9 @@ class UserLoginTestCase(BaseTestCase):
         self.assertContains(response, "name=\"remember-user\"")
 
 
-class UserChangeRegistrationEmail(BaseTestCase):
+class UserRegistrationEmailTestCases(BaseTestCase):
     def setUp(self):
-        super(UserChangeRegistrationEmail, self).setUp()
+        super(UserRegistrationEmailTestCases, self).setUp()
 
     def test_successful_change_of_registration_email(self):
         '''
@@ -243,6 +272,18 @@ class UserChangeRegistrationEmail(BaseTestCase):
         user = User.objects.filter(first_name="Uriel").first()
         self.assertEqual(user.last_name, "Timanko")
         self.assertEqual(user.email, "uriel@example2.com")
+
+    def test_resend_activation_link_on_registration(self):
+        user_data = self.generate_user_data({})
+        response = self.client.post('/signup', user_data)
+        html_content = "urieltimanko@example.com"
+        self.assertContains(response, html_content)
+        user = User.objects.filter(first_name="Uriel").first()
+        self.assertEqual(user.last_name, "Timanko")
+        self.assertEqual(user.email, "urieltimanko@example.com")
+        link = '/resend_activation_link/urieltimanko@example.com/'
+        response_2 = self.client.post(link)
+        self.assertRedirects(response_2, '/login', 302)
 
     def generate_user_data(self, data):
         '''

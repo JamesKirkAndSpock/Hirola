@@ -113,7 +113,7 @@ p {
     cursor: pointer;
     border-radius: 4px;
   }
-  
+
   /* The actual popup (appears on top) */
   .popup .popuptext {
     visibility: hidden;
@@ -129,7 +129,7 @@ p {
     left: 50%;
     margin-left: -80px;
   }
-  
+
   /* Popup arrow */
   .popup .popuptext::after {
     content: "";
@@ -141,7 +141,7 @@ p {
     border-style: solid;
     border-color: #555 transparent transparent transparent;
   }
-  
+
   /* Toggle this class when clicking on the popup container (hide and show the popup) */
   .popup .show {
     visibility: visible;
@@ -156,14 +156,35 @@ p {
   .green-text {
     text-decoration: underline;
   }
-  
+
   /* Add animation (fade in the popup) */
   @-webkit-keyframes fadeIn {
-    from {opacity: 0;} 
+    from {opacity: 0;}
     to {opacity: 1;}
   }
-  
+
   @keyframes fadeIn {
     from {opacity: 0;}
     to {opacity:1 ;}
   }
+
+  
+  #changeEmail {
+      line-height: 60px;
+  }
+
+   #changeEmail i {
+      line-height: 60px;
+  }
+  .material-tooltip {
+      width: 300px;
+  }
+
+  i {
+      cursor: pointer;
+      margin-left: 5px;
+  }
+
+#changeEmail a{
+    text-decoration: none;
+}

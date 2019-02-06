@@ -1,11 +1,11 @@
-from front.base_test import *
+from front.base_test import User, BaseTestCase
 from django.core import management
 from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
 from front.forms.user_forms import (
     EmailAuthenticationForm, ChangeEmailForm, loader, get_current_site, urlsafe_base64_encode,
-    force_bytes, email_activation_token)
+    force_bytes, email_activation_token, resend_activation_email, resend_email)
 from django.test import RequestFactory
 from django import forms
 from django.core import mail
@@ -205,3 +205,39 @@ class EmailTest(BaseTestCase):
         response_2 = self.client.get(email, follow=True)
         self.assertContains(response_2, "The activation link is invalid!")
         self.assertEqual(response.status_code, 200)
+
+    def test_resend_activation_email_method(self):
+        '''
+        Test that the resend_activation_email method when given data to send:
+            - That it sends the data it is expected to send to the recepient.
+        '''
+        request = RequestFactory()
+        request = request.post("", {
+                                    'email': 'naisomia@gmail.com',
+                                    'password': 'secret'
+                                    })
+        User.objects.create_user(email="sivanna@gmail.com", password="secret", )
+        user = User.objects.get(email="sivanna@gmail.com")
+        request.user = user
+        resend_activation_email(request, user, "ndungu@gmail.com")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ['ndungu@gmail.com'])
+
+    def test_resend_email_method(self):
+        '''
+        Test that the resend_email method when given data to send:
+            - That it sends the data it is expected to send to the recepient.
+        '''
+        request = RequestFactory()
+        request = request.post("",
+                               {
+                                   'email': 'naisomia@gmail.com',
+                                   'password': 'secret'
+                                }
+                               )
+        User.objects.create_user(email="sivanna@gmail.com", password="secret")
+        user = User.objects.get(email="sivanna@gmail.com")
+        request.user = user
+        resend_email(request, user, "ndungu@gmail.com")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ['ndungu@gmail.com'])

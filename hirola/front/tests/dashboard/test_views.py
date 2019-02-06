@@ -127,8 +127,6 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(get_response, "Recepient: {}".format(order.get_address.recepient))
 
 
-
-
     def generate_review_data(self, shipping_address=None):
         owner = User.objects.get(email="urieltimanko@example.com")
         PhoneList.objects.create(category=self.iphone, main_image=image('test_image_5.png'),
