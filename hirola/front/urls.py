@@ -51,6 +51,6 @@ urlpatterns = [
          name='resend_activation_link'),
     path('logout', views.logout_view,
          name='logout'),
-    path('resend_new_email_activation_link/<str:email>/',
+    path('resend_new_email_activation_link/',
          views.resend_new_email_activation_link, name='resend_new_email_activation_link')
 ]
