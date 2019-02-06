@@ -185,6 +185,21 @@ def validate_active_user(request, form, user, email):
 
 def logout_view(request):
     logout(request)
+    return redirect(get_referer_view(request))
+
+
+def get_referer_view(request):
+    """
+    This method returns the referer view of the current request.
+    It is currently being used for the logout page since this is a button that
+    has to be clicked when the user is on the site's application.
+    A scenario where a user comes from another application site may bring
+    undesired errors in redirecting the user.
+    """
+    referer = request.META.get('HTTP_REFERER')
+    if not referer:
+        return "/"
+    return referer
 
 
 def about_view(request):
