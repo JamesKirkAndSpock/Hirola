@@ -79,18 +79,6 @@
                         </select>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12 m8">
-                        <select name="size" id="size" class="materialSelect">
-                            <option value="" disabled selected>Select size</option>
-                            {% if sizes %}
-                            {% for size in sizes %}
-                            <option value={{ color.color.pk }}>{{ size }}</option>
-                            {% endfor %}
-                            {% endif %}
-                        </select>
-                    </div>
-                </div>
                 <div class="row features">
                     <p>
                         <b>Key Features</b>
@@ -187,9 +175,10 @@
 </div>
 <script type="text/javascript">
     var quantities = [];
-    {% for quantity in colors %}
-        var color_object = {'color': '{{ quantity.color.pk|safe }}', 'quantity': '{{ quantity.quantity|safe }}'}
-        quantities.push(color_object);
+    {% for quantity in secondary_details %}
+        var secondary_details_object = {'secondary_details': '{{ quantity.color.pk|safe }}', 'quantity': '{{ quantity.quantity|safe }}'}
+        quantities.push(secondary_details_object);
+        console.log(secondary_details_object)
     {% endfor %}
 </script>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}

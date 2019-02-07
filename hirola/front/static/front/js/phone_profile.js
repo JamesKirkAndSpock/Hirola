@@ -2,7 +2,7 @@ $('#color').on('change', function () {
     $('#quantityRow option').not(':first').remove();
     var pk = this.value;
     Object.keys(quantities).forEach(function (key) {
-        if (pk == quantities[key].color) {
+        if (pk == quantities[key].secondary_details) {
             var quantity = quantities[key].quantity;
             for (var i = 0; i <= quantity; i++) {
                 $('select').formSelect();

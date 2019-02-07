@@ -99,6 +99,7 @@ def country_codes(request):
     data = {"users_country_code": users_country_code, "data": data}
     return JsonResponse(data)
 
+
 def add_cart_session_data(request):
     item = request.POST['cart_item_add']
     request.session['item_id'] = item
@@ -112,10 +113,10 @@ def generate_profile_view_load(phone_id, form):
     if not phone:
         return redirect("/error")
     form = form
-    colors = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
+    secondary_details = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
     phone_sizes = PhoneMemorySize.objects.filter(category=phone.category)
     (phone_categories, social_media) = various_caches()
-    context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
+    context = {"phone": phone, "secondary_details": secondary_details, "image_list": phone.phone_images.all(),
             "customer_reviews": phone.phone_reviews.all(),
             "features": phone.phone_features.all(), "infos": phone.phone_information.all(),
             'categories': phone_categories,  'social_media': social_media,

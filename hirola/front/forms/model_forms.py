@@ -1,6 +1,6 @@
 from .base_form import *
 from django.core.files.images import get_image_dimensions
-from front.models import PhoneCategory, HotDeal
+from front.models import PhoneCategory, HotDeal, PhonesColor
 
 
 class PhoneCategoryForm(forms.ModelForm):
