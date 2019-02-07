@@ -321,6 +321,7 @@ class PhonesColor(models.Model):
         PhoneList, related_name='phone_color_quantity', on_delete=models.SET_NULL, null=True, blank=True)
     size_number = models.IntegerField(blank=True, null=True)
     abbreviation = models.CharField(max_length=10)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=0)
     color = models.ForeignKey(
         Color, on_delete=models.SET_NULL, null=True, blank=True)

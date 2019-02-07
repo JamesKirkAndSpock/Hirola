@@ -3,7 +3,11 @@ $('#color').on('change', function () {
     var pk = this.value;
     Object.keys(quantities).forEach(function (key) {
         if (pk == quantities[key].secondary_details) {
+            console.log(quantities[key].secondary_details)
+            var phone_quantity= comma(quantities[key].price)
+            var price = quantities[key].currency + ' ' + phone_quantity
             var quantity = quantities[key].quantity;
+            $('#price').html(price)
             for (var i = 0; i <= quantity; i++) {
                 $('select').formSelect();
                 var $newOpt = $("<option>").attr("value", (i+1)).text(i + 1);
@@ -12,6 +16,12 @@ $('#color').on('change', function () {
         }
     });
 });
+
+function comma(x) {
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+}
 
 $(document).ready(function () {
     $('#lightSlider').lightSlider({

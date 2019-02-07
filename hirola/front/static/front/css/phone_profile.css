@@ -228,3 +228,7 @@ ul.errorlist li{
     font-weight: 600 !important;
     color: red !important;
 }
+
+#price {
+    font-weight: 600;
+}

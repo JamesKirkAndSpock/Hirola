@@ -412,3 +412,14 @@ def resend_activation_email(request, user, email):
     email_message = EmailMultiAlternatives(subject, body, None, [to_email])
     email_message.send()
     return True
+
+
+class PhoneProfileUserDataCollectionForm(forms.Form):
+
+    quantity_error_messages = {
+        'required': _("You need to provide the quantity!")
+    }
+
+    CHOICES = (('0', 'Quantity',),)
+    quantity = forms.CharField(error_messages=quantity_error_messages)
+    

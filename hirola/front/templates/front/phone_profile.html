@@ -62,21 +62,20 @@
                 <div class="row">
                     <div class="input-field col s12 m9">
                         <select id='color' class="materialSelect">
-                            <option value="" disabled selected>Color</option>
-                            {% if colors %}
-                            {% for color in colors %}
-                            {% if color.quantity >= 1 %}
-                                <option value={{ color.color.pk }}>{{ color.color }}</option>
+                            <option value="" disabled selected>Storage</option>
+                            {% if secondary_details %}
+                            {% for secondary_detail in secondary_details %}
+                            {% if secondary_detail.quantity >= 1 %}
+                                <option value={{ secondary_detail.pk }}>{{ secondary_detail }}</option>
                             {% endif %}
                             {% endfor %}
                             {% endif %}
                         </select>
-                        <select id="quantity">
-                            <option value="" disabled selected>Storage</option>
-                        </select>
-                        <select id="quantity">
-                            <option value="" disabled selected>Quantity</option>
-                        </select>
+                        <div id="quantityRow">
+                            <select id="quantity" name="quantity">
+                                    <option value="" disabled selected>Quantity</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="row features">
@@ -91,7 +90,7 @@
                 </div>
             </div>
             <div class="col m3 s12 action">
-                <h5 class="green-text"><b>{{ phone.currency }} {{ phone.price|intcomma }}</b></h5>
+                <h5 id="price" class="green-text"></h5>
                 <p>
                     <i class="medium material-icons inline-icon">local_atm</i>
                     Pay on delivery<br>
@@ -107,7 +106,7 @@
                     <input type="hidden" id="cartItem" name="cart_item_add" value="{{ phone.id }}">
                     <p class="green" id="green"></p>
                     <div class="row">
-                        <button class="btn waves-effect waves-light green" id="add-to-cart-button" type="submit" name="action">Buy Now
+                        <button class="btn waves-effect waves-light green" id="add-to-cart-button">Buy Now
                         </button>
                             <p class="green" id="green"></p>
                     </div>
@@ -115,6 +114,15 @@
                         <button class="btn waves-effect waves-light green darken-2" id="add-to-cart-button2" type="submit" name="action">Add to Cart
                             <i class="material-icons tiny left">add_shopping_cart</i>
                         </button>
+                    </div>
+                    <div class="row">
+                            {% if form.quantity.errors %}
+                            {% for error in form.quantity.errors %}
+                                <p>
+                                    {{ form.quantity.errors|escape }}
+                                </p>
+                            {% endfor %}
+                            {% endif %}
                     </div>
 
                 </form>
@@ -176,7 +184,7 @@
 <script type="text/javascript">
     var quantities = [];
     {% for quantity in secondary_details %}
-        var secondary_details_object = {'secondary_details': '{{ quantity.color.pk|safe }}', 'quantity': '{{ quantity.quantity|safe }}'}
+        var secondary_details_object = {'secondary_details': '{{ quantity.pk|safe }}', 'quantity': '{{ quantity.quantity|safe }}', 'price': '{{ quantity.price }}', 'currency': '{{ quantity.currency }}'}
         quantities.push(secondary_details_object);
         console.log(secondary_details_object)
     {% endfor %}
