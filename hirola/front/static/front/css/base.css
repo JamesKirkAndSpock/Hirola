@@ -29,6 +29,7 @@ form .input-field .label-icon {
 }
 
 
+
 form .input-field {
     height: 48px;
 }
@@ -104,6 +105,10 @@ li.a-divider{
 
 .categories a {
     padding-right: 0 !important;
+<<<<<<< Updated upstream
     font-size: 12px !important;
 
+=======
+    font-size: 13px !important;
+>>>>>>> Stashed changes
 }
