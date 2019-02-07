@@ -10,7 +10,7 @@ from django.core.cache import cache
 from .forms.user_forms import (UserCreationForm, AuthenticationForm,
                                UserForm, OldPasswordForm, ChangeEmailForm,
                                EmailAuthenticationForm, resend_email,
-                               resend_activation_email)
+                               resend_activation_email, PhoneProfileUserDataCollectionForm)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
