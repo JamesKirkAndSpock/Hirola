@@ -3,8 +3,7 @@ from front.base_test import (BaseTestCase, PhoneCategory, image, TestCase,
                              CountryCode, Order, OrderStatus, ShippingAddress,
                              PhonesColor, Color)
 from django.db import IntegrityError, DataError
-from front.errors import *
-from front.tests.dashboard.test_views import DashboardTemplate
+from front.errors import hot_deal_error
 
 
 class PhoneCategoryModelsTestCase(BaseTestCase):
@@ -13,8 +12,8 @@ class PhoneCategoryModelsTestCase(BaseTestCase):
 
     def test_object_returned_string(self):
         '''
-        Test that when getting an object of a model for the Phone Category List
-        It is possible to get a string representation of the object that is
+        Test that when getting an object of a model for the
+        Phone Category List It is possible to get a string representation of the object that is
         human readable.
         '''
         self.assertEqual(str(self.iphone), "Iphone")
@@ -42,8 +41,8 @@ class PhoneCategoryModelsTestCase(BaseTestCase):
         '''
         mock_image = image('test_image_6.png')
         form = {"phone_category": "Iphone", "category_image": mock_image}
-        response = self.elena.post("/admin/front/phonecategory/{}/change/".format(self.iphone.pk),
-                                   form)
+        response = self.elena.post("/admin/front/phonecategory/{}/change/".
+                                   format(self.iphone.pk), form)
         self.assertRedirects(response, "/admin/front/phonecategory/", 302)
 
 
@@ -53,8 +52,8 @@ class PhoneMemorySizeModelsTestCase(BaseTestCase):
 
     def test_object_returned_correct_string(self):
         '''
-        Test that the object returns a string that has both the size number and
-        appreviation
+        Test that the object returns a string that has both the
+        size number and abbreviation
         '''
         output = str(self.size_tablet)
         self.assertEqual(output, "24 GB")
@@ -66,8 +65,8 @@ class CurrencyModelTestCase(BaseTestCase):
 
     def test_it_returns_string(self):
         '''
-        Test that the currency value returned for an object of currecny will be
-        a string that is human readable
+        Test that the currency value returned for an object of
+        currecny will be a string that is human readable
         '''
         self.assertEqual(str(self.currency_v), "V$")
 
@@ -84,12 +83,13 @@ class HotDealModelsTestCase(BaseTestCase):
 
     def test_uniqueness_of_hot_deal_category(self):
         '''
-        Test that if a Hot Deal object already exists and I create another one with the same Phone
-        object
+        Test that if a Hot Deal object already exists and I create another
+        one with the same Phone object
             - That a validation error is raised
         '''
         HotDeal.objects.create(item=self.iphone_6)
-        response = self.elena.post("/admin/front/hotdeal/add/", {"item": self.iphone_6.pk})
+        response = self.elena.post("/admin/front/hotdeal/add/",
+                                   {"item": self.iphone_6.pk})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, hot_deal_error.format(self.iphone_6))
 
@@ -112,8 +112,9 @@ class UserModelsTestCase(BaseTestCase):
     def test_admin_created_with_country_code(self):
         '''
         Test that when an admin is created:
-            - The admin automatically gets assigned the default country code. This is to prevent any
-            bugs that may be created in case an admin visits the dashboard page.
+            - The admin automatically gets assigned the default country code.
+            This is to prevent any bugs that may be created in case an admin
+            visits the dashboard page.
         '''
         admin = User.objects.get(email='test@example.com')
         self.assertEqual(admin.country_code, self.country_code)
@@ -123,7 +124,8 @@ class UserModelsTestCase(BaseTestCase):
         Test that when a normal user of the webapp gets created:
             - That the user automatically gets assigned the default country code.
         '''
-        user = User.objects.create_user(email="equatorial@gmail.com", password="secret")
+        user = User.objects.create_user(email="equatorial@gmail.com",
+                                        password="secret")
         self.assertEqual(user.country_code, self.country_code)
 
 
@@ -134,8 +136,8 @@ class CountryCodeModelsTestCase(BaseTestCase):
 
     def test_country_code_uniqueness(self):
         '''
-        Test that when you create an country code that has either the same country code number or
-        country:
+        Test that when you create an country code that has either the same
+        country code number or country:
             - That an error is raised on uniqueness
         '''
         with self.assertRaises(IntegrityError):
@@ -155,16 +157,21 @@ class OrderModelsTestCase(BaseTestCase):
         '''
         User.objects.create_user(email="example@gmail.com")
         owner = User.objects.get(email="example@gmail.com")
-        PhoneList.objects.create(category=self.android, size_sku=self.size_android, price=25000, main_image=image('test_image_5.png'),
-                                 phone_name="Samsung", currency=self.currency_v)
+        PhoneList.objects.create(category=self.android,
+                                 size_sku=self.size_android, price=25000,
+                                 main_image=image('test_image_5.png'),
+                                 phone_name="Samsung",
+                                 currency=self.currency_v)
         OrderStatus.objects.create(status="Pending")
         phone = PhoneList.objects.get(phone_name="Samsung")
         status = OrderStatus.objects.get(status="Pending")
         Order.objects.create(
-            owner=owner, phone=phone, status=status, quantity=2, price=25000, total_price=80000)
+            owner=owner, phone=phone, status=status,
+            quantity=2, price=25000, total_price=80000)
         order = Order.objects.get(owner=owner)
         self.assertEqual(order.get_address, None)
-        ShippingAddress.objects.create(order=order, location="Kiambu Road", pickup="Evergreen Center")
+        ShippingAddress.objects.create(order=order, location="Kiambu Road",
+                                       pickup="Evergreen Center")
         self.assertEqual(order.get_address.location, "Kiambu Road")
 
 class PhonesColorTestCase(BaseTestCase):
@@ -177,7 +184,8 @@ class PhonesColorTestCase(BaseTestCase):
         PhoneList.objects.create(category=self.android,
                                  size_sku=self.size_android, price=25000,
                                  main_image=image('test_image_5.png'),
-                                 phone_name="Samsung", currency=self.currency_v)
+                                 phone_name="Samsung",
+                                 currency=self.currency_v)
         phone = PhoneList.objects.get(phone_name="Samsung")
         PhonesColor.objects.create(
             phone=phone, size=8, abbreviation='GB', price=10000,
@@ -191,7 +199,8 @@ class PhonesColorTestCase(BaseTestCase):
         PhoneList.objects.create(category=self.iphone,
                                  size_sku=self.size_iphone, price=25000,
                                  main_image=image('test_image_5.png'),
-                                 phone_name="Iphone X", currency=self.currency_v)
+                                 phone_name="Iphone X",
+                                 currency=self.currency_v)
         phone_2 = PhoneList.objects.get(phone_name="Iphone X")
         PhonesColor.objects.create(
             phone=phone_2, size=8, abbreviation='GB', price=10000,

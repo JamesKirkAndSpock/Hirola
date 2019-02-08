@@ -1,7 +1,6 @@
 """Test shopping logic."""
 from front.base_test import (PhoneList, PhonesColor, BaseTestCase,
                              CountryCode, User, OrderStatus)
-from front.views import get_cart_total
 
 
 class ConfirmBeforeCartTestCase(BaseTestCase):
