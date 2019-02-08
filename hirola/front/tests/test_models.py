@@ -174,12 +174,24 @@ class PhonesColorTestCase(BaseTestCase):
                                  main_image=image('test_image_5.png'),
                                  phone_name="Samsung", currency=self.currency_v)
         phone = PhoneList.objects.get(phone_name="Samsung")
-        Color.objects.create(color="White")
-        color = Color.objects.get(color="White")
         PhonesColor.objects.create(
             phone=phone, size=8, abbreviation='GB', price=10000,
-            color=color, quantity=10, is_in_stock=True)
+            quantity=10, is_in_stock=True)
         phone_color = PhonesColor.objects.filter(phone=phone).first()
-        self.assertEqual(str(phone_color), "White 8 GB")
+        self.assertEqual(str(phone_color), "8 GB")
         self.assertEqual(phone_color.price, 10000)
         self.assertEqual(phone_color.phone, phone)
+        Color.objects.create(color="White")
+        color = Color.objects.get(color="White")
+        PhoneList.objects.create(category=self.iphone,
+                                 size_sku=self.size_iphone, price=25000,
+                                 main_image=image('test_image_5.png'),
+                                 phone_name="Iphone X", currency=self.currency_v)
+        phone_2 = PhoneList.objects.get(phone_name="Iphone X")
+        PhonesColor.objects.create(
+            phone=phone_2, size=8, abbreviation='GB', price=10000,
+            color=color, quantity=10, is_in_stock=True)
+        phone_color = PhonesColor.objects.filter(phone=phone_2).first()
+        self.assertEqual(str(phone_color), "White 8 GB")
+        self.assertEqual(phone_color.price, 10000)
+        self.assertEqual(phone_color.phone, phone_2)
