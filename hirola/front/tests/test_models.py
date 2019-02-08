@@ -161,3 +161,25 @@ class OrderModelsTestCase(BaseTestCase):
         self.assertEqual(order.get_address, None)
         ShippingAddress.objects.create(order=order, location="Kiambu Road", pickup="Evergreen Center")
         self.assertEqual(order.get_address.location, "Kiambu Road")
+
+class PhonesColorTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(PhonesColorTestCase, self).setUp()
+
+    def test_create_phone_color_object_success(self):
+        """Test user can create a phone color object successfuly."""
+        PhoneList.objects.create(category=self.android,
+                                 size_sku=self.size_android, price=25000,
+                                 main_image=image('test_image_5.png'),
+                                 phone_name="Samsung", currency=self.currency_v)
+        phone = PhoneList.objects.get(phone_name="Samsung")
+        Color.objects.create(color="White")
+        color = Color.objects.get(color="White")
+        PhonesColor.objects.create(
+            phone=phone, size=8, abbreviation='GB', price=10000,
+            color=color, quantity=10, is_in_stock=True)
+        phone_color = PhonesColor.objects.filter(phone=phone).first()
+        self.assertEqual(str(phone_color), "White 8 GB")
+        self.assertEqual(phone_color.price, 10000)
+        self.assertEqual(phone_color.phone, phone)
