@@ -1,4 +1,5 @@
-from front.base_test import *
+from front.base_test import (BaseTestCase, PhoneList, PhonesColor, image,
+                             Currency, cache)
 from front.errors import *
 from .test_users import UserSignupTestCase
 from .test_cache import phone_form
