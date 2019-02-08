@@ -4,13 +4,15 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from .models import (CountryCode, User, PhoneCategory,
                      PhoneMemorySize, PhonesColor, PhoneList,
-                     SocialMedia, Review, HotDeal, NewsItem, Order, OrderStatus)
+                     SocialMedia, Review, HotDeal, NewsItem, Order,
+                     OrderStatus)
 from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (UserCreationForm, AuthenticationForm,
                                UserForm, OldPasswordForm, ChangeEmailForm,
                                EmailAuthenticationForm, resend_email,
-                               resend_activation_email, PhoneProfileUserDataCollectionForm)
+                               resend_activation_email,
+                               PhoneProfileUserDataCollectionForm)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
@@ -22,7 +24,6 @@ from .decorators import (
     old_password_required, remember_user, is_change_allowed_required)
 from django.utils import timezone
 from django.contrib import messages
-from django.db.models import Sum
 
 
 def page_view(request):
@@ -109,8 +110,11 @@ def add_cart_session_data(request):
     total_price = int(quantity) * float(price)
     phone = PhoneList.objects.filter(pk=item).first()
     status = OrderStatus.objects.filter(status='pending').first()
-    item_in_list = Order.objects.filter(owner=request.user, phone=phone, price=price)
-    messages.error(request, 'Oops it seems like you have already added this item to your cart')
+    item_in_list = Order.objects.filter(owner=request.user,
+                                        phone=phone,
+                                        price=price)
+    msg = 'Oops it seems like you have already added this item to your cart'
+    messages.error(request, '{}'.format(msg))
     if item_in_list:
         return redirect('/profile/{}'.format(phone.pk))
     Order.objects.create(owner=request.user, phone=phone,

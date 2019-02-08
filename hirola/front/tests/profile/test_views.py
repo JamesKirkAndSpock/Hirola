@@ -78,8 +78,8 @@ class PhoneProfileTemplate(BaseTestCase):
     #     - That the stars are rendered properly
     #     - That the number of stars is also rendered properly
     #     '''
-    #     Review.objects.create(stars=4, comments="Good job guys", phone=self.iphone_6,
-    #                           owner=self.user)
+    #     Review.objects.create(stars=4, comments="Good job guys",
+    #                           phone=self.iphone_6, owner=self.user)
     #     get_response = self.client.get("/profile/{}/".format(self.iphone_6.id))
     #     star_count = ("<span class=\"fa fa-star checked\"></span>\n                        \n"
     #                   "                        ")

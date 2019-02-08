@@ -13,8 +13,8 @@ class PhoneCategoryModelsTestCase(BaseTestCase):
     def test_object_returned_string(self):
         '''
         Test that when getting an object of a model for the
-        Phone Category List It is possible to get a string representation of the object that is
-        human readable.
+        Phone Category List It is possible to get a string representation
+        of the object that is human readable.
         '''
         self.assertEqual(str(self.iphone), "Iphone")
 

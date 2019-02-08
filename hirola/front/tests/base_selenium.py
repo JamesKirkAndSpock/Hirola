@@ -2,7 +2,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import TestCase
-from front.models import *
+from front.models import (SocialMedia, PhoneCategory, PhoneMemorySize,
+                          Currency, ItemIcon, PhoneList, CountryCode, User,
+                          Order, OrderStatus, PaymentMethod, ShippingAddress,
+                          NewsItem, cache)
 
 
 class BaseSeleniumTestCase(StaticLiveServerTestCase):

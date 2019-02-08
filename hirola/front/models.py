@@ -333,7 +333,6 @@ class PhonesColor(models.Model):
     class Meta:
         unique_together = ('phone', 'size')
 
-
     def __str__(self):
         if self.color:
             return str(self.color) + " " + str(self.size) + " " + self.abbreviation
