@@ -1,6 +1,7 @@
 """Test shopping logic."""
 from front.base_test import (PhoneList, PhonesColor, BaseTestCase,
                              CountryCode, User, OrderStatus)
+from front.views import get_cart_total
 
 
 class ConfirmBeforeCartTestCase(BaseTestCase):
@@ -11,9 +12,9 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         response = self.client.post('/signup', user_data)
         html_content = "Please confirm your email address"
         self.assertContains(response, html_content)
-        user = User.objects.get(email="urieltimanko@example.com")
-        user.is_active = True
-        user.save()
+        self.user = User.objects.get(email="urieltimanko@example.com")
+        self.user.is_active = True
+        self.user.save()
         PhoneList.objects.create(category=self.android,
                                  currency=self.currency_v, price=10000,
                                  phone_name="Samsung Galaxy Edge",
@@ -97,20 +98,19 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
                                        format(self.android.pk))
         self.assertContains(get_response, "Samsung Galaxy Edge")
         form_2 = {
-            'quantity': 3,
+            'quantity': 1,
             'cart_item_add': self.mulika.pk,
             'cart_phone_price': 10000
             }
         post_response = self.client.post("/profile/{}/".
                                          format(self.mulika.pk),
-                                         form, follow=True)
+                                         form_2, follow=True)
         self.assertRedirects(post_response, "/profile/{}/".
                              format(self.mulika.pk), 302)
         message = list(post_response.context.get('messages'))[0]
         self.assertEqual(message.tags, 'error')
         s_msg = 'Oops it seems like you have already added' + '{}'.\
                 format(' this item to your cart')
-        print(s_msg)
         self.assertTrue('{}'.format(s_msg) in message.message)
 
     def generate_user_data(self, data):

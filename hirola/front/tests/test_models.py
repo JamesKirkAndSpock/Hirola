@@ -1,4 +1,7 @@
-from front.base_test import *
+from front.base_test import (BaseTestCase, PhoneCategory, image, TestCase,
+                             PhoneList, HotDeal, get_default, User,
+                             CountryCode, Order, OrderStatus, ShippingAddress,
+                             PhonesColor, Color)
 from django.db import IntegrityError, DataError
 from front.errors import *
 from front.tests.dashboard.test_views import DashboardTemplate
@@ -98,6 +101,8 @@ class NewsItemsTestCase(BaseTestCase):
     def test_object_returned_correct_link(self):
         """Test that the object returns the correct link."""
         self.assertEqual(str(self.link), "https://www.sde.com")
+
+
 class UserModelsTestCase(BaseTestCase):
 
     def setUp(self):
