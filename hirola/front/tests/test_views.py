@@ -32,15 +32,15 @@ class LandingPageViewsTestCase(BaseTestCase):
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=8000, phone_name="LG Razor J7", size_sku=self.size_android)
         self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
-        PhonesColor.objects.create(phone=self.lg_razor, quantity=1, is_in_stock=True, color=self.color_one)
+        PhonesColor.objects.create(phone=self.lg_razor, size=4, abbreviation='GB', price=10000, quantity=1, is_in_stock=True, color=self.color_one)
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=8000, phone_name="Samsung S8", size_sku=self.size_android)
         self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
-        PhonesColor.objects.create(phone=self.samsung_s8, quantity=0, is_in_stock=True, color=self.color_one)
+        PhonesColor.objects.create(phone=self.samsung_s8, size=4, abbreviation='GB', price=10000, quantity=0, is_in_stock=True, color=self.color_one)
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=8000, phone_name="Samsung Note 5", size_sku=self.size_android)
         self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
-        PhonesColor.objects.create(phone=self.samsung_n5, quantity=1, is_in_stock=False, color=self.color_one)
+        PhonesColor.objects.create(phone=self.samsung_n5, size=4, abbreviation='GB', price=10000, quantity=1, is_in_stock=False, color=self.color_one)
         self.elena.post('/admin/front/hotdeal/add/', {"item": self.lg_razor.pk})
         self.elena.post('/admin/front/hotdeal/add/', {"item": self.samsung_s8.pk})
         self.elena.post('/admin/front/hotdeal/add/', {"item": self.samsung_n5.pk})
@@ -150,7 +150,7 @@ class PhoneListViewsTestCase(BaseTestCase):
         PhoneList.objects.create(category=self.iphone, currency=currency,
                                  price=30, phone_name="Iphone 8S")
         phone = PhoneList.objects.get(phone_name="Iphone 8S")
-        PhonesColor.objects.create(phone=phone, color=self.color_one, quantity=4, is_in_stock=True)
+        PhonesColor.objects.create(phone=phone, size=4, abbreviation='GB', price=10000, color=self.color_one, quantity=4, is_in_stock=True)
         response = self.client.get("/phone_category/{}/".format(self.iphone.pk))
         self.assertContains(response, "£$Shs")
 
@@ -173,15 +173,15 @@ class PhoneListViewsTestCase(BaseTestCase):
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=8000, phone_name="LG Razor J7", size_sku=self.size_android)
         self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
-        PhonesColor.objects.create(phone=self.lg_razor, quantity=1, is_in_stock=True, color=self.color_one)
+        PhonesColor.objects.create(phone=self.lg_razor, size=4, abbreviation='GB', price=10000, quantity=1, is_in_stock=True, color=self.color_one)
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=8000, phone_name="Samsung S8", size_sku=self.size_android)
         self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
-        PhonesColor.objects.create(phone=self.samsung_s8, quantity=0, is_in_stock=True, color=self.color_one)
+        PhonesColor.objects.create(phone=self.samsung_s8, size=4, abbreviation='GB', price=10000, quantity=0, is_in_stock=True, color=self.color_one)
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=8000, phone_name="Samsung Note 5", size_sku=self.size_android)
         self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
-        PhonesColor.objects.create(phone=self.samsung_n5, quantity=1, is_in_stock=False, color=self.color_one)
+        PhonesColor.objects.create(phone=self.samsung_n5, size=4, abbreviation='GB', price=10000, quantity=1, is_in_stock=False, color=self.color_one)
         get_response = self.client.get("/phone_category/{}/".format(self.android.pk))
         self.assertContains(get_response, "LG Razor J7")
         self.assertNotContains(get_response, "Samsung S8")
@@ -212,7 +212,7 @@ class ClientViewsTestCase(BaseTestCase):
                                  phone_name=name, currency=currency, price=25,
                                  size_sku=size)
         phone = PhoneList.objects.get(phone_name=name)
-        PhonesColor.objects.create(phone=phone, color=self.color_one, quantity=5, is_in_stock=True)
+        PhonesColor.objects.create(phone=phone, size=4, abbreviation='GB', price=10000, color=self.color_one, quantity=5, is_in_stock=True)
 
     # def test_rendering_on_page_view(self):
     #     mock_image = image("test_image_1.jpeg")
@@ -353,27 +353,3 @@ class NewsItemTestCase(BaseTestCase):
         self.assertContains(response, 'Teke rocks')
         self.assertContains(response, 'The standard online')
         self.assertContains(response, 'https://www.sde.com')
-
-class ConfirmBeforeCartTestCase(BaseTestCase):
-
-    def setUp(self):
-        super(ConfirmBeforeCartTestCase, self).setUp()
-
-    def test_selected_phone_details_shown(self):
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=10000, phone_name="Mulika Mwizi", size_sku=self.size_android)
-        self.mulika = PhoneList.objects.get(phone_name="Mulika Mwizi")    
-        PhonesColor.objects.create(phone=self.mulika, quantity=5, is_in_stock=True, color=self.color_one)
-        
-        get_response = self.client.get("/phone_category/{}/".format(self.android.pk))
-        self.assertContains(get_response, 'Select your favorite Android')
-        self.assertContains(get_response, "Mulika Mwizi")
-        self.assertContains(get_response, "10000")
-        form = {'quantity': 3, 'cart_item_add': self.mulika.pk}
-        get_response_2 = self.client.post("/profile/{}/".format(self.mulika.pk), form, follow=True)
-        # print(get_response_2.content)
-        self.assertRedirects(get_response_2, "/before_checkout", 302)
-        self.assertContains(get_response_2, "Mulika Mwizi")
-        self.assertContains(get_response_2, "30000")
-
-

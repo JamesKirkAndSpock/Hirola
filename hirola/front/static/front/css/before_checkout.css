@@ -20,7 +20,7 @@
 
  #action a{
    font-size: 110%;
-   color: blue !important;   
+   color: blue !important;
  }
 
  #action > a:first-child {
@@ -46,6 +46,10 @@
     padding: 20px !important;
     border: solid 0.05em;
     border-color: #E8E8E8;
+    position: fixed;
+    float: right;
+    width: 320px;
+    left: 62%;
  }
 
  .btn {
@@ -66,3 +70,12 @@
     border-top: solid 0.05em;
     border-top-color: #E8E8E8;
  }
+
+ @media only screen and (max-width: 600px) {
+    .left-content {
+        position: relative;
+        left: 0;
+        float: none;
+        top: 5%;
+    }
+}

@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from .models import (CountryCode, User, PhoneCategory,
                      PhoneMemorySize, PhonesColor, PhoneList,
-                     SocialMedia, Review, HotDeal, NewsItem, Order)
+                     SocialMedia, Review, HotDeal, NewsItem, Order, OrderStatus)
 from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (UserCreationForm, AuthenticationForm,
@@ -22,6 +22,7 @@ from .decorators import (
     old_password_required, remember_user, is_change_allowed_required)
 from django.utils import timezone
 from django.contrib import messages
+from django.db.models import Sum
 
 
 def page_view(request):
@@ -100,11 +101,21 @@ def country_codes(request):
     return JsonResponse(data)
 
 
+@login_required
 def add_cart_session_data(request):
     item = request.POST['cart_item_add']
-    request.session['item_id'] = item
     quantity = request.POST['quantity']
-    request.session['quantity'] = quantity
+    price = request.POST['cart_phone_price']
+    total_price = int(quantity) * float(price)
+    phone = PhoneList.objects.filter(pk=item).first()
+    status = OrderStatus.objects.filter(status='pending').first()
+    item_in_list = Order.objects.filter(owner=request.user, phone=phone, price=price)
+    messages.error(request, 'Oops it seems like you have already added this item to your cart')
+    if item_in_list:
+        return redirect('/profile/{}'.format(phone.pk))
+    Order.objects.create(owner=request.user, phone=phone,
+                         status=status, quantity=quantity,
+                         price=price, total_price=total_price)
     return redirect("/before_checkout")
 
 
@@ -157,14 +168,26 @@ def checkout_view(request):
                                                    'social_media': social_media})
 
 
+def get_cart_total(items):
+    sum = 0
+    for item in items:
+        sum += item.total_price
+    return sum
+
+
+@login_required
 def before_checkout_view(request):
     (phone_categories, social_media) = various_caches()
-    phone = PhoneList.objects.filter(pk=request.session['item_id']).first()
-    infos = phone.phone_information.all()
-    return render(request, 'front/before_checkout.html',
-                            {'categories': phone_categories,
-                             'social_media': social_media, 'item': phone,
-                             'features': infos, 'price': phone.price})
+    items = Order.objects.filter(owner=request.user)
+    item_count = Order.objects.filter(owner=request.user).count()
+    total = get_cart_total(items)
+    context = {
+                'categories': phone_categories,
+                'social_media': social_media, 'items': items,
+                'item_count': item_count, 'cart_total': total
+                }
+    return render(request, 'front/before_checkout.html', context)
+
 
 @login_required
 def dashboard_view(request):

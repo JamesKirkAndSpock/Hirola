@@ -245,6 +245,7 @@ class Order(models.Model):
     phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
     quantity = IntegerRangeField(min_value=1)
+    price = models.DecimalField(max_digits=6, decimal_places=0)
     total_price = IntegerRangeField(min_value=0, default=0)
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, blank=True, null=True)
 
@@ -319,9 +320,8 @@ class Color(models.Model):
 class PhonesColor(models.Model):
     phone = models.ForeignKey(
         PhoneList, related_name='phone_color_quantity', on_delete=models.SET_NULL, null=True, blank=True)
-    size_number = models.IntegerField(blank=True, null=True)
+    size = models.IntegerField(blank=True, null=True)
     abbreviation = models.CharField(max_length=10)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=0)
     color = models.ForeignKey(
         Color, on_delete=models.SET_NULL, null=True, blank=True)
@@ -331,13 +331,13 @@ class PhonesColor(models.Model):
         'Unselect this instead of deleting phone color.'), )
 
     class Meta:
-        unique_together = ('phone', 'color', 'size_number')
+        unique_together = ('phone', 'size')
 
 
     def __str__(self):
         if self.color:
-            return str(self.color) + " " + str(self.size_number) + " " + self.abbreviation
-        return str(self.size_number) + " " + self.abbreviation
+            return str(self.color) + " " + str(self.size) + " " + self.abbreviation
+        return str(self.size) + " " + self.abbreviation
 
 
 def delete_cache(model_class, object_id, cache_name):

@@ -8,6 +8,7 @@ $('#color').on('change', function () {
             var price = quantities[key].currency + ' ' + phone_quantity
             var quantity = quantities[key].quantity;
             $('#price').html(price)
+            $('#cart_phone_price').val(quantities[key].price)
             for (var i = 0; i <= quantity; i++) {
                 $('select').formSelect();
                 var $newOpt = $("<option>").attr("value", (i+1)).text(i + 1);
@@ -38,3 +39,13 @@ $(document).ready(function () {
 });
 
 $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: 'absolute'});
+
+$(document).ready(function () {
+    error_messages.forEach(function (message) {
+        M.toast({
+            html: message,
+            classes: "red"
+        });
+       delete error_messages[message]
+    });
+});

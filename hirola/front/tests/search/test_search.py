@@ -11,8 +11,8 @@ class SearchTest(BaseTestCase):
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=8000, phone_name="LG Razor J7")
         self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
-        PhonesColor.objects.create(phone=self.lg_razor, color=self.color_one, quantity=1, is_in_stock=True)
-        PhonesColor.objects.create(phone=self.samsung_j_7, color=self.color_one, quantity=1, is_in_stock=True)
+        PhonesColor.objects.create(phone=self.lg_razor, size=4, abbreviation='GB', price=10000, color=self.color_one, quantity=1, is_in_stock=True)
+        PhonesColor.objects.create(phone=self.samsung_j_7, size=4, abbreviation='GB', price=10000, color=self.color_one, quantity=1, is_in_stock=True)
 
     def test_search_get_request(self):
         '''
@@ -115,11 +115,11 @@ class SearchTest(BaseTestCase):
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=8000, phone_name="Samsung S8", size_sku=self.size_android)
         self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
-        PhonesColor.objects.create(phone=self.samsung_s8, quantity=0, is_in_stock=True, color=self.color_one)
+        PhonesColor.objects.create(phone=self.samsung_s8, size=4, abbreviation='GB', price=10000, quantity=0, is_in_stock=True, color=self.color_one)
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=8000, phone_name="Samsung Note 5", size_sku=self.size_android)
         self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
-        PhonesColor.objects.create(phone=self.samsung_n5, quantity=1, is_in_stock=False, color=self.color_one)
+        PhonesColor.objects.create(phone=self.samsung_n5, size=4, abbreviation='GB', price=10000, quantity=1, is_in_stock=False, color=self.color_one)
         post_response_1 = self.client.post("/search", {"search-name": "LG Raz"})
         post_response_3 = self.client.post("/search", {"search-name": "Note"})
         post_response_2 = self.client.post("/search", {"search-name": "S8"})

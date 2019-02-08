@@ -77,9 +77,9 @@ class BaseTestCase(TestCase):
 
     def add_phone_colors(self):
         PhonesColor.objects.create(
-            phone=self.iphone_6, color=self.color_one, quantity=5, is_in_stock=True)
+            phone=self.iphone_6, size=4, abbreviation='GB', price=10000, color=self.color_one, quantity=5, is_in_stock=True)
         PhonesColor.objects.create(
-            phone=self.iphone_6, color=self.color_two, quantity=10, is_in_stock=True)
+            phone=self.iphone_6, size=8, abbreviation='GB', price=10000, color=self.color_two, quantity=10, is_in_stock=True)
         self.iphone6_colors = PhonesColor.objects.filter(phone=self.iphone_6.pk)
         self.all_colors = PhonesColor.objects.all()
 

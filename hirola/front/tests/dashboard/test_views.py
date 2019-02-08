@@ -135,7 +135,7 @@ class DashboardTemplate(BaseTestCase):
         phone = PhoneList.objects.get(phone_name="Samsung")
         status = OrderStatus.objects.get(status="Pending")
         Order.objects.create(
-            owner=owner, phone=phone, status=status, quantity=2, total_price=80000)
+            owner=owner, phone=phone, status=status, quantity=2, price=25000, total_price=80000)
         order = Order.objects.get(owner=owner)
         ShippingAddress.objects.create(order=order, location="Kiambu Road", pickup="Evergreen Center")
         return (owner, order)

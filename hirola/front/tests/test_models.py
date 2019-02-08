@@ -150,13 +150,13 @@ class OrderModelsTestCase(BaseTestCase):
         '''
         User.objects.create_user(email="example@gmail.com")
         owner = User.objects.get(email="example@gmail.com")
-        PhoneList.objects.create(category=self.iphone, main_image=image('test_image_5.png'),
-                                 phone_name="Samsung", currency=self.currency_v, price=25000)
+        PhoneList.objects.create(category=self.android, size_sku=self.size_android, price=25000, main_image=image('test_image_5.png'),
+                                 phone_name="Samsung", currency=self.currency_v)
         OrderStatus.objects.create(status="Pending")
         phone = PhoneList.objects.get(phone_name="Samsung")
         status = OrderStatus.objects.get(status="Pending")
         Order.objects.create(
-            owner=owner, phone=phone, status=status, quantity=2, total_price=80000)
+            owner=owner, phone=phone, status=status, quantity=2, price=25000, total_price=80000)
         order = Order.objects.get(owner=owner)
         self.assertEqual(order.get_address, None)
         ShippingAddress.objects.create(order=order, location="Kiambu Road", pickup="Evergreen Center")
