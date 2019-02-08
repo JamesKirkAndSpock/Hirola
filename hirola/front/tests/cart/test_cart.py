@@ -14,8 +14,10 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         user = User.objects.get(email="urieltimanko@example.com")
         user.is_active = True
         user.save()
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=10000, phone_name="Samsung Galaxy Edge", size_sku=self.size_android)
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=10000,
+                                 phone_name="Samsung Galaxy Edge",
+                                 size_sku=self.size_android)
         self.mulika = PhoneList.objects.get(phone_name="Samsung Galaxy Edge")
         PhonesColor.objects.create(phone=self.mulika, size=4,
                                    abbreviation='GB', price=10000,
@@ -25,13 +27,22 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
 
     def test_cannot_shop_unless_logged_in(self):
         """Test user needs to login to shop."""
-        get_response = self.client.get("/phone_category/{}/".format(self.android.pk))
+        get_response = self.client.get("/phone_category/{}/".
+                                       format(self.android.pk))
         self.assertContains(get_response, 'Select your favorite Android')
         self.assertContains(get_response, "Samsung Galaxy Edge")
         self.assertContains(get_response, "10000")
-        form = {'quantity': 3, 'cart_item_add': self.mulika.pk, 'price': 10000}
-        get_response_2 = self.client.post("/profile/{}/".format(self.mulika.pk), form, follow=True)
-        self.assertRedirects(get_response_2, "/login?next=/profile/{}/".format(self.mulika.pk), 302)
+        form = {
+            'quantity': 3,
+            'cart_item_add': self.mulika.pk,
+            'price': 10000
+            }
+        get_response_2 = self.client.post("/profile/{}/".
+                                          format(self.mulika.pk),
+                                          form, follow=True)
+        self.assertRedirects(get_response_2,
+                             "/login?next=/profile/{}/".
+                             format(self.mulika.pk), 302)
 
     def test_shop_if_logged_in(self):
         """Test user needs to login to shop."""
@@ -39,15 +50,24 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
                      "password": "*&#@&!*($)lp"}
         response = self.client.post('/login', user_data)
         self.assertRedirects(response, "/", 302)
-        get_response = self.client.get("/phone_category/{}/".format(self.android.pk))
+        get_response = self.client.get("/phone_category/{}/".
+                                       format(self.android.pk))
         self.assertContains(get_response, "Samsung Galaxy Edge")
-        form = {'quantity': 3, 'cart_item_add': self.mulika.pk, 'cart_phone_price': 10000}
-        get_response_2 = self.client.post("/profile/{}/".format(self.mulika.pk), form, follow=True)
+        form = {
+            'quantity': 3,
+            'cart_item_add': self.mulika.pk,
+            'cart_phone_price': 10000
+            }
+        get_response_2 = self.client.post("/profile/{}/".
+                                          format(self.mulika.pk),
+                                          form, follow=True)
         self.assertRedirects(get_response_2, '/before_checkout', 302)
         self.assertContains(get_response_2, "Samsung Galaxy Edge")
-        self.assertContains(get_response_2, "<h6>Total <span class=\"right\">30000</span></h6>")
+        total_html = "<h6>Total <span class=\"right\">30000</span></h6>"
+        self.assertContains(get_response_2, "{}".format(total_html))
         self.assertContains(get_response_2, '<p>Quantity (3)</p>')
-        self.assertContains(get_response_2, '<p>item(s)<span class="right">1</span></p>')
+        items_html = '<p>item(s)<span class="right">1</span></p>'
+        self.assertContains(get_response_2, '{}'.format(items_html))
 
 
 
