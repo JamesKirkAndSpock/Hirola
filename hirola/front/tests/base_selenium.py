@@ -68,8 +68,8 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
         self.timon.save()
 
     def create_order_status(self):
-        OrderStatus.objects.create(status="Pending")
-        self.order_status = OrderStatus.objects.get(status="Pending")
+        OrderStatus.objects.create(status="pending")
+        self.order_status = OrderStatus.objects.get(status="pending")
 
     def create_payment_method(self):
         PaymentMethod.objects.create(payment_method="Mpesa")
