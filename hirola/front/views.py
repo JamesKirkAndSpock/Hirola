@@ -124,14 +124,19 @@ def generate_profile_view_load(phone_id, form):
     if not phone:
         return redirect("/error")
     form = form
-    secondary_details = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
+    secondary_details = PhonesColor.objects.filter(phone=phone_id,
+                                                   is_in_stock=True)
     phone_sizes = PhoneMemorySize.objects.filter(category=phone.category)
     (phone_categories, social_media) = various_caches()
-    context = {"phone": phone, "secondary_details": secondary_details, "image_list": phone.phone_images.all(),
-            "customer_reviews": phone.phone_reviews.all(),
-            "features": phone.phone_features.all(), "infos": phone.phone_information.all(),
-            'categories': phone_categories,  'social_media': social_media,
-            'sizes': phone_sizes, 'form': form}
+    context = {
+                "phone": phone, "secondary_details": secondary_details,
+                "image_list": phone.phone_images.all(),
+                "customer_reviews": phone.phone_reviews.all(),
+                "features": phone.phone_features.all(),
+                "infos": phone.phone_information.all(),
+                'categories': phone_categories, 'social_media': social_media,
+                'sizes': phone_sizes, 'form': form
+                }
     return context
 
 
