@@ -190,10 +190,10 @@ class PhonesColorTestCase(BaseTestCase):
                                  currency=self.currency_v)
         phone = PhoneList.objects.get(phone_name="Samsung")
         PhonesColor.objects.create(
-            phone=phone, size=8, abbreviation='GB', price=10000,
+            phone=phone, size=self.size_android, price=10000,
             quantity=10, is_in_stock=True)
         phone_color = PhonesColor.objects.filter(phone=phone).first()
-        self.assertEqual(str(phone_color), "8 GB")
+        self.assertEqual(str(phone_color), "16 GB")
         self.assertEqual(phone_color.price, 10000)
         self.assertEqual(phone_color.phone, phone)
         Color.objects.create(color="White")
@@ -205,7 +205,7 @@ class PhonesColorTestCase(BaseTestCase):
                                  currency=self.currency_v)
         phone_2 = PhoneList.objects.get(phone_name="Iphone X")
         PhonesColor.objects.create(
-            phone=phone_2, size=8, abbreviation='GB', price=10000,
+            phone=phone_2, size=self.size_iphone, price=10000,
             color=color, quantity=10, is_in_stock=True)
         phone_color = PhonesColor.objects.filter(phone=phone_2).first()
         self.assertEqual(str(phone_color), "White 8 GB")

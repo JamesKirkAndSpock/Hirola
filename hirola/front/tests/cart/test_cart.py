@@ -19,8 +19,7 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
                                  phone_name="Samsung Galaxy Edge",
                                  size_sku=self.size_android)
         self.mulika = PhoneList.objects.get(phone_name="Samsung Galaxy Edge")
-        PhonesColor.objects.create(phone=self.mulika, size=4,
-                                   abbreviation='GB', price=10000,
+        PhonesColor.objects.create(phone=self.mulika, size=self.size_android, price=10000,
                                    quantity=5, is_in_stock=True,
                                    color=self.color_one)
         OrderStatus.objects.create(status='pending')
@@ -35,14 +34,15 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         form = {
             'quantity': 3,
             'cart_item_add': self.mulika.pk,
-            'cart_phone_price': 10000
+            'cart_phone_price': 10000,
+            'size':self.any_phone_size
             }
         get_response_2 = self.client.post("/profile/{}/".
                                           format(self.mulika.pk),
                                           form, follow=True)
         self.assertRedirects(get_response_2, '/before_checkout', 302)
         self.assertContains(get_response_2, "Samsung Galaxy Edge")
-        total_html = "<h6>Total <span class=\"right\">30000</span></h6>"
+        total_html = "<h6>Total <span class=\"right\">30,000</span></h6>"
         self.assertContains(get_response_2, "{}".format(total_html))
         self.assertContains(get_response_2, '<p>Quantity (3)</p>')
         items_html = '<p>item(s)<span class="right">1</span></p>'
@@ -60,14 +60,15 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         form = {
             'quantity': 3,
             'cart_item_add': self.mulika.pk,
-            'cart_phone_price': 10000
+            'cart_phone_price': 10000,
+            'size':self.any_phone_size
             }
         get_response_2 = self.client.post("/profile/{}/".
                                           format(self.mulika.pk),
                                           form, follow=True)
         self.assertRedirects(get_response_2, '/before_checkout', 302)
         self.assertContains(get_response_2, "Samsung Galaxy Edge")
-        total_html = "<h6>Total <span class=\"right\">30000</span></h6>"
+        total_html = "<h6>Total <span class=\"right\">30,000</span></h6>"
         self.assertContains(get_response_2, "{}".format(total_html))
         self.assertContains(get_response_2, '<p>Quantity (3)</p>')
         items_html = '<p>item(s)<span class="right">1</span></p>'
@@ -85,14 +86,15 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         form = {
             'quantity': 3,
             'cart_item_add': self.mulika.pk,
-            'cart_phone_price': 10000
+            'cart_phone_price': 10000,
+            'size':self.any_phone_size
             }
         get_response_2 = self.client.post("/profile/{}/".
                                           format(self.mulika.pk),
                                           form, follow=True)
         self.assertRedirects(get_response_2, '/before_checkout', 302)
         self.assertContains(get_response_2, "Samsung Galaxy Edge")
-        total_html = "<h6>Total <span class=\"right\">30000</span></h6>"
+        total_html = "<h6>Total <span class=\"right\">30,000</span></h6>"
         self.assertContains(get_response_2, "{}".format(total_html))
         self.assertContains(get_response_2, '<p>Quantity (3)</p>')
         items_html = '<p>item(s)<span class="right">1</span></p>'
@@ -103,7 +105,8 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         form_2 = {
             'quantity': 1,
             'cart_item_add': self.mulika.pk,
-            'cart_phone_price': 10000
+            'cart_phone_price': 10000,
+            'size':self.any_phone_size
             }
         post_response = self.client.post("/profile/{}/".
                                          format(self.mulika.pk),

@@ -30,27 +30,31 @@ class LandingPageViewsTestCase(BaseTestCase):
             - That it is  not rendered on the landing page
             - That any hot deal with the opposite is rendered on the landing page
         '''
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="LG Razor J7",
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="LG Razor J7",
                                  size_sku=self.size_android)
         self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
-        PhonesColor.objects.create(phone=self.lg_razor, size=4,
-                                   abbreviation='GB', price=10000, quantity=1,
-                                   is_in_stock=True, color=self.color_one)
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="Samsung S8",
+        PhonesColor.objects.create(phone=self.lg_razor,
+                                   size=self.any_phone_size, price=10000,
+                                   quantity=1, is_in_stock=True,
+                                   color=self.color_one)
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="Samsung S8",
                                  size_sku=self.size_android)
         self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
-        PhonesColor.objects.create(phone=self.samsung_s8, size=4,
-                                   abbreviation='GB', price=10000, quantity=0,
-                                    is_in_stock=True, color=self.color_one)
+        PhonesColor.objects.create(phone=self.samsung_s8,
+                                   size=self.size_android, price=10000,
+                                   quantity=0, is_in_stock=True,
+                                   color=self.color_one)
         PhoneList.objects.create(category=self.android,
                                  currency=self.currency_v, price=8000,
                                  phone_name="Samsung Note 5",
                                  size_sku=self.size_android)
         self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
-        PhonesColor.objects.create(phone=self.samsung_n5, size=4,
-                                   abbreviation='GB', price=10000,
+        PhonesColor.objects.create(phone=self.samsung_n5,
+                                   size=self.any_phone_size, price=10000,
                                    quantity=1, is_in_stock=False,
                                    color=self.color_one)
         self.elena.post('/admin/front/hotdeal/add/', {"item": self.lg_razor.pk})
@@ -162,7 +166,7 @@ class PhoneListViewsTestCase(BaseTestCase):
         PhoneList.objects.create(category=self.iphone, currency=currency,
                                  price=30, phone_name="Iphone 8S")
         phone = PhoneList.objects.get(phone_name="Iphone 8S")
-        PhonesColor.objects.create(phone=phone, size=4, abbreviation='GB',
+        PhonesColor.objects.create(phone=phone, size=self.any_phone_size,
                                    price=10000, color=self.color_one,
                                    quantity=4, is_in_stock=True)
         response = self.client.get("/phone_category/{}/".
@@ -190,24 +194,25 @@ class PhoneListViewsTestCase(BaseTestCase):
                                  phone_name="LG Razor J7",
                                  size_sku=self.size_android)
         self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
-        PhonesColor.objects.create(phone=self.lg_razor, size=4,
-                                   abbreviation='GB', price=10000, quantity=1,
-                                   is_in_stock=True, color=self.color_one)
+        PhonesColor.objects.create(phone=self.lg_razor, size=self.size_android,
+                                   price=10000, quantity=1, is_in_stock=True,
+                                   color=self.color_one)
         PhoneList.objects.create(category=self.android,
                                  currency=self.currency_v, price=8000,
                                  phone_name="Samsung S8",
                                  size_sku=self.size_android)
         self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
-        PhonesColor.objects.create(phone=self.samsung_s8, size=4,
-                                   abbreviation='GB', price=10000, quantity=0,
-                                   is_in_stock=True, color=self.color_one)
+        PhonesColor.objects.create(phone=self.samsung_s8,
+                                   size=self.any_phone_size, price=10000,
+                                   quantity=0, is_in_stock=True,
+                                   color=self.color_one)
         PhoneList.objects.create(category=self.android,
                                  currency=self.currency_v, price=8000,
                                  phone_name="Samsung Note 5",
                                  size_sku=self.size_android)
         self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
-        PhonesColor.objects.create(phone=self.samsung_n5, size=4,
-                                   abbreviation='GB', price=10000,
+        PhonesColor.objects.create(phone=self.samsung_n5,
+                                   size=self.any_phone_size, price=10000,
                                    quantity=1, is_in_stock=False,
                                    color=self.color_one)
         get_response = self.client.get("/phone_category/{}/".
@@ -241,7 +246,7 @@ class ClientViewsTestCase(BaseTestCase):
                                  phone_name=name, currency=currency, price=25,
                                  size_sku=size)
         phone = PhoneList.objects.get(phone_name=name)
-        PhonesColor.objects.create(phone=phone, size=4, abbreviation='GB',
+        PhonesColor.objects.create(phone=phone, size=self.size_android,
                                    price=10000, color=self.color_one,
                                    quantity=5, is_in_stock=True)
 

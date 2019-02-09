@@ -21,8 +21,7 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         self.mulika = PhoneList.objects.get(phone_name="Samsung Galaxy Edge")
         Cart.objects.create(owner=self.user)
         self.cart = Cart.objects.get(owner=self.user.pk)
-        PhonesColor.objects.create(phone=self.mulika, size=4,
-                                   abbreviation='GB', price=10000,
+        PhonesColor.objects.create(phone=self.mulika, size=self.size_android, price=10000,
                                    quantity=5, is_in_stock=True,
                                    color=self.color_one)
         OrderStatus.objects.create(status='pending')
