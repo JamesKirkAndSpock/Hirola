@@ -337,24 +337,29 @@ class Color(models.Model):
 
 class PhonesColor(models.Model):
     phone = models.ForeignKey(
-        PhoneList, related_name='phone_color_quantity', on_delete=models.SET_NULL, null=True, blank=True)
-    size = models.IntegerField(blank=True, null=True)
-    abbreviation = models.CharField(max_length=10)
+        PhoneList, related_name='phone_color_quantity',
+        on_delete=models.SET_NULL, null=True, blank=True)
+    size = models.ForeignKey(PhoneMemorySize,
+                             on_delete=models.SET_NULL,
+                             null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=0)
     color = models.ForeignKey(
         Color, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = IntegerRangeField(min_value=0)
-    is_in_stock = models.BooleanField(_('in_stock'), default=False, help_text=_(
-        'Designates whether this phone color is in stock. '
-        'Unselect this instead of deleting phone color.'), )
+    is_in_stock = models.BooleanField(_('in_stock'), default=False,
+                                      help_text=_(
+                                          'Designates whether this phone \
+                                              color is in stock. '
+                                          'Unselect this instead of \
+                                              deleting phone color.'), )
 
     class Meta:
         unique_together = ('phone', 'size')
 
     def __str__(self):
         if self.color:
-            return str(self.color) + " " + str(self.size) + " " + self.abbreviation
-        return str(self.size) + " " + self.abbreviation
+            return str(self.color) + " " + str(self.size)
+        return str(self.size)
 
 
 def delete_cache(model_class, object_id, cache_name):

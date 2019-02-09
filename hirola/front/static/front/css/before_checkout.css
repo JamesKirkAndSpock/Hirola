@@ -76,6 +76,13 @@
         position: relative;
         left: 0;
         float: none;
-        top: 5%;
+        width: 100%;
+    }
+    .right-content{
+        margin-bottom: 20px;
+    }
+    .cart-content {
+        display: flex;
+        flex-direction: column;
     }
 }

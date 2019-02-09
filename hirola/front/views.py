@@ -115,7 +115,7 @@ def save_order(request, owner=None):
     item = request.POST['cart_item_add']
     quantity = request.POST['quantity']
     price = request.POST['cart_phone_price']
-    size=request.POST['size']
+    size = request.POST['size']
     total_price = int(quantity) * float(price)
     total_price = float(int(total_price))
     phone = PhoneList.objects.filter(pk=item).first()

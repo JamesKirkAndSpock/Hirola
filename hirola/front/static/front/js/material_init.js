@@ -54,3 +54,7 @@ $(".dropdown-trigger").dropdown();
 $(document).ready(function(){
     $('.tooltipped').tooltip();
   });
+
+$(document).ready(function(){
+    $('.scrollspy').scrollSpy();
+});
