@@ -6,7 +6,7 @@
         <div class="col m2"></div>
         <div class="col m8">
             <div class="col s12 form-content">
-                <h5>Please provide new email for {{ user.email }}</h5>
+                <h5>Please provide new email for {{ current_user_email }}</h5>
                 <form method="post">
                   {% csrf_token %}
                     <div class="row">

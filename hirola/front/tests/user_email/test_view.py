@@ -155,6 +155,8 @@ class ChangeEmailView(BaseTestCase):
         response = self.sivanna.post("/change_email", {"email": "tripona@gmail.com"})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "The email address you entered has already been registered.")
+        message = "Please provide new email for sivanna@gmail.com"
+        self.assertContains(response, message)
 
     def test_similar_email(self):
         '''
@@ -172,6 +174,8 @@ class ChangeEmailView(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         error_message = ChangeEmailForm.error_messages['invalid_email']
         self.assertContains(response, error_message)
+        message = "Please provide new email for sivanna@gmail.com"
+        self.assertContains(response, message)
 
     def test_valid_data(self):
         '''
@@ -195,6 +199,3 @@ class ChangeEmailView(BaseTestCase):
         self.assertEqual(edited_user.change_email, "pinotico@gmail.com")
         self.assertIsNotNone(edited_user.change_email_tracker)
         self.assertContains(response, "We have sent you a link to your new email to activate it")
-
-
-
