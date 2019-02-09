@@ -8,6 +8,7 @@ $('#color').on('change', function () {
             var price = quantities[key].currency + ' ' + phone_quantity
             var quantity = quantities[key].quantity;
             $('#price').html(price)
+            $('#size').val(quantities[key].size)
             $('#cart_phone_price').val(quantities[key].price)
             for (var i = 0; i <= quantity; i++) {
                 $('select').formSelect();

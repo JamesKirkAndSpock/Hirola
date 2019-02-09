@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import *
+from .models import (PhoneImage, Review, Feature, PhonesColor,
+                     ProductInformation, ShippingAddress, PhoneList,
+                     PhoneMemorySize, Currency, SocialMedia, Order,
+                     OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
+                     Cart)
 from .forms.model_forms import *
 from .forms.user_forms import *
 

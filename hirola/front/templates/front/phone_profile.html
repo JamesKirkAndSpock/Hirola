@@ -75,6 +75,7 @@
                                     {% endfor %}
                                     {% endif %}
                                 </select>
+                                <input type="hidden" id="size" name="size" value="">
                             </div>
 
                         </div>
@@ -205,7 +206,13 @@
 <script type="text/javascript">
     var quantities = [];
     {% for quantity in secondary_details %}
-        var secondary_details_object = {'secondary_details': '{{ quantity.pk|safe }}', 'quantity': '{{ quantity.quantity|safe }}', 'price': '{{ quantity.price }}', 'currency': '{{ quantity.currency }}'}
+        var secondary_details_object = {
+            'secondary_details': '{{ quantity.pk|safe }}',
+            'quantity': '{{ quantity.quantity|safe }}',
+            'price': '{{ quantity.price }}',
+            'currency': '{{ quantity.currency }}',
+            'size':'{{quantity.size}}'
+        }
         quantities.push(secondary_details_object);
         console.log(secondary_details_object)
     {% endfor %}

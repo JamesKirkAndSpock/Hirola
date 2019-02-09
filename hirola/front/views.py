@@ -106,9 +106,8 @@ def create_cart(request, owner=None):
     cart_obj = Cart.objects.create(owner=owner)
     return cart_obj
 
+
 def add_cart_data(request):
-    if not request.user.is_anonymous:
-        return save_order(request, owner=request.user)
     return save_order(request)
 
 
@@ -116,22 +115,24 @@ def save_order(request, owner=None):
     item = request.POST['cart_item_add']
     quantity = request.POST['quantity']
     price = request.POST['cart_phone_price']
+    size=request.POST['size']
     total_price = int(quantity) * float(price)
     total_price = float(int(total_price))
     phone = PhoneList.objects.filter(pk=item).first()
     status = OrderStatus.objects.filter(status='pending').first()
     cart_obj = get_cart_object(request)
-    item_in_list = Order.objects.filter(cart=cart_obj,
-                                        phone=phone)
-    msg = 'Oops it seems like you have already added this item to your cart'
-    messages.error(request, '{}'.format(msg))
+    item_in_list = Order.objects.filter(cart=cart_obj, size=size, phone=phone)
     if item_in_list:
+        msg = 'Oops it seems like you have already added this item to your cart'
+        messages.error(request, '{}'.format(msg))
         return redirect('/profile/{}'.format(phone.pk))
     else:
         Order.objects.create(owner=owner, phone=phone,
-                            status=status, quantity=quantity,
-                            price=price, total_price=total_price, cart=cart_obj)
+                             status=status, quantity=quantity,
+                             price=price, size=size, total_price=total_price,
+                             cart=cart_obj)
         return redirect("/before_checkout")
+
 
 def get_cart_object(request):
     cart_id = request.session.get('cart_id', None)
@@ -143,6 +144,7 @@ def get_cart_object(request):
         cart_obj = create_cart(request)
         request.session['cart_id'] = cart_obj.id
     return cart_obj
+
 
 def generate_profile_view_load(phone_id, form):
     phone = PhoneList.objects.filter(pk=phone_id).first()

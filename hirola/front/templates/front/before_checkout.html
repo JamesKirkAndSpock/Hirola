@@ -17,6 +17,7 @@
                     </div>
                     <div class="col m3">
                         <h6>{{ item.phone }}</h6>
+                        <h5>{{ item.size }} GB</h5>
                         <ul style="list-style-type:disc"></ul>
                             {% for feature in item.phone.pk|features %}
                                 <li>{{ feature.feature }}</li>
