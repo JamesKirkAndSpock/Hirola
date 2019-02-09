@@ -25,7 +25,7 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
                                    color=self.color_one)
         OrderStatus.objects.create(status='pending')
 
-    def test_cannot_shop_unless_logged_in(self):
+    def test_shop_even_when_not_logged_in(self):
         """Test user needs to login to shop."""
         get_response = self.client.get("/phone_category/{}/".
                                        format(self.android.pk))
@@ -35,14 +35,18 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         form = {
             'quantity': 3,
             'cart_item_add': self.mulika.pk,
-            'price': 10000
+            'cart_phone_price': 10000
             }
         get_response_2 = self.client.post("/profile/{}/".
                                           format(self.mulika.pk),
                                           form, follow=True)
-        self.assertRedirects(get_response_2,
-                             "/login?next=/profile/{}/".
-                             format(self.mulika.pk), 302)
+        self.assertRedirects(get_response_2, '/before_checkout', 302)
+        self.assertContains(get_response_2, "Samsung Galaxy Edge")
+        total_html = "<h6>Total <span class=\"right\">30000</span></h6>"
+        self.assertContains(get_response_2, "{}".format(total_html))
+        self.assertContains(get_response_2, '<p>Quantity (3)</p>')
+        items_html = '<p>item(s)<span class="right">1</span></p>'
+        self.assertContains(get_response_2, '{}'.format(items_html))
 
     def test_shop_if_logged_in(self):
         """Test user needs to login to shop."""

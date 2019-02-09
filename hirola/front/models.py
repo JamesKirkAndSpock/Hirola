@@ -238,9 +238,20 @@ class PaymentMethod(models.Model):
     payment_method = models.CharField(max_length=255, default="Cash")
 
 
+class Cart(models.Model):
+    owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    updated = models.DateField(auto_now=True)
+    total_price = IntegerRangeField(min_value=0, default=0)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.owner) + " date: " + str(self.date)
+
+
 class Order(models.Model):
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
@@ -248,7 +259,7 @@ class Order(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=0)
     total_price = IntegerRangeField(min_value=0, default=0)
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, blank=True, null=True)
-
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     def __str__(self):
         return str(self.phone) + ": " + str(self.owner) + " date: " + str(self.date)
 

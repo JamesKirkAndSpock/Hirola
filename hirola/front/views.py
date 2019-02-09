@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from .models import (CountryCode, User, PhoneCategory,
                      PhoneMemorySize, PhonesColor, PhoneList,
                      SocialMedia, Review, HotDeal, NewsItem, Order,
-                     OrderStatus)
+                     OrderStatus, Cart)
 from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (UserCreationForm, AuthenticationForm,
@@ -102,26 +102,47 @@ def country_codes(request):
     return JsonResponse(data)
 
 
-@login_required
-def add_cart_session_data(request):
+def create_cart(request, owner=None):
+    cart_obj = Cart.objects.create(owner=owner)
+    return cart_obj
+
+def add_cart_data(request):
+    if not request.user.is_anonymous:
+        return save_order(request, owner=request.user)
+    return save_order(request)
+
+
+def save_order(request, owner=None):
     item = request.POST['cart_item_add']
     quantity = request.POST['quantity']
     price = request.POST['cart_phone_price']
     total_price = int(quantity) * float(price)
+    total_price = float(int(total_price))
     phone = PhoneList.objects.filter(pk=item).first()
     status = OrderStatus.objects.filter(status='pending').first()
-    item_in_list = Order.objects.filter(owner=request.user,
-                                        phone=phone,
-                                        price=price)
+    cart_obj = get_cart_object(request)
+    item_in_list = Order.objects.filter(cart=cart_obj,
+                                        phone=phone)
     msg = 'Oops it seems like you have already added this item to your cart'
     messages.error(request, '{}'.format(msg))
     if item_in_list:
         return redirect('/profile/{}'.format(phone.pk))
-    Order.objects.create(owner=request.user, phone=phone,
-                         status=status, quantity=quantity,
-                         price=price, total_price=total_price)
-    return redirect("/before_checkout")
+    else:
+        Order.objects.create(owner=owner, phone=phone,
+                            status=status, quantity=quantity,
+                            price=price, total_price=total_price, cart=cart_obj)
+        return redirect("/before_checkout")
 
+def get_cart_object(request):
+    cart_id = request.session.get('cart_id', None)
+    cart = Cart.objects.filter(id=cart_id)
+    cart_obj = None
+    if cart.count() == 1:
+        cart_obj = cart.first()
+    else:
+        cart_obj = create_cart(request)
+        request.session['cart_id'] = cart_obj.id
+    return cart_obj
 
 def generate_profile_view_load(phone_id, form):
     phone = PhoneList.objects.filter(pk=phone_id).first()
@@ -148,7 +169,7 @@ def phone_profile_view(request, phone_id):
     if request.method == "POST":
         form = PhoneProfileUserDataCollectionForm(request.POST)
         if form.is_valid():
-            return add_cart_session_data(request)
+            return add_cart_data(request)
         context = generate_profile_view_load(phone_id, form)
         return render(request, 'front/phone_profile.html', context)
     phone = PhoneList.objects.filter(pk=phone_id).first()
@@ -184,19 +205,23 @@ def get_cart_total(items):
     return sum
 
 
-@login_required
 def before_checkout_view(request):
+    context = get_cart_items(request)
+    return render(request, 'front/before_checkout.html', context)
+
+
+def get_cart_items(request):
     (phone_categories, social_media) = various_caches()
-    items = Order.objects.filter(owner=request.user)
-    item_count = Order.objects.filter(owner=request.user).count()
+    cart_id = get_cart_object(request)
+    items = Order.objects.filter(cart=cart_id)
+    item_count = Order.objects.filter(cart=cart_id).count()
     total = get_cart_total(items)
     context = {
                 'categories': phone_categories,
                 'social_media': social_media, 'items': items,
                 'item_count': item_count, 'cart_total': total
                 }
-    return render(request, 'front/before_checkout.html', context)
-
+    return context
 
 @login_required
 def dashboard_view(request):

@@ -1,7 +1,7 @@
 from front.base_test import (BaseTestCase, PhoneCategory, image, TestCase,
                              PhoneList, HotDeal, get_default, User,
                              CountryCode, Order, OrderStatus, ShippingAddress,
-                             PhonesColor, Color)
+                             PhonesColor, Color, Cart)
 from django.db import IntegrityError, DataError
 from front.errors import hot_deal_error
 
@@ -163,11 +163,13 @@ class OrderModelsTestCase(BaseTestCase):
                                  phone_name="Samsung",
                                  currency=self.currency_v)
         OrderStatus.objects.create(status="Pending")
+        Cart.objects.create(owner=None)
+        cart = Cart.objects.get(owner=None)
         phone = PhoneList.objects.get(phone_name="Samsung")
         status = OrderStatus.objects.get(status="Pending")
         Order.objects.create(
             owner=owner, phone=phone, status=status,
-            quantity=2, price=25000, total_price=80000)
+            quantity=2, price=25000, total_price=80000, cart=cart)
         order = Order.objects.get(owner=owner)
         self.assertEqual(order.get_address, None)
         ShippingAddress.objects.create(order=order, location="Kiambu Road",

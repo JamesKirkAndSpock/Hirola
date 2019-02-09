@@ -1,8 +1,7 @@
 """Test shopping logic."""
 from front.base_test import (PhoneList, PhonesColor, BaseTestCase,
-                             CountryCode, User, OrderStatus, Order)
-from front.views import get_cart_total
-
+                             CountryCode, User, OrderStatus, Order, Cart)
+from front.views import get_cart_total, get_cart_object, create_cart
 
 class ConfirmBeforeCartTestCase(BaseTestCase):
 
@@ -20,24 +19,36 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
                                  phone_name="Samsung Galaxy Edge",
                                  size_sku=self.size_android)
         self.mulika = PhoneList.objects.get(phone_name="Samsung Galaxy Edge")
+        Cart.objects.create(owner=self.user)
+        self.cart = Cart.objects.get(owner=self.user.pk)
         PhonesColor.objects.create(phone=self.mulika, size=4,
                                    abbreviation='GB', price=10000,
                                    quantity=5, is_in_stock=True,
                                    color=self.color_one)
         OrderStatus.objects.create(status='pending')
+        self.status = OrderStatus.objects.get(status="pending")
 
     def test_get_cart_total(self):
         """Test functionality to calculate cart total."""
-        status = OrderStatus.objects.get(status="pending")
         Order.objects.create(
-            owner=self.user, phone=self.mulika, status=status, quantity=2,
-            price=25000, total_price=50000)
+            owner=self.user, phone=self.mulika, status=self.status, quantity=2,
+            price=25000, total_price=50000, cart=self.cart)
         Order.objects.create(
-            owner=self.user, phone=self.mulika, status=status, quantity=2,
-            price=25000, total_price=25000)
+            owner=self.user, phone=self.mulika, status=self.status, quantity=2,
+            price=25000, total_price=25000, cart=self.cart)
         order = Order.objects.filter(owner=self.user)
         total = get_cart_total(order)
         self.assertEqual(total, 75000)
+
+    def test_get_cart_object(self):
+        cart_object = get_cart_object(self.client)
+        self.assertIsInstance(cart_object, Cart)
+
+
+    def test_create_cart(self):
+        create_cart(self.client, self.user)
+        cart_object = Cart.objects.filter(owner=self.user).first()
+        self.assertEqual(cart_object.owner, self.user)
 
     def generate_user_data(self, data):
         '''

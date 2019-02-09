@@ -79,6 +79,7 @@ class UserAdmin(BaseUserAdmin):
 class HotDealAdmin(admin.ModelAdmin):
     form = HotDealForm
 
+
 admin.site.register(PhoneCategory, PhoneCategoryAdmin)
 admin.site.register(PhoneList, PhoneListAdmin)
 admin.site.register(PhoneMemorySize)
@@ -96,3 +97,4 @@ admin.site.register(ShippingAddress)
 admin.site.register(InactiveUser)
 admin.site.register(Color)
 admin.site.register(PhonesColor)
+admin.site.register(Cart)

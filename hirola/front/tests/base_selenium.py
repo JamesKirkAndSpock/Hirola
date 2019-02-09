@@ -5,7 +5,7 @@ from django.test import TestCase
 from front.models import (SocialMedia, PhoneCategory, PhoneMemorySize,
                           Currency, ItemIcon, PhoneList, CountryCode, User,
                           Order, OrderStatus, PaymentMethod, ShippingAddress,
-                          NewsItem, cache)
+                          NewsItem, cache, Cart)
 
 
 class BaseSeleniumTestCase(StaticLiveServerTestCase):
@@ -79,9 +79,13 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
         self.mpesa = PaymentMethod.objects.get(payment_method="Mpesa")
 
     def create_order(self):
-        Order.objects.create(owner=self.timon, phone=self.iphone_example, status=self.order_status,
-                             quantity=2, price=10000, total_price=20000, payment_method=self.mpesa,
-                             date="2018-12-12")
+        Cart.objects.create(owner=None)
+        cart = Cart.objects.get(owner=None)
+        Order.objects.create(owner=self.timon, phone=self.iphone_example,
+                             status=self.order_status, quantity=2,
+                             price=10000, total_price=20000,
+                             payment_method=self.mpesa, date="2018-12-12",
+                             cart=cart)
         self.order = Order.objects.get(owner=self.timon)
 
     def create_shipping_address(self):
