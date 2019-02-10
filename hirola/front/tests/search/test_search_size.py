@@ -1,4 +1,4 @@
-from front.base_test import *
+from front.base_test import (BaseTestCase, PhoneList, PhonesColor)
 
 
 class SearchSizeTest(BaseTestCase):
@@ -37,8 +37,8 @@ class SearchSizeTest(BaseTestCase):
     def test_search_phone_size_button(self):
         '''
         Test that when you search for phones with a particular size:
-            - That the page will render phones that have a quantity greater than 1 and that
-            have the variable is_in_stock set to True
+            - That the page will render phones that have a quantity greater \
+                than 1 and that have the variable is_in_stock set to True
         '''
         search_url = "/phone_category/{}/{}/".format(self.android.pk, self.size_android.pk)
         response = self.client.get(search_url)

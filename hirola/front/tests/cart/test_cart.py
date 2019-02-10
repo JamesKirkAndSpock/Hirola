@@ -19,8 +19,8 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
                                  phone_name="Samsung Galaxy Edge",
                                  size_sku=self.size_android)
         self.mulika = PhoneList.objects.get(phone_name="Samsung Galaxy Edge")
-        PhonesColor.objects.create(phone=self.mulika, size=self.size_android, price=10000,
-                                   quantity=5, is_in_stock=True,
+        PhonesColor.objects.create(phone=self.mulika, size=self.size_android,
+                                   price=10000, quantity=5, is_in_stock=True,
                                    color=self.color_one)
         OrderStatus.objects.create(status='pending')
 
@@ -35,7 +35,7 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
             'quantity': 3,
             'cart_item_add': self.mulika.pk,
             'cart_phone_price': 10000,
-            'size':self.any_phone_size
+            'size': self.any_phone_size
             }
         get_response_2 = self.client.post("/profile/{}/".
                                           format(self.mulika.pk),
@@ -61,7 +61,7 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
             'quantity': 3,
             'cart_item_add': self.mulika.pk,
             'cart_phone_price': 10000,
-            'size':self.any_phone_size
+            'size': self.any_phone_size
             }
         get_response_2 = self.client.post("/profile/{}/".
                                           format(self.mulika.pk),
@@ -87,7 +87,7 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
             'quantity': 3,
             'cart_item_add': self.mulika.pk,
             'cart_phone_price': 10000,
-            'size':self.any_phone_size
+            'size': self.any_phone_size
             }
         get_response_2 = self.client.post("/profile/{}/".
                                           format(self.mulika.pk),
@@ -106,7 +106,7 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
             'quantity': 1,
             'cart_item_add': self.mulika.pk,
             'cart_phone_price': 10000,
-            'size':self.any_phone_size
+            'size': self.any_phone_size
             }
         post_response = self.client.post("/profile/{}/".
                                          format(self.mulika.pk),
