@@ -1,7 +1,7 @@
 from front.base_test import (BaseTestCase, image, TestCase)
 from django.db import IntegrityError, DataError
 from front.errors import hot_deal_error
-from front.models import (PhoneCategory, get_default, User, PhoneList,
+from front.models import (PhoneCategory, get_default, PhoneList,
                           HotDeal, User, CountryCode, Order, OrderStatus,
                           ShippingAddress, PhonesColor, Color, Cart)
 

@@ -1,5 +1,4 @@
-from front.base_test import (BaseTestCase, PhoneList, PhonesColor, User,
-                             Client)
+from front.base_test import (BaseTestCase, PhoneList, PhonesColor, Client)
 from front.models import (Feature, Review, ProductInformation, User)
 
 

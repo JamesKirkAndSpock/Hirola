@@ -1,8 +1,8 @@
-from front.base_test import (BaseTestCase, image, Currency, image, cache)
+from front.base_test import (BaseTestCase, image, Currency, cache)
 from front.errors import (category_image_error, phone_category_error)
 from .test_users import UserSignupTestCase
 from .test_cache import phone_form
-from front.models import (PhoneList, PhonesColor, Currency)
+from front.models import (PhoneList, PhonesColor)
 
 
 class LandingPageViewsTestCase(BaseTestCase):

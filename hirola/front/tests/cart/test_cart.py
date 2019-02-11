@@ -3,6 +3,7 @@ from front.base_test import (PhoneList, PhonesColor, BaseTestCase,
                              User)
 from front.models import (CountryCode, OrderStatus)
 
+
 class ConfirmBeforeCartTestCase(BaseTestCase):
 
     def setUp(self):

@@ -1,6 +1,5 @@
 """Test shopping logic."""
-from front.base_test import (PhoneList, PhonesColor, BaseTestCase,
-                             User)
+from front.base_test import (PhoneList, PhonesColor, BaseTestCase, User)
 from front.views import get_cart_total, get_cart_object, create_cart
 from front.models import (CountryCode, OrderStatus, Order, Cart)
 
