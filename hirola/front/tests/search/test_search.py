@@ -1,5 +1,6 @@
 from front.base_test import (BaseTestCase, PhoneList, PhonesColor, User,
-                             Client, Feature, ProductInformation, Review)
+                             Client)
+from front.models import (Feature, Review, ProductInformation, User)
 
 
 class SearchTest(BaseTestCase):

@@ -1,9 +1,9 @@
-from front.base_test import *
+from front.base_test import BaseTestCase
 from django.core import management
 from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
-
+from front.models import (InactiveUser, User)
 
 class UserTest(BaseTestCase):
 
@@ -62,7 +62,7 @@ class UserTest(BaseTestCase):
         self.assertEqual(inactive_triponna.former_email, triponna_user.former_email)
         self.assertEqual(inactive_triponna.password, triponna_user.password)
 
-                        
+
 
     def test_cron_inactive_user_non_delete(self):
         '''

@@ -1,7 +1,7 @@
 """Test shopping logic."""
 from front.base_test import (PhoneList, PhonesColor, BaseTestCase,
-                             CountryCode, User, OrderStatus)
-
+                             User)
+from front.models import (CountryCode, OrderStatus)
 
 class ConfirmBeforeCartTestCase(BaseTestCase):
 

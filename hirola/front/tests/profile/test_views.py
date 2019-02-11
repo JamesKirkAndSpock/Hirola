@@ -1,6 +1,5 @@
-from front.base_test import (BaseTestCase, Review, User, image, PhoneImage,
-                             ProductInformation, Feature)
-
+from front.base_test import (BaseTestCase, User, image)
+from front.models import (ProductInformation, PhoneImage, Review, Feature)
 
 class PhoneProfileTemplate(BaseTestCase):
     '''

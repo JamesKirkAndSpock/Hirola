@@ -1,4 +1,4 @@
-from front.base_test import *
+from front.base_test import BaseTestCase, User, Client
 from front.forms.user_forms import AuthenticationForm, ChangeEmailForm
 from django.core.validators import EmailValidator
 from django.utils import timezone

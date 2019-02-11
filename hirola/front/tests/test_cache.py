@@ -1,7 +1,9 @@
 from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
-from front.base_test import *
+from front.base_test import BaseTestCase, image
 from hirola.settings.base import BASE_DIR
+from front.models import (HotDeal, PhoneList, PhoneCategory, PhoneMemorySize,
+                          SocialMedia, ItemIcon)
 
 
 class LandingPageCacheTest(BaseTestCase):

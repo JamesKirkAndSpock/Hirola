@@ -1,10 +1,9 @@
-from front.base_test import (BaseTestCase, PhoneCategory, image, TestCase,
-                             PhoneList, HotDeal, get_default, User,
-                             CountryCode, Order, OrderStatus, ShippingAddress,
-                             PhonesColor, Color, Cart)
+from front.base_test import (BaseTestCase, image, TestCase)
 from django.db import IntegrityError, DataError
 from front.errors import hot_deal_error
-
+from front.models import (PhoneCategory, get_default, User, PhoneList,
+                          HotDeal, User, CountryCode, Order, OrderStatus,
+                          ShippingAddress, PhonesColor, Color, Cart)
 
 class PhoneCategoryModelsTestCase(BaseTestCase):
     def setUp(self):

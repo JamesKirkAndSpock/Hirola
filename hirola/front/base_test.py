@@ -5,10 +5,7 @@ from hirola.settings.base import BASE_DIR
 from django.core.files.uploadedfile import SimpleUploadedFile
 from front.models import (PhoneCategory, PhoneMemorySize, Currency,
                           NewsItem, Color, PhonesColor, ItemIcon, PhoneList,
-                          cache, CountryCode, HotDeal, Feature, Review,
-                          get_default, ProductInformation, Order, OrderStatus,
-                          PhoneImage, User, Cart, ShippingAddress,
-                          SocialMedia, InactiveUser)
+                          cache, User)
 
 
 class BaseTestCase(TestCase):
