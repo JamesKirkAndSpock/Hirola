@@ -123,7 +123,8 @@ def save_order(request, owner=None):
     cart_obj = get_cart_object(request)
     item_in_list = Order.objects.filter(cart=cart_obj, size=size, phone=phone)
     if item_in_list:
-        msg = 'Oops it seems like you have already added this item to your cart'
+        msg = "Oops it seems like you have already" + "{}".\
+              format(" added this item to your cart")
         messages.error(request, '{}'.format(msg))
         return redirect('/profile/{}'.format(phone.pk))
     else:

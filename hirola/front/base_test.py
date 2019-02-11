@@ -7,7 +7,8 @@ from front.models import (PhoneCategory, PhoneMemorySize, Currency,
                           NewsItem, Color, PhonesColor, ItemIcon, PhoneList,
                           cache, CountryCode, HotDeal, Feature, Review,
                           get_default, ProductInformation, Order, OrderStatus,
-                          PhoneImage, User, Cart, ShippingAddress, SocialMedia, InactiveUser)
+                          PhoneImage, User, Cart, ShippingAddress,
+                          SocialMedia, InactiveUser)
 
 
 class BaseTestCase(TestCase):

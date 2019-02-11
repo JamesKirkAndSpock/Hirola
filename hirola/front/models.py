@@ -240,7 +240,7 @@ class PaymentMethod(models.Model):
 
 class Cart(models.Model):
     owner = models.ForeignKey(User, null=True, blank=True,
-    on_delete=models.CASCADE)
+                              on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
     total_price = IntegerRangeField(min_value=0, default=0)
@@ -254,7 +254,8 @@ class Cart(models.Model):
 
 class Order(models.Model):
 
-    owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, null=True, blank=True,
+                              on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)

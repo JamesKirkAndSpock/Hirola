@@ -3,6 +3,7 @@ from front.models import PhoneList
 
 register = template.Library()
 
+
 @register.filter
 def features(p_k):
     """Fetch phone information."""
