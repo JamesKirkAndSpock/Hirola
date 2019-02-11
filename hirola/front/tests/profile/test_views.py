@@ -23,13 +23,13 @@ class PhoneProfileTemplate(BaseTestCase):
         - That the page renders his review comment
         - That the page renders the date he reviewed
         '''
-        review = Review.objects.create(stars=4, comments="Good job guys", phone=self.iphone_6,
-                                       owner=self.user)
+        review = Review.objects.create(stars=4, comments="Good job guys",
+                                       phone=self.iphone_6, owner=self.user)
         get_response = self.client.get("/profile/{}/".format(self.iphone_6.id))
         self.assertContains(get_response, self.user.first_name)
         self.assertContains(get_response, self.user.last_name)
-        star_reviews = ("<i class=\"material-icons left checked\">grade</i>\n                \n"
-                        "                ")
+        star_reviews = ("<i class=\"material-icons left checked\">grade</i>\n"
+                        "                \n                ")
         self.assertContains(get_response, star_reviews*4)
         self.assertNotContains(get_response, star_reviews*5)
         self.assertContains(get_response, "Good job guys")
@@ -37,7 +37,8 @@ class PhoneProfileTemplate(BaseTestCase):
 
     def test_main_image_photos_rendered(self):
         '''
-        Test that when you visit a page for a profile which has been added images
+        Test that when you visit a page for a profile which has been
+            added images
         - That the page renders the main image
         - That the page renders other images
         '''
@@ -46,21 +47,27 @@ class PhoneProfileTemplate(BaseTestCase):
 
     def test_main_image_lack(self):
         '''
-        Test that when you visit a page for a profile which has photos and no main images
+        Test that when you visit a page for a profile which has photos
+            and no main images
         - That the page renders the other images with no errors raised
         '''
-        PhoneImage.objects.create(phone=self.samsung_j_7, image=image("test_image_7.png"))
-        get_response = self.client.get("/profile/{}/".format(self.samsung_j_7.id))
+        PhoneImage.objects.create(phone=self.samsung_j_7,
+                                  image=image("test_image_7.png"))
+        get_response = self.client.get("/profile/{}/".
+                                       format(self.samsung_j_7.id))
         self.assertContains(get_response, "test_image_7")
         self.assertNotContains(get_response, "test_image_5")
 
     def test_product_information(self):
         '''
-        Test that when you visit a page for a profile with product information added
+        Test that when you visit a page for a profile with product
+            information added
         - That the page renders the product information
         '''
-        ProductInformation.objects.create(phone=self.iphone_6, feature="Network", value="GSM")
-        get_response = self.client.get("/profile/{}/".format(self.iphone_6.id))
+        ProductInformation.objects.create(phone=self.iphone_6,
+                                          feature="Network", value="GSM")
+        get_response = self.client.get("/profile/{}/".
+                                       format(self.iphone_6.id))
         self.assertContains(get_response, "Network")
         self.assertContains(get_response, "GSM")
 
@@ -69,46 +76,43 @@ class PhoneProfileTemplate(BaseTestCase):
         Test that when you visit a page for the profile:
         - That the phone title is rendered
         '''
-        get_response = self.client.get("/profile/{}/".format(self.iphone_6.id))
+        get_response = self.client.get("/profile/{}/".
+                                       format(self.iphone_6.id))
         self.assertContains(get_response, "Iphone 6")
 
-    # def test_star_rendering(self):
-    #     '''
-    #     Test that when you visit a page for the profile:
-    #     - That the stars are rendered properly
-    #     - That the number of stars is also rendered properly
-    #     '''
-    #     Review.objects.create(stars=4, comments="Good job guys",
-    #                           phone=self.iphone_6, owner=self.user)
-    #     get_response = self.client.get("/profile/{}/".format(self.iphone_6.id))
-    #     star_count = ("<span class=\"fa fa-star checked\"></span>\n                        \n"
-    #                   "                        ")
-    #     self.assertContains(get_response, star_count*4)
-    #     self.assertNotContains(get_response, star_count*5)
-    #     self.assertContains(get_response, 4)
+    def test_star_rendering(self):
+        '''
+        Test that when you visit a page for the profile:
+        - That the stars are rendered properly
+        - That the number of stars is also rendered properly
+        '''
+        Review.objects.create(stars=4, comments="Good job guys",
+                              phone=self.iphone_6, owner=self.user)
+        get_response = self.client.get("/profile/{}/".
+                                       format(self.iphone_6.id))
+        star_count = ("\n                                \n"
+                      "                                "
+                      "<span class=\"fa fa-star checked\"></span>")
+        self.assertContains(get_response, star_count*4)
+        self.assertNotContains(get_response, star_count*5)
+        self.assertContains(get_response, 4)
 
     def test_key_features_rendering(self):
         '''
         Test that when you visit a page for the profile that has key features:
         - That the key features are rendered properly
         '''
-        Feature.objects.create(phone=self.iphone_6, feature="64 GB Memcard slot")
-        get_response = self.client.get("/profile/{}/".format(self.iphone_6.id))
+        Feature.objects.create(phone=self.iphone_6,
+                               feature="64 GB Memcard slot")
+        get_response = self.client.get("/profile/{}/".
+                                       format(self.iphone_6.id))
         self.assertContains(get_response, "64 GB Memcard slot")
-
-    # price is not dependent on phone selection
-    # def test_currency_rendering(self):
-    #     '''
-    #     Test that when you visit a page for the profile:
-    #     - That the currency and price is rendered
-    #     '''
-    #     get_response = self.client.get("/profile/{}/".format(self.iphone_6.id))
-    #     self.assertContains(get_response, "V$ 300,000")
 
     def test_user_image_rendered(self):
         '''
         Test that when you visit a page for the profile:
             - That the user image is rendered
         '''
-        get_response = self.client.get("/profile/{}/".format(self.iphone_6.id))
+        get_response = self.client.get("/profile/{}/".
+                                       format(self.iphone_6.id))
         self.assertContains(get_response, "/media/phones/test_image_5_")
