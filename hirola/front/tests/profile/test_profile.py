@@ -1,4 +1,4 @@
-from front.base_test import *
+from front.base_test import (BaseTestCase, User, Review)
 
 
 class PhoneProfileLogic(BaseTestCase):

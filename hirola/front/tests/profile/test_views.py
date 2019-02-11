@@ -1,4 +1,5 @@
-from front.base_test import *
+from front.base_test import (BaseTestCase, Review, User, image, PhoneImage,
+                             ProductInformation, Feature)
 
 
 class PhoneProfileTemplate(BaseTestCase):

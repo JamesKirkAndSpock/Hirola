@@ -29,8 +29,8 @@ class SearchTest(BaseTestCase):
             - That the page redirects to the landing page
         '''
         response = self.sivanna.get("/search")
-        self.assertContains(response, "Add something to the search bar to \
-            search for your items")
+        self.assertContains(response, "Add something to the search bar to"
+                            " search for your items")
 
     def test_search_phone_name(self):
         '''
