@@ -198,4 +198,6 @@ class ChangeEmailView(BaseTestCase):
         self.assertFalse(edited_user.is_change_allowed)
         self.assertEqual(edited_user.change_email, "pinotico@gmail.com")
         self.assertIsNotNone(edited_user.change_email_tracker)
-        self.assertContains(response, "We have sent a link to your new email: pinotico@gmail.com")
+        msg = "We have sent a link to your new email: "\
+              "<b>pinotico@gmail.com</b>"
+        self.assertContains(response, "{}".format(msg))
