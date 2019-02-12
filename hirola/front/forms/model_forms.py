@@ -1,4 +1,6 @@
-from .base_form import *
+from .base_form import (ValidationError, forms, phone_category_error,
+                        category_image_error, phone_category_error_2,
+                        hot_deal_error)
 from django.core.files.images import get_image_dimensions
 from front.models import PhoneCategory, HotDeal, ServicePerson
 from front.twilio import TwilioValidation

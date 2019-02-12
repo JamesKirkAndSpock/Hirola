@@ -224,7 +224,7 @@ class ServicesNetworkTestCase(BaseTestCase):
                                      phone_number="715777587")
 
         service_man = ServicePerson.objects.filter(first_name="Wanjigi").\
-                                            first()
+                      first()
         self.assertEqual(str(service_man), "Wanjigi")
         RepairService.objects.create(service="LED screen Repair")
         repair_service = RepairService.objects.\

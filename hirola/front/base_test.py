@@ -111,7 +111,6 @@ class BaseTestCase(TestCase):
                                  price=250000, phone_name="Samsung J7")
         self.samsung_j_7 = PhoneList.objects.get(phone_name="Samsung J7")
 
-
     def create_repair_services(self):
         RepairService.objects.create(service="Battery replacement")
         self.service_one = RepairService.objects.get(
@@ -119,19 +118,18 @@ class BaseTestCase(TestCase):
         RepairService.objects.create(service="Unlocking GSM")
         self.service_two = RepairService.objects.get(service="Unlocking GSM")
 
-
     def add_serviceman_services(self):
         Services.objects.create(service=self.service_one,
                                 service_man=self.service_person_one)
         Services.objects.create(service=self.service_two,
                                 service_man=self.service_person_one)
 
-
     def create_service_men(self):
         ServicePerson.objects.create(first_name="Wanjigi",
                                      name_of_premise="Cutting Edge Tec",
                                      phone_number="715557775")
-        self.service_person_one = ServicePerson.objects.get(first_name="Wanjigi")
+        self.service_person_one = ServicePerson.objects.\
+                                  get(first_name="Wanjigi")
 
 
     def tearDown(self):

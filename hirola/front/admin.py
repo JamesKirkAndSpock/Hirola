@@ -12,7 +12,6 @@ from .forms.user_forms import (UserChangeForm, UserCreationForm,
                                User, CountryCode)
 from .forms.model_forms import (PhoneCategoryForm, HotDealForm,
                                 ServicePersonForm)
-from .forms.user_forms import (UserChangeForm, UserCreationForm)
 
 
 class PhoneCategoryAdmin(admin.ModelAdmin):
