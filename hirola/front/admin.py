@@ -7,11 +7,9 @@ from .models import (PhoneImage, Review, Feature, PhonesColor,
                      OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
                      Cart, RepairService, Address, ServicePerson, Services)
 from .forms.model_forms import (PhoneCategoryForm, HotDealForm,
-                                PhoneCategory, HotDeal)
+                                PhoneCategory, HotDeal, ServicePersonForm)
 from .forms.user_forms import (UserChangeForm, UserCreationForm,
                                User, CountryCode)
-from .forms.model_forms import (PhoneCategoryForm, HotDealForm,
-                                ServicePersonForm)
 
 
 class PhoneCategoryAdmin(admin.ModelAdmin):

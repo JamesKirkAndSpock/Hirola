@@ -129,7 +129,7 @@ class BaseTestCase(TestCase):
                                      name_of_premise="Cutting Edge Tec",
                                      phone_number="715557775")
         self.service_person_one = ServicePerson.objects.\
-                                  get(first_name="Wanjigi")
+            get(first_name="Wanjigi")
 
 
     def tearDown(self):
