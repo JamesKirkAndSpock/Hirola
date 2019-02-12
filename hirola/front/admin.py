@@ -5,12 +5,11 @@ from .models import (PhoneImage, Review, Feature, PhonesColor,
                      ProductInformation, ShippingAddress, PhoneList,
                      PhoneMemorySize, Currency, SocialMedia, Order,
                      OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
-                     Cart)
+                     Cart, RepairService, Address, ServicePerson, Services)
 from .forms.model_forms import (PhoneCategoryForm, HotDealForm,
                                 PhoneCategory, HotDeal)
 from .forms.user_forms import (UserChangeForm, UserCreationForm,
                                User, CountryCode)
-from .models import *
 from .forms.model_forms import (PhoneCategoryForm, HotDealForm,
                                 ServicePersonForm)
 from .forms.user_forms import (UserChangeForm, UserCreationForm)

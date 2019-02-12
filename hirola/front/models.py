@@ -385,9 +385,11 @@ class ServicePerson(models.Model):
     country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL,
                                      null=True, blank=True)
     phone_number = models.IntegerField(blank=False, null=False)
-    email = models.EmailField(_('email address'), unique=True, error_messages={
-        'unique': _("The email address you entered has already "\
-            "been registered.",), }, max_length=255, null=True, blank=True)
+    msg = {'unique': _("The email address you entered has "
+                       "already been registered.",), }
+    email = models.EmailField(_('email address'), unique=True,
+                              error_messages=msg, max_length=255, null=True,
+                              blank=True)
 
     def __str__(self):
         return self.first_name
@@ -402,10 +404,9 @@ class RepairService(models.Model):
 
 class Services(models.Model):
     service = models.ForeignKey(RepairService, on_delete=models.SET_NULL,
-                                    null=True, blank=True)
+                                null=True, blank=True)
     service_man = models.ForeignKey(ServicePerson, on_delete=models.SET_NULL,
                                     null=True, blank=True)
-
 
     class Meta:
         unique_together = ('service', 'service_man')
