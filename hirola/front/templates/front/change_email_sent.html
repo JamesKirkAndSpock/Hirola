@@ -1,6 +1,7 @@
 {% extends "front/base.html" %}
 {% block styles %}
 {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/signup_email_sent.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
 {% endblock %}
 {% block content %}
@@ -58,6 +59,7 @@
         </div>
     </div>
 </div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %} {{ block.super }} {% load static %}
 <script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
 {% endblock %}

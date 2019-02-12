@@ -439,7 +439,8 @@ def change_email_view(request):
             user.save()
             form.send_email(request, user)
             provider = get_user_email_provider(user.change_email)
-            return render(request, 'front/change_email_sent.html', {'provider': provider})
+            return render(request, 'front/change_email_sent.html',
+                          {'provider': provider})
         args = {'form': form, 'social_media': social_media,
                 'categories': phone_categories,
                 'current_user_email': user.email}
