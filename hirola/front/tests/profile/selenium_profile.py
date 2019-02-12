@@ -79,17 +79,6 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         driver.find_element_by_id("base-main-page").click()
         self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/'))
 
-    def test_cart_link(self):
-        '''
-        Test that the cart link on the profile page redirects to the checkout
-        page
-        '''
-        driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
-        element = driver.find_element_by_id("add-to-cart-button")
-        driver.find_element_by_id("add-to-cart-button").click()
-        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/checkout'))
-
     def test_missing_profile(self):
         '''
         Test that when you visit a profile that does not exist:

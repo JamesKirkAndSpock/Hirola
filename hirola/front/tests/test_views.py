@@ -1,7 +1,8 @@
-from front.base_test import *
-from front.errors import *
+from front.base_test import (BaseTestCase, image, Currency, cache)
+from front.errors import (category_image_error, phone_category_error)
 from .test_users import UserSignupTestCase
 from .test_cache import phone_form
+from front.models import (PhoneList, PhonesColor)
 
 
 class LandingPageViewsTestCase(BaseTestCase):
@@ -29,18 +30,33 @@ class LandingPageViewsTestCase(BaseTestCase):
             - That it is  not rendered on the landing page
             - That any hot deal with the opposite is rendered on the landing page
         '''
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="LG Razor J7", size_sku=self.size_android)
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="LG Razor J7",
+                                 size_sku=self.size_android)
         self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
-        PhonesColor.objects.create(phone=self.lg_razor, quantity=1, is_in_stock=True, color=self.color_one)
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="Samsung S8", size_sku=self.size_android)
+        PhonesColor.objects.create(phone=self.lg_razor,
+                                   size=self.any_phone_size, price=10000,
+                                   quantity=1, is_in_stock=True,
+                                   color=self.color_one)
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="Samsung S8",
+                                 size_sku=self.size_android)
         self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
-        PhonesColor.objects.create(phone=self.samsung_s8, quantity=0, is_in_stock=True, color=self.color_one)
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="Samsung Note 5", size_sku=self.size_android)
+        PhonesColor.objects.create(phone=self.samsung_s8,
+                                   size=self.size_android, price=10000,
+                                   quantity=0, is_in_stock=True,
+                                   color=self.color_one)
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="Samsung Note 5",
+                                 size_sku=self.size_android)
         self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
-        PhonesColor.objects.create(phone=self.samsung_n5, quantity=1, is_in_stock=False, color=self.color_one)
+        PhonesColor.objects.create(phone=self.samsung_n5,
+                                   size=self.any_phone_size, price=10000,
+                                   quantity=1, is_in_stock=False,
+                                   color=self.color_one)
         self.elena.post('/admin/front/hotdeal/add/', {"item": self.lg_razor.pk})
         self.elena.post('/admin/front/hotdeal/add/', {"item": self.samsung_s8.pk})
         self.elena.post('/admin/front/hotdeal/add/', {"item": self.samsung_n5.pk})
@@ -150,8 +166,11 @@ class PhoneListViewsTestCase(BaseTestCase):
         PhoneList.objects.create(category=self.iphone, currency=currency,
                                  price=30, phone_name="Iphone 8S")
         phone = PhoneList.objects.get(phone_name="Iphone 8S")
-        PhonesColor.objects.create(phone=phone, color=self.color_one, quantity=4, is_in_stock=True)
-        response = self.client.get("/phone_category/{}/".format(self.iphone.pk))
+        PhonesColor.objects.create(phone=phone, size=self.any_phone_size,
+                                   price=10000, color=self.color_one,
+                                   quantity=4, is_in_stock=True)
+        response = self.client.get("/phone_category/{}/".
+                                   format(self.iphone.pk))
         self.assertContains(response, "£$Shs")
 
     def test_creation_of_entry(self):
@@ -170,19 +189,34 @@ class PhoneListViewsTestCase(BaseTestCase):
         self.assertRedirects(response, "/admin/front/phonelist/")
 
     def test_phones_rendering(self):
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="LG Razor J7", size_sku=self.size_android)
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="LG Razor J7",
+                                 size_sku=self.size_android)
         self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
-        PhonesColor.objects.create(phone=self.lg_razor, quantity=1, is_in_stock=True, color=self.color_one)
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="Samsung S8", size_sku=self.size_android)
+        PhonesColor.objects.create(phone=self.lg_razor, size=self.size_android,
+                                   price=10000, quantity=1, is_in_stock=True,
+                                   color=self.color_one)
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="Samsung S8",
+                                 size_sku=self.size_android)
         self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
-        PhonesColor.objects.create(phone=self.samsung_s8, quantity=0, is_in_stock=True, color=self.color_one)
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="Samsung Note 5", size_sku=self.size_android)
+        PhonesColor.objects.create(phone=self.samsung_s8,
+                                   size=self.any_phone_size, price=10000,
+                                   quantity=0, is_in_stock=True,
+                                   color=self.color_one)
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="Samsung Note 5",
+                                 size_sku=self.size_android)
         self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
-        PhonesColor.objects.create(phone=self.samsung_n5, quantity=1, is_in_stock=False, color=self.color_one)
-        get_response = self.client.get("/phone_category/{}/".format(self.android.pk))
+        PhonesColor.objects.create(phone=self.samsung_n5,
+                                   size=self.any_phone_size, price=10000,
+                                   quantity=1, is_in_stock=False,
+                                   color=self.color_one)
+        get_response = self.client.get("/phone_category/{}/".
+                                       format(self.android.pk))
         self.assertContains(get_response, "LG Razor J7")
         self.assertNotContains(get_response, "Samsung S8")
         self.assertNotContains(get_response, "Samsung Note 5")
@@ -212,7 +246,9 @@ class ClientViewsTestCase(BaseTestCase):
                                  phone_name=name, currency=currency, price=25,
                                  size_sku=size)
         phone = PhoneList.objects.get(phone_name=name)
-        PhonesColor.objects.create(phone=phone, color=self.color_one, quantity=5, is_in_stock=True)
+        PhonesColor.objects.create(phone=phone, size=self.size_android,
+                                   price=10000, color=self.color_one,
+                                   quantity=5, is_in_stock=True)
 
     # def test_rendering_on_page_view(self):
     #     mock_image = image("test_image_1.jpeg")

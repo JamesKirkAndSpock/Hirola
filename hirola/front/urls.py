@@ -44,7 +44,9 @@ urlpatterns = [
     url(r'^activate_new_email/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate_new_email, name='activate_new_email'),
     path('search', views.search_view, name='search'),
-    path('change_activation_email/<str:old_email>/', views.change_activation_email, name='change_activation_email'),
+    path('change_activation_email/<str:old_email>/',
+         views.change_activation_email,
+         name='change_activation_email'),
     path('send_link_to_new_address/<str:old_email>/', views.send_link_to_new_address,
          name='send_link_to_new_address'),
     path('resend_activation_link/<str:email>/', views.resend_activation_link,
@@ -52,5 +54,7 @@ urlpatterns = [
     path('logout', views.logout_view,
          name='logout'),
     path('resend_new_email_activation_link/',
-         views.resend_new_email_activation_link, name='resend_new_email_activation_link')
+         views.resend_new_email_activation_link,
+         name='resend_new_email_activation_link'),
+    path('before_checkout', views.before_checkout_view, name='before_checkout')
 ]

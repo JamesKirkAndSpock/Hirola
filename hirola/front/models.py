@@ -238,18 +238,38 @@ class PaymentMethod(models.Model):
     payment_method = models.CharField(max_length=255, default="Cash")
 
 
+class Cart(models.Model):
+    owner = models.ForeignKey(User, null=True, blank=True,
+                              on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    updated = models.DateField(auto_now=True)
+    total_price = IntegerRangeField(min_value=0, default=0)
+    payment_method = models.ForeignKey(PaymentMethod,
+                                       on_delete=models.SET_NULL,
+                                       blank=True, null=True)
+
+    def __str__(self):
+        return str(self.owner) + " date: " + str(self.date)
+
+
 class Order(models.Model):
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, null=True, blank=True,
+                              on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
     quantity = IntegerRangeField(min_value=1)
+    price = models.DecimalField(max_digits=6, decimal_places=0)
+    size = models.CharField(max_length=4, null=True, blank=True)
     total_price = IntegerRangeField(min_value=0, default=0)
-    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, blank=True, null=True)
-
+    payment_method = models.ForeignKey(PaymentMethod,
+                                       on_delete=models.SET_NULL,
+                                       blank=True, null=True)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     def __str__(self):
-        return str(self.phone) + ": " + str(self.owner) + " date: " + str(self.date)
+        return str(self.phone) + ": " + str(self.owner) + " date: " + \
+            str(self.date)
 
     @property
     def get_address(order):
@@ -318,16 +338,29 @@ class Color(models.Model):
 
 class PhonesColor(models.Model):
     phone = models.ForeignKey(
-        PhoneList, related_name='phone_color_quantity', on_delete=models.SET_NULL, null=True, blank=True)
+        PhoneList, related_name='phone_color_quantity',
+        on_delete=models.SET_NULL, null=True, blank=True)
+    size = models.ForeignKey(PhoneMemorySize,
+                             on_delete=models.SET_NULL,
+                             null=True, blank=True)
+    price = models.DecimalField(max_digits=6, decimal_places=0)
     color = models.ForeignKey(
         Color, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = IntegerRangeField(min_value=0)
-    is_in_stock = models.BooleanField(_('in_stock'), default=False, help_text=_(
-        'Designates whether this phone color is in stock. '
-        'Unselect this instead of deleting phone color.'), )
+    is_in_stock = models.BooleanField(_('in_stock'), default=False,
+                                      help_text=_(
+                                          'Designates whether this phone \
+                                              color is in stock. '
+                                          'Unselect this instead of \
+                                              deleting phone color.'), )
 
     class Meta:
-        unique_together = ('phone', 'color')
+        unique_together = ('phone', 'size')
+
+    def __str__(self):
+        if self.color:
+            return str(self.color) + " " + str(self.size)
+        return str(self.size)
 
 
 def delete_cache(model_class, object_id, cache_name):

@@ -224,3 +224,25 @@ ul.lSGallery li img {
   font-size: 15px;
 
 }
+ul.errorlist li{
+    font-weight: 600 !important;
+    color: red !important;
+    float: left;
+}
+
+#price {
+    font-weight: 600;
+}
+
+.action {
+    padding: 10px !important;
+}
+
+.confirm .input-field {
+    margin-top: 0 !important;
+}
+
+form .input-field {
+    height: auto;
+    padding-bottom: 0.1rem !important;
+}

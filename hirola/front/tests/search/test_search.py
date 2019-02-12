@@ -1,18 +1,27 @@
-from front.base_test import *
+from front.base_test import (BaseTestCase, PhoneList, PhonesColor, Client)
+from front.models import (Feature, Review, ProductInformation, User)
 
 
 class SearchTest(BaseTestCase):
 
     def setUp(self):
-        User.objects.create_user(email="sivanna@gmail.com", password="secret")
+        User.objects.create_user(email="sivanna@gmail.com",
+                                 password="secret")
         self.user = User.objects.get(email="sivanna@gmail.com")
         self.sivanna = Client()
         super(SearchTest, self).setUp()
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="LG Razor J7")
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="LG Razor J7")
         self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
-        PhonesColor.objects.create(phone=self.lg_razor, color=self.color_one, quantity=1, is_in_stock=True)
-        PhonesColor.objects.create(phone=self.samsung_j_7, color=self.color_one, quantity=1, is_in_stock=True)
+        PhonesColor.objects.create(phone=self.lg_razor,
+                                   size=self.any_phone_size, price=10000,
+                                   color=self.color_one, quantity=1,
+                                   is_in_stock=True)
+        PhonesColor.objects.create(phone=self.samsung_j_7,
+                                   size=self.any_phone_size, price=10000,
+                                   color=self.color_one, quantity=1,
+                                   is_in_stock=True)
 
     def test_search_get_request(self):
         '''
@@ -20,7 +29,8 @@ class SearchTest(BaseTestCase):
             - That the page redirects to the landing page
         '''
         response = self.sivanna.get("/search")
-        self.assertContains(response, "Add something to the search bar to search for your items")
+        self.assertContains(response, "Add something to the search bar to"
+                            " search for your items")
 
     def test_search_phone_name(self):
         '''
@@ -64,7 +74,8 @@ class SearchTest(BaseTestCase):
             - That you get phone objects with that feature
         '''
 
-        Feature.objects.create(phone=self.samsung_j_7, feature="6-inch screen")
+        Feature.objects.create(phone=self.samsung_j_7,
+                               feature="6-inch screen")
         Feature.objects.create(phone=self.lg_razor, feature="7-inch screen")
         response = self.sivanna.post("/search", {"search-name": "inch"})
         self.assertContains(response, self.samsung_j_7.phone_name)
@@ -73,11 +84,14 @@ class SearchTest(BaseTestCase):
 
     def test_search_product_information(self):
         '''
-        Test that when you enter a phone product information in the search bar:
+        Test that when you enter a phone product information in the \
+            search bar:
             - That you get phone objects with that product information
         '''
-        ProductInformation.objects.create(phone=self.samsung_j_7, feature="Network", value="GSM")
-        ProductInformation.objects.create(phone=self.lg_razor, feature="Network", value="GSM")
+        ProductInformation.objects.create(phone=self.samsung_j_7,
+                                          feature="Network", value="GSM")
+        ProductInformation.objects.create(phone=self.lg_razor,
+                                          feature="Network", value="GSM")
         response = self.sivanna.post("/search", {"search-name": "gsm"})
         self.assertContains(response, self.samsung_j_7.phone_name)
         self.assertContains(response, self.lg_razor.phone_name)
@@ -94,10 +108,10 @@ class SearchTest(BaseTestCase):
         '''
         authentic_comment = "That was an authentic phone that I got"
         genuine_comment = "That was an genuine phone that I got"
-        Review.objects.create(stars=5, comments=authentic_comment, phone=self.samsung_j_7,
-                              owner=self.user)
-        Review.objects.create(stars=4, comments=genuine_comment, phone=self.lg_razor,
-                              owner=self.user)
+        Review.objects.create(stars=5, comments=authentic_comment,
+                              phone=self.samsung_j_7, owner=self.user)
+        Review.objects.create(stars=4, comments=genuine_comment,
+                              phone=self.lg_razor, owner=self.user)
         response = self.sivanna.post("/search", {"search-name": "genui"})
         self.assertNotContains(response, self.samsung_j_7.phone_name)
         self.assertContains(response, self.lg_razor.phone_name)
@@ -112,15 +126,26 @@ class SearchTest(BaseTestCase):
         Test that for phones that are not in stock, or their quantity is zero:
             - They won't be rendered on search
         '''
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="Samsung S8", size_sku=self.size_android)
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="Samsung S8",
+                                 size_sku=self.size_android)
         self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
-        PhonesColor.objects.create(phone=self.samsung_s8, quantity=0, is_in_stock=True, color=self.color_one)
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
-                                 price=8000, phone_name="Samsung Note 5", size_sku=self.size_android)
+        PhonesColor.objects.create(phone=self.samsung_s8,
+                                   size=self.size_android, price=10000,
+                                   quantity=0, is_in_stock=True,
+                                   color=self.color_one)
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v, price=8000,
+                                 phone_name="Samsung Note 5",
+                                 size_sku=self.size_android)
         self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
-        PhonesColor.objects.create(phone=self.samsung_n5, quantity=1, is_in_stock=False, color=self.color_one)
-        post_response_1 = self.client.post("/search", {"search-name": "LG Raz"})
+        PhonesColor.objects.create(phone=self.samsung_n5,
+                                   size=self.any_phone_size,
+                                   price=10000, quantity=1,
+                                   is_in_stock=False, color=self.color_one)
+        post_response_1 = self.client.post("/search",
+                                           {"search-name": "LG Raz"})
         post_response_3 = self.client.post("/search", {"search-name": "Note"})
         post_response_2 = self.client.post("/search", {"search-name": "S8"})
         self.assertContains(post_response_1, "LG Razor J7")

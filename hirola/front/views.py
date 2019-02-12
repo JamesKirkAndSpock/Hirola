@@ -4,13 +4,15 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from .models import (CountryCode, User, PhoneCategory,
                      PhoneMemorySize, PhonesColor, PhoneList,
-                     SocialMedia, Review, HotDeal, NewsItem, Order)
+                     SocialMedia, Review, HotDeal, NewsItem, Order,
+                     OrderStatus, Cart)
 from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (UserCreationForm, AuthenticationForm,
                                UserForm, OldPasswordForm, ChangeEmailForm,
                                EmailAuthenticationForm, resend_email,
-                               resend_activation_email)
+                               resend_activation_email,
+                               PhoneProfileUserDataCollectionForm)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
@@ -100,19 +102,84 @@ def country_codes(request):
     return JsonResponse(data)
 
 
-def phone_profile_view(request, phone_id):
-    if request.method == "POST":
-        item = request.POST['cart_item_add']
-        return redirect("/checkout")
+def create_cart(request, owner=None):
+    cart_obj = Cart.objects.create(owner=owner)
+    return cart_obj
+
+
+def add_cart_data(request):
+    return save_order(request)
+
+
+def save_order(request, owner=None):
+    item = request.POST['cart_item_add']
+    quantity = request.POST['quantity']
+    price = request.POST['cart_phone_price']
+    size = request.POST['size']
+    total_price = int(quantity) * float(price)
+    total_price = float(int(total_price))
+    phone = PhoneList.objects.filter(pk=item).first()
+    status = OrderStatus.objects.filter(status='pending').first()
+    cart_obj = get_cart_object(request)
+    item_in_list = Order.objects.filter(cart=cart_obj, size=size, phone=phone)
+    if item_in_list:
+        msg = "Oops it seems like you have already" + "{}".\
+              format(" added this item to your cart")
+        messages.error(request, '{}'.format(msg))
+        return redirect('/profile/{}'.format(phone.pk))
+    else:
+        Order.objects.create(owner=owner, phone=phone,
+                             status=status, quantity=quantity,
+                             price=price, size=size, total_price=total_price,
+                             cart=cart_obj)
+        return redirect("/before_checkout")
+
+
+def get_cart_object(request):
+    cart_id = request.session.get('cart_id', None)
+    cart = Cart.objects.filter(id=cart_id)
+    cart_obj = None
+    if cart.count() == 1:
+        cart_obj = cart.first()
+    else:
+        cart_obj = create_cart(request)
+        request.session['cart_id'] = cart_obj.id
+    return cart_obj
+
+
+def generate_profile_view_load(phone_id, form):
     phone = PhoneList.objects.filter(pk=phone_id).first()
-    colors = PhonesColor.objects.filter(phone=phone_id, is_in_stock=True)
     if not phone:
         return redirect("/error")
+    form = form
+    secondary_details = PhonesColor.objects.filter(phone=phone_id,
+                                                   is_in_stock=True)
+    phone_sizes = PhoneMemorySize.objects.filter(category=phone.category)
     (phone_categories, social_media) = various_caches()
-    context = {"phone": phone, "colors": colors, "image_list": phone.phone_images.all(),
-               "customer_reviews": phone.phone_reviews.all(),
-               "features": phone.phone_features.all(), "infos": phone.phone_information.all(),
-               'categories': phone_categories,  'social_media': social_media}
+    context = {
+                "phone": phone, "secondary_details": secondary_details,
+                "image_list": phone.phone_images.all(),
+                "customer_reviews": phone.phone_reviews.all(),
+                "features": phone.phone_features.all(),
+                "infos": phone.phone_information.all(),
+                'categories': phone_categories, 'social_media': social_media,
+                'sizes': phone_sizes, 'form': form
+                }
+    return context
+
+
+def phone_profile_view(request, phone_id):
+    if request.method == "POST":
+        form = PhoneProfileUserDataCollectionForm(request.POST)
+        if form.is_valid():
+            return add_cart_data(request)
+        context = generate_profile_view_load(phone_id, form)
+        return render(request, 'front/phone_profile.html', context)
+    phone = PhoneList.objects.filter(pk=phone_id).first()
+    if not phone:
+        return redirect("/error")
+    form = PhoneProfileUserDataCollectionForm()
+    context = generate_profile_view_load(phone_id, form)
     return render(request, 'front/phone_profile.html', context)
 
 
@@ -133,6 +200,31 @@ def checkout_view(request):
     return render(request, 'front/checkout.html', {'categories': phone_categories,
                                                    'social_media': social_media})
 
+
+def get_cart_total(items):
+    sum = 0
+    for item in items:
+        sum += item.total_price
+    return sum
+
+
+def before_checkout_view(request):
+    context = get_cart_items(request)
+    return render(request, 'front/before_checkout.html', context)
+
+
+def get_cart_items(request):
+    (phone_categories, social_media) = various_caches()
+    cart_id = get_cart_object(request)
+    items = Order.objects.filter(cart=cart_id)
+    item_count = Order.objects.filter(cart=cart_id).count()
+    total = get_cart_total(items)
+    context = {
+                'categories': phone_categories,
+                'social_media': social_media, 'items': items,
+                'item_count': item_count, 'cart_total': total
+                }
+    return context
 
 @login_required
 def dashboard_view(request):

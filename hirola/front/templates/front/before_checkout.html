@@ -1,0 +1,75 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/before_checkout.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %} {% block content %}
+{% load before_cart %}
+{% load humanize %}
+<div class="container main-content">
+    <div class="row cart-content">
+        {% if items %}
+        {% for item in items %}
+        <div class="col m8 s12 right-content">
+                <div class="row heading-right"><h5>Teke sale</h5></div>
+                <div class="row">
+                    <div class="col m3">
+                        <div class="card z-depth-0 center">
+                            <img src="{{ MEDIA_URL }}{{ item.phone.main_image }}" class="responsive-img">
+                        </div>
+                    </div>
+                    <div class="col m3">
+                        <h6>{{ item.phone }}</h6>
+                        <h5>{{ item.size }}</h5>
+                        <ul style="list-style-type:disc"></ul>
+                            {% for feature in item.phone.pk|features %}
+                                <li>{{ feature.feature }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p><i>mint</i></p>
+                    </div>
+                    <div class="col m3 s12">
+                        <p>Quantity ({{ item.quantity }})</p>
+                        <p>{{ item.price|intcomma }}</p>
+                        <h6>Item Total <span class="">{{ item.total_price|intcomma }}</span></h6>
+                    </div>
+                    <div class="col m3 s12">
+                        <p>Free shipping</p>
+                        <p><i class="material-icons inline-icon green-text">local_shipping</i><span> fast n free</span></p>
+                        <p>Guaranteed delivery</p>
+                        <span id="action"><a href="#">Save for later</a> <a href="#">Remove</a></span>
+                    </div>
+                </div>
+                <div class="row" id="offers">
+                    <h5>Offers</h5>
+                    <p>There are currently no offers for this item</p>
+                </div>
+            </div>
+        {% endfor %}
+        {% else %}
+            <div class="col m8 s12 right-content">
+                <h5>Howdy folk!, looks like you havent added anything to the cart!</h5>
+                <h6>Visit our home page <span> <a href="/" class="green-text">here</a> </span> and find your fit</h6>
+            </div>
+        {% endif %}
+        <div class="left-content">
+            <div class="row">
+                <div class="col s12">
+                    <a href="{% url 'front:checkout' %}">
+                        <button class="btn green">Go to Checkout</button>
+                    </a>
+                    <p>item(s)<span class="right">{{ item_count }}</span></p>
+                    <p>shipping <i class="fas fa-info-circle tooltipped" data-position="top" data-tooltip="Shipping is free"></i> <span class="right">Free</span></p>
+                    {% if cart_total %}
+                        <h6>Total <span class="right">{{ cart_total|intcomma }}</span></h6>
+                    {% else %}
+                    <h6>Total <span class="right">0</span></h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script>
+{% endblock %}
+{% endblock %}

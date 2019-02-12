@@ -1,9 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import *
-from .forms.model_forms import *
-from .forms.user_forms import *
+from .models import (PhoneImage, Review, Feature, PhonesColor,
+                     ProductInformation, ShippingAddress, PhoneList,
+                     PhoneMemorySize, Currency, SocialMedia, Order,
+                     OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
+                     Cart)
+from .forms.model_forms import (PhoneCategoryForm, HotDealForm,
+                                PhoneCategory, HotDeal)
+from .forms.user_forms import (UserChangeForm, UserCreationForm,
+                               User, CountryCode)
 
 
 class PhoneCategoryAdmin(admin.ModelAdmin):
@@ -79,6 +85,7 @@ class UserAdmin(BaseUserAdmin):
 class HotDealAdmin(admin.ModelAdmin):
     form = HotDealForm
 
+
 admin.site.register(PhoneCategory, PhoneCategoryAdmin)
 admin.site.register(PhoneList, PhoneListAdmin)
 admin.site.register(PhoneMemorySize)
@@ -96,3 +103,4 @@ admin.site.register(ShippingAddress)
 admin.site.register(InactiveUser)
 admin.site.register(Color)
 admin.site.register(PhonesColor)
+admin.site.register(Cart)

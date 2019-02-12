@@ -21,6 +21,8 @@
             </div>
         </nav>
     </div>
+    <div class="row">
+    </div>
     <div class="row phone-details">
         <div class="row">
             <div class="col m5 s12 main-img">
@@ -46,79 +48,106 @@
                     </div>
                 </div>
             </div>
-            <div class="col m4 s12 profile">
-                <div class="row">
-                  <p></p>
-                    <div class="stars">
-                        {% for star in phone.average_review|round_off|checked_star_range %}
-                        <span class="fa fa-star checked"></span>
-                        {% endfor %}
-                        {% for star in phone.average_review|round_off|unchecked_star_range %}
-                        <span class="fa fa-star"></span>
-                        {% endfor %}
-                        <span>{{ phone.average_review|round_off }}</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12 m9">
-                        <select id='color' class="materialSelect">
-                            <option value="" disabled selected>Color</option>
-                            {% if colors %}
-                            {% for color in colors %}
-                            {% if color.quantity >= 1 %}
-                                <option value={{ color.color.pk }}>{{ color.color }}</option>
-                            {% endif %}
-                            {% endfor %}
-                            {% endif %}
-                        </select>
-                        <select id="quantity">
-                            <option value="" disabled selected>Storage</option>
-                        </select>
-                        <select id="quantity">
-                            <option value="" disabled selected>Quantity</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row features">
-                    <p>
-                        <b>Key Features</b>
-                    </p>
-                    <ul style="list-style-type:disc"></ul>
-                        {% for feature in features %}
-                        <li>{{ feature.feature }}.</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="col m3 s12 action">
-                <h5 class="green-text"><b>{{ phone.currency }} {{ phone.price|intcomma }}</b></h5>
-                <p>
-                    <i class="medium material-icons inline-icon">local_atm</i>
-                    Pay on delivery<br>
-                    <i class="medium material-icons inline-icon">loop</i>
-                    7 day free return<br>
-                    <i class="medium material-icons inline-icon">check</i>
-                    Genuine product<br>
-                    <i class="material-icons inline-icon">sentiment_very_satisfied</i>
-                    Free shipping
-                </p>
-                <form class="col s12" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" id="cartItem" name="cart_item_add" value="{{ phone.id }}">
-                    <p class="green" id="green"></p>
-                    <div class="row">
-                        <button class="btn waves-effect waves-light green" id="add-to-cart-button" type="submit" name="action">Buy Now
-                        </button>
-                            <p class="green" id="green"></p>
-                    </div>
-                    <div class="row">
-                        <button class="btn waves-effect waves-light green darken-2" id="add-to-cart-button2" type="submit" name="action">Add to Cart
-                            <i class="material-icons tiny left">add_shopping_cart</i>
-                        </button>
-                            <p class="green" id="green"></p>
-                    </div>
+            <div class="col m7 s12 profile">
+                <form method="post" class="row">
+                    <div class="col s12 m6">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="stars">
+                                {% for star in phone.average_review|round_off|checked_star_range %}
+                                <span class="fa fa-star checked"></span>
+                                {% endfor %}
+                                {% for star in phone.average_review|round_off|unchecked_star_range %}
+                                <span class="fa fa-star"></span>
+                                {% endfor %}
+                                <span>{{ phone.average_review|round_off }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s8">
+                                <select id='color' class="materialSelect">
+                                    <option value="" disabled selected>Storage</option>
+                                    {% if secondary_details %}
+                                    {% for secondary_detail in secondary_details %}
+                                    {% if secondary_detail.quantity >= 1 %}
+                                        <option value={{ secondary_detail.pk }}>{{ secondary_detail }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endif %}
+                                </select>
+                                <input type="hidden" id="size" name="size" value="">
+                            </div>
 
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s8">
+                                <div id="quantityRow">
+                                    <select id="quantity" name="quantity">
+                                            <option value="" disabled selected>Quantity</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row features">
+                                <p>
+                                    <b>Key Features</b>
+                                </p>
+                                <ul style="list-style-type:disc"></ul>
+                                    {% for feature in features %}
+                                    <li>{{ feature.feature }}.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                    </div>
+                    <div class="col m5 push-m1 s12 action">
+                        <div class="row">
+                            <div class="col s12">
+                                <h5 id="price" class="green-text"></h5>
+                                <input type="hidden" id="cart_phone_price" name="cart_phone_price" value="">
+                                <p>
+                                    <i class="medium material-icons inline-icon">local_atm</i>
+                                    Pay on delivery<br>
+                                    <i class="medium material-icons inline-icon">loop</i>
+                                    7 day free return<br>
+                                    <i class="medium material-icons inline-icon">check</i>
+                                    Genuine product<br>
+                                    <i class="material-icons inline-icon">sentiment_very_satisfied</i>
+                                    Free shipping
+                                </p>
+                            </div>
+                        </div>
+                            <div class="row confirm">
+                                <div class="col s12">
+                                    <input type="hidden" id="cartItem" name="cart_item_add" value="{{ phone.id }}">
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <button class="btn waves-effect waves-light green" id="add-to-cart-button">Buy Now
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <button class="btn waves-effect waves-light green darken-2" id="add-to-cart-button2" type="submit" name="action">Add to Cart
+                                                <i class="material-icons tiny left">add_shopping_cart</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s12 left">
+                                            {% if form.quantity.errors %}
+                                            {% for error in form.quantity.errors %}
+                                                <p>
+                                                    {{ form.quantity.errors|escape }}
+                                                </p>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
                 </form>
+
             </div>
         </div>
     </div>
@@ -176,10 +205,24 @@
 </div>
 <script type="text/javascript">
     var quantities = [];
-    {% for quantity in colors %}
-        var color_object = {'color': '{{ quantity.color.pk|safe }}', 'quantity': '{{ quantity.quantity|safe }}'}
-        quantities.push(color_object);
+    {% for quantity in secondary_details %}
+        var secondary_details_object = {
+            'secondary_details': '{{ quantity.pk|safe }}',
+            'quantity': '{{ quantity.quantity|safe }}',
+            'price': '{{ quantity.price }}',
+            'currency': '{{ quantity.currency }}',
+            'size':'{{quantity.size}}'
+        }
+        quantities.push(secondary_details_object);
+        console.log(secondary_details_object)
     {% endfor %}
+
+    var error_messages = []
+        {% if messages %}
+            {% for message in messages %}
+               error_messages.push('{{ message|safe }}');
+            {% endfor %}
+        {% endif %}
 </script>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %}

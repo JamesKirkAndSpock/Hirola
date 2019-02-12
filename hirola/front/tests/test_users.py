@@ -1,6 +1,7 @@
-from front.base_test import User, BaseTestCase, CountryCode
+from front.base_test import BaseTestCase
 from front.forms.user_forms import AuthenticationForm
 from django.conf import settings
+from front.models import (User, CountryCode)
 
 
 class UserSignupTestCase(BaseTestCase):

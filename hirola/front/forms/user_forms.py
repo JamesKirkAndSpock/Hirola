@@ -1,4 +1,4 @@
-from front.forms.base_form import *
+from front.forms.base_form import (forms, ValidationError)
 from django.contrib.auth import authenticate, password_validation
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
@@ -412,3 +412,13 @@ def resend_activation_email(request, user, email):
     email_message = EmailMultiAlternatives(subject, body, None, [to_email])
     email_message.send()
     return True
+
+
+class PhoneProfileUserDataCollectionForm(forms.Form):
+
+    quantity_error_messages = {
+        'required': _("You need to provide the quantity!")
+    }
+
+    CHOICES = (('0', 'Quantity',),)
+    quantity = forms.CharField(error_messages=quantity_error_messages)

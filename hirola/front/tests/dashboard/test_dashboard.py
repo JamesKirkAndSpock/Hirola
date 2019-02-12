@@ -1,5 +1,6 @@
-from front.base_test import *
+from front.base_test import BaseTestCase, Client, User
 from front.tests.test_users import UserSignupTestCase
+from front.models import CountryCode
 
 class DashboardLogic(BaseTestCase):
 
