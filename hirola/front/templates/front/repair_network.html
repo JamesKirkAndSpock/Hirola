@@ -1,0 +1,83 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/repair_network.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %}
+{% block content %}
+{% load services %}
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb" id="last-link">teke vs others</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row content">
+
+      <div class="row">
+          <div class="landing-content">
+              <h4 class="left">teke Repair Network</h4>
+          </div>
+      </div>
+        <div class="landing-content">
+           <blockquote style = "border-left: 5px solid green; text-align: left;" >teke Repair Network is a network of trusted cell phone and tablet repair shops that partner with us
+            to serve the teke community. The repair network provides affordable, quick and easy access to local professionals ready to fix your tech gadgets.</blockquote>
+        </div>
+
+        <div class="landing-content">
+            <p><i class="material-icons tiny green-text">lightbulb_outline</i>When you visit any of these shops,
+              remember to mention that teke sent you</p>
+        </div>
+        <div class="row">
+        </div>
+        {% for service_man in service_men %}
+        <div class="row landing">
+          <div class="col s12 m6 l6">
+            <div class="landing-content">
+                  <table class="responsive-table highlight">
+                    <th></th>
+                    <th>{{ service_man.first_name }} {{ service_man.name_of_premise }}</th>
+                    <tbody>
+                        <tr>
+                          <td><i class="material-icons tiny gray-text">place</i></td>
+                          <td><b>{{ service_man.address }}<br>{{ service_man.address.short_description }}</b></td>
+                        <tr>
+                        <tr>
+                          <td><i class="material-icons tiny gray-text">phone</i></td>
+                          <td><p>{{ service_man.phone_number }}</p></td>
+                        </tr>
+                        <tr>
+                            <td><i class="material-icons tiny gray-text">email</i></td>
+                            <td><p>{{ service_man.email }}</p></td>
+                        </tr>
+                    </tbody>
+                  </table>
+            </div>
+           </div>
+           <div class="col s12 m6 l6">
+            <div class="landing-content">
+             <table>
+                 <tbody>
+                 <th>Services Offered</th>
+                {% for service in service_man.pk|get_services %}
+                 <tr>
+                   <td class="this-table">{{ service }}</td>
+                 </tr>
+                 {% endfor %}
+                 </tbody>
+             </table>
+             </div>
+          </div>
+          </div> <!-- closes row landing -->
+          {% endfor %}
+           <!-- <hr> -->
+ <!-- END OF REPAIR NETWORK -->
+ </div> <!-- closes row content  -->
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}

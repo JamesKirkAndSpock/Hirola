@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from .models import (CountryCode, User, PhoneCategory,
                      PhoneMemorySize, PhonesColor, PhoneList,
                      SocialMedia, Review, HotDeal, NewsItem, Order,
-                     OrderStatus, Cart)
+                     OrderStatus, Cart, ServicePerson)
 from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (UserCreationForm, AuthenticationForm,
@@ -588,3 +588,15 @@ def resend_new_email_activation_link(request):
         return redirect('/dashboard')
     messages.error(request, ('Something went wrong!'))
     return redirect('/dashboard')
+
+
+def contact_us_view(request):
+    return render(request, 'front/contact_us.html')
+
+
+def repair_and_network_view(request):
+    (phone_categories, social_media) = various_caches()
+    service_men = ServicePerson.objects.all()
+    context = {'service_men': service_men, 'categories': phone_categories,
+               'social_media': social_media}
+    return render(request, 'front/repair_network.html', context)

@@ -1,0 +1,100 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/contact_us.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb" id="last-link">teke vs others</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row content">
+
+
+     <div class="row">
+         <div class="landing-content">
+             <h4 class="left">Contact teke</h4>
+         </div>
+     </div>
+
+ <div class="row landing">
+   <div class="col s12 m6 l9">
+    <div class="landing-content">
+		<table>
+			<tbody>
+        <tr>
+  				<th rowspan="2" width="20%">Contact Support</th>
+  				<td class="form-link">
+  					<i class="material-icons tiny green-text">comment</i>
+  					<a href="/help#help-center" class="green-text">Help Form</a>
+  				</td>
+      		</tr>
+
+    			<tr>
+    				<td>
+    					Contact our support for help with the website, your purchases etc.
+    				</td>
+    			</tr>
+
+      		<tr>
+      			<th rowspan="2">On the Web</th>
+      			<td>
+      				<a href="https://plus.google.com/118083502790722489400?prsrc=3" rel="publisher" target="_top" style="text-decoration:none;">
+      				<i class="material-icons tiny green-text">looks_6</i>
+      				</a> &nbsp;
+      				<a href="https://plus.facebook.com/teke" target="_blank">teke on facebook</a>
+      			</td>
+      		</tr>
+    			<tr>
+    				<td>
+    					<i class="material-icons tiny green-text">looks_two</i>
+    					<a href="http://twitter.com/teke" target="_blank">@teke on Twitter</a>
+    				</td>
+    			</tr>
+    			<tr>
+    				<th>Postal</th>
+    				<td>
+    					teke, LLC <br>
+    					1234 Kiambu <br>
+    					Kiambu, Kenya 00101
+    				</td>
+    			</tr>
+    			<tr>
+    				<th rowspan="2">Email Info</th>
+    				<td>
+    					<i class="material-icons tiny green-text">email</i>
+    					<a href="mailto:info@teke.com">info@teke.com</a>
+    				</td>
+    			</tr>
+    			<tr>
+    				<td>
+    					Email us here for teke business-related questions, etc.
+    				</td>
+    			</tr>
+		 </tbody>
+     </table>
+    </div>
+  </div>
+  </div>
+
+  <div class="row">
+      <div class="col s12 m8 l8">
+        <div class="this-div">
+          <p>Need help? Visit our <a href="/help" class="green-text"><b>Help Page</b></a></p>
+      </div>
+      </div>
+  </div>
+
+ </div> <!-- end of row content -->
+
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}
+
+

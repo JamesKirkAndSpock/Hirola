@@ -363,6 +363,57 @@ class PhonesColor(models.Model):
         return str(self.size)
 
 
+class Address(models.Model):
+    address_line_one = models.CharField(max_length=255, null=False, blank=False)
+    address_line_two = models.CharField(max_length=255, null=False, blank=False)
+    address_line_three = models.CharField(max_length=255, null=True, blank=True)
+    short_description = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        if self.address_line_three:
+            return self.address_line_one + '\n' + self.address_line_two + \
+                '\n' + self.address_line_three
+        return self.address_line_one + "\n" + self.address_line_two
+
+
+class ServicePerson(models.Model):
+    first_name = models.CharField(max_length=30, null=False, blank=False)
+    name_of_premise = models.CharField(max_length=255, null=False, blank=False)
+    last_name = models.CharField(max_length=30, blank=True)
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL,
+                                null=True, blank=True)
+    country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL,
+                                     null=True, blank=True)
+    phone_number = models.IntegerField(blank=False, null=False)
+    email = models.EmailField(_('email address'), unique=True, error_messages={
+        'unique': _("The email address you entered has already "\
+            "been registered.",), }, max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.first_name
+
+
+class RepairService(models.Model):
+    service = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.service
+
+
+class Services(models.Model):
+    service = models.ForeignKey(RepairService, on_delete=models.SET_NULL,
+                                    null=True, blank=True)
+    service_man = models.ForeignKey(ServicePerson, on_delete=models.SET_NULL,
+                                    null=True, blank=True)
+
+
+    class Meta:
+        unique_together = ('service', 'service_man')
+
+    def __str__(self):
+        return str(self.service)
+
+
 def delete_cache(model_class, object_id, cache_name):
     model_object = model_class.objects.get(pk=object_id)
     if model_object.category:

@@ -1,0 +1,41 @@
+.landing-content {
+    /* font-size: 14pt; */
+    padding: 10px;
+    text-align: center;
+}
+  table {
+    border-spacing: 0px;
+    margin-bottom: 0px;
+    font-size: 14px;
+  }
+
+  th {
+    font-size: 17px;
+  }
+
+  td {
+    padding: 3px;
+  }
+
+  .material-icons {
+    padding-right: 10px;
+  }
+
+  .this-table {
+    padding: 5px;
+  }
+  hr {
+    border: none;
+    height: 1px;
+    background-color: gray;
+  }
+
+  @media only screen and (max-width: 767px) {
+      .landing-content {
+          text-align: left;
+      }
+  }
+
+  .landing {
+    margin-bottom: 20px !important;
+  }
