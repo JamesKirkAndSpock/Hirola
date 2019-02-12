@@ -3,7 +3,8 @@ from django.db import IntegrityError, DataError
 from front.errors import hot_deal_error
 from front.models import (PhoneCategory, get_default, PhoneList,
                           HotDeal, User, CountryCode, Order, OrderStatus,
-                          ShippingAddress, PhonesColor, Color, Cart)
+                          ShippingAddress, PhonesColor, Color, Cart,
+                          ServicePerson, RepairService, Services)
 
 class PhoneCategoryModelsTestCase(BaseTestCase):
     def setUp(self):
@@ -210,3 +211,30 @@ class PhonesColorTestCase(BaseTestCase):
         self.assertEqual(str(phone_color), "White 8 GB")
         self.assertEqual(phone_color.price, 10000)
         self.assertEqual(phone_color.phone, phone_2)
+
+
+class ServicesNetworkTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(ServicesNetworkTestCase, self).setUp()
+
+    def test_model_creates_service_man(self):
+        ServicePerson.objects.create(first_name="Wanjigi",
+                                     name_of_premise="Cutting Edge Tec",
+                                     phone_number="715777587")
+
+        service_man = ServicePerson.objects.filter(first_name="Wanjigi").first()
+        self.assertEqual(str(service_man), "Wanjigi")
+        RepairService.objects.create(service="LED screen Repair")
+        repair_service = RepairService.objects.filter(service="LED screen Repair").first()
+        self.assertEqual(str(repair_service), "LED screen Repair")
+        Services.objects.create(service=repair_service,
+                                service_man=self.service_person_one)
+        service = Services.objects.filter(service=repair_service).first()
+        self.assertEqual(str(service.service_man), "Wanjigi")
+
+
+    def test_assign_same_service_to_same_service_man_twice_error(self):
+        with self.assertRaises(IntegrityError):
+            Services.objects.create(service=self.service_one,
+                                    service_man=self.service_person_one)

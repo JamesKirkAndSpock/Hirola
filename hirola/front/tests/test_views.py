@@ -389,3 +389,27 @@ class NewsItemTestCase(BaseTestCase):
         self.assertContains(response, 'Teke rocks')
         self.assertContains(response, 'The standard online')
         self.assertContains(response, 'https://www.sde.com')
+
+
+class ServicePersonTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(ServicePersonTestCase, self).setUp()
+
+    def test_repair_network_created(self):
+        response = self.client.get('/repair_and_network')
+        html = "Wanjigi : Cutting Edge Tec"
+        self.assertContains(response, html)
+        service = "Battery replacement"
+        self.assertContains(response, service)
+
+
+class ContactUsTestcase(BaseTestCase):
+
+    def setUp(self):
+        super(ContactUsTestcase, self).setUp()
+
+    def test_contact_us_page_content_rendering(self):
+        response = self.client.get('/contact_us')
+        html = "Contact teke"
+        self.assertContains(response, html)
