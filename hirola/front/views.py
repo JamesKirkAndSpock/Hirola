@@ -347,7 +347,9 @@ def change_email_view(request):
             user.save()
             form.send_email(request, user)
             return render(request, 'front/change_email_sent.html')
-        args = {"form": form, 'social_media': social_media, 'categories': phone_categories}
+        args = {'form': form, 'social_media': social_media,
+                'categories': phone_categories,
+                'current_user_email': user.email}
         return render(request, 'front/change_email.html', args)
     args = {"form": ChangeEmailForm(), 'social_media': social_media,
             'categories': phone_categories}
