@@ -4,8 +4,9 @@ from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
 from front.forms.user_forms import (
-    EmailAuthenticationForm, ChangeEmailForm, loader, get_current_site, urlsafe_base64_encode,
-    force_bytes, email_activation_token, resend_activation_email, resend_email)
+    EmailAuthenticationForm, ChangeEmailForm, loader, get_current_site,
+    urlsafe_base64_encode, force_bytes, email_activation_token,
+    resend_activation_email, resend_email, ContactUsForm)
 from django.test import RequestFactory
 from django import forms
 from django.core import mail
@@ -241,3 +242,28 @@ class EmailTest(BaseTestCase):
         resend_email(request, user, "ndungu@gmail.com")
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, ['ndungu@gmail.com'])
+
+
+class FAQSupportEmailTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(FAQSupportEmailTestCase, self).setUp()
+
+    def test_send_support_email(self):
+        request = RequestFactory()
+        request = request.post("",
+            {
+                "email": "p@g.com",
+                "name": "peter",
+                "comment": "I have nothing to say"
+                })
+        form = ContactUsForm(request.POST)
+        self.assertTrue(form.is_valid())
+        form.send_email()
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ['testermail717@gmail.com'])
+        subject = "Help and support from peter"
+        self.assertEqual(mail.outbox[0].subject, subject)
+        body = "I have nothing to say"
+        self.assertEqual(mail.outbox[0].body, body)
+        self.assertEqual(mail.outbox[0].from_email, "p@g.com")
