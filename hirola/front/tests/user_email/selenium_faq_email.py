@@ -1,6 +1,7 @@
 from front.tests.base_selenium import BaseSeleniumTestCase, webdriver
 import time
 
+
 class SendSupportEmailTestCase(BaseSeleniumTestCase):
 
     """Test user can send support email."""

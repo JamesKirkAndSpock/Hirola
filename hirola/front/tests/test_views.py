@@ -447,7 +447,6 @@ class FAQSupportEmailTestCase(BaseTestCase):
         s_msg = 'Thank you for your feedback! We will get back to you shortl'
         self.assertTrue('{}'.format(s_msg) in message.message)
 
-
     def test_user_cannot_send_email_with_invalid_body(self):
         """Test user can send email via the contact us form"""
         data = {

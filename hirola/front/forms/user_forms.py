@@ -9,7 +9,7 @@ from front.twilio import TwilioValidation
 from front.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.template import loader
-from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
@@ -438,7 +438,7 @@ class ContactUsForm(forms.Form):
         attrs={'placeholder': 'Email'}))
     comment = forms.CharField(widget=forms.Textarea(
         attrs={'placeholder': 'Tell us about the issue..',
-               'class':'materialize-textarea'}))
+               'class': 'materialize-textarea'}))
 
     def clean_comment(self):
         comment = self.cleaned_data.get('comment')
@@ -452,7 +452,7 @@ class ContactUsForm(forms.Form):
         to_email = 'testermail717@gmail.com'
         from_email = self.cleaned_data.get('email')
         sender_name = self.cleaned_data.get('name') or 'N/A'
-        subject = "Help and support" + " from "+ sender_name
+        subject = "Help and support" + " from " + sender_name
         body = self.cleaned_data.get('comment')
         if subject and body and from_email:
             email_message = EmailMultiAlternatives(
