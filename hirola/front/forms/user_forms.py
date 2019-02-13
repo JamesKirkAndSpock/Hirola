@@ -9,12 +9,13 @@ from front.twilio import TwilioValidation
 from front.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.template import loader
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from front.token import account_activation_token, email_activation_token
 from django.core.validators import validate_email
+import re
 
 
 
@@ -422,3 +423,39 @@ class PhoneProfileUserDataCollectionForm(forms.Form):
 
     CHOICES = (('0', 'Quantity',),)
     quantity = forms.CharField(error_messages=quantity_error_messages)
+
+
+class ContactUsForm(forms.Form):
+
+    error_messages = {
+        'invalid': _('Please enter a valid comment'),
+        'required': _("Comment cannot be empty!")
+    }
+
+    name = forms.CharField(required=False, widget=forms.TextInput(
+        attrs={'placeholder': 'Name(Optional)'}))
+    email = forms.EmailField(widget=forms.TextInput(
+        attrs={'placeholder': 'Email'}))
+    comment = forms.CharField(widget=forms.Textarea(
+        attrs={'placeholder': 'Tell us about the issue..',
+               'class':'materialize-textarea'}))
+
+    def clean_comment(self):
+        comment = self.cleaned_data.get('comment')
+        if not comment or comment.isspace():
+            raise ValidationError(self.error_messages['required'])
+        if re.match(r'^[_\W]+$', comment):
+            raise ValidationError(self.error_messages['invalid'])
+        return comment
+
+    def send_email(self):
+        to_email = 'testermail717@gmail.com'
+        from_email = self.cleaned_data.get('email')
+        sender_name = self.cleaned_data.get('name') or 'N/A'
+        subject = "Help and support" + " from "+ sender_name
+        body = self.cleaned_data.get('comment')
+        if subject and body and from_email:
+            email_message = EmailMultiAlternatives(
+                subject, body, from_email, [to_email]
+                )
+            email_message.send()

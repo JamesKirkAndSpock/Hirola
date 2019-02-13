@@ -11,7 +11,7 @@ from django.core.cache import cache
 from .forms.user_forms import (UserCreationForm, AuthenticationForm,
                                UserForm, OldPasswordForm, ChangeEmailForm,
                                EmailAuthenticationForm, resend_email,
-                               resend_activation_email,
+                               resend_activation_email, ContactUsForm,
                                PhoneProfileUserDataCollectionForm)
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
@@ -482,8 +482,29 @@ def press_view(request):
 
 def help_view(request):
     (phone_categories, social_media) = various_caches()
-    return render(request, 'front/help.html', {'categories': phone_categories,
-                                               'social_media': social_media})
+    if request.method == 'POST':
+        form = ContactUsForm(request.POST)
+        if form.is_valid():
+            form.send_email()
+            messages.success(request, ('Thank you for your feedback! We will '
+                                       'get back to you shortly'))
+            return redirect('/help#help-center')
+        messages.error(request, (
+            'Sorry we were not able to process your request at this time, '
+            'please correct the errors in the form and try again'))
+        context = generate_help_context(phone_categories, social_media, form)
+        return render(request, 'front/help.html', context)
+    form = ContactUsForm()
+    context = generate_help_context(phone_categories, social_media, form)
+    return render(request, 'front/help.html', context)
+
+
+def generate_help_context(categories, social_media, form):
+    return {
+        'categories': categories,
+        'social_media': social_media,
+        'form': form
+    }
 
 
 def teke_vs_others_view(request):
