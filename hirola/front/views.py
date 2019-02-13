@@ -438,7 +438,9 @@ def change_email_view(request):
             user.change_email_tracker = timezone.now()
             user.save()
             form.send_email(request, user)
-            return render(request, 'front/change_email_sent.html')
+            provider = get_user_email_provider(user.change_email)
+            return render(request, 'front/change_email_sent.html',
+                          {'provider': provider})
         args = {'form': form, 'social_media': social_media,
                 'categories': phone_categories,
                 'current_user_email': user.email}
