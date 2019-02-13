@@ -364,10 +364,14 @@ class PhonesColor(models.Model):
 
 
 class Address(models.Model):
-    address_line_one = models.CharField(max_length=255, null=False, blank=False)
-    address_line_two = models.CharField(max_length=255, null=False, blank=False)
-    address_line_three = models.CharField(max_length=255, null=True, blank=True)
-    short_description = models.CharField(max_length=255, null=True, blank=True)
+    address_line_one = models.CharField(max_length=255, null=False,
+                                        blank=False)
+    address_line_two = models.CharField(max_length=255, null=False,
+                                        blank=False)
+    address_line_three = models.CharField(max_length=255, null=True,
+                                          blank=True)
+    short_description = models.CharField(max_length=255, null=True,
+                                         blank=True)
 
     def __str__(self):
         if self.address_line_three:
@@ -378,7 +382,8 @@ class Address(models.Model):
 
 class ServicePerson(models.Model):
     first_name = models.CharField(max_length=30, null=False, blank=False)
-    name_of_premise = models.CharField(max_length=255, null=False, blank=False)
+    name_of_premise = models.CharField(max_length=255, null=False,
+                                       blank=False)
     last_name = models.CharField(max_length=30, blank=True)
     address = models.ForeignKey(Address, on_delete=models.SET_NULL,
                                 null=True, blank=True)
