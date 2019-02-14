@@ -33,46 +33,55 @@
         </div>
         <div class="row">
         </div>
-        {% for service_man in service_men %}
-        <div class="row landing">
-          <div class="col s12 m6 l6">
-            <div class="landing-content">
-                  <table class="responsive-table highlight">
-                    <th></th>
-                    <th>{{ service_man.first_name }} : {{ service_man.name_of_premise }}</th>
-                    <tbody>
-                        <tr>
-                          <td><i class="material-icons tiny gray-text">place</i></td>
-                          <td><b>{{ service_man.address }}<br>{{ service_man.address.short_description }}</b></td>
-                        <tr>
-                        <tr>
-                          <td><i class="material-icons tiny gray-text">phone</i></td>
-                          <td><p>{{ service_man.phone_number }}</p></td>
-                        </tr>
-                        <tr>
-                            <td><i class="material-icons tiny gray-text">email</i></td>
-                            <td><p>{{ service_man.email }}</p></td>
-                        </tr>
-                    </tbody>
-                  </table>
+        {% if service_men %}
+          {% for service_man in service_men %}
+          <div class="row landing">
+            <div class="col s12 m6 l6">
+              <div class="landing-content">
+                    <table class="responsive-table highlight">
+                      <th></th>
+                      <th>{{ service_man.first_name }} : {{ service_man.name_of_premise }}</th>
+                      <tbody>
+                          <tr>
+                            <td><i class="material-icons tiny gray-text">place</i></td>
+                            <td><b>{{ service_man.address }}<br>{{ service_man.address.short_description }}</b></td>
+                          <tr>
+                          <tr>
+                            <td><i class="material-icons tiny gray-text">phone</i></td>
+                            <td><p>{{ service_man.phone_number }}</p></td>
+                          </tr>
+                          <tr>
+                              <td><i class="material-icons tiny gray-text">email</i></td>
+                              <td><p>{{ service_man.email }}</p></td>
+                          </tr>
+                      </tbody>
+                    </table>
+              </div>
             </div>
-           </div>
-           <div class="col s12 m6 l6">
-            <div class="landing-content">
-             <table>
-                 <tbody>
-                 <th>Services Offered</th>
-                {% for service in service_man.pk|get_services %}
-                 <tr>
-                   <td class="this-table">{{ service }}</td>
-                 </tr>
-                 {% endfor %}
-                 </tbody>
-             </table>
-             </div>
+            <div class="col s12 m6 l6">
+              <div class="landing-content">
+              <table>
+                  <tbody>
+                  <th>Services Offered</th>
+                  {% for service in service_man.pk|get_services %}
+                  <tr>
+                    <td class="this-table">{{ service }}</td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+              </div>
+            </div>
+            </div> <!-- closes row landing -->
+            {% endfor %}
+          {% else %}
+          <div class="row landing">
+            <div class="col s12">
+              <h6>Oops! it seems like there is no repair network at the moment, we are working to fix that!</h6>
+              <cite>the teke team</cite>
+            </div>
           </div>
-          </div> <!-- closes row landing -->
-          {% endfor %}
+          {% endif %}
            <!-- <hr> -->
  <!-- END OF REPAIR NETWORK -->
  </div> <!-- closes row content  -->

@@ -42,4 +42,6 @@ class ServicePersonForm(forms.ModelForm):
     def clean_phone_number(self):
         country_code = self.cleaned_data.get("country_code")
         phone_number = self.cleaned_data.get("phone_number")
+        if not country_code:
+            raise ValidationError("Enter a valid country code")
         return TwilioValidation().phone_validation(country_code, phone_number)

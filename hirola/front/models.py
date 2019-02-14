@@ -388,7 +388,7 @@ class ServicePerson(models.Model):
     address = models.ForeignKey(Address, on_delete=models.SET_NULL,
                                 null=True, blank=True)
     country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL,
-                                     null=True, blank=True)
+                                     null=True, blank=False)
     phone_number = models.IntegerField(blank=False, null=False)
     msg = {'unique': _("The email address you entered has "
                        "already been registered.",), }
