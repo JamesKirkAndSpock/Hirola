@@ -8,19 +8,6 @@
     padding: 10px;
     text-align: center;
 }
-  table {
-    border-spacing: 0px;
-    margin-bottom: 0px;
-    font-size: 14px;
-  }
-
-  th {
-    font-size: 17px;
-  }
-
-  td {
-    padding: 3px;
-  }
 
   .material-icons {
     padding-right: 10px;
@@ -44,3 +31,30 @@
   .landing {
     margin-bottom: 20px !important;
   }
+
+.service-man-content{
+    border-top: solid 0.05em;
+    border-top-color: #E8E8E8;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.s2 {
+  display: flex;
+  align-items: center;
+}
+
+.service {
+  border-top: solid 0.05em;
+  border-top-color: #E8E8E8;
+  padding-left: 10px !important;
+}
+
+.service:first-child {
+  border-top: none;
+  font-size: 29px;
+}
+
+.service p {
+  margin: 5px 0 5px 0 !important;
+}

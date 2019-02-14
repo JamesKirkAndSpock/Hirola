@@ -36,7 +36,36 @@
         {% if service_men %}
           {% for service_man in service_men %}
           <div class="row landing">
-            <div class="col s12 m6 l6">
+            <div class="col s12 m4">
+              <div class="row">
+                <div class="col s10 push-s2">
+                  <h6><b>{{ service_man.first_name }} : {{ service_man.name_of_premise }}</b></h6>
+                </div>
+              </div>
+              <div class="row service-man-content">
+                <div class="col s2"><i class="material-icons tiny gray-text">place</i></div>
+                <div class="col s10"><b>{{ service_man.address }}<br>{{ service_man.address.short_description }}</b></div>
+              </div>
+              <div class="row service-man-content">
+                <div class="col s2"><i class="material-icons tiny gray-text">phone</i></div>
+                <div class="col s10"><p>{{ service_man.phone_number }}</p></div>
+              </div>
+              <div class="row service-man-content">
+                <div class="col s2"><i class="material-icons tiny gray-text">email</i></div>
+                <div class="col s10"><p>{{ service_man.email }}</p></div>
+              </div>
+            </div>
+            <div class="col s12 m4 push-m2" id="services">
+              <div class="row service">
+                <h6><b>Services Offered</b></h6>
+              </div>
+                {% for service in service_man.pk|get_services %}
+                <div class="row service">
+                  <p class="">{{ service }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- <div class="col s12 m6 l6">
               <div class="landing-content">
                     <table class="responsive-table highlight">
                       <th></th>
@@ -71,7 +100,7 @@
                   </tbody>
               </table>
               </div>
-            </div>
+            </div> -->
             </div> <!-- closes row landing -->
             {% endfor %}
           {% else %}
