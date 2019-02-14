@@ -239,7 +239,7 @@ class ServicesNetworkTestCase(BaseTestCase):
     def test_assign_same_service_to_same_service_man_twice_error(self):
         with self.assertRaises(IntegrityError):
             Service.objects.create(service=self.service_one,
-                                    service_man=self.service_person_one)
+                                   service_man=self.service_person_one)
 
 
 class AddressModelTestCase(BaseTestCase):

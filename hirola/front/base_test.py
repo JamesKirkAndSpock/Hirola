@@ -116,7 +116,8 @@ class BaseTestCase(TestCase):
         self.service_one = RepairService.objects.get(
             repair_service="Battery replacement")
         RepairService.objects.create(repair_service="Unlocking GSM")
-        self.service_two = RepairService.objects.get(repair_service="Unlocking GSM")
+        self.service_two = RepairService.objects.get(
+            repair_service="Unlocking GSM")
 
     def add_serviceman_services(self):
         Service.objects.create(service=self.service_one,

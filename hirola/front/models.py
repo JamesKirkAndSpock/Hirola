@@ -378,7 +378,7 @@ class Address(models.Model):
     def __str__(self):
         if self.address_line_two:
             return self.address_line_one + '\n' + self.address_line_two
-        return self.address_line_one 
+        return self.address_line_one
 
 
 class ServicePerson(models.Model):
