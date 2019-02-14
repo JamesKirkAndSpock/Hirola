@@ -219,8 +219,10 @@ class ServicesNetworkTestCase(BaseTestCase):
         super(ServicesNetworkTestCase, self).setUp()
 
     def test_model_creates_service_man(self):
+        code = CountryCode.objects.first()
         ServicePerson.objects.create(first_name="Wanjigi",
                                      name_of_premise="Cutting Edge Tec",
+                                     country_code=code,
                                      phone_number="715777587")
 
         service_man = ServicePerson.objects.filter(first_name="Wanjigi").\

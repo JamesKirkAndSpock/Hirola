@@ -403,6 +403,19 @@ class ServicePersonTestCase(BaseTestCase):
         service = "Battery replacement"
         self.assertContains(response, service)
 
+    def test_check_country_code_exists(self):
+        """Test admin cant save service man without first
+            selecting a country code
+        """
+
+        data = {
+            'first_name': 'Erastus',
+            'name_of_premise': 'Cutting Edge',
+            'phone_number': 715777587
+        }
+        response = self.elena.post('/admin/front/serviceperson/add/', data)
+        self.assertContains(response, 'Enter a valid country code')
+
 
 class ContactUsTestcase(BaseTestCase):
 
