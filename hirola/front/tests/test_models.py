@@ -224,9 +224,8 @@ class ServicesNetworkTestCase(BaseTestCase):
                                      name_of_premise="Cutting Edge Tec",
                                      country_code=code,
                                      phone_number="715777587")
-
         service_man = ServicePerson.objects.filter(first_name="Wanjigi").\
-                      first()
+            first()
         self.assertEqual(str(service_man), "Wanjigi")
         RepairService.objects.create(service="LED screen Repair")
         repair_service = RepairService.objects.\
