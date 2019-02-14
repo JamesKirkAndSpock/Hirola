@@ -9,8 +9,8 @@
         <nav class="this-black">
             <div class="nav-wrapper">
                 <div class="col s12">
-                    <a href="#!" class="breadcrumb">teke</a>
-                    <a href="#!" class="breadcrumb" id="last-link">teke vs others</a>
+                    <a href="/" class="breadcrumb">teke</a>
+                    <a href="/repair_and_network" class="breadcrumb" id="last-link">repair network</a>
                 </div>
             </div>
         </nav>
@@ -44,15 +44,35 @@
               </div>
               <div class="row service-man-content">
                 <div class="col s2"><i class="material-icons tiny gray-text">place</i></div>
-                <div class="col s10"><b>{{ service_man.address }}<br>{{ service_man.address.short_description }}</b></div>
+                <div class="col s10">
+                  {% if service_man.address %}
+                  <b>{{ service_man.address }}<br>
+                    {{ service_man.address.short_description }}
+                  </b>
+                  {% else %}
+                  <p>N/A</p>
+                  {% endif %}
+                </div>
               </div>
               <div class="row service-man-content">
                 <div class="col s2"><i class="material-icons tiny gray-text">phone</i></div>
-                <div class="col s10"><p>{{ service_man.phone_number }}</p></div>
+                <div class="col s10">
+                  {% if service_man.phone_number %}
+                  <p>{{ service_man.phone_number }}</p>
+                  {% else %}
+                  <p>N/A</p>
+                  {% endif %}
+                </div>
               </div>
               <div class="row service-man-content">
                 <div class="col s2"><i class="material-icons tiny gray-text">email</i></div>
-                <div class="col s10"><p>{{ service_man.email }}</p></div>
+                <div class="col s10">
+                  {% if service_man.email %}
+                  <p>{{ service_man.email }}</p>
+                  {% else %}
+                  <p>N/A</p>
+                  {% endif %}
+                </div>
               </div>
             </div>
             <div class="col s12 m4 push-m2" id="services">
@@ -65,43 +85,7 @@
                 </div>
                 {% endfor %}
             </div>
-            <!-- <div class="col s12 m6 l6">
-              <div class="landing-content">
-                    <table class="responsive-table highlight">
-                      <th></th>
-                      <th>{{ service_man.first_name }} : {{ service_man.name_of_premise }}</th>
-                      <tbody>
-                          <tr>
-                            <td><i class="material-icons tiny gray-text">place</i></td>
-                            <td><b>{{ service_man.address }}<br>{{ service_man.address.short_description }}</b></td>
-                          <tr>
-                          <tr>
-                            <td><i class="material-icons tiny gray-text">phone</i></td>
-                            <td><p>{{ service_man.phone_number }}</p></td>
-                          </tr>
-                          <tr>
-                              <td><i class="material-icons tiny gray-text">email</i></td>
-                              <td><p>{{ service_man.email }}</p></td>
-                          </tr>
-                      </tbody>
-                    </table>
-              </div>
-            </div>
-            <div class="col s12 m6 l6">
-              <div class="landing-content">
-              <table>
-                  <tbody>
-                  <th>Services Offered</th>
-                  {% for service in service_man.pk|get_services %}
-                  <tr>
-                    <td class="this-table">{{ service }}</td>
-                  </tr>
-                  {% endfor %}
-                  </tbody>
-              </table>
-              </div>
-            </div> -->
-            </div> <!-- closes row landing -->
+            </div> 
             {% endfor %}
           {% else %}
           <div class="row landing">
@@ -111,9 +95,7 @@
             </div>
           </div>
           {% endif %}
-           <!-- <hr> -->
- <!-- END OF REPAIR NETWORK -->
- </div> <!-- closes row content  -->
+ </div>
 </div>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %} {{ block.super }} {% load static %}

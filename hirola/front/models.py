@@ -364,23 +364,28 @@ class PhonesColor(models.Model):
 
 
 class Address(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Addresses"
+
     address_line_one = models.CharField(max_length=255, null=False,
                                         blank=False)
-    address_line_two = models.CharField(max_length=255, null=False,
-                                        blank=False)
-    address_line_three = models.CharField(max_length=255, null=True,
-                                          blank=True)
+    address_line_two = models.CharField(max_length=255, null=True,
+                                        blank=True)
     short_description = models.CharField(max_length=255, null=True,
                                          blank=True)
 
     def __str__(self):
-        if self.address_line_three:
-            return self.address_line_one + '\n' + self.address_line_two + \
-                '\n' + self.address_line_three
-        return self.address_line_one + "\n" + self.address_line_two
+        if self.address_line_two:
+            return self.address_line_one + '\n' + self.address_line_two
+        return self.address_line_one 
 
 
 class ServicePerson(models.Model):
+
+    class Meta:
+        verbose_name_plural = "ServicePeople"
+
     first_name = models.CharField(max_length=30, null=False, blank=False)
     name_of_premise = models.CharField(max_length=255, null=False,
                                        blank=False)
@@ -401,13 +406,14 @@ class ServicePerson(models.Model):
 
 
 class RepairService(models.Model):
-    service = models.CharField(max_length=255)
+    repair_service = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.service
+        return self.repair_service
 
 
-class Services(models.Model):
+class Service(models.Model):
+
     service = models.ForeignKey(RepairService, on_delete=models.SET_NULL,
                                 null=True, blank=True)
     service_man = models.ForeignKey(ServicePerson, on_delete=models.SET_NULL,

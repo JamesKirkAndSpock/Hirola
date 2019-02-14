@@ -5,7 +5,7 @@ from .models import (PhoneImage, Review, Feature, PhonesColor,
                      ProductInformation, ShippingAddress, PhoneList,
                      PhoneMemorySize, Currency, SocialMedia, Order,
                      OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
-                     Cart, RepairService, Address, ServicePerson, Services)
+                     Cart, RepairService, Address, ServicePerson, Service)
 from .forms.model_forms import (PhoneCategoryForm, HotDealForm,
                                 PhoneCategory, HotDeal, ServicePersonForm)
 from .forms.user_forms import (UserChangeForm, UserCreationForm,
@@ -110,4 +110,4 @@ admin.site.register(Cart)
 admin.site.register(RepairService)
 admin.site.register(Address)
 admin.site.register(ServicePerson, ServicePersonAdmin)
-admin.site.register(Services)
+admin.site.register(Service)

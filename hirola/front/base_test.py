@@ -5,7 +5,7 @@ from hirola.settings.base import BASE_DIR
 from django.core.files.uploadedfile import SimpleUploadedFile
 from front.models import (PhoneCategory, PhoneMemorySize, Currency,
                           NewsItem, Color, PhonesColor, ItemIcon, PhoneList,
-                          cache, User, ServicePerson, RepairService, Services)
+                          cache, User, ServicePerson, RepairService, Service)
 
 
 class BaseTestCase(TestCase):
@@ -112,17 +112,17 @@ class BaseTestCase(TestCase):
         self.samsung_j_7 = PhoneList.objects.get(phone_name="Samsung J7")
 
     def create_repair_services(self):
-        RepairService.objects.create(service="Battery replacement")
+        RepairService.objects.create(repair_service="Battery replacement")
         self.service_one = RepairService.objects.get(
-            service="Battery replacement")
-        RepairService.objects.create(service="Unlocking GSM")
-        self.service_two = RepairService.objects.get(service="Unlocking GSM")
+            repair_service="Battery replacement")
+        RepairService.objects.create(repair_service="Unlocking GSM")
+        self.service_two = RepairService.objects.get(repair_service="Unlocking GSM")
 
     def add_serviceman_services(self):
-        Services.objects.create(service=self.service_one,
-                                service_man=self.service_person_one)
-        Services.objects.create(service=self.service_two,
-                                service_man=self.service_person_one)
+        Service.objects.create(service=self.service_one,
+                               service_man=self.service_person_one)
+        Service.objects.create(service=self.service_two,
+                               service_man=self.service_person_one)
 
     def create_service_men(self):
         ServicePerson.objects.create(first_name="Wanjigi",

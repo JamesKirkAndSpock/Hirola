@@ -4,7 +4,7 @@ from front.errors import hot_deal_error
 from front.models import (PhoneCategory, get_default, PhoneList,
                           HotDeal, User, CountryCode, Order, OrderStatus,
                           ShippingAddress, PhonesColor, Color, Cart,
-                          ServicePerson, RepairService, Services, Address)
+                          ServicePerson, RepairService, Service, Address)
 
 class PhoneCategoryModelsTestCase(BaseTestCase):
     def setUp(self):
@@ -227,18 +227,18 @@ class ServicesNetworkTestCase(BaseTestCase):
         service_man = ServicePerson.objects.filter(first_name="Wanjigi").\
             first()
         self.assertEqual(str(service_man), "Wanjigi")
-        RepairService.objects.create(service="LED screen Repair")
+        RepairService.objects.create(repair_service="LED screen Repair")
         repair_service = RepairService.objects.\
-            filter(service="LED screen Repair").first()
+            filter(repair_service="LED screen Repair").first()
         self.assertEqual(str(repair_service), "LED screen Repair")
-        Services.objects.create(service=repair_service,
-                                service_man=self.service_person_one)
-        service = Services.objects.filter(service=repair_service).first()
+        Service.objects.create(service=repair_service,
+                               service_man=self.service_person_one)
+        service = Service.objects.filter(service=repair_service).first()
         self.assertEqual(str(service.service_man), "Wanjigi")
 
     def test_assign_same_service_to_same_service_man_twice_error(self):
         with self.assertRaises(IntegrityError):
-            Services.objects.create(service=self.service_one,
+            Service.objects.create(service=self.service_one,
                                     service_man=self.service_person_one)
 
 
@@ -254,9 +254,8 @@ class AddressModelTestCase(BaseTestCase):
         created_address = "P.O.Box 2354 - 00100" + "\n" + "Nairobi"
         self.assertEqual(str(address_one), created_address)
         Address.objects.create(address_line_one="P.O.Box 30305 - 00100",
-                               address_line_two="Mbagathi",
-                               address_line_three="Nairobi")
+                               address_line_two="Mbagathi")
         created_address_two = "P.O.Box 30305 - 00100" + "\n" +\
-            "Mbagathi" + "\n" + "Nairobi"
+            "Mbagathi"
         address_two = Address.objects.get(address_line_two="Mbagathi")
         self.assertEqual(str(address_two), created_address_two)

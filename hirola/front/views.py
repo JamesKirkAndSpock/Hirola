@@ -591,7 +591,12 @@ def resend_new_email_activation_link(request):
 
 
 def contact_us_view(request):
-    return render(request, 'front/contact_us.html')
+    (phone_categories, social_media) = various_caches()
+    context = {
+        'categories': phone_categories,
+        'social_media': social_media
+        }
+    return render(request, 'front/contact_us.html', context)
 
 
 def repair_and_network_view(request):
