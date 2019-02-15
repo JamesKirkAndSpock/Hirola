@@ -42,40 +42,36 @@
                   <h6><b>{{ service_man.first_name }} : {{ service_man.name_of_premise }}</b></h6>
                 </div>
               </div>
+              {% if service_man.address %}
               <div class="row service-man-content">
                 <div class="col s2"><i class="material-icons tiny gray-text">place</i></div>
                 <div class="col s10">
-                  {% if service_man.address %}
                   <b>{{ service_man.address }}<br>
                     {{ service_man.address.short_description }}
                   </b>
-                  {% else %}
-                  <p>N/A</p>
-                  {% endif %}
                 </div>
               </div>
+              {% endif %}
+              {% if service_man.phone_number %}
               <div class="row service-man-content">
                 <div class="col s2"><i class="material-icons tiny gray-text">phone</i></div>
                 <div class="col s10">
-                  {% if service_man.phone_number %}
-                  <p>{{ service_man.phone_number }}</p>
-                  {% else %}
-                  <p>N/A</p>
-                  {% endif %}
+                  <p>{{ service_man.phone_number|format_phone_number:service_man.country_code.country_code }}</p>
                 </div>
               </div>
+              {% endif %}
+              {% if service_man.email %}
               <div class="row service-man-content">
                 <div class="col s2"><i class="material-icons tiny gray-text">email</i></div>
                 <div class="col s10">
-                  {% if service_man.email %}
                   <p>{{ service_man.email }}</p>
-                  {% else %}
-                  <p>N/A</p>
-                  {% endif %}
                 </div>
               </div>
+              {% endif %}
             </div>
             <div class="col s12 m4 push-m2" id="services">
+
+              {% if service_man.pk|get_services %}
               <div class="row service">
                 <h6><b>Services Offered</b></h6>
               </div>
@@ -84,8 +80,9 @@
                   <p class="">{{ service }}</p>
                 </div>
                 {% endfor %}
+              {% endif %}
             </div>
-            </div> 
+            </div>
             {% endfor %}
           {% else %}
           <div class="row landing">
