@@ -5,7 +5,8 @@ from hirola.settings.base import BASE_DIR
 from django.core.files.uploadedfile import SimpleUploadedFile
 from front.models import (PhoneCategory, PhoneMemorySize, Currency,
                           NewsItem, Color, PhonesColor, ItemIcon, PhoneList,
-                          cache, User, ServicePerson, RepairService, Service)
+                          cache, User, ServicePerson, RepairService, Service,
+                          CountryCode)
 
 
 class BaseTestCase(TestCase):
@@ -126,8 +127,10 @@ class BaseTestCase(TestCase):
                                service_man=self.service_person_one)
 
     def create_service_men(self):
+        self.code = CountryCode.objects.all().first()
         ServicePerson.objects.create(first_name="Wanjigi",
                                      name_of_premise="Cutting Edge Tec",
+                                     country_code=self.code,
                                      phone_number="715557775")
         self.service_person_one = ServicePerson.objects.\
             get(first_name="Wanjigi")
