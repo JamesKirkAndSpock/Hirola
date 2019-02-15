@@ -1,6 +1,6 @@
 var wordsToSplit = $('#dropdown').html();
 var array = wordsToSplit.split(' ');
-var string = array[0] + ' ..';
+var string = array[0] + '..';
 var renameField = function(){
     var widthOutput = window.innerWidth;
     if (widthOutput <= 768){
