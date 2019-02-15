@@ -51,7 +51,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col m2 hide-on-med-and-down">
+                                <div class="col m2 hide-on-small-only">
                                     <div class="right">
                                         <ul id="dropdown1" class="dropdown-content">
                                             <li><a href="/dashboard">My Profile</a></li>
@@ -64,7 +64,12 @@
                                         </ul>
                                         {% if user.is_authenticated %}
                                             <ul>
-                                                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="dropdown">Hi, {{ user.first_name|truncatechars:15 }}</span><i class="material-icons right">arrow_drop_down</i></a></li>
+                                                <li>
+                                                    <a class="dropdown-trigger" href="#!" data-target="dropdown1">
+                                                        <span id="dropdown">Hi, {{ user.first_name|truncatechars:15 }}</span>
+                                                        <i class="material-icons right">arrow_drop_down</i>
+                                                    </a>
+                                                </li>
                                             </ul>
 
                                             {% else %}
@@ -78,7 +83,12 @@
                                                 <li><a href="/help">FAQs</a></li>
                                             </ul>
                                             <ul>
-                                                <li><a class="dropdown-trigger" href="#!" data-target="dropdown2"><span id="dropdown">My Teke</span><i class="material-icons right">arrow_drop_down</i></a></li>
+                                                <li>
+                                                    <a class="dropdown-trigger" href="#!" data-target="dropdown2">
+                                                        <span id="dropdown">My Teke</span>
+                                                        <i class="material-icons right">arrow_drop_down</i>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         {% endif %}
                                     </div>
