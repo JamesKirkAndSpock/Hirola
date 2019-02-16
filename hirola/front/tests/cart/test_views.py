@@ -1,7 +1,7 @@
 """Test shopping logic."""
 from front.base_test import (PhoneList, PhonesColor, BaseTestCase, User)
 from front.views import get_cart_total, get_cart_object, create_cart
-from front.models import (CountryCode, OrderStatus, Order, Cart)
+from front.models import (CountryCode, OrderStatus, Order, Cart, SocialMedia)
 
 
 class ConfirmBeforeCartTestCase(BaseTestCase):
@@ -22,9 +22,9 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         self.mulika = PhoneList.objects.get(phone_name="Samsung Galaxy Edge")
         Cart.objects.create(owner=self.user)
         self.cart = Cart.objects.get(owner=self.user.pk)
-        PhonesColor.objects.create(phone=self.mulika, size=self.size_android, price=10000,
-                                   quantity=5, is_in_stock=True,
-                                   color=self.color_one)
+        PhonesColor.objects.create(
+            phone=self.mulika, size=self.size_android, price=10000,
+            quantity=5, is_in_stock=True, color=self.color_one)
         OrderStatus.objects.create(status='pending')
         self.status = OrderStatus.objects.get(status="pending")
 
@@ -63,3 +63,17 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
                      "password1": data.get('password1') or "*&#@&!*($)lp",
                      "password2": data.get('password2') or "*&#@&!*($)lp"}
         return user_data
+
+    def test_categories_social_media_cart_page(self):
+        """
+        Test that when you visit the /before_checkout page
+            - That the phone categories and social media are rendered
+        """
+        SocialMedia.objects.create(
+            url_link="https://instagram.com", icon="fa fa-instagram",
+            name="Instagram")
+        get_response = self.client.get("/before_checkout")
+        self.assertContains(get_response, self.iphone)
+        self.assertContains(get_response, self.android)
+        self.assertContains(get_response, self.tablet)
+        self.assertContains(get_response, "Instagram")
