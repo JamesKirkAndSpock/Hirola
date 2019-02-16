@@ -5,9 +5,9 @@ from .models import (PhoneImage, Review, Feature, PhonesColor,
                      ProductInformation, ShippingAddress, PhoneList,
                      PhoneMemorySize, Currency, SocialMedia, Order,
                      OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
-                     Cart)
+                     Cart, RepairService, Address, ServicePerson, Service)
 from .forms.model_forms import (PhoneCategoryForm, HotDealForm,
-                                PhoneCategory, HotDeal)
+                                PhoneCategory, HotDeal, ServicePersonForm)
 from .forms.user_forms import (UserChangeForm, UserCreationForm,
                                User, CountryCode)
 
@@ -86,6 +86,9 @@ class HotDealAdmin(admin.ModelAdmin):
     form = HotDealForm
 
 
+class ServicePersonAdmin(admin.ModelAdmin):
+    form = ServicePersonForm
+
 admin.site.register(PhoneCategory, PhoneCategoryAdmin)
 admin.site.register(PhoneList, PhoneListAdmin)
 admin.site.register(PhoneMemorySize)
@@ -104,3 +107,7 @@ admin.site.register(InactiveUser)
 admin.site.register(Color)
 admin.site.register(PhonesColor)
 admin.site.register(Cart)
+admin.site.register(RepairService)
+admin.site.register(Address)
+admin.site.register(ServicePerson, ServicePersonAdmin)
+admin.site.register(Service)

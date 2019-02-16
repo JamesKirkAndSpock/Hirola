@@ -5,7 +5,8 @@ from hirola.settings.base import BASE_DIR
 from django.core.files.uploadedfile import SimpleUploadedFile
 from front.models import (PhoneCategory, PhoneMemorySize, Currency,
                           NewsItem, Color, PhonesColor, ItemIcon, PhoneList,
-                          cache, User)
+                          cache, User, ServicePerson, RepairService, Service,
+                          CountryCode)
 
 
 class BaseTestCase(TestCase):
@@ -21,6 +22,9 @@ class BaseTestCase(TestCase):
         self.create_news_item()
         self.create_color()
         self.add_phone_colors()
+        self.create_service_men()
+        self.create_repair_services()
+        self.add_serviceman_services()
 
     def create_admin(self):
         # Elena is an admin who has admin privilidges
@@ -107,6 +111,30 @@ class BaseTestCase(TestCase):
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=250000, phone_name="Samsung J7")
         self.samsung_j_7 = PhoneList.objects.get(phone_name="Samsung J7")
+
+    def create_repair_services(self):
+        RepairService.objects.create(repair_service="Battery replacement")
+        self.service_one = RepairService.objects.get(
+            repair_service="Battery replacement")
+        RepairService.objects.create(repair_service="Unlocking GSM")
+        self.service_two = RepairService.objects.get(
+            repair_service="Unlocking GSM")
+
+    def add_serviceman_services(self):
+        Service.objects.create(service=self.service_one,
+                               service_man=self.service_person_one)
+        Service.objects.create(service=self.service_two,
+                               service_man=self.service_person_one)
+
+    def create_service_men(self):
+        self.code = CountryCode.objects.all().first()
+        ServicePerson.objects.create(first_name="Wanjigi",
+                                     name_of_premise="Cutting Edge Tec",
+                                     country_code=self.code,
+                                     phone_number="715557775")
+        self.service_person_one = ServicePerson.objects.\
+            get(first_name="Wanjigi")
+
 
     def tearDown(self):
         cache.clear()

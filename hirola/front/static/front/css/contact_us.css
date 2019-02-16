@@ -1,0 +1,44 @@
+.landing-content {
+    /* font-size: 14pt; */
+    padding: 10px;
+    text-align: center;
+}
+
+table {
+  border-spacing: 0px;
+  margin: 0px;
+  font-size: 14px;
+  border: 1px solid rgb(221, 221, 221);
+}
+tr {
+  box-sizing: border-box;
+}
+
+th {
+  background-color: rgb(245, 245, 245);
+}
+
+.material-icons {
+  padding: 3px;
+  margin-top:3px;
+}
+
+.form-link {
+  color: green;
+  font-weight: bold;
+}
+
+.this-div {
+  padding-left: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-left: 10px;
+  border-radius: 5px;
+  background-color: rgb(245, 245, 245);
+}
+
+@media only screen and (max-width: 767px) {
+    .landing-content {
+        text-align: left;
+    }
+}

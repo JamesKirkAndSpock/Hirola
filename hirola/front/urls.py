@@ -56,5 +56,9 @@ urlpatterns = [
     path('resend_new_email_activation_link/',
          views.resend_new_email_activation_link,
          name='resend_new_email_activation_link'),
-    path('before_checkout', views.before_checkout_view, name='before_checkout')
+    path('before_checkout', views.before_checkout_view,
+         name='before_checkout'),
+    path('contact_us', views.contact_us_view, name='contact_us'),
+    path('repair_and_network', views.repair_and_network_view,
+         name='repair_and_network')
 ]

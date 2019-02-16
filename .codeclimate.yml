@@ -5,4 +5,4 @@ checks:
       threshold: 50
 exclude_patterns: ["hirola/front/static/front/js/lightslider.js", "config/", "db/",
                     "dist/", "features/", "**/node_modules/", "script/", "**/spec/", "**/test/",
-                    "**/tests/", "Tests/", "**/vendor/", "**/*_test.go", "**/*.d.ts"]
+                    "**/tests/", "Tests/", "**/vendor/", "**/*_test.go", "**/*.d.ts", 'hirola/front/migrations']

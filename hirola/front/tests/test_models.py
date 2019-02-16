@@ -3,7 +3,8 @@ from django.db import IntegrityError, DataError
 from front.errors import hot_deal_error
 from front.models import (PhoneCategory, get_default, PhoneList,
                           HotDeal, User, CountryCode, Order, OrderStatus,
-                          ShippingAddress, PhonesColor, Color, Cart)
+                          ShippingAddress, PhonesColor, Color, Cart,
+                          ServicePerson, RepairService, Service, Address)
 
 class PhoneCategoryModelsTestCase(BaseTestCase):
     def setUp(self):
@@ -210,3 +211,51 @@ class PhonesColorTestCase(BaseTestCase):
         self.assertEqual(str(phone_color), "White 8 GB")
         self.assertEqual(phone_color.price, 10000)
         self.assertEqual(phone_color.phone, phone_2)
+
+
+class ServicesNetworkTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(ServicesNetworkTestCase, self).setUp()
+
+    def test_model_creates_service_man(self):
+        code = CountryCode.objects.first()
+        ServicePerson.objects.create(first_name="Wanjigi",
+                                     name_of_premise="Cutting Edge Tec",
+                                     country_code=code,
+                                     phone_number="715777587")
+        service_man = ServicePerson.objects.filter(first_name="Wanjigi").\
+            first()
+        self.assertEqual(str(service_man), "Wanjigi")
+        RepairService.objects.create(repair_service="LED screen Repair")
+        repair_service = RepairService.objects.\
+            filter(repair_service="LED screen Repair").first()
+        self.assertEqual(str(repair_service), "LED screen Repair")
+        Service.objects.create(service=repair_service,
+                               service_man=self.service_person_one)
+        service = Service.objects.filter(service=repair_service).first()
+        self.assertEqual(str(service.service_man), "Wanjigi")
+
+    def test_assign_same_service_to_same_service_man_twice_error(self):
+        with self.assertRaises(IntegrityError):
+            Service.objects.create(service=self.service_one,
+                                   service_man=self.service_person_one)
+
+
+class AddressModelTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(AddressModelTestCase, self).setUp()
+
+    def test_create_valid_address(self):
+        Address.objects.create(address_line_one="P.O.Box 2354 - 00100",
+                               address_line_two="Nairobi")
+        address_one = Address.objects.get(address_line_two="Nairobi")
+        created_address = "P.O.Box 2354 - 00100" + "\n" + "Nairobi"
+        self.assertEqual(str(address_one), created_address)
+        Address.objects.create(address_line_one="P.O.Box 30305 - 00100",
+                               address_line_two="Mbagathi")
+        created_address_two = "P.O.Box 30305 - 00100" + "\n" +\
+            "Mbagathi"
+        address_two = Address.objects.get(address_line_two="Mbagathi")
+        self.assertEqual(str(address_two), created_address_two)
