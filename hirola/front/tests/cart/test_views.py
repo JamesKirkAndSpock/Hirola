@@ -77,3 +77,17 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         self.assertContains(get_response, self.android)
         self.assertContains(get_response, self.tablet)
         self.assertContains(get_response, "Instagram")
+
+    def test_cart_as_string(self):
+        """
+        Test the string representation of a cart
+            - That the cart renders the string Anonymous User in case no user
+            owns it
+            - That the cart renders the email of the User in case a user owns
+            it
+        """
+        self.assertIn("Uriel Timanko", str(self.cart))
+        Cart.objects.create(owner=None)
+        cart_object = Cart.objects.get(owner=None)
+        self.assertIn("Uriel Timanko", str(self.cart))
+        self.assertIn("Anonymouse User", str(cart_object))

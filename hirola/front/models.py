@@ -241,15 +241,17 @@ class PaymentMethod(models.Model):
 class Cart(models.Model):
     owner = models.ForeignKey(User, null=True, blank=True,
                               on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
-    updated = models.DateField(auto_now=True)
+    creation_date = models.DateField(auto_now_add=True)
+    modified_date = models.DateField(auto_now=True)
     total_price = IntegerRangeField(min_value=0, default=0)
     payment_method = models.ForeignKey(PaymentMethod,
                                        on_delete=models.SET_NULL,
                                        blank=True, null=True)
 
     def __str__(self):
-        return str(self.owner) + " date: " + str(self.date)
+        if self.owner:
+            return str(self.owner) + " date: " + str(self.creation_date)
+        return "Anonymouse User" + " date: " + str(self.creation_date)
 
 
 class Order(models.Model):
@@ -266,7 +268,8 @@ class Order(models.Model):
     payment_method = models.ForeignKey(PaymentMethod,
                                        on_delete=models.SET_NULL,
                                        blank=True, null=True)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, blank=True,
+                             null=True)
     def __str__(self):
         return str(self.phone) + ": " + str(self.owner) + " date: " + \
             str(self.date)
