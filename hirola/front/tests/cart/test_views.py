@@ -1,7 +1,8 @@
 """Test shopping logic."""
 from front.base_test import (PhoneList, PhonesColor, BaseTestCase, User)
-from front.views import get_cart_total, get_cart_object, create_cart
+from front.views import get_cart_total, get_cart_object
 from front.models import (CountryCode, OrderStatus, Order, Cart, SocialMedia)
+from django.test import Client
 
 
 class ConfirmBeforeCartTestCase(BaseTestCase):
@@ -41,14 +42,27 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         self.assertEqual(total, 75000)
 
     def test_get_cart_object(self):
+        """
+        Test that when a client without a session cart_id is passed to the
+        get_cart_object method
+            -  That an istances of the cart object is returned
+        """
         cart_object = get_cart_object(self.client)
         self.assertIsInstance(cart_object, Cart)
 
-
-    def test_create_cart(self):
-        create_cart(self.client, self.user)
-        cart_object = Cart.objects.filter(owner=self.user).first()
-        self.assertEqual(cart_object.owner, self.user)
+    def test_get_cart_object_with_session(self):
+        """
+        Test that when a client wit a session cart_id is passed to the
+        get_cart_object method
+            - That the cart with the owner's name is returned
+        """
+        Cart.objects.create(id=12345, owner=self.user)
+        client_session = self.client.session
+        client_session.update({"cart_id": 12345})
+        client_session.save()
+        cart_object = get_cart_object(self.client)
+        self.assertIsInstance(cart_object, Cart)
+        self.assertIn("Uriel Timanko", str(cart_object))
 
     def generate_user_data(self, data):
         '''

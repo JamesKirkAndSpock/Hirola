@@ -102,11 +102,6 @@ def country_codes(request):
     return JsonResponse(data)
 
 
-def create_cart(request, owner=None):
-    cart_obj = Cart.objects.create(owner=owner)
-    return cart_obj
-
-
 def add_cart_data(request):
     return save_order(request)
 
@@ -136,14 +131,11 @@ def save_order(request, owner=None):
 
 
 def get_cart_object(request):
-    cart_id = request.session.get('cart_id', None)
-    cart = Cart.objects.filter(id=cart_id)
-    cart_obj = None
-    if cart.count() == 1:
-        cart_obj = cart.first()
-    else:
-        cart_obj = create_cart(request)
-        request.session['cart_id'] = cart_obj.id
+    cart = Cart.objects.filter(id=request.session.get('cart_id')).first()
+    if cart:
+        return cart
+    cart_obj = Cart.objects.create(owner=None)
+    request.session['cart_id'] = cart_obj.id
     return cart_obj
 
 
