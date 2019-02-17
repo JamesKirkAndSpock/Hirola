@@ -209,14 +209,14 @@ def get_cart_items(request):
     (phone_categories, social_media) = various_caches()
     cart_id = get_cart_object(request)
     items = Order.objects.filter(cart=cart_id)
-    item_count = Order.objects.filter(cart=cart_id).count()
     total = get_cart_total(items)
     context = {
                 'categories': phone_categories,
                 'social_media': social_media, 'items': items,
-                'item_count': item_count, 'cart_total': total
+                'item_count': items.count(), 'cart_total': total
                 }
     return context
+
 
 @login_required
 def dashboard_view(request):
