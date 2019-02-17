@@ -5,7 +5,8 @@ from .models import (PhoneImage, Review, Feature, PhonesColor,
                      ProductInformation, ShippingAddress, PhoneList,
                      PhoneMemorySize, Currency, SocialMedia, Order,
                      OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
-                     Cart, RepairService, Address, ServicePerson, Service)
+                     Cart, RepairService, Address, ServicePerson, Service,
+                     PhoneBrand, PhoneModel, PhoneModelList)
 from .forms.model_forms import (PhoneCategoryForm, HotDealForm,
                                 PhoneCategory, HotDeal, ServicePersonForm)
 from .forms.user_forms import (UserChangeForm, UserCreationForm,
@@ -51,6 +52,24 @@ class PhoneListAdmin(admin.ModelAdmin):
     inlines = [PhoneImageInline, PhoneReviewInline, PhoneFeatureInline, PhoneProductInline,
                PhoneColorInline, ]
     change_form_template = 'admin/front/phone_list.html'
+
+
+class PhoneModelListInline(admin.StackedInline):
+    model = PhoneModelList
+    extra = 0
+
+
+class PhoneModelAdmin(admin.ModelAdmin):
+    inlines = [PhoneModelListInline]
+
+
+class PhoneModelInline(admin.TabularInline):
+    model = PhoneModel
+    extra = 0
+
+
+class PhoneBrandAdmin(admin.ModelAdmin):
+    inlines = [PhoneModelInline]
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -111,3 +130,6 @@ admin.site.register(RepairService)
 admin.site.register(Address)
 admin.site.register(ServicePerson, ServicePersonAdmin)
 admin.site.register(Service)
+admin.site.register(PhoneBrand, PhoneBrandAdmin)
+admin.site.register(PhoneModel, PhoneModelAdmin)
+admin.site.register(PhoneModelList)

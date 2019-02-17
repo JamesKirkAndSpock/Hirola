@@ -442,6 +442,9 @@ class PhoneBrand(models.Model):
             'unique': brand_name_unique_message, },)
     brand_icon = models.CharField(max_length=60, blank=True, default='')
 
+    def __str__(self):
+        return self.brand_name
+
 
 class PhoneModel(models.Model):
     """
@@ -456,6 +459,8 @@ class PhoneModel(models.Model):
         verbose_name_plural = "PhoneModels"
     category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL,
                                  null=True, blank=True)
+    brand = models.ForeignKey(PhoneBrand, on_delete=models.SET_NULL,
+                              null=True, blank=True)
     brand_model_unique_message = _(
         "The brand model you entered already exists",)
     brand_model = models.CharField(
@@ -486,6 +491,12 @@ class PhoneModelList(models.Model):
                      'Unselect this instead of deleting phone color.')
     is_in_stock = models.BooleanField(_('in_stock'), default=False,
                                       help_text=help_message, )
+
+    def __str__(self):
+        return ("Phone Model: " + str(self.phone_model) +
+                " Phone Model Color: " + str(self.color) +
+                " Phone Quantity: " + str(self.quantity) +
+                " Phone Size: " + str(self.size_sku))
 
 
 def delete_cache(model_class, object_id, cache_name):
