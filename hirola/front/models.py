@@ -121,11 +121,23 @@ class InactiveUser(models.Model):
             return full_name.strip()
         return self.email
 
+
+class ItemIcon(models.Model):
+    item_icon = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.item_icon
+
+
 class PhoneCategory(models.Model):
     class Meta:
         verbose_name_plural = "Phone Categories"
-    phone_category = models.CharField(default=None, max_length=15, blank=False, unique=True)
-    category_image = models.ImageField(blank=True, null=True, upload_to="phone_categories")
+    phone_category = models.CharField(default=None, max_length=15, blank=False,
+                                      unique=True)
+    category_image = models.ImageField(blank=True, null=True,
+                                       upload_to="phone_categories")
+    category_icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL,
+                                      null=True, blank=True)
 
     def __str__(self):
         return self.phone_category
@@ -163,13 +175,6 @@ class Currency(models.Model):
 
     def __str__(self):
         return str(self.currency_abbreviation)
-
-
-class ItemIcon(models.Model):
-    item_icon = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.item_icon
 
 
 class PhoneList(models.Model):
@@ -287,17 +292,6 @@ class Review(models.Model):
 
     def __str__(self):
         return str(self.owner) + ": " + str(self.stars) + " stars: " + self.comments
-
-
-class HotDeal(models.Model):
-    item = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.item.phone_name
-
-    def save(self, *args, **kwargs):
-        cache.delete('hot_deals')
-        super(HotDeal, self).save(*args, **kwargs)
 
 
 class PhoneImage(models.Model):
@@ -497,6 +491,17 @@ class PhoneModelList(models.Model):
                 " Phone Model Color: " + str(self.color) +
                 " Phone Quantity: " + str(self.quantity) +
                 " Phone Size: " + str(self.size_sku))
+
+
+class HotDeal(models.Model):
+    item = models.ForeignKey(PhoneModelList, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.item)
+
+    def save(self, *args, **kwargs):
+        cache.delete('hot_deals')
+        super(HotDeal, self).save(*args, **kwargs)
 
 
 def delete_cache(model_class, object_id, cache_name):

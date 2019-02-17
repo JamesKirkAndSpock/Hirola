@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from front.models import (PhoneCategory, PhoneMemorySize, Currency,
                           NewsItem, Color, PhonesColor, ItemIcon, PhoneList,
                           cache, User, ServicePerson, RepairService, Service,
-                          CountryCode)
+                          CountryCode, PhoneModelList, PhoneBrand, PhoneModel)
 
 
 class BaseTestCase(TestCase):
@@ -25,6 +25,9 @@ class BaseTestCase(TestCase):
         self.create_service_men()
         self.create_repair_services()
         self.add_serviceman_services()
+        self.create_phone_brand()
+        self.create_phone_model()
+        self.create_phone_model_list()
 
     def create_admin(self):
         # Elena is an admin who has admin privilidges
@@ -38,8 +41,11 @@ class BaseTestCase(TestCase):
     def create_phone_categories(self):
         # Create Phone Categories
         phone_list = ["Iphone", "Android", "Tablet"]
+        ItemIcon.objects.create(item_icon="icon-test")
+        icon = ItemIcon.objects.get(item_icon="icon-test")
         for item in phone_list:
-            PhoneCategory.objects.create(phone_category=item)
+            PhoneCategory.objects.create(phone_category=item,
+                                         category_icon=icon)
         self.iphone = PhoneCategory.objects.get(phone_category="Iphone")
         self.android = PhoneCategory.objects.get(phone_category="Android")
         self.tablet = PhoneCategory.objects.get(phone_category="Tablet")
@@ -111,6 +117,49 @@ class BaseTestCase(TestCase):
         PhoneList.objects.create(category=self.android, currency=self.currency_v,
                                  price=250000, phone_name="Samsung J7")
         self.samsung_j_7 = PhoneList.objects.get(phone_name="Samsung J7")
+
+    def create_phone_brand(self):
+        """
+        A method that creates a brand of a phone that can be used with other
+        tests.
+        """
+        PhoneBrand.objects.create(brand_name="Samsung")
+        PhoneBrand.objects.create(brand_name="Lg")
+        self.samsung_brand = PhoneBrand.objects.get(brand_name="Samsung")
+        self.lg_brand = PhoneBrand.objects.get(brand_name="Lg")
+
+    def create_phone_model(self):
+        """
+        A method that creates a model of a phone.
+        """
+        PhoneModel.objects.create(
+            category=self.android, brand=self.samsung_brand,
+            brand_model="Samsung Note 5", average_review=5.0)
+        self.samsung_note_5 = PhoneModel.objects.get(
+            brand_model="Samsung Note 5")
+        PhoneModel.objects.create(
+            category=self.android, brand=self.samsung_brand,
+            brand_model="Samsung Note 7", average_review=5.0)
+        self.samsung_note_7 = PhoneModel.objects.get(
+            brand_model="Samsung Note 7")
+
+    def create_phone_model_list(self):
+        PhoneModelList.objects.create(
+            phone_model=self.samsung_note_5, currency=self.currency_v,
+            price=25000, size_sku=self.size_android,
+            main_image=image("test_image_5.png"), color=self.color_one,
+            quantity=4, is_in_stock=True)
+        self.samsung_note_5_rose_gold = PhoneModelList.objects.get(
+            phone_model=self.samsung_note_5, color=self.color_one
+        )
+        PhoneModelList.objects.create(
+            phone_model=self.samsung_note_7, currency=self.currency_v,
+            price=25000, size_sku=self.size_android,
+            main_image=image("test_image_5.png"), color=self.color_one,
+            quantity=4, is_in_stock=True)
+        self.samsung_note_7_rose_gold = PhoneModelList.objects.get(
+            phone_model=self.samsung_note_7, color=self.color_one
+        )
 
     def create_repair_services(self):
         RepairService.objects.create(repair_service="Battery replacement")

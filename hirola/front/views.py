@@ -29,9 +29,10 @@ from django.contrib import messages
 def page_view(request):
     (phone_categories, social_media) = various_caches()
     hot_deals = cache.get('hot_deals') or set_cache(
-        HotDeal.objects.filter(item__phone_color_quantity__is_in_stock=True,
-                               item__phone_color_quantity__quantity__gte=1).distinct(), 'hot_deals')
-    context = {'categories': phone_categories, 'social_media': social_media, 'hot_deals': list(set(hot_deals))}
+        HotDeal.objects.filter(item__is_in_stock=True,
+                               item__quantity__gte=1).distinct(), 'hot_deals')
+    context = {'categories': phone_categories, 'social_media': social_media,
+               'hot_deals': list(set(hot_deals))}
     return render(request, 'front/landing_page.html', context)
 
 

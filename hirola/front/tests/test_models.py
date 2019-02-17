@@ -87,11 +87,12 @@ class HotDealModelsTestCase(BaseTestCase):
         one with the same Phone object
             - That a validation error is raised
         '''
-        HotDeal.objects.create(item=self.iphone_6)
+        HotDeal.objects.create(item=self.samsung_note_5_rose_gold)
         response = self.elena.post("/admin/front/hotdeal/add/",
-                                   {"item": self.iphone_6.pk})
+                                   {"item": self.samsung_note_5_rose_gold.pk})
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, hot_deal_error.format(self.iphone_6))
+        self.assertContains(response, hot_deal_error.format(
+            self.samsung_note_5_rose_gold))
 
 
 class NewsItemsTestCase(BaseTestCase):

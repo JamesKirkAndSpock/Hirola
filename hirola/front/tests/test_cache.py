@@ -95,30 +95,41 @@ class LandingPageCacheTest(BaseTestCase):
 
     def test_deal_cache_cleared_on_add(self):
         '''
-        Test that when a cache for hot_deals already exists, and a hot deal is added that
+        Test that when a cache for hot_deals already exists, and a hot deal is
+        added that
             - The cache for hot deals becomes None
         '''
         self.deals_category_cache_exists()
-        response = self.elena.post("/admin/front/hotdeal/add/", {"item": self.iphone_6.pk})
+        self.elena.post("/admin/front/hotdeal/add/",
+                        {"item": self.samsung_note_5_rose_gold.pk})
         hd_cache_after_add = cache.get('hot_deals')
         self.assertEqual(hd_cache_after_add, None)
 
     def test_deal_cache_cleared_on_edit(self):
-        '''
-        Test that when a cache for hot deals already exists, and a hot deal is edited that
+        """
+        Test that when a cache for hot deals already exists, and a hot deal is
+        edited that
             - The cache for hot deals becomes None
-        '''
+        """
         self.deals_category_cache_exists()
-        self.elena.post("/admin/front/hotdeal/add/", {"item": self.iphone_6.pk})
-        response = self.elena.post("/admin/front/hotdeal/{}/change/".format(self.iphone_6.pk),
-                                   {"item": self.samsung_j_7.pk})
+        self.elena.post("/admin/front/hotdeal/add/",
+                        {"item": self.samsung_note_5_rose_gold.pk})
+        self.elena.post("/admin/front/hotdeal/{}/change/".format(
+                self.samsung_note_5_rose_gold.pk),
+                {"item": self.samsung_note_7.pk})
         hd_cache_after_edit = cache.get('hot_deals')
         self.assertEqual(hd_cache_after_edit, None)
 
     def test_deal_cache_cleared_on_delete(self):
+        """
+        Test that when a cache for hot deals already exists, and a hot deal is
+        deleted that
+            - The cache for hot deals becomes None
+        """
         self.deals_category_cache_exists()
-        self.elena.post("/admin/front/hotdeal/add/", {"item": self.iphone_6.pk})
-        hot_deal = HotDeal.objects.get(item=self.iphone_6.pk)
+        self.elena.post("/admin/front/hotdeal/add/",
+                        {"item": self.samsung_note_5_rose_gold.pk})
+        hot_deal = HotDeal.objects.get(item=self.samsung_note_5_rose_gold.pk)
         hot_deal.delete()
         hd_cache_after_delete = cache.get('hot_deals')
         self.assertEqual(hd_cache_after_delete, None)
