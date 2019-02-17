@@ -429,6 +429,65 @@ class Service(models.Model):
         return str(self.service)
 
 
+class PhoneBrand(models.Model):
+    """
+    A table model to represent the brand of a phone. A phone brand in this
+    case is a particular brand of phone for a particular company e.g Samsung
+    that belongs to a particular Phone Category
+    """
+    brand_name_unique_message = _(
+        "The brand name you entered already exists",)
+    brand_name = models.CharField(
+        max_length=255, unique=True, error_messages={
+            'unique': brand_name_unique_message, },)
+    brand_icon = models.CharField(max_length=60, blank=True, default='')
+
+
+class PhoneModel(models.Model):
+    """
+    A table model to represent the model of a phone. A phone model in this
+    case is an item within a particular category such as either an android
+    phone, an iphone or a tablet. The item is of a particular brand lets
+    say apple or samsung. But uniquely the item is of a particular brand
+    model e.g. Samsung S7 This brand model then can have various phones
+    within it that range based on color, price and size
+    """
+    class Meta:
+        verbose_name_plural = "PhoneModels"
+    category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
+    brand_model_unique_message = _(
+        "The brand model you entered already exists",)
+    brand_model = models.CharField(
+        max_length=255, unique=True, error_messages={
+            'unique': brand_model_unique_message, },)
+    average_review = models.DecimalField(max_digits=2, decimal_places=1,
+                                         default=5.0)
+
+    def __str__(self):
+        return self.brand_model
+
+
+class PhoneModelList(models.Model):
+    """
+    A table model for phones within a particular Phone Model
+    """
+    phone_model = models.ForeignKey(PhoneModel, on_delete=models.CASCADE)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
+    price = models.DecimalField(max_digits=6, decimal_places=0)
+    size_sku = models.ForeignKey(PhoneMemorySize, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
+    main_image = models.ImageField(upload_to="phones")
+    color = models.ForeignKey(
+        Color, on_delete=models.SET_NULL, null=True, blank=True)
+    quantity = IntegerRangeField(min_value=0)
+    help_message = _('Designates whether this phone color is in stock. '
+                     'Unselect this instead of deleting phone color.')
+    is_in_stock = models.BooleanField(_('in_stock'), default=False,
+                                      help_text=help_message, )
+
+
 def delete_cache(model_class, object_id, cache_name):
     model_object = model_class.objects.get(pk=object_id)
     if model_object.category:
