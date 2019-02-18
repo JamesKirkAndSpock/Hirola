@@ -138,22 +138,51 @@
             <h5><b>Contact our support team</b></h5>
             <p>You can fill the form below or contact our support team at <b>support@gmail.com</b></p>
             <div class="row">
-                <form class="col s12 m6">
+                <form class="col s12 m6" method="POST">
+                    {% csrf_token %}
                     <div class="row">
                         <div class="input-field col s12">
-                            <input placeholder="Name (optional)" id="name" type="text">
+                            {{ form.name }}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12">
-                            <input placeholder="Email or phone number" id="tel" type="text">
-                        </div>
+                        {% if form.name.errors %}
+                            {% for error in form.name.errors %}
+                                <p>
+                                    {{ error }}
+                                </p>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <textarea id="message" class="materialize-textarea"></textarea>
+                            {{ form.email }}
                         </div>
-                    </div><br>
+                    </div>
+                    <div class="row error">
+                        {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                                <p>
+                                    {{ form.email.errors|escape }}
+                                </p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{ form.comment }}
+                        </div>
+                    </div>
+                    <div class="row error">
+                        {% if form.comment.errors %}
+                            {% for error in form.comment.errors %}
+                                <p>
+                                    {{ form.comment.errors|escape }}
+                                </p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <br>
                     <div class="row">
                         <div class="col s6 right">
                             <button class="btn waves-effect waves-light right" type="submit" name="action">Send
@@ -165,13 +194,21 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    var messages = []
+        {% if messages %}
+            {% for message in messages %}
+               messages.push({'message':'{{ message|safe }}', 'tag': '{{message.tags}}'});
+            {% endfor %}
+        {% endif %}
+</script>
 {% block footer %}
 {% include 'front/footer.html' %}
 {% endblock %}
 {% block scripts %}
 {{ block.super }}
 {% load static %}
-<!-- <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script> -->
 <script src="{% static 'front/js/material_init.js' %}"></script>
+<script src="{% static 'front/js/help.js' %}"></script>
 {% endblock %}
 {% endblock %}

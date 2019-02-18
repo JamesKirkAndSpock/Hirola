@@ -77,3 +77,13 @@ p {
   font-size: 16px;
 
 }
+
+ul.errorlist li{
+  font-weight: 600 !important;
+  color: red !important;
+  float: left;
+}
+
+.error {
+  padding-left: 10px !important;
+}

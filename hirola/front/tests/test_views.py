@@ -426,3 +426,38 @@ class ContactUsTestcase(BaseTestCase):
         response = self.client.get('/contact_us')
         html = "Contact teke"
         self.assertContains(response, html)
+
+
+class FAQSupportEmailTestCase(BaseTestCase):
+
+    def setUp(self):
+        super(FAQSupportEmailTestCase, self).setUp()
+
+    def test_user_can_send_email(self):
+        """Test user can send email via the contact us form"""
+        data = {
+            "email": "p@g.com",
+            "name": "peter",
+            "comment": "I have nothing to say"
+        }
+        response = self.client.post('/help', data, follow=True)
+        self.assertRedirects(response, "/help#help-center", 302)
+        message = list(response.context.get('messages'))[0]
+        self.assertEqual(message.tags, 'success')
+        s_msg = 'Thank you for your feedback! We will get back to you shortl'
+        self.assertTrue('{}'.format(s_msg) in message.message)
+
+    def test_user_cannot_send_email_with_invalid_body(self):
+        """Test user can send email via the contact us form"""
+        data = {
+            "email": "p@g.com",
+            "name": "peter",
+            "comment": "$$$$$ %%%%% @@@@@"
+        }
+        response = self.client.post('/help', data)
+        self.assertEqual(response.status_code, 200)
+        message = list(response.context.get('messages'))[0]
+        self.assertEqual(message.tags, 'error')
+        s_msg = 'Sorry we were not able to process your request at this '\
+                'time, please correct the errors in the form and try again'
+        self.assertTrue('{}'.format(s_msg) in message.message)
