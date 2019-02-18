@@ -459,5 +459,5 @@ class ContactUsForm(forms.Form):
         if subject and body and from_email:
             email_message = EmailMultiAlternatives(
                 subject, body, from_email, [to_email]
-                )
+            )
             email_message.send()

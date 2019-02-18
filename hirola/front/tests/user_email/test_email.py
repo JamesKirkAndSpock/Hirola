@@ -251,12 +251,11 @@ class FAQSupportEmailTestCase(BaseTestCase):
 
     def test_send_support_email(self):
         request = RequestFactory()
-        request = request.post("",
-                               {
-                                   "email": "p@g.com",
-                                   "name": "peter",
-                                   "comment": "I have nothing to say"
-                                   })
+        request = request.post("", {
+            "email": "p@g.com",
+            "name": "peter",
+            "comment": "I have nothing to say"
+        })
         form = ContactUsForm(request.POST)
         self.assertTrue(form.is_valid())
         form.send_email()

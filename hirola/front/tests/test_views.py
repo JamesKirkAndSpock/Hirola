@@ -439,7 +439,7 @@ class FAQSupportEmailTestCase(BaseTestCase):
             "email": "p@g.com",
             "name": "peter",
             "comment": "I have nothing to say"
-            }
+        }
         response = self.client.post('/help', data, follow=True)
         self.assertRedirects(response, "/help#help-center", 302)
         message = list(response.context.get('messages'))[0]
@@ -453,7 +453,7 @@ class FAQSupportEmailTestCase(BaseTestCase):
             "email": "p@g.com",
             "name": "peter",
             "comment": "$$$$$ %%%%% @@@@@"
-            }
+        }
         response = self.client.post('/help', data)
         self.assertEqual(response.status_code, 200)
         message = list(response.context.get('messages'))[0]
