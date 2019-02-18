@@ -16,7 +16,7 @@ from django.utils.encoding import force_bytes
 from front.token import account_activation_token, email_activation_token
 from django.core.validators import validate_email
 import re
-
+from django.conf import settings
 
 
 class UserCreationForm(forms.ModelForm):
@@ -449,11 +449,13 @@ class ContactUsForm(forms.Form):
         return comment
 
     def send_email(self):
-        to_email = 'testermail717@gmail.com'
+        to_email = settings.EMAIL_HOST_USER
         from_email = self.cleaned_data.get('email')
-        sender_name = self.cleaned_data.get('name') or 'N/A'
-        subject = "Help and support" + " from " + sender_name
+        sender_name = self.cleaned_data.get('name') or 'Anonymous User'
+        subject = "Help and support request" + " from " + sender_name
         body = self.cleaned_data.get('comment')
+        body += '\n'
+        body += from_email
         if subject and body and from_email:
             email_message = EmailMultiAlternatives(
                 subject, body, from_email, [to_email]

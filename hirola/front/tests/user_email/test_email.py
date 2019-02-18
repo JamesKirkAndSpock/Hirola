@@ -261,9 +261,11 @@ class FAQSupportEmailTestCase(BaseTestCase):
         self.assertTrue(form.is_valid())
         form.send_email()
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].to, ['testermail717@gmail.com'])
-        subject = "Help and support from peter"
+        self.assertEqual(mail.outbox[0].to, [settings.EMAIL_HOST_USER])
+        subject = "Help and support request from peter"
         self.assertEqual(mail.outbox[0].subject, subject)
         body = "I have nothing to say"
+        body += '\n'
+        body += request.POST.get('email')
         self.assertEqual(mail.outbox[0].body, body)
         self.assertEqual(mail.outbox[0].from_email, "p@g.com")

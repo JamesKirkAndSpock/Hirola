@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    console.log(messages);
     messages.forEach(function (message) {
         if (message.tag == 'error'){
             M.toast({
