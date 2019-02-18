@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from .models import (CountryCode, User, PhoneCategory,
                      PhoneMemorySize, PhonesColor, PhoneList,
                      SocialMedia, Review, HotDeal, NewsItem, Order,
-                     OrderStatus, Cart, ServicePerson)
+                     OrderStatus, Cart, ServicePerson, PhoneModelList)
 from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (UserCreationForm, AuthenticationForm,
@@ -38,8 +38,10 @@ def page_view(request):
 
 def phone_category_view(request, category_id):
     phones = cache.get('phones_{}'.format(category_id)) or set_cache(
-        PhoneList.objects.filter(category=category_id, phone_color_quantity__is_in_stock=True,
-                                 phone_color_quantity__quantity__gte=1).distinct(), 'phones_{}'.format(category_id))
+        PhoneModelList.objects.filter(
+            is_in_stock=True, quantity__gte=1,
+            phone_model__category=category_id).distinct(), 'phones_{}'.format(
+                category_id))
     return shared_phone_view(request, phones, category_id)
 
 

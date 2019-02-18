@@ -157,14 +157,13 @@ class PhoneListViewsTestCase(BaseTestCase):
         Currency.objects.create(currency_abbreviation="£$Shs",
                                 currency_long_form="Pound")
         currency = Currency.objects.get(currency_long_form="Pound")
-        PhoneList.objects.create(category=self.iphone, currency=currency,
-                                 price=30, phone_name="Iphone 8S")
-        phone = PhoneList.objects.get(phone_name="Iphone 8S")
-        PhonesColor.objects.create(phone=phone, size=self.any_phone_size,
-                                   price=10000, color=self.color_one,
-                                   quantity=4, is_in_stock=True)
+        PhoneModelList.objects.create(
+            phone_model=self.samsung_note_5, currency=currency,
+            price=32000, size_sku=self.size_android,
+            main_image=image("test_image_5.png"), color=self.color_one,
+            quantity=4, is_in_stock=True)
         response = self.client.get("/phone_category/{}/".
-                                   format(self.iphone.pk))
+                                   format(self.android.pk))
         self.assertContains(response, "£$Shs")
 
     def test_creation_of_entry(self):
@@ -183,51 +182,41 @@ class PhoneListViewsTestCase(BaseTestCase):
         self.assertRedirects(response, "/admin/front/phonelist/")
 
     def test_phones_rendering(self):
-        PhoneList.objects.create(category=self.android,
-                                 currency=self.currency_v, price=8000,
-                                 phone_name="LG Razor J7",
-                                 size_sku=self.size_android)
-        self.lg_razor = PhoneList.objects.get(phone_name="LG Razor J7")
-        PhonesColor.objects.create(phone=self.lg_razor, size=self.size_android,
-                                   price=10000, quantity=1, is_in_stock=True,
-                                   color=self.color_one)
-        PhoneList.objects.create(category=self.android,
-                                 currency=self.currency_v, price=8000,
-                                 phone_name="Samsung S8",
-                                 size_sku=self.size_android)
-        self.samsung_s8 = PhoneList.objects.get(phone_name="Samsung S8")
-        PhonesColor.objects.create(phone=self.samsung_s8,
-                                   size=self.any_phone_size, price=10000,
-                                   quantity=0, is_in_stock=True,
-                                   color=self.color_one)
-        PhoneList.objects.create(category=self.android,
-                                 currency=self.currency_v, price=8000,
-                                 phone_name="Samsung Note 5",
-                                 size_sku=self.size_android)
-        self.samsung_n5 = PhoneList.objects.get(phone_name="Samsung Note 5")
-        PhonesColor.objects.create(phone=self.samsung_n5,
-                                   size=self.any_phone_size, price=10000,
-                                   quantity=1, is_in_stock=False,
-                                   color=self.color_one)
+        """
+        Test that when you visit the landing page:
+            - That phones in stock and with a quantity greater than or equal
+            to 1 are rendered
+            - That phones not in stock are not rendered
+            - That phones with a quantity of zero are not rendered
+        """
+        PhoneModel.objects.create(
+            category=self.android, brand=self.samsung_brand,
+            brand_model="Samsung Note 6", average_review=5.0)
+        self.samsung_note_6 = PhoneModel.objects.get(
+            category=self.android, brand=self.samsung_brand,
+            brand_model="Samsung Note 6")
+        PhoneModelList.objects.create(
+            phone_model=self.samsung_note_6, currency=self.currency_v,
+            price=32000, size_sku=self.size_android,
+            main_image=image("test_image_5.png"), color=self.color_one,
+            quantity=0, is_in_stock=True)
+        PhoneModel.objects.create(
+            category=self.android, brand=self.samsung_brand,
+            brand_model="Samsung Note 8", average_review=5.0)
+        self.samsung_note_8 = PhoneModel.objects.get(
+            category=self.android, brand=self.samsung_brand,
+            brand_model="Samsung Note 8")
+        PhoneModelList.objects.create(
+            phone_model=self.samsung_note_8, currency=self.currency_v,
+            price=32000, size_sku=self.size_android,
+            main_image=image("test_image_5.png"), color=self.color_one,
+            quantity=1, is_in_stock=False)
         get_response = self.client.get("/phone_category/{}/".
                                        format(self.android.pk))
-        self.assertContains(get_response, "LG Razor J7")
-        self.assertNotContains(get_response, "Samsung S8")
-        self.assertNotContains(get_response, "Samsung Note 5")
-
-
-# class PhoneMemorySizeViewsTestCase(BaseTestCase):
-#     def setUp(self):
-#         super(PhoneMemorySizeViewsTestCase, self).setUp()
-
-#     def test_views_according_to_phone_category(self):
-#         data = {self.iphone.pk: ["8 GB", "24 GB"],
-#                 self.android.pk: ["16 GB", "8 GB"],
-#                 self.tablet.pk: ["24 GB", "16 GB"]}
-#         for key in data:
-#             response = self.client.get('/phone_category/{}/'.format(key))
-#             self.assertContains(response, data[key][0])
-#             self.assertNotContains(response, data[key][1])
+        self.assertContains(get_response, "Samsung Note 5")
+        self.assertContains(get_response, "Samsung Note 7")
+        self.assertNotContains(get_response, "Samsung Note 6")
+        self.assertNotContains(get_response, "Samsung Note 8")
 
 
 class ClientViewsTestCase(BaseTestCase):
@@ -244,24 +233,16 @@ class ClientViewsTestCase(BaseTestCase):
                                    price=10000, color=self.color_one,
                                    quantity=5, is_in_stock=True)
 
-    # def test_rendering_on_page_view(self):
-    #     mock_image = image("test_image_1.jpeg")
-    #     LandingPageImage.objects.create(phone_name="ViewPhone",
-    #                                     phone_tag="ViewPhone1_Tag",
-    #                                     photo=mock_image, pk=4)
-    #     response = self.client.get('/')
-    #     self.assertContains(response, "Iphone")
-    #     self.assertContains(response, "Android")
-    #     self.assertContains(response, "/media/test_image_1")
-
     def test_phone_category_view(self):
-        self.create_phone("test_image_5.png", self.iphone, self.size_iphone,
-                          "LaIphone", self.currency_v)
+        """
+        Test the phone_category view to determine that the data for phone
+        categories are rendered
+        """
         response = self.client.get('/phone_category/{}/'
-                                   .format(self.iphone.pk))
+                                   .format(self.android.pk))
         self.assertContains(response, "V$")
         self.assertContains(response, 25)
-        self.assertContains(response, "LaIphone")
+        self.assertContains(response, "Samsung Note 5")
         self.assertContains(response, "/media/phones/test_image_5")
 
     # def test_phone_category_size_view(self):
@@ -273,27 +254,6 @@ class ClientViewsTestCase(BaseTestCase):
     #                                    .format(test_variables[key][0]))
     #         self.assertContains(response, test_variables[key][1])
     #         self.assertNotContains(response, test_variables[key][2])
-
-    def test_size_search(self):
-        data_1 = {"a": [self.iphone, self.size_iphone, "Iphone1"],
-                  "b": [self.android, self.size_android, "Android1"],
-                  "c": [self.tablet, self.size_tablet, "Tablet1"]}
-        for key in data_1:
-            self.create_phone("test_image_5.png", data_1[key][0],
-                              data_1[key][1], data_1[key][2], self.currency_v)
-        data_2 = {"a": [self.iphone.pk, self.size_iphone.pk, "Iphone1",
-                        "Android1", "with a size of".format(self.size_iphone)],
-                  "b": [self.android.pk, self.size_android.pk, "Android1",
-                        "Tablet1", "with a size of".format(self.size_iphone)],
-                  "c": [self.tablet.pk, self.size_tablet.pk, "Tablet1",
-                        "Iphone1", "with a size of".format(self.size_iphone)],
-                  }
-        for key in data_2:
-            response = self.client.get('/phone_category/{}/{}/'
-                                       .format(data_2[key][0], data_2[key][1]))
-            self.assertContains(response, data_2[key][2])
-            self.assertNotContains(response, data_2[key][3])
-            self.assertContains(response, data_2[key][4])
 
     def test_size_filter(self):
         response = self.client.get('/sizes', {"id": self.android.pk})
