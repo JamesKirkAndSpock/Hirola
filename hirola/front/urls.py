@@ -9,8 +9,6 @@ urlpatterns = [
     path('phone_category/<int:category_id>/', views.phone_category_view,
          name='phone_category'),
     path('profile/<int:phone_id>/', views.phone_profile_view, name='profile'),
-    path('phone_category/<int:category_id>/<int:size>/',
-         views.phone_category_size_view, name='phone_category_size'),
     path('sizes', views.sizes, name='sizes'),
     path('country_codes', views.country_codes, name='country_codes'),
     path('about', views.about_view, name='about'),

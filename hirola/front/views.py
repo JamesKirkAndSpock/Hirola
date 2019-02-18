@@ -45,15 +45,6 @@ def phone_category_view(request, category_id):
     return shared_phone_view(request, phones, category_id)
 
 
-def phone_category_size_view(request, category_id, size):
-    phones = PhoneList.objects.filter(
-        category=category_id, size_sku=size, phone_color_quantity__is_in_stock=True,
-        phone_color_quantity__quantity__gte=1).distinct()
-    size_obj = PhoneMemorySize.objects.get(pk=size)
-    size_message = "with a size of " + str(size_obj)
-    return shared_phone_view(request, phones, category_id, size_message)
-
-
 def shared_phone_view(request, phones, category_id, message=""):
     category_pk = cache.get('category_{}'.format(category_id)) or set_cache(
         PhoneCategory.objects.get(pk=category_id),
