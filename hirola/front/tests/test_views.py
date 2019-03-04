@@ -154,17 +154,9 @@ class PhoneListViewsTestCase(BaseTestCase):
         super(PhoneListViewsTestCase, self).setUp()
 
     def test_shillings_value_is_returned(self):
-        Currency.objects.create(currency_abbreviation="£$Shs",
-                                currency_long_form="Pound")
-        currency = Currency.objects.get(currency_long_form="Pound")
-        PhoneModelList.objects.create(
-            phone_model=self.samsung_note_5, currency=currency,
-            price=32000, size_sku=self.size_android,
-            main_image=image("test_image_5.png"), color=self.color_one,
-            quantity=4, is_in_stock=True)
         response = self.client.get("/phone_category/{}/".
                                    format(self.android.pk))
-        self.assertContains(response, "£$Shs")
+        self.assertContains(response, "V$")
 
     def test_creation_of_entry(self):
         '''
