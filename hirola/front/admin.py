@@ -48,23 +48,23 @@ class ShippingAddressInline(admin.StackedInline):
     max_num = 1
 
 
-class PhoneListAdmin(admin.ModelAdmin):
-    inlines = [PhoneImageInline, PhoneReviewInline, PhoneFeatureInline, PhoneProductInline,
-               PhoneColorInline, ]
-    change_form_template = 'admin/front/phone_list.html'
-
-
 class PhoneModelListInline(admin.StackedInline):
     model = PhoneModelList
     extra = 0
 
 
 class PhoneModelAdmin(admin.ModelAdmin):
-    inlines = [PhoneModelListInline]
+    inlines = [PhoneModelListInline, PhoneReviewInline]
 
 
 class PhoneModelInline(admin.TabularInline):
     model = PhoneModel
+    extra = 0
+
+
+class PhoneModelListAdmin(admin.ModelAdmin):
+    inlines = [PhoneFeatureInline, PhoneProductInline, PhoneImageInline]
+    model = PhoneModelList
     extra = 0
 
 
@@ -109,7 +109,6 @@ class ServicePersonAdmin(admin.ModelAdmin):
     form = ServicePersonForm
 
 admin.site.register(PhoneCategory, PhoneCategoryAdmin)
-admin.site.register(PhoneList, PhoneListAdmin)
 admin.site.register(PhoneMemorySize)
 admin.site.register(Currency)
 admin.site.register(SocialMedia)
@@ -132,4 +131,4 @@ admin.site.register(ServicePerson, ServicePersonAdmin)
 admin.site.register(Service)
 admin.site.register(PhoneBrand, PhoneBrandAdmin)
 admin.site.register(PhoneModel, PhoneModelAdmin)
-admin.site.register(PhoneModelList)
+admin.site.register(PhoneModelList, PhoneModelListAdmin)

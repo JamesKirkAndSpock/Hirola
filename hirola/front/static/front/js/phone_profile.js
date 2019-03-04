@@ -1,22 +1,3 @@
-$('#color').on('change', function () {
-    $('#quantityRow option').not(':first').remove();
-    var pk = this.value;
-    Object.keys(quantities).forEach(function (key) {
-        if (pk == quantities[key].secondary_details) {
-            var phone_quantity= comma(quantities[key].price);
-            var price = quantities[key].currency + ' ' + phone_quantity;
-            var quantity = quantities[key].quantity;
-            $('#price').html(price);
-            $('#size').val(quantities[key].size);
-            $('#cart_phone_price').val(quantities[key].price);
-            for (var i = 0; i <= quantity; i++) {
-                $('select').formSelect();
-                var $newOpt = $("<option>").attr("value", (i+1)).text(i + 1);
-                $("#quantity").append($newOpt);
-            }
-        }
-    });
-});
 
 function comma(x) {
     var parts = x.toString().split(".");

@@ -283,37 +283,11 @@ class Order(models.Model):
     def get_address(order):
         return ShippingAddress.objects.filter(order=order).first()
 
-class Review(models.Model):
-    stars = IntegerRangeField(min_value=1, max_value=5)
-    comments = models.TextField()
-    phone = models.ForeignKey(PhoneList,  related_name='phone_reviews', on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    time = models.DateField(auto_now=True)
-
-    def __str__(self):
-        return str(self.owner) + ": " + str(self.stars) + " stars: " + self.comments
-
-
-class PhoneImage(models.Model):
-    phone = models.ForeignKey(PhoneList, related_name='phone_images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="phones")
-
-
-class Feature(models.Model):
-    phone = models.ForeignKey(PhoneList, related_name='phone_features', on_delete=models.CASCADE)
-    feature = models.TextField()
-
 class ShippingAddress(models.Model):
     order = models.ForeignKey(Order, related_name='shipping_address', on_delete=models.CASCADE)
     pickup = models.CharField(max_length=255, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
     recepient = models.CharField(max_length=255, blank=True, null=True)
-
-
-class ProductInformation(models.Model):
-    phone = models.ForeignKey(PhoneList, related_name='phone_information', on_delete=models.CASCADE)
-    feature = models.CharField(max_length=256)
-    value = models.CharField(max_length=256)
 
 
 class NewsItem(models.Model):
@@ -327,7 +301,9 @@ class NewsItem(models.Model):
 
 
 class Color(models.Model):
-    color = models.CharField(max_length=40)
+    color = models.CharField(
+        max_length=40, unique=True, error_messages={
+            'unique': 'The color you entered already exists'})
 
     def __str__(self):
         return self.color
@@ -462,6 +438,7 @@ class PhoneModel(models.Model):
             'unique': brand_model_unique_message, },)
     average_review = models.DecimalField(max_digits=2, decimal_places=1,
                                          default=5.0)
+    brand_model_image = models.ImageField(upload_to="brand_models", default="brand_model_image_alt")
 
     def __str__(self):
         return self.brand_model
@@ -471,26 +448,55 @@ class PhoneModelList(models.Model):
     """
     A table model for phones within a particular Phone Model
     """
-    phone_model = models.ForeignKey(PhoneModel, on_delete=models.CASCADE)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL,
+    phone_model = models.ForeignKey(PhoneModel, related_name='phone_list', on_delete=models.CASCADE)
+    color = models.ForeignKey(
+        Color, related_name='phone_color', on_delete=models.SET_NULL, null=True, blank=True)
+    size_sku = models.ForeignKey(PhoneMemorySize, related_name='phone_size', on_delete=models.SET_NULL,
                                  null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=0)
-    size_sku = models.ForeignKey(PhoneMemorySize, on_delete=models.SET_NULL,
-                                 null=True, blank=True)
-    main_image = models.ImageField(upload_to="phones")
-    color = models.ForeignKey(
-        Color, on_delete=models.SET_NULL, null=True, blank=True)
     quantity = IntegerRangeField(min_value=0)
     help_message = _('Designates whether this phone color is in stock. '
                      'Unselect this instead of deleting phone color.')
     is_in_stock = models.BooleanField(_('in_stock'), default=False,
-                                      help_text=help_message, )
+                                  help_text=help_message, )
+    main_image = models.ImageField(upload_to="phones")
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
 
     def __str__(self):
-        return ("Phone Model: " + str(self.phone_model) +
-                " Phone Model Color: " + str(self.color) +
-                " Phone Quantity: " + str(self.quantity) +
-                " Phone Size: " + str(self.size_sku))
+        return ("Phone Model: " + str(self.phone_model))
+
+    @property
+    def get_lowest_price(phone):
+        return PhoneModelList.objects.filter(phone_model=phone.phone_model).order_by('price').first().price
+
+
+class Feature(models.Model):
+    phone = models.ForeignKey(PhoneModelList, related_name='phone_features', on_delete=models.CASCADE)
+    feature = models.CharField(max_length=256)
+
+
+class Review(models.Model):
+    stars = IntegerRangeField(min_value=1, max_value=5)
+    comments = models.TextField()
+    phone_model = models.ForeignKey(PhoneModel,  related_name='phone_reviews', on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    time = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return str(self.owner) + ": " + str(self.stars) + " stars: " + self.comments
+
+
+class ProductInformation(models.Model):
+    phone = models.ForeignKey(PhoneModelList, related_name='phone_information', on_delete=models.CASCADE)
+    feature = models.CharField(max_length=256, unique=True)
+    value = models.CharField(max_length=256)
+
+
+
+class PhoneImage(models.Model):
+    image = models.ImageField(upload_to="phones")
+    images = models.ForeignKey(PhoneModelList, related_name='phone_images', on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class HotDeal(models.Model):
@@ -540,28 +546,28 @@ def clear_hot_deals_cache(sender, **kwargs):
 
 @receiver(post_save, sender=Review)
 def adjust_average_review(sender, **kwargs):
-    average_review(kwargs["instance"].phone_id)
+    average_review(kwargs["instance"].phone_model_id)
 
 
 @receiver(post_delete, sender=Review)
 def adjust_average_review_delete(sender, **kwargs):
-    average_review(kwargs["instance"].phone_id)
+    average_review(kwargs["instance"].phone_model_id)
 
 
-def average_review(phone_id):
-    reviews = Review.objects.filter(phone=phone_id)
+def average_review(phone_model_id):
+    reviews = Review.objects.filter(phone_model=phone_model_id)
     if reviews:
         counter = 0
         for review in reviews:
             counter += review.stars
         average = counter / reviews.count()
-        phone = PhoneList.objects.get(pk=phone_id)
-        phone.average_review = average
-        phone.save()
+        phone_model = PhoneModel.objects.get(pk=phone_model_id)
+        phone_model.average_review = average
+        phone_model.save()
     else:
-        phone = PhoneList.objects.get(pk=phone_id)
-        phone.average_review = 5.0
-        phone.save()
+        phone_model = PhoneModelList.objects.get(pk=phone_model_id)
+        phone_model.average_review = 5.0
+        phone_model.save()
 
 
 def cache_delete(cache_name, cache_id):

@@ -8,7 +8,7 @@ urlpatterns = [
     path('', views.page_view, name='landing_page'),
     path('phone_category/<int:category_id>/', views.phone_category_view,
          name='phone_category'),
-    path('profile/<int:phone_id>/', views.phone_profile_view, name='profile'),
+    path('profile/<int:phone_model_id>/', views.phone_profile_view, name='profile'),
     path('sizes', views.sizes, name='sizes'),
     path('country_codes', views.country_codes, name='country_codes'),
     path('about', views.about_view, name='about'),
@@ -58,5 +58,8 @@ urlpatterns = [
          name='before_checkout'),
     path('contact_us', views.contact_us_view, name='contact_us'),
     path('repair_and_network', views.repair_and_network_view,
-         name='repair_and_network')
+         name='repair_and_network'),
+    path('get_sizes', views.get_sizes, name='get_sizes'),
+    path('size_change', views.size_change, name='size_change'),
+    path('quantity_change', views.quantity_change, name='quantity_change'),
 ]

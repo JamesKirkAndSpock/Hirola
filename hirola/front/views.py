@@ -1,11 +1,12 @@
 import re
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .models import (CountryCode, User, PhoneCategory,
-                     PhoneMemorySize, PhonesColor, PhoneList,
+                     PhoneMemorySize, PhonesColor,
                      SocialMedia, Review, HotDeal, NewsItem, Order,
-                     OrderStatus, Cart, ServicePerson, PhoneModelList)
+                     OrderStatus, Cart, ServicePerson, PhoneModelList,
+                     PhoneModel)
 from django.views import generic
 from django.core.cache import cache
 from .forms.user_forms import (UserCreationForm, AuthenticationForm,
@@ -24,6 +25,7 @@ from .decorators import (
     old_password_required, remember_user, is_change_allowed_required)
 from django.utils import timezone
 from django.contrib import messages
+from django.conf import settings
 
 
 def page_view(request):
@@ -40,7 +42,7 @@ def phone_category_view(request, category_id):
     phones = cache.get('phones_{}'.format(category_id)) or set_cache(
         PhoneModelList.objects.filter(
             is_in_stock=True, quantity__gte=1,
-            phone_model__category=category_id).distinct(), 'phones_{}'.format(
+            phone_model__category=category_id).distinct('phone_model'), 'phones_{}'.format(
                 category_id))
     return shared_phone_view(request, phones, category_id)
 
@@ -133,41 +135,71 @@ def get_cart_object(request):
     return cart_obj
 
 
-def generate_profile_view_load(phone_id, form):
-    phone = PhoneList.objects.filter(pk=phone_id).first()
-    if not phone:
+def phone_profile_view(request, phone_model_id):
+    phone_model = PhoneModel.objects.filter(id=phone_model_id).first()
+    if not phone_model:
         return redirect("/error")
-    form = form
-    secondary_details = PhonesColor.objects.filter(phone=phone_id,
-                                                   is_in_stock=True)
-    phone_sizes = PhoneMemorySize.objects.filter(category=phone.category)
+    phone = PhoneModelList.objects.filter(phone_model=phone_model).order_by('price').first()
+    phone_model_sizes = phone_model.phone_list.filter(color=phone.color).order_by('size_sku__size_number').distinct('size_sku__size_number').exclude(size_sku=phone.size_sku)
+    phone_model_colors = phone_model.phone_list.distinct('color').exclude(color=phone.color)
     (phone_categories, social_media) = various_caches()
-    context = {
-                "phone": phone, "secondary_details": secondary_details,
-                "image_list": phone.phone_images.all(),
-                "customer_reviews": phone.phone_reviews.all(),
-                "features": phone.phone_features.all(),
-                "infos": phone.phone_information.all(),
-                'categories': phone_categories, 'social_media': social_media,
-                'sizes': phone_sizes, 'form': form
-                }
-    return context
-
-
-def phone_profile_view(request, phone_id):
+    context = {"phone_model": phone_model, "phone": phone,
+               "image_list": phone.phone_images.all(),
+               "phone_model_sizes": phone_model_sizes,
+               "phone_model_colors": phone_model_colors,
+               "features": phone.phone_features.all(),
+               "infos": phone.phone_information.all(),
+               "customer_reviews": phone_model.phone_reviews.all(),
+               }
     if request.method == "POST":
         form = PhoneProfileUserDataCollectionForm(request.POST)
         if form.is_valid():
             return add_cart_data(request)
         context = generate_profile_view_load(phone_id, form)
         return render(request, 'front/phone_profile.html', context)
-    phone = PhoneList.objects.filter(pk=phone_id).first()
-    if not phone:
-        return redirect("/error")
-    form = PhoneProfileUserDataCollectionForm()
-    context = generate_profile_view_load(phone_id, form)
     return render(request, 'front/phone_profile.html', context)
 
+
+def get_sizes(request):
+    phone_model = PhoneModel.objects.filter(id=request.GET["phone_model_id"]).first()
+    phone = PhoneModelList.objects.filter(phone_model=phone_model, color=request.GET["id"]).order_by('price').first()
+    phone_model_sizes = phone_model.phone_list.filter(color=request.GET["id"]).order_by('size_sku__size_number').distinct('size_sku__size_number').exclude(id=phone.pk)
+    sizes_data = {}
+    for size in phone_model_sizes:
+        sizes_data[size.size_sku.pk] = str(size.size_sku)
+    main_image = settings.MEDIA_URL + str(phone.main_image)
+    feature_list = []
+    for feature in phone.phone_features.all():
+        feature_list.append(feature.feature)
+    phone_information = {}
+    for info in phone.phone_information.all():
+        phone_information[info.feature] = info.value
+    data = {"sizes": sizes_data, "sizes_length": len(sizes_data),
+            "phone_size_id": phone.size_sku.pk,
+            "phone_size": str(phone.size_sku),
+            "phone_quantity": phone.quantity, "price": phone.price,
+            "currency": str(phone.currency), "main_image": main_image,
+            "features": feature_list,
+            "infos": phone_information,
+            }
+    return JsonResponse(data)
+
+
+def size_change(request):
+    phone_model = PhoneModel.objects.filter(id=request.GET["phone_model_id"]).first()
+    phone = PhoneModelList.objects.filter(phone_model=phone_model, size_sku=request.GET["size_id"]).order_by('price').first()
+    main_image = settings.MEDIA_URL + str(phone.main_image)
+    data = {"phone_quantity": phone.quantity, "price": phone.price, "currency": str(phone.currency), "main_image": main_image}
+    return JsonResponse(data)
+
+
+def quantity_change(request):
+    quantity = int(request.GET["qty"]) + 1
+    phone_model = PhoneModel.objects.filter(id=request.GET["phone_model_id"]).first()
+    phone = PhoneModelList.objects.filter(phone_model=phone_model, color=request.GET["color_id"], size_sku=request.GET["size_id"]).first()
+    total_cost = quantity * phone.price
+    data = {"total_cost": total_cost, "currency": str(phone.currency)}
+    return JsonResponse(data)
 
 def phone_view(request):
     return render(request, 'front/phone.html')
