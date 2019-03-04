@@ -43,7 +43,7 @@ class DashboardTemplate(BaseTestCase):
         '''
         (owner, order) = self.generate_review_data()
         data = {"stars": 5, "comments": "Great job guys", "owner": owner.id,
-                "phone": self.samsung_j_7.id}
+                "phone_model": self.samsung_note_5.id}
         response = self.elena.post('/admin/front/review/add/', data)
         self.assertEqual(response.status_code, 302)
         get_response = self.uriel.get('/dashboard')
@@ -59,7 +59,7 @@ class DashboardTemplate(BaseTestCase):
         data = []
         for i in range(5):
             data.append({"stars": i+1, "comments": "Great job guys", "owner": owner.id,
-                         "phone": self.iphone_6.id})
+                         "phone_model": self.iphone_6_s.id})
         checked_star = (
             "<i class=\"material-icons left checked\">grade</i>\n             "
             "               \n                            "
@@ -90,7 +90,7 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(get_response, "<b>Quantity</b><span> {}</span>".format(order.quantity))
         self.assertContains(get_response, "<b>Total Price</b><span> 80000</span>".format(order.total_price))
         self.assertContains(get_response, "<span> {}</span>".format(order.status))
-        self.assertContains(get_response, "<b>Purchase Date </b><span> {}".format(order.date.strftime("%b. ")))
+        self.assertContains(get_response, "<b>Purchase Date </b><span> {}".format(order.date.strftime("%b")))
         self.assertContains(get_response, "Recepient: {}".format(owner))
         self.assertContains(get_response, "Location: {}".format(order.get_address.location))
         self.assertContains(get_response, "Pick up: {}".format(order.get_address.pickup))
@@ -110,7 +110,7 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(post_response, "<b>Quantity</b><span> {}</span>".format(order.quantity))
         self.assertContains(post_response, "<b>Total Price</b><span> 80000</span>".format(order.total_price))
         self.assertContains(post_response, "<span> {}</span>".format(order.status))
-        self.assertContains(post_response, "<b>Purchase Date </b><span> {}".format(order.date.strftime("%b. ")))
+        self.assertContains(post_response, "<b>Purchase Date </b><span> {}".format(order.date.strftime("%b")))
         self.assertContains(post_response, "Recepient: {}".format(first_name_data["first_name"] + " " + owner.last_name))
         self.assertContains(post_response, "Location: {}".format(order.get_address.location))
         self.assertContains(post_response, "Pick up: {}".format(order.get_address.pickup))
