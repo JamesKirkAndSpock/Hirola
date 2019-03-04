@@ -219,38 +219,6 @@ class PhoneListViewsTestCase(BaseTestCase):
         self.assertNotContains(get_response, "Samsung Note 8")
 
 
-class ClientViewsTestCase(BaseTestCase):
-    def setUp(self):
-        super(ClientViewsTestCase, self).setUp()
-
-    def create_phone(self, image_name, category, size, name, currency):
-        mock_image = image(image_name)
-        PhoneList.objects.create(category=category, main_image=mock_image,
-                                 phone_name=name, currency=currency, price=25,
-                                 size_sku=size)
-        phone = PhoneList.objects.get(phone_name=name)
-        PhonesColor.objects.create(phone=phone, size=self.size_android,
-                                   price=10000, color=self.color_one,
-                                   quantity=5, is_in_stock=True)
-
-    def test_phone_category_view(self):
-        """
-        Test the phone_category view to determine that the data for phone
-        categories are rendered
-        """
-        response = self.client.get('/phone_category/{}/'
-                                   .format(self.android.pk))
-        self.assertContains(response, "V$")
-        self.assertContains(response, 25)
-        self.assertContains(response, "Samsung Note 5")
-        self.assertContains(response, "/media/phones/test_image_5")
-
-    def test_size_filter(self):
-        response = self.client.get('/sizes', {"id": self.android.pk})
-        self.assertContains(response, self.size_android.pk)
-        self.assertContains(response, self.size_android)
-
-
 class AboutPageViewsTestCase(BaseTestCase):
     def setUp(self):
         super(AboutPageViewsTestCase, self).setUp()

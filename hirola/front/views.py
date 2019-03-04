@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse, HttpResponse
 from .models import (CountryCode, User, PhoneCategory,
                      PhoneMemorySize, PhonesColor,
-                     SocialMedia, Review, HotDeal, NewsItem, Order,
+                     SocialMedia, Review, HotDeal, NewsItem, Order, PhoneList,
                      OrderStatus, Cart, ServicePerson, PhoneModelList,
                      PhoneModel)
 from django.views import generic
