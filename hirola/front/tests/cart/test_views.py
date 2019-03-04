@@ -32,10 +32,10 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
     def test_get_cart_total(self):
         """Test functionality to calculate cart total."""
         Order.objects.create(
-            owner=self.user, phone=self.mulika, status=self.status, quantity=2,
+            owner=self.user, phone=self.samsung_note_5_rose_gold, status=self.status, quantity=2,
             price=25000, total_price=50000, cart=self.cart)
         Order.objects.create(
-            owner=self.user, phone=self.mulika, status=self.status, quantity=2,
+            owner=self.user, phone=self.samsung_note_5_rose_gold, status=self.status, quantity=2,
             price=25000, total_price=25000, cart=self.cart)
         order = Order.objects.filter(owner=self.user)
         total = get_cart_total(order)
