@@ -84,7 +84,7 @@ class DashboardTemplate(BaseTestCase):
         '''
         (owner, order) = self.generate_review_data()
         get_response = self.uriel.get('/dashboard')
-        self.assertContains(get_response, order.phone.phone_name)
+        self.assertContains(get_response, order.phone.phone_model)
         self.assertContains(get_response, "<p><b>Order No.</b><span> #{}</span>".format(order.pk))
         self.assertContains(get_response, "<b>Payment Method</b><span> {}</span>".format(order.payment_method))
         self.assertContains(get_response, "<b>Quantity</b><span> {}</span>".format(order.quantity))
@@ -104,7 +104,7 @@ class DashboardTemplate(BaseTestCase):
         first_name_data = {"first_name": "Britney"}
         post_response = self.uriel.post('/dashboard', first_name_data)
         self.assertEqual(post_response.status_code, 200)
-        self.assertContains(post_response, order.phone.phone_name)
+        self.assertContains(post_response, order.phone.phone_model)
         self.assertContains(post_response, "<p><b>Order No.</b><span> #{}</span>".format(order.pk))
         self.assertContains(post_response, "<b>Payment Method</b><span> {}</span>".format(order.payment_method))
         self.assertContains(post_response, "<b>Quantity</b><span> {}</span>".format(order.quantity))
@@ -130,15 +130,12 @@ class DashboardTemplate(BaseTestCase):
 
     def generate_review_data(self, shipping_address=None):
         owner = User.objects.get(email="urieltimanko@example.com")
-        PhoneList.objects.create(category=self.iphone, main_image=image('test_image_5.png'),
-                                 phone_name="Samsung", currency=self.currency_v, price=25000)
         OrderStatus.objects.create(status="Pending")
-        phone = PhoneList.objects.get(phone_name="Samsung")
         status = OrderStatus.objects.get(status="Pending")
         Cart.objects.create(owner=None)
         cart = Cart.objects.get(owner=None)
         Order.objects.create(
-            owner=owner, phone=phone, status=status, quantity=2, price=25000,
+            owner=owner, phone=self.samsung_note_5_rose_gold, status=status, quantity=2, price=25000,
             total_price=80000, cart=cart)
         order = Order.objects.get(owner=owner)
         ShippingAddress.objects.create(order=order, location="Kiambu Road", pickup="Evergreen Center")

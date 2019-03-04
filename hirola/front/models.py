@@ -259,37 +259,6 @@ class Cart(models.Model):
         return "Anonymouse User" + " date: " + str(self.creation_date)
 
 
-class Order(models.Model):
-
-    owner = models.ForeignKey(User, null=True, blank=True,
-                              on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
-    phone = models.ForeignKey(PhoneList, on_delete=models.CASCADE)
-    status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
-    quantity = IntegerRangeField(min_value=1)
-    price = models.DecimalField(max_digits=6, decimal_places=0)
-    size = models.CharField(max_length=4, null=True, blank=True)
-    total_price = IntegerRangeField(min_value=0, default=0)
-    payment_method = models.ForeignKey(PaymentMethod,
-                                       on_delete=models.SET_NULL,
-                                       blank=True, null=True)
-    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, blank=True,
-                             null=True)
-    def __str__(self):
-        return str(self.phone) + ": " + str(self.owner) + " date: " + \
-            str(self.date)
-
-    @property
-    def get_address(order):
-        return ShippingAddress.objects.filter(order=order).first()
-
-class ShippingAddress(models.Model):
-    order = models.ForeignKey(Order, related_name='shipping_address', on_delete=models.CASCADE)
-    pickup = models.CharField(max_length=255, blank=True, null=True)
-    location = models.CharField(max_length=255, blank=True, null=True)
-    recepient = models.CharField(max_length=255, blank=True, null=True)
-
-
 class NewsItem(models.Model):
     title = models.CharField(max_length=256)
     source = models.CharField(max_length=256)
@@ -469,6 +438,38 @@ class PhoneModelList(models.Model):
     @property
     def get_lowest_price(phone):
         return PhoneModelList.objects.filter(phone_model=phone.phone_model).order_by('price').first().price
+
+
+class Order(models.Model):
+
+    owner = models.ForeignKey(User, null=True, blank=True,
+                              on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    phone = models.ForeignKey(PhoneModelList, on_delete=models.CASCADE)
+    status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
+    quantity = IntegerRangeField(min_value=1)
+    price = models.DecimalField(max_digits=6, decimal_places=0)
+    size = models.CharField(max_length=4, null=True, blank=True)
+    total_price = IntegerRangeField(min_value=0, default=0)
+    payment_method = models.ForeignKey(PaymentMethod,
+                                       on_delete=models.SET_NULL,
+                                       blank=True, null=True)
+    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, blank=True,
+                             null=True)
+    def __str__(self):
+        return str(self.phone) + ": " + str(self.owner) + " date: " + \
+            str(self.date)
+
+    @property
+    def get_address(order):
+        return ShippingAddress.objects.filter(order=order).first()
+
+
+class ShippingAddress(models.Model):
+    order = models.ForeignKey(Order, related_name='shipping_address', on_delete=models.CASCADE)
+    pickup = models.CharField(max_length=255, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    recepient = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Feature(models.Model):
