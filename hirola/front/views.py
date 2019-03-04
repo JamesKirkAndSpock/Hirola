@@ -553,30 +553,22 @@ def search_view(request):
     (phone_categories, social_media) = various_caches()
     if request.method == "POST":
         search_name = request.POST.get("search-name")
-        results = list(PhoneList.objects.filter(phone_name__icontains=search_name,
-                       phone_color_quantity__is_in_stock=True,
-                       phone_color_quantity__quantity__gte=1))
-        results += list(PhoneList.objects.filter(category__phone_category__icontains=search_name,
-                        phone_color_quantity__is_in_stock=True,
-                        phone_color_quantity__quantity__gte=1))
-        results += list(PhoneList.objects.filter(phone_features__feature__icontains=search_name,
-                        phone_color_quantity__is_in_stock=True,
-                        phone_color_quantity__quantity__gte=1))
-        results += list(PhoneList.objects.filter(phone_information__feature__icontains=search_name,
-                        phone_color_quantity__is_in_stock=True,
-                        phone_color_quantity__quantity__gte=1))
-        results += list(PhoneList.objects.filter(phone_information__value__icontains=search_name,
-                        phone_color_quantity__is_in_stock=True,
-                        phone_color_quantity__quantity__gte=1))
-        results += list(PhoneList.objects.filter(phone_reviews__comments__icontains=search_name,
-                        phone_color_quantity__is_in_stock=True,
-                        phone_color_quantity__quantity__gte=1))
-        results += list(PhoneList.objects.filter(price__icontains=search_name,
-                        phone_color_quantity__is_in_stock=True,
-                        phone_color_quantity__quantity__gte=1))
-        results += list(PhoneList.objects.filter(size_sku__size_number__icontains=search_name,
-                        phone_color_quantity__is_in_stock=True,
-                        phone_color_quantity__quantity__gte=1))
+        results = list(PhoneModelList.objects.filter(phone_model__brand_model__icontains=search_name,
+                       is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(phone_model__category__phone_category__icontains=search_name,
+                       is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(phone_features__feature__icontains=search_name,
+                        is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(phone_information__feature__icontains=search_name,
+                        is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(phone_information__value__icontains=search_name,
+                        is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(phone_model__phone_reviews__comments__icontains=search_name,
+                        is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(
+            price__icontains=search_name, is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(size_sku__size_number__icontains=search_name,
+                        is_in_stock=True, quantity__gte=1))
         results = list(set(results))
         args = {"results": results, "instructions": False,
                 'categories': phone_categories,  'social_media': social_media}

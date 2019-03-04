@@ -125,8 +125,10 @@ class BaseTestCase(TestCase):
         """
         PhoneBrand.objects.create(brand_name="Samsung")
         PhoneBrand.objects.create(brand_name="Lg")
+        PhoneBrand.objects.create(brand_name="Apple")
         self.samsung_brand = PhoneBrand.objects.get(brand_name="Samsung")
         self.lg_brand = PhoneBrand.objects.get(brand_name="Lg")
+        self.apple_brand = PhoneBrand.objects.get(brand_name="Apple")
 
     def create_phone_model(self):
         """
@@ -142,6 +144,11 @@ class BaseTestCase(TestCase):
             brand_model="Samsung Note 7", average_review=5.0)
         self.samsung_note_7 = PhoneModel.objects.get(
             brand_model="Samsung Note 7")
+        PhoneModel.objects.create(
+            category=self.iphone, brand=self.apple_brand,
+            brand_model="Iphone 6 S", average_review=5.0)
+        self.iphone_6_s = PhoneModel.objects.get(
+            brand_model="Iphone 6 S")
 
     def create_phone_model_list(self):
         PhoneModelList.objects.create(
@@ -159,6 +166,14 @@ class BaseTestCase(TestCase):
             quantity=4, is_in_stock=True)
         self.samsung_note_7_rose_gold = PhoneModelList.objects.get(
             phone_model=self.samsung_note_7, color=self.color_one
+        )
+        PhoneModelList.objects.create(
+            phone_model=self.iphone_6_s, currency=self.currency_v,
+            price=25000, size_sku=self.size_iphone,
+            main_image=image("test_image_5.png"), color=self.color_one,
+            quantity=4, is_in_stock=True)
+        self.iphone_6_s_rose_gold = PhoneModelList.objects.get(
+            phone_model=self.iphone_6_s, color=self.color_one
         )
 
     def create_repair_services(self):

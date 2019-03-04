@@ -489,7 +489,7 @@ class Review(models.Model):
 
 class ProductInformation(models.Model):
     phone = models.ForeignKey(PhoneModelList, related_name='phone_information', on_delete=models.CASCADE)
-    feature = models.CharField(max_length=256, unique=True)
+    feature = models.CharField(max_length=256)
     value = models.CharField(max_length=256)
 
 
