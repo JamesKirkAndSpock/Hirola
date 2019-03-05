@@ -152,8 +152,7 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         response = self.client.get(
             '/phone_category/{}/'.format(self.iphone.id))
         facebook_url = "<a href=\"https://facebook.com\" target=\"_blank\">"
-        facebook_data_icon_name = ("<i class=\"fa fa-facebook\"></i>",
-                                   " Facebook</a>")
+        facebook_data_icon_name = "<i class=\"fa fa-facebook\"></i> Facebook</a>"
         self.assertContains(response, facebook_url)
         self.assertContains(response, facebook_data_icon_name)
 
