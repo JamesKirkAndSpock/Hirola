@@ -21,13 +21,17 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         self.create_currency()
         self.create_item_icon()
         self.create_phone_list()
+        self.create_color()
+        self.create_phone_brand()
+        self.create_phone_model()
+        self.create_phone_model_list()
 
     def test_teke_link(self):
         '''
         Test that the teke link redirects to the landing page
         '''
         driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
+        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.samsung_note_5_rose_gold.pk)))
         driver.find_element_by_id("profile-main-page").click()
         self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/'))
 
@@ -36,9 +40,9 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         Test that the iphone link redirects to the phone category page for iphones
         '''
         driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
-        driver.find_element_by_link_text("iPhone").click()
-        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/phone_category/{}/'.format(self.iphone.pk)))
+        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.samsung_note_5_rose_gold.pk)))
+        driver.find_element_by_link_text("Android").click()
+        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/phone_category/{}/'.format(self.android.pk)))
 
     def test_phone_link(self):
         '''
@@ -46,8 +50,8 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         phone.
         '''
         driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
-        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
+        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.samsung_note_5_rose_gold.pk)))
+        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/profile/{}/'.format(self.samsung_note_5_rose_gold.pk)))
 
     def test_faq_link(self):
         '''

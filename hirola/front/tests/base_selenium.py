@@ -5,7 +5,8 @@ from django.test import TestCase
 from front.models import (SocialMedia, PhoneCategory, PhoneMemorySize,
                           Currency, ItemIcon, PhoneList, CountryCode, User,
                           Order, OrderStatus, PaymentMethod, ShippingAddress,
-                          NewsItem, cache, Cart)
+                          NewsItem, cache, Cart, PhoneBrand, PhoneModel,
+                          PhoneModelList, Color)
 
 
 class BaseSeleniumTestCase(StaticLiveServerTestCase):
@@ -81,7 +82,8 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
     def create_order(self):
         Cart.objects.create(owner=None)
         cart = Cart.objects.get(owner=None)
-        Order.objects.create(owner=self.timon, phone=self.iphone_example,
+        Order.objects.create(owner=self.timon,
+                             phone=self.iphone_6_s_rose_gold,
                              status=self.order_status, quantity=2,
                              price=10000, total_price=20000,
                              payment_method=self.mpesa, date="2018-12-12",
@@ -103,6 +105,72 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
         self.timon = User.objects.get(email="timon@gmail.com")
         self.timon.set_password("secrets")
         self.timon.save()
+
+    def create_color(self):
+        Color.objects.create(color="Red")
+        Color.objects.create(color="RoseGold")
+        Color.objects.create(color="Silver")
+        self.color_one = Color.objects.get(color="Red")
+        self.color_two = Color.objects.get(color="RoseGold")
+        self.color_three = Color.objects.get(color="Silver")
+
+    def create_phone_brand(self):
+        """
+        A method that creates a brand of a phone that can be used with other
+        tests.
+        """
+        PhoneBrand.objects.create(brand_name="Samsung")
+        PhoneBrand.objects.create(brand_name="Lg")
+        PhoneBrand.objects.create(brand_name="Apple")
+        self.samsung_brand = PhoneBrand.objects.get(brand_name="Samsung")
+        self.lg_brand = PhoneBrand.objects.get(brand_name="Lg")
+        self.apple_brand = PhoneBrand.objects.get(brand_name="Apple")
+
+    def create_phone_model(self):
+        """
+        A method that creates a model of a phone.
+        """
+        PhoneModel.objects.create(
+            category=self.android, brand=self.samsung_brand,
+            brand_model="Samsung Note 5", average_review=5.0)
+        self.samsung_note_5 = PhoneModel.objects.get(
+            brand_model="Samsung Note 5")
+        PhoneModel.objects.create(
+            category=self.android, brand=self.samsung_brand,
+            brand_model="Samsung Note 7", average_review=5.0)
+        self.samsung_note_7 = PhoneModel.objects.get(
+            brand_model="Samsung Note 7")
+        PhoneModel.objects.create(
+            category=self.iphone, brand=self.apple_brand,
+            brand_model="Iphone 6 S", average_review=5.0)
+        self.iphone_6_s = PhoneModel.objects.get(
+            brand_model="Iphone 6 S")
+
+    def create_phone_model_list(self):
+        PhoneModelList.objects.create(
+            phone_model=self.samsung_note_5, currency=self.currency,
+            price=25000, size_sku=self.android_size,
+             color=self.color_one,
+            quantity=4, is_in_stock=True)
+        self.samsung_note_5_rose_gold = PhoneModelList.objects.get(
+            phone_model=self.samsung_note_5, color=self.color_one
+        )
+        PhoneModelList.objects.create(
+            phone_model=self.samsung_note_7, currency=self.currency,
+            price=25000, size_sku=self.android_size,
+             color=self.color_one,
+            quantity=4, is_in_stock=True)
+        self.samsung_note_7_rose_gold = PhoneModelList.objects.get(
+            phone_model=self.samsung_note_7, color=self.color_one
+        )
+        PhoneModelList.objects.create(
+            phone_model=self.iphone_6_s, currency=self.currency,
+            price=25000, size_sku=self.iphone_size,
+             color=self.color_one,
+            quantity=4, is_in_stock=True)
+        self.iphone_6_s_rose_gold = PhoneModelList.objects.get(
+            phone_model=self.iphone_6_s, color=self.color_one
+        )
 
     def tearDown(self):
         cache.clear()

@@ -19,6 +19,10 @@ class MyOrders(BaseSeleniumTestCase):
         self.create_phone_list()
         self.create_order_status()
         self.create_payment_method()
+        self.create_color()
+        self.create_phone_brand()
+        self.create_phone_model()
+        self.create_phone_model_list()
         self.create_order()
         self.create_shipping_address()
 
