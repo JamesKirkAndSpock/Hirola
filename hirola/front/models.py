@@ -1,7 +1,6 @@
 '''
 Models
 '''
-import datetime
 from django.db import models
 from django.core.cache import cache
 from django.db.models.signals import pre_delete, post_delete, post_save
@@ -13,7 +12,8 @@ from django.utils import timezone
 
 
 def get_default():
-    return CountryCode.objects.get_or_create(country_code=254, country="Kenya")[0]
+    return CountryCode.objects.get_or_create(
+        country_code=254, country="Kenya")[0]
 
 
 class CountryCode(models.Model):
@@ -62,28 +62,38 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True, error_messages={
-            'unique': _("The email address you entered has already been registered.",), },
+            'unique': _(
+                "The email address you entered has already been registered.",),
+                },
                         max_length=255)
     first_name = models.CharField(_('first_name'), max_length=30, blank=True)
     last_name = models.CharField(_('last_name'), max_length=30, blank=True)
     date_joined = models.DateTimeField(_('date_joined'), default=timezone.now)
-    is_staff = models.BooleanField(_('staff status'), default=False, help_text=_(
+    is_staff = models.BooleanField(_('staff status'), default=False,
+                                   help_text=_(
         'Designates whether the user can log into this admin site.'),)
     is_active = models.BooleanField(_('active'), default=True, help_text=_(
             'Designates whether this user should be treated as active. '
             'Unselect this instead of deleting accounts.'), )
-    is_change_allowed = models.BooleanField(_('change_allowed'), default=False, help_text=_(
-            'Designates whether this user has been authorized to change his own'
-            'password, in the change_password view.'),)
-    country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL, null=True, blank=True)
+    is_change_allowed = models.BooleanField(_('change_allowed'), default=False,
+                                            help_text=_(
+            'Designates whether this user has been authorized to change '
+            'his own password, in the change_password view.'),)
+    country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL,
+                                     null=True, blank=True)
     phone_number = models.IntegerField(blank=True, null=True)
     photo = models.ImageField(blank=True, null=True)
-    change_email = models.EmailField(_('email address'), unique=True, error_messages={
-            'unique': _("The email address you entered has already been registered.",), },
+    change_email = models.EmailField(_('email address'), unique=True,
+                                     error_messages={
+            'unique': _(
+                "The email address you entered has already been registered.",),
+                },
                         max_length=255, default=None, blank=True, null=True)
-    change_email_tracker = models.DateTimeField(_('change_email_tracker'), default=None, blank=True,
+    change_email_tracker = models.DateTimeField(_('change_email_tracker'),
+                                                default=None, blank=True,
                                                 null=True)
-    former_email = models.EmailField(_('email address'), max_length=255, default=None, blank=True,
+    former_email = models.EmailField(_('email address'), max_length=255,
+                                     default=None, blank=True,
                                      null=True)
 
     objects = UserManager()
@@ -104,16 +114,20 @@ class InactiveUser(models.Model):
     first_name = models.CharField(_('first_name'), max_length=30, blank=True)
     last_name = models.CharField(_('last_name'), max_length=30, blank=True)
     date_joined = models.DateTimeField(_('date_joined'), default=timezone.now)
-    country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL, null=True, blank=True)
+    country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL,
+                                     null=True, blank=True)
     phone_number = models.IntegerField(blank=True, null=True)
     photo = models.ImageField(blank=True, null=True)
-    change_email = models.EmailField(_('email address'),
-                        max_length=255, default=None, blank=True, null=True)
-    change_email_tracker = models.DateTimeField(_('change_email_tracker'), default=None, blank=True,
-                                                null=True)
-    former_email = models.EmailField(_('email address'), max_length=255, default=None, blank=True,
-                                     null=True)
-    password = models.CharField(max_length=100, default=None, blank=True, null=True)
+    change_email = models.EmailField(
+        _('email address'), max_length=255, default=None, blank=True,
+        null=True)
+    change_email_tracker = models.DateTimeField(
+        _('change_email_tracker'), default=None, blank=True, null=True)
+    former_email = models.EmailField(
+        _('email address'), max_length=255, default=None, blank=True,
+        null=True)
+    password = models.CharField(max_length=100, default=None, blank=True,
+                                null=True)
 
     def __str__(self):
         if self.first_name and self.last_name:
@@ -152,7 +166,8 @@ class PhoneCategory(models.Model):
 class PhoneMemorySize(models.Model):
     abbreviation = models.CharField(max_length=10)
     size_number = models.IntegerField(blank=True, null=True)
-    category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
 
     def __str__(self):
         return str(self.size_number) + " " + self.abbreviation
@@ -180,13 +195,18 @@ class Currency(models.Model):
 class PhoneList(models.Model):
     class Meta:
         verbose_name_plural = "Phones"
-    category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
     phone_name = models.CharField(max_length=255, blank=False, default=None)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=0)
-    size_sku = models.ForeignKey(PhoneMemorySize, on_delete=models.SET_NULL, null=True, blank=True)
-    icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL, null=True, blank=True)
-    average_review = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
+    size_sku = models.ForeignKey(PhoneMemorySize, on_delete=models.SET_NULL,
+                                 null=True, blank=True)
+    icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL, null=True,
+                             blank=True)
+    average_review = models.DecimalField(max_digits=2, decimal_places=1,
+                                         default=5.0)
     main_image = models.ImageField(upload_to="phones")
 
     def __str__(self):
@@ -407,7 +427,8 @@ class PhoneModel(models.Model):
             'unique': brand_model_unique_message, },)
     average_review = models.DecimalField(max_digits=2, decimal_places=1,
                                          default=5.0)
-    brand_model_image = models.ImageField(upload_to="brand_models", default="brand_model_image_alt")
+    brand_model_image = models.ImageField(upload_to="brand_models",
+                                          default="brand_model_image_alt")
 
     def __str__(self):
         return self.brand_model
@@ -417,17 +438,20 @@ class PhoneModelList(models.Model):
     """
     A table model for phones within a particular Phone Model
     """
-    phone_model = models.ForeignKey(PhoneModel, related_name='phone_list', on_delete=models.CASCADE)
+    phone_model = models.ForeignKey(PhoneModel, related_name='phone_list',
+                                    on_delete=models.CASCADE)
     color = models.ForeignKey(
-        Color, related_name='phone_color', on_delete=models.SET_NULL, null=True, blank=True)
-    size_sku = models.ForeignKey(PhoneMemorySize, related_name='phone_size', on_delete=models.SET_NULL,
+        Color, related_name='phone_color', on_delete=models.SET_NULL,
+        null=True, blank=True)
+    size_sku = models.ForeignKey(PhoneMemorySize, related_name='phone_size',
+                                 on_delete=models.SET_NULL,
                                  null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=0)
     quantity = IntegerRangeField(min_value=0)
     help_message = _('Designates whether this phone color is in stock. '
                      'Unselect this instead of deleting phone color.')
     is_in_stock = models.BooleanField(_('in_stock'), default=False,
-                                  help_text=help_message, )
+                                      help_text=help_message, )
     main_image = models.ImageField(upload_to="phones")
     currency = models.ForeignKey(Currency, on_delete=models.SET_NULL,
                                  null=True, blank=True)
@@ -437,7 +461,8 @@ class PhoneModelList(models.Model):
 
     @property
     def get_lowest_price(phone):
-        return PhoneModelList.objects.filter(phone_model=phone.phone_model).order_by('price').first().price
+        return PhoneModelList.objects.filter(
+            phone_model=phone.phone_model).order_by('price').first().price
 
 
 class Order(models.Model):
@@ -456,6 +481,7 @@ class Order(models.Model):
                                        blank=True, null=True)
     cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, blank=True,
                              null=True)
+
     def __str__(self):
         return str(self.phone) + ": " + str(self.owner) + " date: " + \
             str(self.date)
@@ -466,38 +492,44 @@ class Order(models.Model):
 
 
 class ShippingAddress(models.Model):
-    order = models.ForeignKey(Order, related_name='shipping_address', on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name='shipping_address',
+                              on_delete=models.CASCADE)
     pickup = models.CharField(max_length=255, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
     recepient = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Feature(models.Model):
-    phone = models.ForeignKey(PhoneModelList, related_name='phone_features', on_delete=models.CASCADE)
+    phone = models.ForeignKey(PhoneModelList, related_name='phone_features',
+                              on_delete=models.CASCADE)
     feature = models.CharField(max_length=256)
 
 
 class Review(models.Model):
     stars = IntegerRangeField(min_value=1, max_value=5)
     comments = models.TextField()
-    phone_model = models.ForeignKey(PhoneModel,  related_name='phone_reviews', on_delete=models.CASCADE)
+    phone_model = models.ForeignKey(PhoneModel,  related_name='phone_reviews',
+                                    on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     time = models.DateField(auto_now=True)
 
     def __str__(self):
-        return str(self.owner) + ": " + str(self.stars) + " stars: " + self.comments
+        return (str(self.owner) + ": " + str(self.stars) + " stars: "
+                + self.comments)
 
 
 class ProductInformation(models.Model):
-    phone = models.ForeignKey(PhoneModelList, related_name='phone_information', on_delete=models.CASCADE)
+    phone = models.ForeignKey(PhoneModelList, related_name='phone_information',
+                              on_delete=models.CASCADE)
     feature = models.CharField(max_length=256)
     value = models.CharField(max_length=256)
 
 
-
 class PhoneImage(models.Model):
     image = models.ImageField(upload_to="phones")
-    images = models.ForeignKey(PhoneModelList, related_name='phone_images', on_delete=models.SET_NULL, null=True, blank=True)
+    images = models.ForeignKey(PhoneModelList, related_name='phone_images',
+                               on_delete=models.SET_NULL, null=True,
+                               blank=True)
 
 
 class HotDeal(models.Model):

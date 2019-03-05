@@ -1,14 +1,18 @@
 from django.urls import path
 from django.conf.urls import url
 
-from . import views
+from front import views
+from django.contrib.auth.views import (
+     PasswordResetDoneView, PasswordResetCompleteView
+)
 
 app_name = 'front'
 urlpatterns = [
     path('', views.page_view, name='landing_page'),
     path('phone_category/<int:category_id>/', views.phone_category_view,
          name='phone_category'),
-    path('profile/<int:phone_model_id>/', views.phone_profile_view, name='profile'),
+    path('profile/<int:phone_model_id>/', views.phone_profile_view,
+         name='profile'),
     path('sizes', views.sizes, name='sizes'),
     path('country_codes', views.country_codes, name='country_codes'),
     path('about', views.about_view, name='about'),
@@ -19,12 +23,12 @@ urlpatterns = [
     path('imei', views.imei_view, name='imei'),
     path('reset_password', views.PasswordResetViewTailored.as_view(),
          name='password_reset'),
-    path('reset_password_done', views.PasswordResetDoneView.as_view(),
+    path('reset_password_done', PasswordResetDoneView.as_view(),
          name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.PasswordResetConfirmViewTailored.as_view(),
         name='password_reset_confirm'),
-    path('reset_password/done/', views.PasswordResetCompleteView.as_view(),
+    path('reset_password/done/', PasswordResetCompleteView.as_view(),
          name='password_reset_complete'),
     path('change_password', views.change_password_view, name='password_change'),
     path('old_password', views.old_password_view, name='password_change_old'),
@@ -45,7 +49,8 @@ urlpatterns = [
     path('change_activation_email/<str:old_email>/',
          views.change_activation_email,
          name='change_activation_email'),
-    path('send_link_to_new_address/<str:old_email>/', views.send_link_to_new_address,
+    path('send_link_to_new_address/<str:old_email>/',
+         views.send_link_to_new_address,
          name='send_link_to_new_address'),
     path('resend_activation_link/<str:email>/', views.resend_activation_link,
          name='resend_activation_link'),

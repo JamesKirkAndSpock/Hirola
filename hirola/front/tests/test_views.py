@@ -1,8 +1,7 @@
 from front.base_test import (BaseTestCase, image, Currency, cache)
 from front.errors import (category_image_error, phone_category_error)
-from .test_users import UserSignupTestCase
 from .test_cache import phone_form
-from front.models import (PhoneList, PhonesColor, PhoneModel, PhoneModelList)
+from front.models import (PhoneList, PhoneModel, PhoneModelList)
 
 
 class LandingPageViewsTestCase(BaseTestCase):
@@ -61,29 +60,35 @@ class LandingPageViewsTestCase(BaseTestCase):
 
     def test_limit_on_image_size(self):
         '''
-        Test that when adding a category, with an image of dimensions 225 by 225:
+        Test that when adding a category, with an image of dimensions 225 by
+        225:
             - The page will not redirect as the image cannot be added
             - An error message is raised
-        Test that when adding a category, with an image of dimensions 200 by 200:
+        Test that when adding a category, with an image of dimensions 200 by
+        200:
             - The page will redirect as the image has been added
         '''
         mock_image = image('test_image_1.jpeg')
-        form = {"category_image": mock_image, "phone_category": "CategoryTest1"}
+        form = {"category_image": mock_image,
+                "phone_category": "CategoryTest1"}
         response = self.elena.post('/admin/front/phonecategory/add/', form)
         self.assertIn(str.encode(category_image_error.format(959, 1280)),
                       response.content)
         self.assertEqual(response.status_code, 200)
         mock_image_2 = image('test_image_6.png')
-        form_2 = {"category_image": mock_image_2, "phone_category": "CategoryTest1"}
+        form_2 = {"category_image": mock_image_2,
+                  "phone_category": "CategoryTest1"}
         response = self.elena.post('/admin/front/phonecategory/add/', form_2)
         self.assertRedirects(response, "/admin/front/phonecategory/", 302)
 
     def test_category_image_rendering_on_view(self):
         mock_image_2 = image('test_image_6.png')
-        form_2 = {"category_image": mock_image_2, "phone_category": "CategoryTest1"}
+        form_2 = {"category_image": mock_image_2,
+                  "phone_category": "CategoryTest1"}
         self.elena.post('/admin/front/phonecategory/add/', form_2)
         response = self.client.get("/")
-        self.assertContains(response, "src=\"/media/phone_categories/test_image_6")
+        self.assertContains(
+            response, "src=\"/media/phone_categories/test_image_6")
 
 
 class PhoneCategoryViewsTestCase(BaseTestCase):
@@ -97,7 +102,8 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         Test  that it informs the admin user that the entered value should be
         unique hence preventing the presence of two similar names.
         '''
-        form = {"phone_category": "Iphone", "category_image": self.category_image}
+        form = {"phone_category": "Iphone",
+                "category_image": self.category_image}
         response = self.elena.post(self.add_url, form)
         e_mess_1 = "The phone category Iphone already exists"
         self.assertContains(response, e_mess_1)
@@ -107,8 +113,10 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         Test that a limitation exists to the number of Phone Categories that
         can be added.
         '''
-        form1 = {"phone_category": "Phone1", "category_image": self.category_image}
-        form2 = {"phone_category": "Phone2", "category_image": self.category_image}
+        form1 = {"phone_category": "Phone1",
+                 "category_image": self.category_image}
+        form2 = {"phone_category": "Phone2",
+                 "category_image": self.category_image}
         response1 = self.elena.post(self.add_url, form1)
         response2 = self.elena.post(self.add_url, form2)
         self.assertEqual(response1.status_code, 302)
@@ -141,9 +149,11 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         data = {"url_link": "https://facebook.com", "icon": "fa fa-facebook",
                 "name": "Facebook"}
         self.elena.post(add_url, data)
-        response = self.client.get('/phone_category/{}/'.format(self.iphone.id))
+        response = self.client.get(
+            '/phone_category/{}/'.format(self.iphone.id))
         facebook_url = "<a href=\"https://facebook.com\" target=\"_blank\">"
-        facebook_data_icon_name = "<i class=\"fa fa-facebook\"></i> Facebook</a>"
+        facebook_data_icon_name = ("<i class=\"fa fa-facebook\"></i>",
+                                   " Facebook</a>")
         self.assertContains(response, facebook_url)
         self.assertContains(response, facebook_data_icon_name)
 
@@ -162,7 +172,6 @@ class PhoneListViewsTestCase(BaseTestCase):
         '''
         Test that an image can be created successfully for a phone list.
         '''
-        mock_image = image('test_image_5.png')
         form = phone_form(self.iphone.pk, self.currency_v.pk,
                           self.size_iphone.pk)
         response = self.elena.post('/admin/front/phonelist/add/', form,

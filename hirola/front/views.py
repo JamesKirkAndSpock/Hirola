@@ -1,27 +1,25 @@
 import re
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.http import JsonResponse, HttpResponse
-from .models import (CountryCode, User, PhoneCategory,
-                     PhoneMemorySize, PhonesColor,
-                     SocialMedia, Review, HotDeal, NewsItem, Order, PhoneList,
-                     OrderStatus, Cart, ServicePerson, PhoneModelList,
-                     PhoneModel)
-from django.views import generic
+from django.http import JsonResponse
+from front.models import (CountryCode, User, PhoneCategory,
+                          PhoneMemorySize, SocialMedia, Review, HotDeal,
+                          NewsItem, Order, PhoneList, OrderStatus, Cart,
+                          ServicePerson, PhoneModelList, PhoneModel)
 from django.core.cache import cache
-from .forms.user_forms import (UserCreationForm, AuthenticationForm,
-                               UserForm, OldPasswordForm, ChangeEmailForm,
-                               EmailAuthenticationForm, resend_email,
-                               resend_activation_email, ContactUsForm,
-                               PhoneProfileUserDataCollectionForm)
+from front.forms.user_forms import (UserCreationForm, AuthenticationForm,
+                                    UserForm, OldPasswordForm, ChangeEmailForm,
+                                    EmailAuthenticationForm, resend_email,
+                                    resend_activation_email, ContactUsForm,
+                                    PhoneProfileUserDataCollectionForm)
 from django.contrib.auth.views import (
-    PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
+    PasswordResetView, PasswordResetConfirmView
 )
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
-from .token import account_activation_token, email_activation_token
-from .decorators import (
+from front.token import account_activation_token, email_activation_token
+from front.decorators import (
     old_password_required, remember_user, is_change_allowed_required)
 from django.utils import timezone
 from django.contrib import messages
@@ -42,8 +40,8 @@ def phone_category_view(request, category_id):
     phones = cache.get('phones_{}'.format(category_id)) or set_cache(
         PhoneModelList.objects.filter(
             is_in_stock=True, quantity__gte=1,
-            phone_model__category=category_id).distinct('phone_model'), 'phones_{}'.format(
-                category_id))
+            phone_model__category=category_id).distinct('phone_model'),
+        'phones_{}'.format(category_id))
     return shared_phone_view(request, phones, category_id)
 
 
@@ -53,11 +51,13 @@ def shared_phone_view(request, phones, category_id, message=""):
         'category_{}'.format(category_id))
     (phone_categories, social_media) = various_caches()
     sizes = cache.get('sizes_{}'.format(category_id)) or set_cache(
-        PhoneMemorySize.objects.filter(category=category_id).order_by('size_number'),
+        PhoneMemorySize.objects.filter(
+            category=category_id).order_by('size_number'),
         'sizes_{}'.format(category_id))
     context = {'categories': phone_categories, 'phones': phones,
                'category': category_pk, 'category_id': category_id,
-               'size_message': message, 'sizes': sizes, "social_media": social_media}
+               'size_message': message, 'sizes': sizes,
+               "social_media": social_media}
     return render(request, 'front/phone_category.html', context)
 
 
@@ -80,7 +80,8 @@ def sizes(request):
         filtered_sizes = PhoneMemorySize.objects.filter(
             category=request.GET["id"])
         if PhoneList.objects.filter(pk=request.GET["id"]).first():
-            size_id = PhoneList.objects.filter(pk=request.GET["id"]).first().size_sku.pk
+            size_id = PhoneList.objects.filter(
+                pk=request.GET["id"]).first().size_sku.pk
     data = {}
     for size in filtered_sizes:
         data[size.pk] = str(size)
@@ -139,9 +140,13 @@ def phone_profile_view(request, phone_model_id):
     phone_model = PhoneModel.objects.filter(id=phone_model_id).first()
     if not phone_model:
         return redirect("/error")
-    phone = PhoneModelList.objects.filter(phone_model=phone_model).order_by('price').first()
-    phone_model_sizes = phone_model.phone_list.filter(color=phone.color).order_by('size_sku__size_number').distinct('size_sku__size_number').exclude(size_sku=phone.size_sku)
-    phone_model_colors = phone_model.phone_list.distinct('color').exclude(color=phone.color)
+    phone = PhoneModelList.objects.filter(
+        phone_model=phone_model).order_by('price').first()
+    phone_model_sizes = phone_model.phone_list.filter(
+        color=phone.color).order_by('size_sku__size_number').distinct(
+            'size_sku__size_number').exclude(size_sku=phone.size_sku)
+    phone_model_colors = phone_model.phone_list.distinct(
+        'color').exclude(color=phone.color)
     (phone_categories, social_media) = various_caches()
     context = {"phone_model": phone_model, "phone": phone,
                "image_list": phone.phone_images.all(),
@@ -151,19 +156,25 @@ def phone_profile_view(request, phone_model_id):
                "infos": phone.phone_information.all(),
                "customer_reviews": phone_model.phone_reviews.all(),
                }
-    if request.method == "POST":
-        form = PhoneProfileUserDataCollectionForm(request.POST)
-        if form.is_valid():
-            return add_cart_data(request)
-        context = generate_profile_view_load(phone_id, form)
-        return render(request, 'front/phone_profile.html', context)
+    # if request.method == "POST":
+    #     form = PhoneProfileUserDataCollectionForm(request.POST)
+    #     if form.is_valid():
+    #         return add_cart_data(request)
+    #     context = generate_profile_view_load(phone_id, form)
+    #     return render(request, 'front/phone_profile.html', context)
     return render(request, 'front/phone_profile.html', context)
 
 
 def get_sizes(request):
-    phone_model = PhoneModel.objects.filter(id=request.GET["phone_model_id"]).first()
-    phone = PhoneModelList.objects.filter(phone_model=phone_model, color=request.GET["id"]).order_by('price').first()
-    phone_model_sizes = phone_model.phone_list.filter(color=request.GET["id"]).order_by('size_sku__size_number').distinct('size_sku__size_number').exclude(id=phone.pk)
+    phone_model = PhoneModel.objects.filter(
+        id=request.GET["phone_model_id"]).first()
+    phone = PhoneModelList.objects.filter(
+        phone_model=phone_model, color=request.GET["id"]).order_by(
+            'price').first()
+    phone_model_sizes = phone_model.phone_list.filter(
+        color=request.GET["id"]).order_by(
+            'size_sku__size_number').distinct(
+                'size_sku__size_number').exclude(id=phone.pk)
     sizes_data = {}
     for size in phone_model_sizes:
         sizes_data[size.size_sku.pk] = str(size.size_sku)
@@ -186,20 +197,28 @@ def get_sizes(request):
 
 
 def size_change(request):
-    phone_model = PhoneModel.objects.filter(id=request.GET["phone_model_id"]).first()
-    phone = PhoneModelList.objects.filter(phone_model=phone_model, size_sku=request.GET["size_id"]).order_by('price').first()
+    phone_model = PhoneModel.objects.filter(
+        id=request.GET["phone_model_id"]).first()
+    phone = PhoneModelList.objects.filter(
+        phone_model=phone_model, size_sku=request.GET["size_id"]).order_by(
+            'price').first()
     main_image = settings.MEDIA_URL + str(phone.main_image)
-    data = {"phone_quantity": phone.quantity, "price": phone.price, "currency": str(phone.currency), "main_image": main_image}
+    data = {"phone_quantity": phone.quantity, "price": phone.price,
+            "currency": str(phone.currency), "main_image": main_image}
     return JsonResponse(data)
 
 
 def quantity_change(request):
     quantity = int(request.GET["qty"]) + 1
-    phone_model = PhoneModel.objects.filter(id=request.GET["phone_model_id"]).first()
-    phone = PhoneModelList.objects.filter(phone_model=phone_model, color=request.GET["color_id"], size_sku=request.GET["size_id"]).first()
+    phone_model = PhoneModel.objects.filter(
+        id=request.GET["phone_model_id"]).first()
+    phone = PhoneModelList.objects.filter(
+        phone_model=phone_model, color=request.GET["color_id"],
+        size_sku=request.GET["size_id"]).first()
     total_cost = quantity * phone.price
     data = {"total_cost": total_cost, "currency": str(phone.currency)}
     return JsonResponse(data)
+
 
 def phone_view(request):
     return render(request, 'front/phone.html')
@@ -215,8 +234,9 @@ def new_password_view(request):
 
 def checkout_view(request):
     (phone_categories, social_media) = various_caches()
-    return render(request, 'front/checkout.html', {'categories': phone_categories,
-                                                   'social_media': social_media})
+    return render(request, 'front/checkout.html',
+                  {'categories': phone_categories,
+                   'social_media': social_media})
 
 
 def get_cart_total(items):
@@ -255,20 +275,22 @@ def dashboard_view(request):
             redirect("/dashboard")
         user = User.objects.get(email=request.user.email)
         context = {"form": form, "user": user, 'categories': phone_categories,
-                   "social_media": social_media, 'orders':orders}
+                   "social_media": social_media, 'orders': orders}
         return render(request, 'front/dashboard.html', context=context)
     context = {"form": UserForm(instance=request.user),
                "reviews": Review.objects.filter(owner=request.user),
-               'categories': phone_categories, "social_media": social_media, 'orders': orders}
+               'categories': phone_categories, "social_media": social_media,
+               'orders': orders}
     return render(request, 'front/dashboard.html', context=context)
 
 
 def check_inactive_user(request, email):
     (phone_categories, social_media) = various_caches()
     active_user = User.objects.filter(email=email).first()
-    return render(request, 'front/inactive_user.html', {'user_name': active_user.first_name,
-                  'user_email': active_user.email,
-                  'provider': get_user_email_provider(active_user.email)})
+    return render(request, 'front/inactive_user.html', {
+        'user_name': active_user.first_name,
+        'user_email': active_user.email,
+        'provider': get_user_email_provider(active_user.email)})
 
 
 @remember_user
@@ -334,7 +356,8 @@ def signup_view(request):
             args = {'user_email': user.email,
                     'provider': get_user_email_provider(user.email)}
             return render(request, 'registration/signup_email_sent.html', args)
-        args = {'form':  form, 'social_media': social_media, 'categories': phone_categories}
+        args = {'form':  form, 'social_media': social_media,
+                'categories': phone_categories}
         return render(request, 'front/signup.html', args)
     else:
         args = {'form':  UserCreationForm(), 'social_media': social_media,
@@ -399,9 +422,11 @@ def change_password_view(request):
             user.is_change_allowed = False
             user.save()
             return redirect('/login')
-        args = {"form": form, 'social_media': social_media, 'categories': phone_categories}
+        args = {"form": form, 'social_media': social_media,
+                'categories': phone_categories}
         return render(request, 'front/change_password.html', args)
-    args = {"form": SetPasswordForm(request.user), 'social_media': social_media,
+    args = {"form": SetPasswordForm(request.user),
+            'social_media': social_media,
             'categories': phone_categories}
     return render(request, 'front/change_password.html', args)
 
@@ -416,9 +441,11 @@ def old_password_view(request):
             user.is_change_allowed = True
             user.save()
             return redirect('/change_password')
-        args = {'form':  form, 'social_media': social_media, 'categories': phone_categories}
+        args = {'form':  form, 'social_media': social_media,
+                'categories': phone_categories}
         return render(request, 'front/old_password.html', args)
-    args = {"form": OldPasswordForm(request.user), 'social_media': social_media,
+    args = {"form": OldPasswordForm(request.user),
+            'social_media': social_media,
             'categories': phone_categories}
     return render(request, 'front/old_password.html', args)
 
@@ -436,7 +463,8 @@ def confirm_user_view(request):
             user.is_change_allowed = True
             user.save()
             return redirect('/change_email')
-        args = {'form':  form, 'social_media': social_media, 'categories': phone_categories}
+        args = {'form':  form, 'social_media': social_media,
+                'categories': phone_categories}
         return render(request, 'front/confirm_user.html', args)
     args = {"form": EmailAuthenticationForm(), 'social_media': social_media,
             'categories': phone_categories}
@@ -527,8 +555,9 @@ def generate_help_context(categories, social_media, form):
 
 def teke_vs_others_view(request):
     (phone_categories, social_media) = various_caches()
-    return render(request, 'front/teke_vs_others.html', {'categories': phone_categories,
-                                                         'social_media': social_media})
+    return render(request, 'front/teke_vs_others.html',
+                  {'categories': phone_categories,
+                   'social_media': social_media})
 
 
 def error_view(request):
@@ -545,30 +574,38 @@ def review_submit_view(request):
 
 def privacy_view(request):
     (phone_categories, social_media) = various_caches()
-    return render(request, 'front/privacy.html', {'categories': phone_categories,
-                                                  'social_media': social_media})
+    return render(request, 'front/privacy.html',
+                  {'categories': phone_categories,
+                   'social_media': social_media})
 
 
 def search_view(request):
     (phone_categories, social_media) = various_caches()
     if request.method == "POST":
         search_name = request.POST.get("search-name")
-        results = list(PhoneModelList.objects.filter(phone_model__brand_model__icontains=search_name,
-                       is_in_stock=True, quantity__gte=1))
-        results += list(PhoneModelList.objects.filter(phone_model__category__phone_category__icontains=search_name,
-                       is_in_stock=True, quantity__gte=1))
-        results += list(PhoneModelList.objects.filter(phone_features__feature__icontains=search_name,
-                        is_in_stock=True, quantity__gte=1))
-        results += list(PhoneModelList.objects.filter(phone_information__feature__icontains=search_name,
-                        is_in_stock=True, quantity__gte=1))
-        results += list(PhoneModelList.objects.filter(phone_information__value__icontains=search_name,
-                        is_in_stock=True, quantity__gte=1))
-        results += list(PhoneModelList.objects.filter(phone_model__phone_reviews__comments__icontains=search_name,
-                        is_in_stock=True, quantity__gte=1))
+        results = list(PhoneModelList.objects.filter(
+            phone_model__brand_model__icontains=search_name,
+            is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(
+            phone_model__category__phone_category__icontains=search_name,
+            is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(
+            phone_features__feature__icontains=search_name,
+            is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(
+            phone_information__feature__icontains=search_name,
+            is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(
+            phone_information__value__icontains=search_name,
+            is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(
+            phone_model__phone_reviews__comments__icontains=search_name,
+            is_in_stock=True, quantity__gte=1))
         results += list(PhoneModelList.objects.filter(
             price__icontains=search_name, is_in_stock=True, quantity__gte=1))
-        results += list(PhoneModelList.objects.filter(size_sku__size_number__icontains=search_name,
-                        is_in_stock=True, quantity__gte=1))
+        results += list(PhoneModelList.objects.filter(
+            size_sku__size_number__icontains=search_name,
+            is_in_stock=True, quantity__gte=1))
         results = list(set(results))
         args = {"results": results, "instructions": False,
                 'categories': phone_categories,  'social_media': social_media}
@@ -589,8 +626,8 @@ def send_link_to_new_address(request, old_email):
     if request.method == "POST":
         if User.objects.filter(email=user_email).exists():
             return render(request, 'registration/change_activation_email.html',
-                                   {'error': 'That Email is Already Registered',
-                                    'old_email': old_email})
+                          {'error': 'That Email is Already Registered',
+                           'old_email': old_email})
         elif resend_email(request, user, user_email):
             User.objects.filter(pk=user.pk).update(former_email=old_email)
             User.objects.filter(pk=user.pk).update(email=user_email)
@@ -598,7 +635,7 @@ def send_link_to_new_address(request, old_email):
                           {'user_email': user_email})
         else:
             return render(request, 'registration/change_activation_email.html',
-                                   {'error': 'Invalid Email', 'old_email': old_email})
+                          {'error': 'Invalid Email', 'old_email': old_email})
     return render(request, 'registration/change_activation_email.html')
 
 

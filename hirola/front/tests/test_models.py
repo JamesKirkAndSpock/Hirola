@@ -6,6 +6,7 @@ from front.models import (PhoneCategory, get_default, PhoneList,
                           ShippingAddress, PhonesColor, Color, Cart,
                           ServicePerson, RepairService, Service, Address)
 
+
 class PhoneCategoryModelsTestCase(BaseTestCase):
     def setUp(self):
         super(PhoneCategoryModelsTestCase, self).setUp()

@@ -85,7 +85,8 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email',
-                                         'country_code', 'phone_number', 'photo',)}),
+                                         'country_code', 'phone_number',
+                                         'photo',)}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
@@ -107,6 +108,7 @@ class HotDealAdmin(admin.ModelAdmin):
 
 class ServicePersonAdmin(admin.ModelAdmin):
     form = ServicePersonForm
+
 
 admin.site.register(PhoneCategory, PhoneCategoryAdmin)
 admin.site.register(PhoneMemorySize)

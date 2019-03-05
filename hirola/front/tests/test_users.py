@@ -77,7 +77,8 @@ class UserSignupTestCase(BaseTestCase):
             - That the user gets an informative message of the issue with the
             email input.
         '''
-        user_data = self.generate_user_data({"email": "urieltimanko@examplecom"})
+        user_data = self.generate_user_data(
+            {"email": "urieltimanko@examplecom"})
         response = self.client.post('/signup', user_data)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Enter a valid email address")
@@ -157,7 +158,8 @@ class UserLoginTestCase(BaseTestCase):
         '''
         Test that when a user enters a wrong email but a correct password that:
             - The page does not redirect
-            - The user gets a descriptive message explaining that the email account does not exist
+            - The user gets a descriptive message explaining that the email
+            account does not exist
         '''
         user_data = {"email": "urieltimanko@example.cm",
                      "password": "*&#@&!*($)lp"}
@@ -234,11 +236,14 @@ class UserLoginTestCase(BaseTestCase):
                      "remember-user": "on"
                      }
         self.client.post('/login', user_data)
-        self.assertEqual(self.client.session.get_expiry_age(), settings.SESSION_COOKIE_AGE_REMEMBER)
+        self.assertEqual(self.client.session.get_expiry_age(),
+                         settings.SESSION_COOKIE_AGE_REMEMBER)
         self.client.logout()
-        user_data_2 = {"email": "urieltimanko@example.cm", "password": "*&#@&!*($)lp"}
+        user_data_2 = {"email": "urieltimanko@example.cm",
+                       "password": "*&#@&!*($)lp"}
         self.client.post('/login', user_data_2)
-        self.assertEqual(self.client.session.get_expiry_age(), settings.SESSION_COOKIE_AGE)
+        self.assertEqual(self.client.session.get_expiry_age(),
+                         settings.SESSION_COOKIE_AGE)
 
     def test_remember_user_html_rendered(self):
         '''
@@ -267,7 +272,8 @@ class UserRegistrationEmailTestCases(BaseTestCase):
         self.assertEqual(user.email, "urieltimanko@example.com")
         self.client.post('/change_activation_email/urieltimanko@example.com/')
         email = {'email': 'uriel@example2.com'}
-        response = self.client.post('/send_link_to_new_address/urieltimanko@example.com/', email)
+        response = self.client.post(
+            '/send_link_to_new_address/urieltimanko@example.com/', email)
         html_content = 'Please confirm your email address'
         self.assertContains(response, html_content)
         user = User.objects.filter(first_name="Uriel").first()

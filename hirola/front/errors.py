@@ -21,8 +21,8 @@ phone_category_error_2 = (
 )
 
 category_image_error = (
-    'The image needs to have an equal height and width dimension. The image you entered '
-    'has a height of {} pixels and a width of {} pixels'
+    'The image needs to have an equal height and width dimension. The image '
+    'you entered has a height of {} pixels and a width of {} pixels'
 )
 
 hot_deal_error = (

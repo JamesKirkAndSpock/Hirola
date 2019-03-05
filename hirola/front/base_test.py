@@ -1,6 +1,5 @@
 import os
 from django.test import TestCase, Client
-from django.contrib.auth.models import User
 from hirola.settings.base import BASE_DIR
 from django.core.files.uploadedfile import SimpleUploadedFile
 from front.models import (PhoneCategory, PhoneMemorySize, Currency,
@@ -98,7 +97,8 @@ class BaseTestCase(TestCase):
         PhonesColor.objects.create(
             phone=self.iphone_6, size=self.any_phone_size, price=10000,
             color=self.color_two, quantity=10, is_in_stock=True)
-        self.iphone6_colors = PhonesColor.objects.filter(phone=self.iphone_6.pk)
+        self.iphone6_colors = PhonesColor.objects.filter(
+            phone=self.iphone_6.pk)
         self.all_colors = PhonesColor.objects.all()
 
     def create_landing_page_image(self):
@@ -110,11 +110,14 @@ class BaseTestCase(TestCase):
     def create_phones(self):
         ItemIcon.objects.create(item_icon="apple")
         icon = ItemIcon.objects.get(item_icon="apple")
-        PhoneList.objects.create(category=self.iphone, currency=self.currency_v,
-                                 price=300000, phone_name="Iphone 6", icon=icon,
+        PhoneList.objects.create(category=self.iphone,
+                                 currency=self.currency_v,
+                                 price=300000, phone_name="Iphone 6",
+                                 icon=icon,
                                  main_image=image("test_image_5.png"))
         self.iphone_6 = PhoneList.objects.get(phone_name="Iphone 6")
-        PhoneList.objects.create(category=self.android, currency=self.currency_v,
+        PhoneList.objects.create(category=self.android,
+                                 currency=self.currency_v,
                                  price=250000, phone_name="Samsung J7")
         self.samsung_j_7 = PhoneList.objects.get(phone_name="Samsung J7")
 
@@ -198,7 +201,6 @@ class BaseTestCase(TestCase):
                                      phone_number="715557775")
         self.service_person_one = ServicePerson.objects.\
             get(first_name="Wanjigi")
-
 
     def tearDown(self):
         cache.clear()
