@@ -22,4 +22,4 @@ def round_off(value):
 
 @register.filter
 def integize(value):
-    return range(value-1)
+    return range(value)
