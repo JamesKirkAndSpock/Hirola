@@ -1,17 +1,14 @@
+"""
+Views
+"""
 import re
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.http import JsonResponse
-from front.models import (CountryCode, User, PhoneCategory,
-                          PhoneMemorySize, SocialMedia, Review, HotDeal,
-                          NewsItem, Order, PhoneList, OrderStatus, Cart,
-                          ServicePerson, PhoneModelList, PhoneModel)
 from django.core.cache import cache
-from front.forms.user_forms import (UserCreationForm, AuthenticationForm,
-                                    UserForm, OldPasswordForm, ChangeEmailForm,
-                                    EmailAuthenticationForm, resend_email,
-                                    resend_activation_email, ContactUsForm,
-                                    PhoneProfileUserDataCollectionForm)
+from django.utils import timezone
+from django.contrib import messages
+from django.conf import settings
 from django.contrib.auth.views import (
     PasswordResetView, PasswordResetConfirmView
 )
@@ -21,12 +18,24 @@ from django.contrib.auth.forms import SetPasswordForm
 from front.token import account_activation_token, email_activation_token
 from front.decorators import (
     old_password_required, remember_user, is_change_allowed_required)
-from django.utils import timezone
-from django.contrib import messages
-from django.conf import settings
+from front.models import (
+    CountryCode, User, PhoneCategory,
+    PhoneMemorySize, SocialMedia, Review, HotDeal,
+    NewsItem, Order, PhoneList, OrderStatus, Cart,
+    ServicePerson, PhoneModelList, PhoneModel
+    )
+from front.forms.user_forms import (
+    UserCreationForm, AuthenticationForm,
+    UserForm, OldPasswordForm, ChangeEmailForm,
+    EmailAuthenticationForm, resend_email,
+    resend_activation_email, ContactUsForm,
+    )
 
 
 def page_view(request):
+    """
+    Get HotDeals data and render the landing page.
+    """
     (phone_categories, social_media) = various_caches()
     hot_deals = cache.get('hot_deals') or set_cache(
         HotDeal.objects.filter(item__is_in_stock=True,
@@ -37,6 +46,9 @@ def page_view(request):
 
 
 def phone_category_view(request, category_id):
+    """
+    Fetch phone categories data based on category id.
+    """
     phones = cache.get('phones_{}'.format(category_id)) or set_cache(
         PhoneModelList.objects.filter(
             is_in_stock=True, quantity__gte=1,
@@ -46,6 +58,9 @@ def phone_category_view(request, category_id):
 
 
 def shared_phone_view(request, phones, category_id, message=""):
+    """
+    Render phone category page.
+    """
     category_pk = cache.get('category_{}'.format(category_id)) or set_cache(
         PhoneCategory.objects.get(pk=category_id),
         'category_{}'.format(category_id))
@@ -62,16 +77,22 @@ def shared_phone_view(request, phones, category_id, message=""):
 
 
 def set_cache(data, cache_name):
+    """
+    Set application cache.
+    """
     cache.set(cache_name, data)
     return data
 
 
 def sizes(request):
-    sizes = PhoneMemorySize.objects.all()
+    """
+    Fetch phone memory sizes and return data as json object.
+    """
+    phone_sizes = PhoneMemorySize.objects.all()
     list_sizes = {}
     size_key = 1
     size_id = 0
-    for size in sizes:
+    for size in phone_sizes:
         list_sizes[size_key] = size.category
         size_key += 1
     if request.GET["id"] == "":
@@ -90,6 +111,7 @@ def sizes(request):
 
 
 def country_codes(request):
+    """Get country codes."""
     country_code_data = CountryCode.objects.all()
     users_country_code = request.user.country_code.id
     data = {}
@@ -104,6 +126,7 @@ def add_cart_data(request):
 
 
 def save_order(request, owner=None):
+    """Save Order item to database and add to cart."""
     item = request.POST['cart_item_add']
     quantity = request.POST['quantity']
     price = request.POST['cart_phone_price']
@@ -128,6 +151,7 @@ def save_order(request, owner=None):
 
 
 def get_cart_object(request):
+    """Get cart object from session if exists or else create one."""
     cart = Cart.objects.filter(id=request.session.get('cart_id')).first()
     if cart:
         return cart
@@ -137,6 +161,7 @@ def get_cart_object(request):
 
 
 def phone_profile_view(request, phone_model_id):
+    """Fetch phone details and render the data in the phone profile page."""
     phone_model = PhoneModel.objects.filter(id=phone_model_id).first()
     if not phone_model:
         return redirect("/error")
@@ -156,12 +181,6 @@ def phone_profile_view(request, phone_model_id):
                "infos": phone.phone_information.all(),
                "customer_reviews": phone_model.phone_reviews.all(),
                }
-    # if request.method == "POST":
-    #     form = PhoneProfileUserDataCollectionForm(request.POST)
-    #     if form.is_valid():
-    #         return add_cart_data(request)
-    #     context = generate_profile_view_load(phone_id, form)
-    #     return render(request, 'front/phone_profile.html', context)
     return render(request, 'front/phone_profile.html', context)
 
 
@@ -220,19 +239,8 @@ def quantity_change(request):
     return JsonResponse(data)
 
 
-def phone_view(request):
-    return render(request, 'front/phone.html')
-
-
-def reset_password_view(request):
-    return render(request, 'front/reset_password.html')
-
-
-def new_password_view(request):
-    return render(request, 'front/new_password.html')
-
-
 def checkout_view(request):
+    """Render the checkout page."""
     (phone_categories, social_media) = various_caches()
     return render(request, 'front/checkout.html',
                   {'categories': phone_categories,
@@ -240,6 +248,7 @@ def checkout_view(request):
 
 
 def get_cart_total(items):
+    """Calculate cart total."""
     sum = 0
     for item in items:
         sum += item.total_price
@@ -247,11 +256,13 @@ def get_cart_total(items):
 
 
 def before_checkout_view(request):
+    """Get cart items and render the before checkout page."""
     context = get_cart_items(request)
     return render(request, 'front/before_checkout.html', context)
 
 
 def get_cart_items(request):
+    """Fetch cart items from database."""
     (phone_categories, social_media) = various_caches()
     cart_id = get_cart_object(request)
     items = Order.objects.filter(cart=cart_id)
@@ -266,6 +277,7 @@ def get_cart_items(request):
 
 @login_required
 def dashboard_view(request):
+    """Render user dashboard."""
     (phone_categories, social_media) = various_caches()
     orders = Order.objects.filter(owner=request.user.pk)
     if request.method == "POST":
@@ -285,6 +297,7 @@ def dashboard_view(request):
 
 
 def check_inactive_user(request, email):
+    """Check if user is active."""
     (phone_categories, social_media) = various_caches()
     active_user = User.objects.filter(email=email).first()
     return render(request, 'front/inactive_user.html', {
@@ -295,6 +308,9 @@ def check_inactive_user(request, email):
 
 @remember_user
 def login_view(request):
+    """
+    Login user to the system.
+    """
     (phone_categories, social_media) = various_caches()
     if request.method == "POST":
         form = AuthenticationForm(None, request.POST)
@@ -308,6 +324,10 @@ def login_view(request):
 
 
 def validate_active_user(request, form, user, email):
+    """
+    Check if user is active and redirect them to the landing page
+    else, redirect them to the login page.
+    """
     (phone_categories, social_media) = various_caches()
     if form.is_valid() and user is not None:
         login(request, user)
@@ -320,6 +340,7 @@ def validate_active_user(request, form, user, email):
 
 
 def logout_view(request):
+    """Log a user out of the system."""
     logout(request)
     return redirect(get_referer_view(request))
 
@@ -339,12 +360,18 @@ def get_referer_view(request):
 
 
 def about_view(request):
+    """
+    Render the about page that contains more information about the company.
+    """
     (phone_categories, social_media) = various_caches()
     context = {"categories": phone_categories, "social_media": social_media}
     return render(request, 'front/about.html', context=context)
 
 
 def signup_view(request):
+    """
+    Register a new user to the system.
+    """
     (phone_categories, social_media) = various_caches()
     if request.method == "POST":
         form = UserCreationForm(request.POST)
@@ -366,11 +393,15 @@ def signup_view(request):
 
 
 def get_user_email_provider(email):
+    """
+    Check the email provider for a given user email and return the string.
+    """
     new_email = re.split(r'@|\.', email)
     return new_email[1]
 
 
 def activate(request, uidb64, token):
+    """Set user activation status to true."""
     user = UserCreationForm().get_user(uidb64)
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
@@ -380,6 +411,7 @@ def activate(request, uidb64, token):
 
 
 def imei_view(request):
+    """Render the imei check page."""
     (phone_categories, social_media) = various_caches()
     return render(request, 'front/imei.html', {'categories': phone_categories,
                                                'social_media': social_media})
@@ -413,6 +445,7 @@ class PasswordResetConfirmViewTailored(PasswordResetConfirmView):
 @login_required
 @old_password_required
 def change_password_view(request):
+    """This function enables user to change their password."""
     (phone_categories, social_media) = various_caches()
     if request.method == 'POST':
         form = SetPasswordForm(request.user, request.POST)
@@ -433,6 +466,7 @@ def change_password_view(request):
 
 @login_required
 def old_password_view(request):
+    """This function enables a user to view their current password."""
     (phone_categories, social_media) = various_caches()
     if request.method == 'POST':
         form = OldPasswordForm(request.user, request.POST)
@@ -452,6 +486,10 @@ def old_password_view(request):
 
 @login_required
 def confirm_user_view(request):
+    """
+    Checks if user has provided the correct credentials to be
+    allowed to change their email.
+    """
     (phone_categories, social_media) = various_caches()
     if request.method == 'POST':
         form = EmailAuthenticationForm(request, request.POST)
@@ -474,6 +512,9 @@ def confirm_user_view(request):
 @login_required
 @is_change_allowed_required
 def change_email_view(request):
+    """
+    This function enables a user to change their email.
+    """
     (phone_categories, social_media) = various_caches()
     if request.method == 'POST':
         form = ChangeEmailForm(request.POST, instance=request.user)
@@ -497,6 +538,9 @@ def change_email_view(request):
 
 
 def activate_new_email(request, uidb64, token):
+    """
+    Activate the new email provided by the user and update the database.
+    """
     user = UserCreationForm().get_user(uidb64)
     if user is not None and email_activation_token.check_token(user, token):
         user.former_email = user.email
@@ -510,6 +554,7 @@ def activate_new_email(request, uidb64, token):
 
 
 def various_caches():
+    """Get phone catgory and social media cache."""
     phone_categories = cache.get('phone_categories') or set_cache(
         PhoneCategory.objects.all(),
         'phone_categories')
@@ -519,6 +564,7 @@ def various_caches():
 
 
 def press_view(request):
+    """Render the news and press page."""
     news = NewsItem.objects.all()
     (phone_categories, social_media) = various_caches()
     context = {'news': news, 'categories': phone_categories,
@@ -527,6 +573,10 @@ def press_view(request):
 
 
 def help_view(request):
+    """
+    This function renders the help page and enables user to
+    send a support email to the company.
+    """
     (phone_categories, social_media) = various_caches()
     if request.method == 'POST':
         form = ContactUsForm(request.POST)
@@ -546,6 +596,7 @@ def help_view(request):
 
 
 def generate_help_context(categories, social_media, form):
+    """Generate context for rendering in the help page."""
     return {
         'categories': categories,
         'social_media': social_media,
@@ -554,6 +605,7 @@ def generate_help_context(categories, social_media, form):
 
 
 def teke_vs_others_view(request):
+    """Render the teke vs other page."""
     (phone_categories, social_media) = various_caches()
     return render(request, 'front/teke_vs_others.html',
                   {'categories': phone_categories,
@@ -561,18 +613,22 @@ def teke_vs_others_view(request):
 
 
 def error_view(request):
+    """Render the error page."""
     return render(request, 'front/error.html')
 
 
 def review_view(request):
+    """Renders the phone review page."""
     return render(request, 'front/review.html')
 
 
 def review_submit_view(request):
+    """Render the phone review submitted page."""
     return render(request, 'front/review_submit.html')
 
 
 def privacy_view(request):
+    """Renders the privacy statement page."""
     (phone_categories, social_media) = various_caches()
     return render(request, 'front/privacy.html',
                   {'categories': phone_categories,
@@ -580,6 +636,9 @@ def privacy_view(request):
 
 
 def search_view(request):
+    """
+    Fetch phone based on user search parameters.
+    """
     (phone_categories, social_media) = various_caches()
     if request.method == "POST":
         search_name = request.POST.get("search-name")
@@ -616,11 +675,13 @@ def search_view(request):
 
 
 def change_activation_email(request, old_email):
+    """Render page to change activation email."""
     return render(request, 'registration/change_activation_email.html',
                   {'old_email': old_email})
 
 
 def send_link_to_new_address(request, old_email):
+    """Send change activation email to new email address provided by user."""
     user = User.objects.get(email=old_email)
     user_email = request.POST['email']
     if request.method == "POST":
@@ -648,23 +709,26 @@ def resend_activation_link(request, email):
 
 
 def resend_new_email_activation_link(request):
+    """Resend new activation link to user's email on request."""
     user = User.objects.filter(email=request.user.email).first()
     if resend_activation_email(request, user, user.change_email):
         messages.success(request,
                          ('A new link has successfuly been sent to {}'.
-                             format(user.change_email)))
+                          format(user.change_email)))
         return redirect('/dashboard')
     messages.error(request, ('Something went wrong!'))
     return redirect('/dashboard')
 
 
 def contact_us_view(request):
+    """Render the contact us page."""
     (phone_categories, social_media) = various_caches()
     context = {'categories': phone_categories, 'social_media': social_media}
     return render(request, 'front/contact_us.html', context)
 
 
 def repair_and_network_view(request):
+    """Render the repair and network page."""
     (phone_categories, social_media) = various_caches()
     service_men = ServicePerson.objects.all()
     context = {'service_men': service_men, 'categories': phone_categories,

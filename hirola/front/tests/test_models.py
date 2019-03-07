@@ -1,14 +1,20 @@
-from front.base_test import (BaseTestCase, image, TestCase)
+"""This module tests the models."""
 from django.db import IntegrityError, DataError
+from front.base_test import (BaseTestCase, image, TestCase)
 from front.errors import hot_deal_error
-from front.models import (PhoneCategory, get_default, PhoneList,
-                          HotDeal, User, CountryCode, Order, OrderStatus,
-                          ShippingAddress, PhonesColor, Color, Cart,
-                          ServicePerson, RepairService, Service, Address)
+from front.models import (
+    PhoneCategory, get_default, PhoneList,
+    HotDeal, User, CountryCode, Order, OrderStatus,
+    ShippingAddress, PhonesColor, Color, Cart,
+    ServicePerson, RepairService, Service, Address
+    )
 
 
 class PhoneCategoryModelsTestCase(BaseTestCase):
+    """Tests the phone category model."""
+
     def setUp(self):
+        """Set the initial state of tests."""
         super(PhoneCategoryModelsTestCase, self).setUp()
 
     def test_object_returned_string(self):
@@ -48,7 +54,10 @@ class PhoneCategoryModelsTestCase(BaseTestCase):
 
 
 class PhoneMemorySizeModelsTestCase(BaseTestCase):
+    """Tests the PhoneMemory Model."""
+
     def setUp(self):
+        """Initialize tests."""
         super(PhoneMemorySizeModelsTestCase, self).setUp()
 
     def test_object_returned_correct_string(self):
@@ -61,7 +70,10 @@ class PhoneMemorySizeModelsTestCase(BaseTestCase):
 
 
 class CurrencyModelTestCase(BaseTestCase):
+    """Tests the Currency model."""
+
     def setUp(self):
+        """Set the initial state of tests."""
         super(CurrencyModelTestCase, self).setUp()
 
     def test_it_returns_string(self):
@@ -73,13 +85,19 @@ class CurrencyModelTestCase(BaseTestCase):
 
 
 class PhoneListModelTestCase(TestCase):
+    """Tests the PhoneList model."""
+
     def test_that_phone_name_is_necessary(self):
+        """Test that a phone must be created with a name."""
         with self.assertRaises(IntegrityError):
             PhoneList.objects.create(price=10)
 
 
 class HotDealModelsTestCase(BaseTestCase):
+    """Tests the HotDeal model."""
+
     def setUp(self):
+        """Set up initial state of models."""
         super(HotDealModelsTestCase, self).setUp()
 
     def test_uniqueness_of_hot_deal_category(self):
@@ -97,6 +115,8 @@ class HotDealModelsTestCase(BaseTestCase):
 
 
 class NewsItemsTestCase(BaseTestCase):
+    """Tests the NewsItems model."""
+
     def setUp(self):
         super(NewsItemsTestCase, self).setUp()
 
@@ -106,6 +126,7 @@ class NewsItemsTestCase(BaseTestCase):
 
 
 class UserModelsTestCase(BaseTestCase):
+    """Tests the User model."""
 
     def setUp(self):
         self.country_code = get_default()
@@ -124,7 +145,8 @@ class UserModelsTestCase(BaseTestCase):
     def test_user_created_with_country_code(self):
         '''
         Test that when a normal user of the webapp gets created:
-            - That the user automatically gets assigned the default country code.
+            - That the user automatically gets assigned the default
+              country code.
         '''
         user = User.objects.create_user(email="equatorial@gmail.com",
                                         password="secret")
@@ -132,6 +154,7 @@ class UserModelsTestCase(BaseTestCase):
 
 
 class CountryCodeModelsTestCase(BaseTestCase):
+    """Tests the CountryCode model."""
 
     def setUp(self):
         super(CountryCodeModelsTestCase, self).setUp()
@@ -147,6 +170,7 @@ class CountryCodeModelsTestCase(BaseTestCase):
 
 
 class OrderModelsTestCase(BaseTestCase):
+    """Tests the Order model."""
 
     def setUp(self):
         super(OrderModelsTestCase, self).setUp()
@@ -172,18 +196,22 @@ class OrderModelsTestCase(BaseTestCase):
                                        pickup="Evergreen Center")
         self.assertEqual(order.get_address.location, "Kiambu Road")
 
+
 class PhonesColorTestCase(BaseTestCase):
+    """Tests the PhonesColor model."""
 
     def setUp(self):
         super(PhonesColorTestCase, self).setUp()
 
     def test_create_phone_color_object_success(self):
         """Test user can create a phone color object successfuly."""
-        PhoneList.objects.create(category=self.android,
-                                 size_sku=self.size_android, price=25000,
-                                 main_image=image('test_image_5.png'),
-                                 phone_name="Samsung",
-                                 currency=self.currency_v)
+        PhoneList.objects.create(
+            category=self.android,
+            size_sku=self.size_android, price=25000,
+            main_image=image('test_image_5.png'),
+            phone_name="Samsung",
+            currency=self.currency_v
+            )
         phone = PhoneList.objects.get(phone_name="Samsung")
         PhonesColor.objects.create(
             phone=phone, size=self.size_android, price=10000,
@@ -194,11 +222,13 @@ class PhonesColorTestCase(BaseTestCase):
         self.assertEqual(phone_color.phone, phone)
         Color.objects.create(color="White")
         color = Color.objects.get(color="White")
-        PhoneList.objects.create(category=self.iphone,
-                                 size_sku=self.size_iphone, price=25000,
-                                 main_image=image('test_image_5.png'),
-                                 phone_name="Iphone X",
-                                 currency=self.currency_v)
+        PhoneList.objects.create(
+            category=self.iphone,
+            size_sku=self.size_iphone, price=25000,
+            main_image=image('test_image_5.png'),
+            phone_name="Iphone X",
+            currency=self.currency_v
+            )
         phone_2 = PhoneList.objects.get(phone_name="Iphone X")
         PhonesColor.objects.create(
             phone=phone_2, size=self.size_iphone, price=10000,
@@ -210,11 +240,13 @@ class PhonesColorTestCase(BaseTestCase):
 
 
 class ServicesNetworkTestCase(BaseTestCase):
+    """Tests the ServicesPersom, RepairService amd Service models."""
 
     def setUp(self):
         super(ServicesNetworkTestCase, self).setUp()
 
     def test_model_creates_service_man(self):
+        """Test service person data is created correctly."""
         code = CountryCode.objects.first()
         ServicePerson.objects.create(first_name="Wanjigi",
                                      name_of_premise="Cutting Edge Tec",
@@ -239,18 +271,25 @@ class ServicesNetworkTestCase(BaseTestCase):
 
 
 class AddressModelTestCase(BaseTestCase):
+    """Tests the Address model."""
 
     def setUp(self):
+        """Set up testing environment."""
         super(AddressModelTestCase, self).setUp()
 
     def test_create_valid_address(self):
-        Address.objects.create(address_line_one="P.O.Box 2354 - 00100",
-                               address_line_two="Nairobi")
+        """Test creation of valid address."""
+        Address.objects.create(
+            address_line_one="P.O.Box 2354 - 00100",
+            address_line_two="Nairobi"
+            )
         address_one = Address.objects.get(address_line_two="Nairobi")
         created_address = "P.O.Box 2354 - 00100" + "\n" + "Nairobi"
         self.assertEqual(str(address_one), created_address)
-        Address.objects.create(address_line_one="P.O.Box 30305 - 00100",
-                               address_line_two="Mbagathi")
+        Address.objects.create(
+            address_line_one="P.O.Box 30305 - 00100",
+            address_line_two="Mbagathi"
+            )
         created_address_two = "P.O.Box 30305 - 00100" + "\n" +\
             "Mbagathi"
         address_two = Address.objects.get(address_line_two="Mbagathi")

@@ -1,4 +1,5 @@
-from front.tests.base_selenium import *
+"""Contains tests for login page."""
+from front.tests.base_selenium import BaseSeleniumTestCase, webdriver
 
 
 class EmailLogin(BaseSeleniumTestCase):
@@ -11,8 +12,8 @@ class EmailLogin(BaseSeleniumTestCase):
         self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(30)
 
-
     def test_login_user_invalid_email(self):
+        """Test user cannot login with invalid login."""
         driver = self.driver
         driver.get('%s%s' % (self.live_server_url, '/login'))
         email_input = driver.find_element_by_name("email")
@@ -26,4 +27,3 @@ class EmailLogin(BaseSeleniumTestCase):
 
     def tearDown(self):
         self.driver.close()
-

@@ -1,11 +1,14 @@
-from front.base_test import (BaseTestCase, image, Currency, cache)
+from front.base_test import (BaseTestCase, image, cache)
 from front.errors import (category_image_error, phone_category_error)
-from .test_cache import phone_form
 from front.models import (PhoneList, PhoneModel, PhoneModelList)
+from .test_cache import phone_form
 
 
 class LandingPageViewsTestCase(BaseTestCase):
+    """Tests landing page views."""
+
     def setUp(self):
+        """Set up testing environment."""
         super(LandingPageViewsTestCase, self).setUp()
 
     def test_hot_deals_rendering(self):
@@ -82,6 +85,10 @@ class LandingPageViewsTestCase(BaseTestCase):
         self.assertRedirects(response, "/admin/front/phonecategory/", 302)
 
     def test_category_image_rendering_on_view(self):
+        """
+        Test that when adding a category with the right image size:
+            - That it renders on the view
+        """
         mock_image_2 = image('test_image_6.png')
         form_2 = {"category_image": mock_image_2,
                   "phone_category": "CategoryTest1"}
@@ -92,6 +99,8 @@ class LandingPageViewsTestCase(BaseTestCase):
 
 
 class PhoneCategoryViewsTestCase(BaseTestCase):
+    """Tests phone category views."""
+
     def setUp(self):
         super(PhoneCategoryViewsTestCase, self).setUp()
         self.category_image = image('test_image_6.png')
@@ -127,8 +136,11 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         Test that Phone categories are being displayed on the front page of
         the application
         '''
-        self.elena.post(self.add_url, {'phone_category': "Extra",
-                        "category_image": self.category_image})
+        self.elena.post(
+            self.add_url, {
+                'phone_category': "Extra",
+                "category_image": self.category_image}
+            )
         response = self.client.get('/')
         self.assertContains(response, "Iphone")
         self.assertContains(response, "Android")
@@ -136,6 +148,7 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         self.assertContains(response, "Extra")
 
     def test_admin_view(self):
+        """Test that model items are rendered on the admin's landing page."""
         response = self.elena.get('/admin', follow=True)
         self.assertContains(response, "Phone Categories")
         self.assertContains(response, "Phones")
@@ -158,11 +171,14 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
 
 
 class PhoneListViewsTestCase(BaseTestCase):
+    """Tests phonelist views."""
 
     def setUp(self):
+        """Set up testing environment."""
         super(PhoneListViewsTestCase, self).setUp()
 
     def test_shillings_value_is_returned(self):
+        """Test that phone cateogory data contains shilling value."""
         response = self.client.get("/phone_category/{}/".
                                    format(self.android.pk))
         self.assertContains(response, "V$")
@@ -220,7 +236,10 @@ class PhoneListViewsTestCase(BaseTestCase):
 
 
 class AboutPageViewsTestCase(BaseTestCase):
+    """Test about page views."""
+
     def setUp(self):
+        """Initialize testing environment."""
         super(AboutPageViewsTestCase, self).setUp()
 
     def test_phone_categories_rendered(self):
@@ -235,7 +254,10 @@ class AboutPageViewsTestCase(BaseTestCase):
 
 
 class FooterViewTestCase(BaseTestCase):
+    """Tests footer views"""
+
     def setUp(self):
+        """Initialize testing environment."""
         super(FooterViewTestCase, self).setUp()
 
     def tearDown(self):
@@ -289,8 +311,10 @@ class FooterViewTestCase(BaseTestCase):
 
 
 class NewsItemTestCase(BaseTestCase):
+    """Test News Item views."""
 
     def setUp(self):
+        """Set the initial state of the tests."""
         super(NewsItemTestCase, self).setUp()
 
     def test_news_items_rendered(self):
@@ -304,11 +328,17 @@ class NewsItemTestCase(BaseTestCase):
 
 
 class ServicePersonTestCase(BaseTestCase):
+    """Tests service person views."""
 
     def setUp(self):
+        """Set the initial state of the tests."""
         super(ServicePersonTestCase, self).setUp()
 
     def test_repair_network_created(self):
+        """
+        Test service person data is rendered on the repair and
+        network page.
+        """
         response = self.client.get('/repair_and_network')
         html = "Wanjigi : Cutting Edge Tec"
         self.assertContains(response, html)
@@ -330,19 +360,24 @@ class ServicePersonTestCase(BaseTestCase):
 
 
 class ContactUsTestcase(BaseTestCase):
+    """Tests the Contact us page views."""
 
     def setUp(self):
+        """Set the initial state of the tests."""
         super(ContactUsTestcase, self).setUp()
 
     def test_contact_us_page_content_rendering(self):
+        """Test contact us page is rendered correctly."""
         response = self.client.get('/contact_us')
         html = "Contact teke"
         self.assertContains(response, html)
 
 
 class FAQSupportEmailTestCase(BaseTestCase):
+    """Tests Contact us page views"""
 
     def setUp(self):
+        """Set the initial state of the tests."""
         super(FAQSupportEmailTestCase, self).setUp()
 
     def test_user_can_send_email(self):

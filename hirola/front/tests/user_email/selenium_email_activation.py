@@ -1,5 +1,5 @@
-from front.tests.base_selenium import *
-import time
+"""Contains front end tests for an inactive user."""
+from front.tests.base_selenium import BaseSeleniumTestCase, webdriver
 
 
 class InactiveUserRedirect(BaseSeleniumTestCase):
@@ -14,6 +14,10 @@ class InactiveUserRedirect(BaseSeleniumTestCase):
         self.create_inactive_user()
 
     def test_login_inactive_user(self):
+        """
+        Test inactive user is redirected to a page instructing them
+        on how to activate their account.
+        """
         driver = self.driver
         driver.get('%s%s' % (self.live_server_url, '/login'))
         email_input = driver.find_element_by_name("email")

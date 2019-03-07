@@ -1,3 +1,4 @@
+"""Contains tests backend tests for profile."""
 from front.base_test import (BaseTestCase, User)
 from front.models import Review
 

@@ -1,22 +1,19 @@
-from front.forms.base_form import (forms, ValidationError)
+"""This module contains forms for collecting data from the user."""
+import re
 from django.contrib.auth import authenticate, password_validation
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import gettext_lazy as _
-from twilio.rest import Client
-from twilio.base.exceptions import TwilioRestException
-from front.models import CountryCode
-from front.twilio import TwilioValidation
-from front.models import User
-from django.contrib.auth.forms import PasswordChangeForm
 from django.template import loader
 from django.core.mail import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
-from front.token import account_activation_token, email_activation_token
 from django.core.validators import validate_email
-import re
 from django.conf import settings
+from front.models import CountryCode, User
+from front.token import account_activation_token, email_activation_token
+from front.twilio import TwilioValidation
+from front.forms.base_form import (forms, ValidationError)
 
 
 class UserCreationForm(forms.ModelForm):
@@ -43,11 +40,17 @@ class UserCreationForm(forms.ModelForm):
     )
 
     class Meta:
+        """
+        This class attaches the model and fields to the UserCreationForm
+        """
         model = User
         fields = ('email', 'first_name', 'last_name', 'country_code',
                   'phone_number')
 
     def clean_password2(self):
+        """
+        Validate that both passwords entered by the user match.
+        """
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
@@ -58,6 +61,14 @@ class UserCreationForm(forms.ModelForm):
         return password2
 
     def send_email(self, request, user):
+        """
+        Send email to user after successful registration.
+
+        parameters:
+            request(object): Contains metadata about the request
+            user(object): Object representing the user requesting for
+            registration
+        """
         current_site = get_current_site(request)
         context = {
             'user': user,
@@ -67,13 +78,20 @@ class UserCreationForm(forms.ModelForm):
             'protocol': 'https' if request.is_secure() else 'http',
         }
         to_email = self.cleaned_data.get('email')
-        subject = loader.render_to_string("registration/signup_activation_subject.txt", context)
+        subject = loader.render_to_string(
+            "registration/signup_activation_subject.txt", context
+            )
         subject = ''.join(subject.splitlines())
-        body = loader.render_to_string("registration/signup_activation_email.html", context)
+        body = loader.render_to_string(
+            "registration/signup_activation_email.html", context
+            )
         email_message = EmailMultiAlternatives(subject, body, None, [to_email])
         email_message.send()
 
     def get_user(self, uidb64):
+        """
+        Return a user object based on the user's id encoded in base 64.
+        """
         try:
             uid = urlsafe_base64_decode(uidb64).decode()
             user = User.objects.get(pk=uid)
@@ -82,6 +100,9 @@ class UserCreationForm(forms.ModelForm):
         return user
 
     def clean_phone_number(self):
+        """
+        Validate the phone number provided by the user.
+        """
         country_code = self.cleaned_data.get("country_code")
         phone_number = self.cleaned_data.get("phone_number")
         return TwilioValidation().phone_validation(country_code, phone_number)
@@ -96,6 +117,9 @@ class UserCreationForm(forms.ModelForm):
                 self.add_error('password1', error)
 
     def save(self, commit=True):
+        """
+        Save user to the database.
+        """
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         if commit:
@@ -104,6 +128,7 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
+    """A form form to enable a user to edit their profile information."""
     password = ReadOnlyPasswordHashField(
         label=_("Password"),
         help_text=_(
@@ -114,6 +139,7 @@ class UserChangeForm(forms.ModelForm):
     )
 
     class Meta:
+        """Contains metadata for the ModelForm class"""
         model = User
         fields = '__all__'
 
@@ -124,13 +150,18 @@ class UserChangeForm(forms.ModelForm):
             password.help_text = password.help_text.format('../password/')
         user_permissions = self.fields.get('user_permissions')
         if user_permissions:
-            user_permissions.queryset = user_permissions.queryset.select_related('content_type')
+            user_permissions.queryset = user_permissions.queryset.\
+                select_related('content_type')
 
     def clean_password(self):
+        """
+        Get the set initial value of password.
+        """
         return self.initial["password"]
 
 
 class UserForm(forms.ModelForm):
+    """A form to collect user registration data."""
     password = ReadOnlyPasswordHashField(
         label=_("Password"),
         help_text=_(
@@ -141,8 +172,12 @@ class UserForm(forms.ModelForm):
     )
 
     class Meta:
+        """Contains metadata for the ModelForm class"""
         model = User
-        fields = ('first_name', 'last_name', 'country_code', 'phone_number', 'password')
+        fields = (
+            'first_name', 'last_name', 'country_code', 'phone_number',
+            'password'
+            )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -173,6 +208,7 @@ class UserForm(forms.ModelForm):
         return self.instance
 
     def fill_fields(self):
+        """Set the inital values of the fields."""
         initial_fields = self.fields.keys() - self.data.keys()
         for field in initial_fields:
             if field == "country_code":
@@ -183,6 +219,9 @@ class UserForm(forms.ModelForm):
         return self.instance
 
     def clean_phone_number(self):
+        """
+        Validate phone number entered by the user.
+        """
         country_code = CountryCode.objects.get(pk=self.initial["country_code"])
         phone_number = self.initial["phone_number"]
         return TwilioValidation().phone_validation(country_code, phone_number)
@@ -245,13 +284,15 @@ class AuthenticationForm(forms.Form):
         'invalid_email': _(
             "You entered an incorrect email!!!"
         ),
-        'non_existent': _("We cannot find an account with that email address."),
+        'non_existent': _(
+            "We cannot find an account with that email address."
+            ),
     }
 
     def __init__(self, request=None, *args, **kwargs):
         """
         The 'request' parameter is set for custom auth use by subclasses.
-        The form data comes in via the standarad 'data' kwarg.
+        The form data comes in via the standard 'data' kwarg.
         """
         self.request = request
         self.user_cache = None
@@ -261,6 +302,9 @@ class AuthenticationForm(forms.Form):
         self.redirect = False
 
     def clean(self):
+        """
+        Get user data, authenticate and set cache.
+        """
         email = self.cleaned_data.get('email')
         password = self.cleaned_data.get('password')
         if email is not None and password:
@@ -273,6 +317,7 @@ class AuthenticationForm(forms.Form):
         return self.cleaned_data
 
     def clean_email(self):
+        """Validate email is correct."""
         email = self.cleaned_data.get('email')
         user = User.objects.filter(email=email).first()
         if not user:
@@ -300,9 +345,21 @@ class AuthenticationForm(forms.Form):
             )
 
     def get_user(self):
+        """
+        Get logged in user from cache.
+
+        Returns:
+            user(object): authenticated user
+        """
         return self.user_cache
 
     def get_invalid_login_error(self):
+        """
+        Raise invalid login error.
+
+        Returns:
+            error(object): Contains a message of what went wrong.
+        """
         return forms.ValidationError(
             self.error_messages['invalid_login'],
             code='invalid_login',
@@ -321,10 +378,12 @@ class ChangeEmailForm(forms.ModelForm):
     }
 
     class Meta:
+        """Contains metadata for the ChangeEmailForm class"""
         model = User
         fields = ('email',)
 
     def send_email(self, request, user):
+        """Send email."""
         current_site = get_current_site(request)
         context = {
             'user': user,
@@ -334,13 +393,26 @@ class ChangeEmailForm(forms.ModelForm):
             'protocol': 'https' if request.is_secure() else 'http',
         }
         to_email = self.cleaned_data.get('email')
-        subject = loader.render_to_string("front/change_email_activation_subject.txt", context)
+        subject = loader.render_to_string(
+            "front/change_email_activation_subject.txt", context
+            )
         subject = ''.join(subject.splitlines())
-        body = loader.render_to_string("front/change_email_activation_email.html", context)
+        body = loader.render_to_string(
+            "front/change_email_activation_email.html", context
+            )
         email_message = EmailMultiAlternatives(subject, body, None, [to_email])
         email_message.send()
 
     def clean_email(self):
+        """
+        Validate email is correct.
+
+        Returns:
+            email(str): Returns user email if valid
+
+        Raises:
+            ValidationError(object): Invalid email exception
+        """
         email = self.cleaned_data.get("email")
         if self.initial["email"] == email:
             raise forms.ValidationError(
@@ -364,7 +436,14 @@ class EmailAuthenticationForm(AuthenticationForm):
             )
         return email
 
+
 def validate_user_email(email):
+    """
+    Validate email.
+
+    parameters:
+        email(str): email to validate
+    """
     try:
         validate_email(email)
     except ValidationError:
@@ -373,6 +452,14 @@ def validate_user_email(email):
 
 
 def resend_email(request, user, email):
+    """
+    Resend user email.
+
+    parameters:
+        request(object): Passes state between views.
+        user(object): User engaging the site
+        email(str): User email to resend the email to
+    """
     if validate_user_email(email):
         current_site = get_current_site(request)
         context = {
@@ -416,7 +503,9 @@ def resend_activation_email(request, user, email):
 
 
 class PhoneProfileUserDataCollectionForm(forms.Form):
-
+    """
+    A form to collect user data on phone profile page.
+    """
     quantity_error_messages = {
         'required': _("You need to provide the quantity!")
     }
@@ -426,7 +515,9 @@ class PhoneProfileUserDataCollectionForm(forms.Form):
 
 
 class ContactUsForm(forms.Form):
-
+    """
+    Form to collect user data in the contact page.
+    """
     error_messages = {
         'invalid': _('Please enter a valid comment'),
         'required': _("Comment cannot be empty!")
@@ -441,6 +532,7 @@ class ContactUsForm(forms.Form):
                'class': 'materialize-textarea'}))
 
     def clean_comment(self):
+        """Validate comment."""
         comment = self.cleaned_data.get('comment')
         if not comment or comment.isspace():
             raise ValidationError(self.error_messages['required'])
@@ -449,6 +541,7 @@ class ContactUsForm(forms.Form):
         return comment
 
     def send_email(self):
+        """Send email to site administrators."""
         to_email = settings.EMAIL_HOST_USER
         from_email = self.cleaned_data.get('email')
         sender_name = self.cleaned_data.get('name') or 'Anonymous User'

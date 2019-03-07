@@ -25,12 +25,16 @@ urlpatterns = [
          name='password_reset'),
     path('reset_password_done', PasswordResetDoneView.as_view(),
          name='password_reset_done'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    url(
+        r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.PasswordResetConfirmViewTailored.as_view(),
-        name='password_reset_confirm'),
+        name='password_reset_confirm'
+        ),
     path('reset_password/done/', PasswordResetCompleteView.as_view(),
          name='password_reset_complete'),
-    path('change_password', views.change_password_view, name='password_change'),
+    path(
+        'change_password', views.change_password_view, name='password_change'
+    ),
     path('old_password', views.old_password_view, name='password_change_old'),
     path('news', views.press_view, name='news'),
     path('help', views.help_view, name='help'),
@@ -39,12 +43,16 @@ urlpatterns = [
     path('review', views.review_view, name='review'),
     path('review_submit', views.review_submit_view, name='review_submit'),
     path('privacy', views.privacy_view, name='privacy'),
-    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        views.activate, name='activate'),
+    url(
+        r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.activate, name='activate'
+    ),
     path('confirm_user', views.confirm_user_view, name='confirm_user'),
     path('change_email', views.change_email_view, name='change_email'),
-    url(r'^activate_new_email/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        views.activate_new_email, name='activate_new_email'),
+    url(
+        r'^activate_new_email/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        views.activate_new_email, name='activate_new_email'
+    ),
     path('search', views.search_view, name='search'),
     path('change_activation_email/<str:old_email>/',
          views.change_activation_email,

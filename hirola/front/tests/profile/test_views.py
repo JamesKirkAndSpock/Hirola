@@ -1,5 +1,7 @@
+"""Contains tests for profile views."""
 from front.base_test import (BaseTestCase, User, image)
-from front.models import (ProductInformation, PhoneImage, Review, Feature)
+from front.models import (ProductInformation, Review, Feature)
+
 
 class PhoneProfileTemplate(BaseTestCase):
     '''
@@ -10,7 +12,7 @@ class PhoneProfileTemplate(BaseTestCase):
         User.objects.create(email="example@gmail.com", first_name="Example",
                             last_name="User", is_staff=False, is_active=True,
                             is_change_allowed=False, phone_number=72200000,
-                            photo=image("test_image_5.png") )
+                            photo=image("test_image_5.png"))
         self.user = User.objects.get(first_name="Example")
         super(PhoneProfileTemplate, self).setUp()
 
@@ -23,9 +25,13 @@ class PhoneProfileTemplate(BaseTestCase):
         - That the page renders his review comment
         - That the page renders the date he reviewed
         '''
-        review = Review.objects.create(stars=4, comments="Good job guys",
-                                       phone_model=self.samsung_note_5, owner=self.user)
-        get_response = self.client.get("/profile/{}/".format(self.samsung_note_5.id))
+        review = Review.objects.create(
+            stars=4, comments="Good job guys",
+            phone_model=self.samsung_note_5, owner=self.user
+            )
+        get_response = self.client.get(
+            "/profile/{}/".format(self.samsung_note_5.id)
+            )
         self.assertContains(get_response, self.user.first_name)
         self.assertContains(get_response, self.user.last_name)
         star_reviews = ("<i class=\"material-icons left checked\">grade</i>\n"
@@ -42,7 +48,9 @@ class PhoneProfileTemplate(BaseTestCase):
         - That the page renders the main image
         - That the page renders other images
         '''
-        get_response = self.client.get("/profile/{}/".format(self.samsung_note_5_rose_gold.id))
+        get_response = self.client.get(
+            "/profile/{}/".format(self.samsung_note_5_rose_gold.id)
+            )
         self.assertContains(get_response, "test_image_5")
 
     def test_product_information(self):
@@ -53,8 +61,9 @@ class PhoneProfileTemplate(BaseTestCase):
         '''
         ProductInformation.objects.create(phone=self.samsung_note_5_rose_gold,
                                           feature="Network", value="GSM")
-        get_response = self.client.get("/profile/{}/".
-                                       format(self.samsung_note_5_rose_gold.id))
+        get_response = self.client.get(
+            "/profile/{}/".format(self.samsung_note_5_rose_gold.id)
+            )
         self.assertContains(get_response, "Network")
         self.assertContains(get_response, "GSM")
 
@@ -73,8 +82,10 @@ class PhoneProfileTemplate(BaseTestCase):
         - That the stars are rendered properly
         - That the number of stars is also rendered properly
         '''
-        Review.objects.create(stars=4, comments="Good job guys",
-                              phone_model=self.samsung_note_5, owner=self.user)
+        Review.objects.create(
+            stars=4, comments="Good job guys",
+            phone_model=self.samsung_note_5, owner=self.user
+            )
         get_response = self.client.get("/profile/{}/".
                                        format(self.samsung_note_5.id))
         star_count = ("\n                                \n"
@@ -91,8 +102,9 @@ class PhoneProfileTemplate(BaseTestCase):
         '''
         Feature.objects.create(phone=self.samsung_note_5_rose_gold,
                                feature="64 GB Memcard slot")
-        get_response = self.client.get("/profile/{}/".
-                                       format(self.samsung_note_5_rose_gold.id))
+        get_response = self.client.get(
+            "/profile/{}/".format(self.samsung_note_5_rose_gold.id)
+            )
         self.assertContains(get_response, "64 GB Memcard slot")
 
     def test_user_image_rendered(self):
@@ -100,6 +112,7 @@ class PhoneProfileTemplate(BaseTestCase):
         Test that when you visit a page for the profile:
             - That the user image is rendered
         '''
-        get_response = self.client.get("/profile/{}/".
-                                       format(self.samsung_note_5_rose_gold.id))
+        get_response = self.client.get(
+            "/profile/{}/".format(self.samsung_note_5_rose_gold.id)
+            )
         self.assertContains(get_response, "/media/phones/test_image_5_")

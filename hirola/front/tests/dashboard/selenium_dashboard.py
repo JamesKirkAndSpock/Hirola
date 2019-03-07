@@ -1,4 +1,5 @@
-from front.tests.base_selenium import *
+"""Contains selenium tests for the My Orders Page."""
+from front.tests.base_selenium import (BaseSeleniumTestCase, webdriver)
 
 
 class MyOrders(BaseSeleniumTestCase):
@@ -26,8 +27,8 @@ class MyOrders(BaseSeleniumTestCase):
         self.create_order()
         self.create_shipping_address()
 
-
     def login_user(self):
+        """Login test user."""
         driver = self.driver
         driver.get('%s%s' % (self.live_server_url, '/login'))
         email_input = driver.find_element_by_name("email")
@@ -38,11 +39,10 @@ class MyOrders(BaseSeleniumTestCase):
         submit_button.click()
         return driver
 
-
-
     def test_order_details_link(self):
         '''
-        Test that when a user moves to the order_detail and clicks on the MY ORDERS link:
+        Test that when a user moves to the order_detail and clicks on the
+            MY ORDERS link:
             - That the link opens up the orders that the user has
         '''
         driver = self.login_user()
