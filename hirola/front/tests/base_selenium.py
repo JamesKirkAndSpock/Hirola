@@ -1,4 +1,5 @@
 """A module that sets up the environment for testing the app's pages"""
+from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from front.models import (
     SocialMedia, PhoneCategory, PhoneMemorySize,
