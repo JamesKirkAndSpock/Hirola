@@ -12,6 +12,12 @@ from django.utils import timezone
 
 
 def get_default():
+    """
+    Get the default country code.
+
+    Returns:
+        code(object): default country code
+    """
     return CountryCode.objects.get_or_create(
         country_code=254, country="Kenya")[0]
 
@@ -28,7 +34,9 @@ class CountryCode(models.Model):
 
 
 class UserManager(BaseUserManager):
-
+    """
+    Interface for the User model for querying the database.
+    """
     def _create_user(self, email, password=None, **extra_fields):
         """
         Create and save a user with the given email, password is not required.
@@ -40,6 +48,9 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password=None, **extra_fields):
+        """
+        Create a user with a default country code if none is provided.
+        """
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
         if not extra_fields.get('country_code'):
@@ -47,6 +58,9 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password=None, **extra_fields):
+        """
+        Create a proviledged user of the site
+        """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -61,34 +75,45 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_('email address'), unique=True, error_messages={
-            'unique': _(
-                "The email address you entered has already been registered.",),
-                },
-                        max_length=255)
+    """Creates a user of the application."""
+    email = models.EmailField(
+        _('email address'), unique=True,
+        error_messages={'unique': _(
+            "The email address you entered has already been registered.",), },
+        max_length=255
+        )
     first_name = models.CharField(_('first_name'), max_length=30, blank=True)
     last_name = models.CharField(_('last_name'), max_length=30, blank=True)
     date_joined = models.DateTimeField(_('date_joined'), default=timezone.now)
-    is_staff = models.BooleanField(_('staff status'), default=False,
-                                   help_text=_(
-        'Designates whether the user can log into this admin site.'),)
-    is_active = models.BooleanField(_('active'), default=True, help_text=_(
+    is_staff = models.BooleanField(
+        _('staff status'), default=False,
+        help_text=_(
+            'Designates whether the user can log into this admin site.'
+            ),
+        )
+    is_active = models.BooleanField(
+        _('active'), default=True, help_text=_(
             'Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.'), )
-    is_change_allowed = models.BooleanField(_('change_allowed'), default=False,
-                                            help_text=_(
+            'Unselect this instead of deleting accounts.'),
+        )
+    is_change_allowed = models.BooleanField(
+        _('change_allowed'), default=False, help_text=_(
             'Designates whether this user has been authorized to change '
-            'his own password, in the change_password view.'),)
+            'his own password, in the change_password view.'),
+        )
     country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL,
                                      null=True, blank=True)
     phone_number = models.IntegerField(blank=True, null=True)
     photo = models.ImageField(blank=True, null=True)
-    change_email = models.EmailField(_('email address'), unique=True,
-                                     error_messages={
+    change_email = models.EmailField(
+        _('email address'), unique=True,
+        error_messages={
             'unique': _(
-                "The email address you entered has already been registered.",),
-                },
-                        max_length=255, default=None, blank=True, null=True)
+                "The email address you entered has already been registered.",
+                ),
+            },
+        max_length=255, default=None, blank=True, null=True
+        )
     change_email_tracker = models.DateTimeField(_('change_email_tracker'),
                                                 default=None, blank=True,
                                                 null=True)
@@ -103,6 +128,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     def __str__(self):
+        """Return a string representaion of the User object."""
         if self.first_name and self.last_name:
             full_name = '%s %s' % (self.first_name, self.last_name)
             return full_name.strip()
@@ -130,6 +156,7 @@ class InactiveUser(models.Model):
                                 null=True)
 
     def __str__(self):
+        """Return a string representaion of the InactiveUser object."""
         if self.first_name and self.last_name:
             full_name = '%s %s' % (self.first_name, self.last_name)
             return full_name.strip()
@@ -137,14 +164,19 @@ class InactiveUser(models.Model):
 
 
 class ItemIcon(models.Model):
+    """Creates an Icon for phone models."""
     item_icon = models.CharField(max_length=50)
 
     def __str__(self):
+        """Return a string representaion of the ItemIcon object."""
         return self.item_icon
 
 
 class PhoneCategory(models.Model):
+    """Creates Phone Categories."""
+
     class Meta:
+        """Provides extra information for the model"""
         verbose_name_plural = "Phone Categories"
     phone_category = models.CharField(default=None, max_length=15, blank=False,
                                       unique=True)
@@ -154,9 +186,11 @@ class PhoneCategory(models.Model):
                                       null=True, blank=True)
 
     def __str__(self):
+        """Return a string representation of the PhoneCategory object."""
         return self.phone_category
 
     def save(self, *args, **kwargs):
+        """Overrides the default save behavior of the model."""
         cache.delete('phone_categories')
         if self.pk:
             cache.delete('category_{}'.format(self.pk))
@@ -164,6 +198,7 @@ class PhoneCategory(models.Model):
 
 
 class PhoneMemorySize(models.Model):
+    """Creates Phone memory sizes."""
     abbreviation = models.CharField(max_length=10)
     size_number = models.IntegerField(blank=True, null=True)
     category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL,
@@ -173,6 +208,10 @@ class PhoneMemorySize(models.Model):
         return str(self.size_number) + " " + self.abbreviation
 
     def save(self, *args, **kwargs):
+        """
+        Overrides the default save behavior of the model and updates the
+        cache.
+        """
         if self.category:
             cache.delete('sizes_{}'.format(self.category.id))
             if self.pk:
@@ -183,17 +222,28 @@ class PhoneMemorySize(models.Model):
 
 
 class Currency(models.Model):
+    """Creates currencies."""
     class Meta:
+        """
+        Sets the plural name of the model which overrides the default name
+        provided by django.
+        """
         verbose_name_plural = "Currencies"
     currency_abbreviation = models.CharField(max_length=30)
     currency_long_form = models.CharField(max_length=50)
 
     def __str__(self):
+        """Return a string representation of the Currency object."""
         return str(self.currency_abbreviation)
 
 
 class PhoneList(models.Model):
+    """Creates Phones."""
+
     class Meta:
+        """
+        Sets the plural name of the model to override the default behavior.
+        """
         verbose_name_plural = "Phones"
     category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL,
                                  null=True, blank=True)
@@ -210,6 +260,7 @@ class PhoneList(models.Model):
     main_image = models.ImageField(upload_to="phones")
 
     def __str__(self):
+        """Return a string representation of the PhoneList object."""
         return self.phone_name
 
     def save(self, *args, **kwargs):
@@ -223,7 +274,10 @@ class PhoneList(models.Model):
 
 
 class SocialMedia(models.Model):
+    """Creates Social media objects."""
+
     class Meta:
+        """Sets the plural name of social media."""
         verbose_name_plural = "Social Media"
     url_link = models.URLField()
     icon = models.CharField(max_length=60, blank=True, default='')
@@ -233,14 +287,18 @@ class SocialMedia(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+        """Override default save behavior to enable updating of cache."""
         cache.delete('social_media')
         super(SocialMedia, self).save(*args, **kwargs)
 
 
 class OrderStatus(models.Model):
+    """Creates order status'"""
+
     status = models.CharField(max_length=60, blank=False, default=None)
 
     class Meta:
+        """Sets the plural name of order status'"""
         verbose_name_plural = "Order Status'"
 
     def __str__(self):
@@ -248,22 +306,28 @@ class OrderStatus(models.Model):
 
 
 class IntegerRangeField(models.IntegerField):
+    """Defines custom behavior for the IntegerField."""
 
     def __init__(self, min_value=None, max_value=None, **kwargs):
         self.min_value, self.max_value = min_value, max_value
         models.IntegerField.__init__(self, **kwargs)
 
     def formfield(self, **kwargs):
+        """
+        Sets default min and max values based on values provided by user.
+        """
         defaults = {'min_value': self.min_value, 'max_value': self.max_value}
         defaults.update(kwargs)
         return super(IntegerRangeField, self).formfield(**defaults)
 
 
 class PaymentMethod(models.Model):
+    """Creates payment methods."""
     payment_method = models.CharField(max_length=255, default="Cash")
 
 
 class Cart(models.Model):
+    """Creates carts for holding ordered items."""
     owner = models.ForeignKey(User, null=True, blank=True,
                               on_delete=models.CASCADE)
     creation_date = models.DateField(auto_now_add=True)
@@ -276,10 +340,11 @@ class Cart(models.Model):
     def __str__(self):
         if self.owner:
             return str(self.owner) + " date: " + str(self.creation_date)
-        return "Anonymouse User" + " date: " + str(self.creation_date)
+        return "Anonymous User" + " date: " + str(self.creation_date)
 
 
 class NewsItem(models.Model):
+    """Creates news Items."""
     title = models.CharField(max_length=256)
     source = models.CharField(max_length=256)
     link = models.CharField(max_length=256)
@@ -290,6 +355,7 @@ class NewsItem(models.Model):
 
 
 class Color(models.Model):
+    """Creates colors for phones."""
     color = models.CharField(
         max_length=40, unique=True, error_messages={
             'unique': 'The color you entered already exists'})
@@ -299,6 +365,10 @@ class Color(models.Model):
 
 
 class PhonesColor(models.Model):
+    """
+    Associates phones with certain colors and sets the necessary
+    attributes.
+    """
     phone = models.ForeignKey(
         PhoneList, related_name='phone_color_quantity',
         on_delete=models.SET_NULL, null=True, blank=True)
@@ -317,6 +387,10 @@ class PhonesColor(models.Model):
                                               deleting phone color.'), )
 
     class Meta:
+        """
+        Defines a rule for ensuring a phonecolor object cannot be created
+        with similar size more than once.
+        """
         unique_together = ('phone', 'size')
 
     def __str__(self):
@@ -326,7 +400,7 @@ class PhonesColor(models.Model):
 
 
 class Address(models.Model):
-
+    """Creates addresses."""
     class Meta:
         verbose_name_plural = "Addresses"
 
@@ -344,8 +418,10 @@ class Address(models.Model):
 
 
 class ServicePerson(models.Model):
+    """Creates service providers associated with the company."""
 
     class Meta:
+        """Sets the plural name of the class to override the default name."""
         verbose_name_plural = "ServicePeople"
 
     first_name = models.CharField(max_length=30, null=False, blank=False)
@@ -368,6 +444,7 @@ class ServicePerson(models.Model):
 
 
 class RepairService(models.Model):
+    """Defines a phone repair service."""
     repair_service = models.CharField(max_length=255)
 
     def __str__(self):
@@ -375,13 +452,19 @@ class RepairService(models.Model):
 
 
 class Service(models.Model):
-
+    """
+    Associates service people with phone services.
+    """
     service = models.ForeignKey(RepairService, on_delete=models.SET_NULL,
                                 null=True, blank=True)
     service_man = models.ForeignKey(ServicePerson, on_delete=models.SET_NULL,
                                     null=True, blank=True)
 
     class Meta:
+        """
+        Dictates that a service cannot be assigned the same service provider.
+        twice.
+        """
         unique_together = ('service', 'service_man')
 
     def __str__(self):
@@ -415,6 +498,7 @@ class PhoneModel(models.Model):
     within it that range based on color, price and size
     """
     class Meta:
+        """Sets the plural name of PhoneModel."""
         verbose_name_plural = "PhoneModels"
     category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL,
                                  null=True, blank=True)
@@ -457,16 +541,19 @@ class PhoneModelList(models.Model):
                                  null=True, blank=True)
 
     def __str__(self):
-        return ("Phone Model: " + str(self.phone_model))
+        return "Phone Model: " + str(self.phone_model)
 
     @property
     def get_lowest_price(phone):
+        """Returns the lowest price of a phone model."""
         return PhoneModelList.objects.filter(
             phone_model=phone.phone_model).order_by('price').first().price
 
 
 class Order(models.Model):
-
+    """
+    A table model for order items.
+    """
     owner = models.ForeignKey(User, null=True, blank=True,
                               on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
@@ -492,6 +579,9 @@ class Order(models.Model):
 
 
 class ShippingAddress(models.Model):
+    """
+    A table model for shipping addresses.
+    """
     order = models.ForeignKey(Order, related_name='shipping_address',
                               on_delete=models.CASCADE)
     pickup = models.CharField(max_length=255, blank=True, null=True)
@@ -500,15 +590,21 @@ class ShippingAddress(models.Model):
 
 
 class Feature(models.Model):
+    """
+    A table model for phone features.
+    """
     phone = models.ForeignKey(PhoneModelList, related_name='phone_features',
                               on_delete=models.CASCADE)
     feature = models.CharField(max_length=256)
 
 
 class Review(models.Model):
+    """
+    A table model for phone reviews.
+    """
     stars = IntegerRangeField(min_value=1, max_value=5)
     comments = models.TextField()
-    phone_model = models.ForeignKey(PhoneModel,  related_name='phone_reviews',
+    phone_model = models.ForeignKey(PhoneModel, related_name='phone_reviews',
                                     on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     time = models.DateField(auto_now=True)
@@ -519,6 +615,9 @@ class Review(models.Model):
 
 
 class ProductInformation(models.Model):
+    """
+    A table model for product information.
+    """
     phone = models.ForeignKey(PhoneModelList, related_name='phone_information',
                               on_delete=models.CASCADE)
     feature = models.CharField(max_length=256)
@@ -526,6 +625,9 @@ class ProductInformation(models.Model):
 
 
 class PhoneImage(models.Model):
+    """
+    Creates Phone Images.
+    """
     image = models.ImageField(upload_to="phones")
     images = models.ForeignKey(PhoneModelList, related_name='phone_images',
                                on_delete=models.SET_NULL, null=True,
@@ -533,17 +635,26 @@ class PhoneImage(models.Model):
 
 
 class HotDeal(models.Model):
+    """
+    Creates HotDeal items.
+    """
     item = models.ForeignKey(PhoneModelList, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.item)
 
     def save(self, *args, **kwargs):
+        """
+        Overrides the default save behavior to update cache.
+        """
         cache.delete('hot_deals')
         super(HotDeal, self).save(*args, **kwargs)
 
 
 def delete_cache(model_class, object_id, cache_name):
+    """
+    Deletes HotDeal cache.
+    """
     model_object = model_class.objects.get(pk=object_id)
     if model_object.category:
         cache.delete(cache_name.format(model_object.category.id))
@@ -551,6 +662,7 @@ def delete_cache(model_class, object_id, cache_name):
 
 @receiver(pre_delete, sender=PhoneCategory)
 def clear_phone_categories_cache(sender, **kwargs):
+    """Delete phone categories cache."""
     cache.delete('phone_categories')
     cache.delete("category_{}".format(kwargs["instance"].id))
     cache.delete("phones_{}".format(kwargs["instance"].id))
@@ -559,21 +671,25 @@ def clear_phone_categories_cache(sender, **kwargs):
 
 @receiver(pre_delete, sender=PhoneList)
 def clear_phone_cache(sender, **kwargs):
+    """Delete phones cache."""
     cache_delete("phones_{}", kwargs["instance"].category)
 
 
 @receiver(pre_delete, sender=PhoneMemorySize)
 def clear_phone_mem_size_cache(sender, **kwargs):
+    """Delete phone memory sizes cache."""
     cache_delete("sizes_{}", kwargs["instance"].category)
 
 
 @receiver(pre_delete, sender=SocialMedia)
 def clear_social_media_cache(sender, **kwargs):
+    """Delete social media cache."""
     cache.delete('social_media')
 
 
 @receiver(pre_delete, sender=HotDeal)
 def clear_hot_deals_cache(sender, **kwargs):
+    """Clear HotDeals cache."""
     cache.delete('hot_deals')
 
 
@@ -588,6 +704,7 @@ def adjust_average_review_delete(sender, **kwargs):
 
 
 def average_review(phone_model_id):
+    """Calculate the average review of a phone."""
     reviews = Review.objects.filter(phone_model=phone_model_id)
     if reviews:
         counter = 0
@@ -604,5 +721,6 @@ def average_review(phone_model_id):
 
 
 def cache_delete(cache_name, cache_id):
+    """Delete application's cache."""
     if cache_id:
         cache.delete(cache_name.format(cache_id.id))

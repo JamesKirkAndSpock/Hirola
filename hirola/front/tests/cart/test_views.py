@@ -2,12 +2,15 @@
 from front.base_test import (PhoneList, PhonesColor, BaseTestCase, User)
 from front.views import get_cart_total, get_cart_object
 from front.models import (CountryCode, OrderStatus, Order, Cart, SocialMedia)
-from django.test import Client
 
 
 class ConfirmBeforeCartTestCase(BaseTestCase):
+    """Tests the cart."""
 
     def setUp(self):
+        """
+        Set up test pre-conditions.
+        """
         super(ConfirmBeforeCartTestCase, self).setUp()
         user_data = ConfirmBeforeCartTestCase().generate_user_data({})
         response = self.client.post('/signup', user_data)
@@ -32,11 +35,15 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
     def test_get_cart_total(self):
         """Test functionality to calculate cart total."""
         Order.objects.create(
-            owner=self.user, phone=self.samsung_note_5_rose_gold, status=self.status, quantity=2,
-            price=25000, total_price=50000, cart=self.cart)
+            owner=self.user, phone=self.samsung_note_5_rose_gold,
+            status=self.status, quantity=2, price=25000,
+            total_price=50000, cart=self.cart
+            )
         Order.objects.create(
-            owner=self.user, phone=self.samsung_note_5_rose_gold, status=self.status, quantity=2,
-            price=25000, total_price=25000, cart=self.cart)
+            owner=self.user, phone=self.samsung_note_5_rose_gold,
+            status=self.status, quantity=2, price=25000,
+            total_price=25000, cart=self.cart
+            )
         order = Order.objects.filter(owner=self.user)
         total = get_cart_total(order)
         self.assertEqual(total, 75000)
@@ -104,4 +111,4 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         Cart.objects.create(owner=None)
         cart_object = Cart.objects.get(owner=None)
         self.assertIn("Uriel Timanko", str(self.cart))
-        self.assertIn("Anonymouse User", str(cart_object))
+        self.assertIn("Anonymous User", str(cart_object))

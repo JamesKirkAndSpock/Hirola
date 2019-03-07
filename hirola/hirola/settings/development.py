@@ -1,3 +1,4 @@
+"""This module contains configuration for use during development."""
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!

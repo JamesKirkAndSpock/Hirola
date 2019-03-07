@@ -1,16 +1,20 @@
-from front.base_test import *
+"""Contains tests for app decorators."""
 from unittest.mock import Mock
-from front.decorators import is_change_allowed_required, old_password_required, remember_user
 from django.test import RequestFactory
-from django.conf import settings
+from front.base_test import BaseTestCase, User, Client
+from front.decorators import (
+    is_change_allowed_required, old_password_required
+    )
 
 
 class DecoratorsTest(BaseTestCase):
-
+    """Test that app decorators function as expected."""
     def setUp(self):
-        User.objects.create(email="sivanna@gmail.com", first_name="Sivanna", last_name="Turimo",
-                            is_staff=False, is_active=True, is_change_allowed=False,
-                            phone_number=72200000, )
+        User.objects.create(
+            email="sivanna@gmail.com", first_name="Sivanna",
+            last_name="Turimo", is_staff=False, is_active=True,
+            is_change_allowed=False, phone_number=72200000,
+            )
         self.user = User.objects.get(first_name="Sivanna")
         self.sivanna = Client()
         self.sivanna.force_login(self.user)
@@ -21,8 +25,9 @@ class DecoratorsTest(BaseTestCase):
 
     def test_is_change_allowed_decorator_false(self):
         '''
-        Test that when a mock function and a request with a user whose 'is_change_allowed' attribute
-        is set to False is granted to a decorator function that:
+        Test that when a mock function and a request with a user whose
+        'is_change_allowed' attribute is set to False is granted to a
+        decorator function that:
             - The response redirects to the confirm user page
         '''
         self.assertEqual(self.request.user.is_change_allowed, False)
@@ -33,8 +38,9 @@ class DecoratorsTest(BaseTestCase):
 
     def test_is_change_allowed_decorator_true(self):
         '''
-        Test that when a mock function and a request with a user whose 'is_change_allowed' attribute
-        is set to True is granted to a decorator function that:
+        Test that when a mock function and a request with a user whose
+        'is_change_allowed' attribute is set to True is granted to a decorator
+        function that:
             - The response returns the mock function provided
         '''
         request = self.request
@@ -46,8 +52,9 @@ class DecoratorsTest(BaseTestCase):
 
     def test_old_password_required_decorator_false(self):
         '''
-        Test that when a mock function and a request with a user whose 'is_change_allowed' attribute
-        is set to False is granted to a decorator function that:
+        Test that when a mock function and a request with a user whose
+        'is_change_allowed' attribute is set to False is granted to a
+        decorator function that:
             - The response redirects to the confirm user page
         '''
         self.assertEqual(self.request.user.is_change_allowed, False)
@@ -58,8 +65,9 @@ class DecoratorsTest(BaseTestCase):
 
     def test_old_password_required_decorator_true(self):
         '''
-        Test that when a mock function and a request with a user whose 'is_change_allowed' attribute
-        is set to True is granted to a decorator function that:
+        Test that when a mock function and a request with a user whose
+        'is_change_allowed' attribute is set to True is granted to a decorator
+        function that:
             - The response returns the mock function provided
         '''
         request = self.request

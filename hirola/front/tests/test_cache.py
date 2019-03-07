@@ -1,17 +1,20 @@
+"""A module for testing cached data."""
 from django.core.cache import cache
-from django.core.files.uploadedfile import SimpleUploadedFile
 from front.base_test import BaseTestCase, image
-from hirola.settings.base import BASE_DIR
-from front.models import (HotDeal, PhoneList, PhoneCategory, PhoneMemorySize,
-                          SocialMedia, ItemIcon)
+from front.models import (
+    HotDeal, PhoneList, PhoneCategory, PhoneMemorySize,
+    SocialMedia, ItemIcon
+    )
 
 
 class LandingPageCacheTest(BaseTestCase):
-
+    """Tests landing page cache."""
     def setUp(self):
+        """Set up tests initial state."""
         super(LandingPageCacheTest, self).setUp()
 
     def tearDown(self):
+        """Remove tests environment after testing."""
         cache.delete_many(['social_media', 'phone_categories', 'hot_deals'])
 
     def social_media_cache_exists(self):
@@ -63,7 +66,10 @@ class LandingPageCacheTest(BaseTestCase):
         '''
         self.phone_category_cache_exists()
         category_add_url = "/admin/front/phonecategory/add/"
-        category_form = {"phone_category": "Phone1", "category_image": image('test_image_6.png')}
+        category_form = {
+            "phone_category": "Phone1",
+            "category_image": image('test_image_6.png')
+            }
         response = self.elena.post(category_add_url, category_form)
         self.assertEqual(response.status_code, 302)
         category_cache_after_add = cache.get('phone_categories')
@@ -71,22 +77,28 @@ class LandingPageCacheTest(BaseTestCase):
 
     def test_cache_cleared_on_edit(self):
         '''
-        Test that the cache for landing page images is deleted when a landing page image is edited.
-        Ideally the test should operate in a scenario where the cache already exists.
+        Test that the cache for landing page images is deleted when a
+        landing page image is edited. Ideally the test should operate in a
+        scenario where the cache already exists.
         '''
         self.phone_category_cache_exists()
         category_edit_url = "/admin/front/phonecategory/{}/change/"
-        category_form = {"phone_category": "Phone1", "category_image": image('test_image_6.png')}
-        response = self.elena.post(category_edit_url.format(self.iphone.pk),
-                                   category_form)
+        category_form = {
+            "phone_category": "Phone1",
+            "category_image": image('test_image_6.png')
+            }
+        response = self.elena.post(
+            category_edit_url.format(self.iphone.pk), category_form
+            )
         self.assertEqual(response.status_code, 302)
         category_cache_after_edit = cache.get('phone_categories')
         self.assertEqual(category_cache_after_edit, None)
 
     def test_cache_cleared_on_delete(self):
         '''
-        Test that the cache for social is deleted when a social media object is deleted. Ideally
-        the test should operate in a scenario where the cache already exists.
+        Test that the cache for social is deleted when a social media
+        object is deleted. Ideally the test should operate in a scenario
+        where the cache already exists.
         '''
         self.phone_category_cache_exists()
         self.iphone.delete()
@@ -114,9 +126,11 @@ class LandingPageCacheTest(BaseTestCase):
         self.deals_category_cache_exists()
         self.elena.post("/admin/front/hotdeal/add/",
                         {"item": self.samsung_note_5_rose_gold.pk})
-        self.elena.post("/admin/front/hotdeal/{}/change/".format(
+        self.elena.post(
+            "/admin/front/hotdeal/{}/change/".format(
                 self.samsung_note_5_rose_gold.pk),
-                {"item": self.samsung_note_7.pk})
+            {"item": self.samsung_note_7.pk}
+            )
         hd_cache_after_edit = cache.get('hot_deals')
         self.assertEqual(hd_cache_after_edit, None)
 
@@ -136,6 +150,7 @@ class LandingPageCacheTest(BaseTestCase):
 
 
 class PhoneCategoryViewCacheTest(BaseTestCase):
+    """Tests phone category cache."""
 
     def setUp(self):
         self.phone_edit_url = "/admin/front/phonelist/{}/change/"
@@ -175,13 +190,13 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
 
     def test_edition_category_change(self):
         '''
-        Test that if an admin changes the category of a phone from one category
-        to another, that the cache of both categories are deleted.
+        Test that if an admin changes the category of a phone from one
+        category to another, that the cache of both categories are deleted.
         '''
         # Add a phone with the category Iphone
         form = phone_form(self.iphone.pk, self.currency_v.pk,
                           self.size_iphone.pk)
-        response = self.elena.post('/admin/front/phonelist/add/', form)
+        self.elena.post('/admin/front/phonelist/add/', form)
         # Visit the URL for Iphone and ensure a cache is added.
         self.phone_cache_exists()
         # Visit the URL for Android and ensure that a cache exists for Android.
@@ -192,8 +207,7 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
         form_2 = phone_form(self.android.pk, self.currency_v.pk,
                             self.size_iphone.pk)
         phone = PhoneList.objects.get(phone_name="Phone_ImageV")
-        response = self.elena.post(self.phone_edit_url.format(phone.pk),
-                                   form_2)
+        self.elena.post(self.phone_edit_url.format(phone.pk), form_2)
         cache_after_edit_i = cache.get('phones_{}'.format(self.iphone.pk))
         cache_after_edit_a = cache.get('phones_{}'.format(self.android.pk))
         self.assertEqual(cache_after_edit_i, None)
@@ -313,7 +327,10 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
         cache_after_access = cache.get('category_{}'.format(self.iphone.pk))
         self.assertNotEqual(cache_after_access, None)
         iphone_id = self.iphone.pk
-        form = {"phone_category": "New Category", "category_image": image('test_image_6.png')}
+        form = {
+            "phone_category": "New Category",
+            "category_image": image('test_image_6.png')
+            }
         category_edit_url = "/admin/front/phonecategory/{}/change/"
         response = self.elena.post(category_edit_url.format(iphone_id), form)
         self.assertEqual(response.status_code, 302)
@@ -324,7 +341,8 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
 
     def test_cache_size_created(self):
         '''
-        Test that the cache for sizes in a particular category is created by visiting a view.
+        Test that the cache for sizes in a particular category is created by
+        visiting a view.
         '''
         cache_before_access = cache.get('sizes_{}'.format(self.iphone.pk))
         self.assertEqual(cache_before_access, None)
@@ -334,8 +352,8 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
 
     def test_deletion_of_category_size(self):
         '''
-        Test that when a size is deleted with a particular Category that the cache for size with
-        the category id is deleted.
+        Test that when a size is deleted with a particular Category that the
+        cache for size with the category id is deleted.
         '''
         self.client.get('/phone_category/{}/'.format(self.iphone.pk))
         cache_after_access = cache.get('sizes_{}'.format(self.iphone.pk))
@@ -346,10 +364,13 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
 
     def test_deletion_of_non_category_size(self):
         '''
-        Test that this process does not affect the application deletion in any negative manner.
+        Test that this process does not affect the application deletion in
+        any negative manner.
         '''
-        empty_size = PhoneMemorySize.objects.create(abbreviation="GB",
-                                                    size_number=8)
+        empty_size = PhoneMemorySize.objects.create(
+            abbreviation="GB",
+            size_number=8
+            )
         self.client.get('/phone_category/{}/'.format(self.iphone.pk))
         cache_after_access = cache.get('sizes_{}'.format(self.iphone.pk))
         self.assertNotEqual(cache_after_access, None)
@@ -359,15 +380,15 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
 
     def test_addition_of_size_with_category(self):
         '''
-        Test that when a size category is being added, the cache of sizes with the respective
-        category id needs to be deleted.
+        Test that when a size category is being added, the cache of sizes
+        with the respective category id needs to be deleted.
         '''
         self.client.get('/phone_category/{}/'.format(self.iphone.pk))
         cache_after_access = cache.get('sizes_{}'.format(self.iphone.pk))
         self.assertNotEqual(cache_after_access, None)
         form = {"abbreviation": "AB", "size_number": 22,
                 "category": self.iphone.pk}
-        response = self.elena.post("/admin/front/phonememorysize/add/", form)
+        self.elena.post("/admin/front/phonememorysize/add/", form)
         size = PhoneMemorySize.objects.get(size_number=22)
         self.assertEqual(size.abbreviation, "AB")
         cache_after_delete = cache.get('sizes_{}'.format(self.iphone.pk))
@@ -493,7 +514,7 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
 
 
 class FooterViewCacheTest(BaseTestCase):
-
+    """Tests footer's cache."""
     def setUp(self):
         super(FooterViewCacheTest, self).setUp()
 
@@ -566,22 +587,35 @@ class FooterViewCacheTest(BaseTestCase):
 
 
 def phone_form(category, currency, size):
+    """Generate mock data for a phone."""
     mock_image = image('test_image_5.png')
     icon = ItemIcon.objects.filter(item_icon="android").first()
     if not icon:
         ItemIcon.objects.create(item_icon="android")
         icon = ItemIcon.objects.filter(item_icon="android").first()
-    form = {"main_image": mock_image, "phone_name": "Phone_ImageV", "price": 250,
-            "category": category, "currency": currency, "size_sku": size, "quantity": 5,
-            "icon": icon.id, "average_review": 5.0, "phone_information-TOTAL_FORMS": 1,
-            "phone_information-INITIAL_FORMS": 0, "phone_information-MIN_NUM_FORMS": 0,
-            "phone_information-MAX_NUM_FORMS": 1000, "phone_images-TOTAL_FORMS": 1,
-            "phone_images-INITIAL_FORMS": 0, "phone_images-MIN_NUM_FORMS": 0,
-            "phone_images-MAX_NUM_FORMS": 1000, "phone_reviews-TOTAL_FORMS": 1,
-            "phone_reviews-INITIAL_FORMS": 0, "phone_reviews-MIN_NUM_FORMS": 0,
-            "phone_reviews-MAX_NUM_FORMS": 1000, "phone_features-TOTAL_FORMS": 1,
-            "phone_features-INITIAL_FORMS": 0, "phone_features-MIN_NUM_FORMS": 0,
-            "phone_features-MAX_NUM_FORMS": 1000, "phone_color_quantity-TOTAL_FORMS": 1,
-            "phone_color_quantity-INITIAL_FORMS": 0, "phone_color_quantity-MIN_NUM_FORMS": 0,
-            "phone_color_quantity-MAX_NUM_FORMS": 1000}
+    form = {
+        "main_image": mock_image, "phone_name": "Phone_ImageV", "price": 250,
+        "category": category, "currency": currency, "size_sku": size,
+        "quantity": 5, "icon": icon.id, "average_review": 5.0,
+        "phone_information-TOTAL_FORMS": 1,
+        "phone_information-INITIAL_FORMS": 0,
+        "phone_information-MIN_NUM_FORMS": 0,
+        "phone_information-MAX_NUM_FORMS": 1000,
+        "phone_images-TOTAL_FORMS": 1,
+        "phone_images-INITIAL_FORMS": 0,
+        "phone_images-MIN_NUM_FORMS": 0,
+        "phone_images-MAX_NUM_FORMS": 1000,
+        "phone_reviews-TOTAL_FORMS": 1,
+        "phone_reviews-INITIAL_FORMS": 0,
+        "phone_reviews-MIN_NUM_FORMS": 0,
+        "phone_reviews-MAX_NUM_FORMS": 1000,
+        "phone_features-TOTAL_FORMS": 1,
+        "phone_features-INITIAL_FORMS": 0,
+        "phone_features-MIN_NUM_FORMS": 0,
+        "phone_features-MAX_NUM_FORMS": 1000,
+        "phone_color_quantity-TOTAL_FORMS": 1,
+        "phone_color_quantity-INITIAL_FORMS": 0,
+        "phone_color_quantity-MIN_NUM_FORMS": 0,
+        "phone_color_quantity-MAX_NUM_FORMS": 1000
+        }
     return form

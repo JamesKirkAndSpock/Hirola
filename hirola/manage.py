@@ -1,4 +1,7 @@
-#!/usr/bin/env python
+"""
+Script for running administrative tasks
+"""
+# !/usr/bin/env python
 import os
 import sys
 

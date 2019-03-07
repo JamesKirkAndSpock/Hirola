@@ -1,3 +1,4 @@
+"""Contains custom error messages for predicted scenarios."""
 landing_page_error = (
     'The dimensions of your image are {} pixels (width) by {} pixels (height).'
     '\nThe landing page has to have a width of 1280 pixels or more and a '

@@ -1,82 +1,115 @@
+"""Contains models for the admin interface."""
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
-from .models import (PhoneImage, Review, Feature, PhonesColor,
-                     ProductInformation, ShippingAddress, PhoneList,
-                     PhoneMemorySize, Currency, SocialMedia, Order,
-                     OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
-                     Cart, RepairService, Address, ServicePerson, Service,
-                     PhoneBrand, PhoneModel, PhoneModelList)
-from .forms.model_forms import (PhoneCategoryForm, HotDealForm,
-                                PhoneCategory, HotDeal, ServicePersonForm)
-from .forms.user_forms import (UserChangeForm, UserCreationForm,
-                               User, CountryCode)
+from .models import (
+    PhoneImage, Review, Feature, PhonesColor,
+    ProductInformation, ShippingAddress, PhoneList,
+    PhoneMemorySize, Currency, SocialMedia, Order,
+    OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
+    Cart, RepairService, Address, ServicePerson, Service,
+    PhoneBrand, PhoneModel, PhoneModelList
+    )
+from .forms.model_forms import (
+    PhoneCategoryForm, HotDealForm,
+    PhoneCategory, HotDeal, ServicePersonForm
+    )
+from .forms.user_forms import (
+    UserChangeForm, UserCreationForm,
+    User, CountryCode
+    )
 
 
 class PhoneCategoryAdmin(admin.ModelAdmin):
+    """Represents the PhoneCategory model"""
     form = PhoneCategoryForm
 
 
 class PhoneImageInline(admin.TabularInline):
+    """Represents the PhoneImage model."""
     model = PhoneImage
     extra = 3
 
 
 class PhoneReviewInline(admin.TabularInline):
+    """Represents the Review model."""
     model = Review
     extra = 1
 
 
 class PhoneFeatureInline(admin.TabularInline):
+    """Represents the Feature model."""
     model = Feature
     extra = 1
 
 
 class PhoneColorInline(admin.TabularInline):
+    """Represents the PhonesColor model."""
     model = PhonesColor
     extra = 1
 
 
 class PhoneProductInline(admin.StackedInline):
+    """Represents the ProductInformation model."""
     model = ProductInformation
     extra = 1
 
 
 class ShippingAddressInline(admin.StackedInline):
+    """Represents the ShippingAddress model."""
     model = ShippingAddress
     extra = 1
     max_num = 1
 
 
 class PhoneModelListInline(admin.StackedInline):
+    """Represents the PhoneModelList model."""
     model = PhoneModelList
     extra = 0
 
 
 class PhoneModelAdmin(admin.ModelAdmin):
+    """
+    Implements inline layout for PhoneModelListInline,
+    PhoneReviewInline.
+    """
     inlines = [PhoneModelListInline, PhoneReviewInline]
 
 
 class PhoneModelInline(admin.TabularInline):
+    """Represents the PhoneModel model."""
     model = PhoneModel
     extra = 0
 
 
 class PhoneModelListAdmin(admin.ModelAdmin):
+    """
+    Represents the PhoneModelList model.
+    """
     inlines = [PhoneFeatureInline, PhoneProductInline, PhoneImageInline]
     model = PhoneModelList
     extra = 0
 
 
 class PhoneBrandAdmin(admin.ModelAdmin):
+    """
+    Implements an inline layout for PhoneModelInline on the admin interface.
+    """
     inlines = [PhoneModelInline]
 
 
 class OrderAdmin(admin.ModelAdmin):
+    """
+    Implements an inline layout for ShippingAddressInline on the
+    admin interface.
+    """
     inlines = [ShippingAddressInline, ]
 
 
 class UserAdmin(BaseUserAdmin):
+    """
+    Represents the admin user profile page.
+    """
     form = UserChangeForm
     add_form = UserCreationForm
 
@@ -103,10 +136,12 @@ class UserAdmin(BaseUserAdmin):
 
 
 class HotDealAdmin(admin.ModelAdmin):
+    """Represents the HotDeal model data collection form."""
     form = HotDealForm
 
 
 class ServicePersonAdmin(admin.ModelAdmin):
+    """Represents the ServicePersonForm model data collection form."""
     form = ServicePersonForm
 
 

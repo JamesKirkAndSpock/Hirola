@@ -1,14 +1,17 @@
-import os
-from django.test import TestCase, Client
+"""Sets up the environment required for app's tests."""
 from hirola.settings.base import BASE_DIR
+from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
-from front.models import (PhoneCategory, PhoneMemorySize, Currency,
-                          NewsItem, Color, PhonesColor, ItemIcon, PhoneList,
-                          cache, User, ServicePerson, RepairService, Service,
-                          CountryCode, PhoneModelList, PhoneBrand, PhoneModel)
+from front.models import (
+    PhoneCategory, PhoneMemorySize, Currency,
+    NewsItem, Color, PhonesColor, ItemIcon, PhoneList,
+    cache, User, ServicePerson, RepairService, Service,
+    CountryCode, PhoneModelList, PhoneBrand, PhoneModel
+    )
 
 
 class BaseTestCase(TestCase):
+    """Creates the environment variables required by tests."""
 
     def setUp(self):
         super(BaseTestCase, self).setUp()
@@ -29,7 +32,7 @@ class BaseTestCase(TestCase):
         self.create_phone_model_list()
 
     def create_admin(self):
-        # Elena is an admin who has admin privilidges
+        """Create a super user Elena who has admin privilidges."""
         self.elena = Client()
         user = User.objects.create_superuser(
             email='test@example.com',
@@ -38,7 +41,7 @@ class BaseTestCase(TestCase):
         self.elena.force_login(user)
 
     def create_phone_categories(self):
-        # Create Phone Categories
+        """Create Create Phone Categories."""
         phone_list = ["Iphone", "Android", "Tablet"]
         ItemIcon.objects.create(item_icon="icon-test")
         icon = ItemIcon.objects.get(item_icon="icon-test")
@@ -50,7 +53,7 @@ class BaseTestCase(TestCase):
         self.tablet = PhoneCategory.objects.get(phone_category="Tablet")
 
     def create_phone_sizes(self):
-        # Create Phone Memory Sizes
+        """Create Phone Memory Sizes."""
         data = {self.iphone: [8], self.android: [16], self.tablet: [24]}
         for key in data:
             PhoneMemorySize.objects.create(abbreviation="GB",
@@ -67,12 +70,13 @@ class BaseTestCase(TestCase):
         self.any_phone_size = PhoneMemorySize.objects.get(size_number=4)
 
     def create_currency(self):
-        # Create a currency
+        """Create a currency."""
         Currency.objects.create(currency_abbreviation="V$",
                                 currency_long_form="V-dollar")
         self.currency_v = Currency.objects.get(currency_abbreviation="V$")
 
     def create_news_item(self):
+        """Create a news item."""
         NewsItem.objects.create(
             title="Teke rocks",
             source="The standard online",
@@ -82,6 +86,7 @@ class BaseTestCase(TestCase):
         self.link = NewsItem.objects.get(link="https://www.sde.com")
 
     def create_color(self):
+        """Create colors."""
         Color.objects.create(color="Red")
         Color.objects.create(color="RoseGold")
         Color.objects.create(color="Silver")
@@ -90,7 +95,7 @@ class BaseTestCase(TestCase):
         self.color_three = Color.objects.get(color="Silver")
 
     def add_phone_colors(self):
-
+        """Add Phone Color objects."""
         PhonesColor.objects.create(
             phone=self.iphone_6, size=self.size_iphone, price=10000,
             color=self.color_one, quantity=5, is_in_stock=True)
@@ -102,12 +107,14 @@ class BaseTestCase(TestCase):
         self.all_colors = PhonesColor.objects.all()
 
     def create_landing_page_image(self):
+        """Create a landing page image."""
         add_url = "/admin/front/landingpageimage/add/"
         mock_image = image('test_image_2.jpeg')
         form = landing_page_form(mock_image, 2, ["red", "white"])
         self.elena.post(add_url, form)
 
     def create_phones(self):
+        """Create Phones."""
         ItemIcon.objects.create(item_icon="apple")
         icon = ItemIcon.objects.get(item_icon="apple")
         PhoneList.objects.create(category=self.iphone,
@@ -154,6 +161,7 @@ class BaseTestCase(TestCase):
             brand_model="Iphone 6 S")
 
     def create_phone_model_list(self):
+        """Create Phone models."""
         PhoneModelList.objects.create(
             phone_model=self.samsung_note_5, currency=self.currency_v,
             price=25000, size_sku=self.size_android,
@@ -180,6 +188,7 @@ class BaseTestCase(TestCase):
         )
 
     def create_repair_services(self):
+        """Create repair services."""
         RepairService.objects.create(repair_service="Battery replacement")
         self.service_one = RepairService.objects.get(
             repair_service="Battery replacement")
@@ -188,17 +197,21 @@ class BaseTestCase(TestCase):
             repair_service="Unlocking GSM")
 
     def add_serviceman_services(self):
+        """Associate service with provider."""
         Service.objects.create(service=self.service_one,
                                service_man=self.service_person_one)
         Service.objects.create(service=self.service_two,
                                service_man=self.service_person_one)
 
     def create_service_men(self):
+        """Create service provider."""
         self.code = CountryCode.objects.all().first()
-        ServicePerson.objects.create(first_name="Wanjigi",
-                                     name_of_premise="Cutting Edge Tec",
-                                     country_code=self.code,
-                                     phone_number="715557775")
+        ServicePerson.objects.create(
+            first_name="Wanjigi",
+            name_of_premise="Cutting Edge Tec",
+            country_code=self.code,
+            phone_number="715557775"
+            )
         self.service_person_one = ServicePerson.objects.\
             get(first_name="Wanjigi")
 
@@ -207,6 +220,9 @@ class BaseTestCase(TestCase):
 
 
 def landing_page_form(image, num, color):
+    """
+    Create a mock landing page form data.
+    """
     if isinstance(num, int):
         form = {"photo": image, "carousel_color": color[0],
                 "phone_name": "test_phone_name{}".format(num),
@@ -222,8 +238,19 @@ def landing_page_form(image, num, color):
 
 
 def image(name):
+    """
+    Create an image.
+
+    Parameters:
+        name(str): name of the image
+
+    Returns:
+        image
+    """
     image_path = BASE_DIR + '/media/' + name
-    mock_image = SimpleUploadedFile(name=name,
-                                    content=open(image_path, 'rb').read(),
-                                    content_type='image/jpeg')
+    mock_image = SimpleUploadedFile(
+        name=name,
+        content=open(image_path, 'rb').read(),
+        content_type='image/jpeg'
+        )
     return mock_image

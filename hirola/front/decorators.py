@@ -1,3 +1,4 @@
+"""Module contains app decorators."""
 from functools import wraps
 from django.shortcuts import redirect
 

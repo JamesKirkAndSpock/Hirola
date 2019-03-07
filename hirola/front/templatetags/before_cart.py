@@ -1,3 +1,7 @@
+"""
+Contains functions for processing information to be displayed
+on the cart page.
+"""
 from django import template
 from front.models import PhoneList
 

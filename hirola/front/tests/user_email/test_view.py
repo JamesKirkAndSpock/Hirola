@@ -1,10 +1,11 @@
+"""Contains tests for user confirmation."""
 from front.base_test import BaseTestCase, User, Client
 from front.forms.user_forms import AuthenticationForm, ChangeEmailForm
 from django.core.validators import EmailValidator
-from django.utils import timezone
 
 
 class ConfirmUserView(BaseTestCase):
+    """Tests user confirmation view."""
 
     def setUp(self):
         User.objects.create_user(email="sivanna@gmail.com", password="secret")
@@ -38,19 +39,23 @@ class ConfirmUserView(BaseTestCase):
             - That an error message is raised.
         '''
         self.sivanna.force_login(self.user)
-        response = self.sivanna.post("/confirm_user", {"email": "pop@gmail", "password": "secret"})
+        response = self.sivanna.post(
+            "/confirm_user", {"email": "pop@gmail", "password": "secret"}
+            )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, EmailValidator.message)
 
     def test_non_existent_email(self):
         '''
-        Test that when a valid email format is entered but it does not exist that
+        Test that when a valid email format is entered but it does not
+        exist that
             - The page does not redirect.
             - An error message is raised
         '''
         self.sivanna.force_login(self.user)
-        response = self.sivanna.post("/confirm_user", {"email": "pop@gmail.com",
-                                                       "password": "secret"})
+        response = self.sivanna.post(
+            "/confirm_user", {"email": "pop@gmail.com", "password": "secret"}
+            )
         self.assertEqual(response.status_code, 200)
         error_message = AuthenticationForm().error_messages['invalid_email']
         self.assertContains(response, error_message)
@@ -62,8 +67,11 @@ class ConfirmUserView(BaseTestCase):
             - An error message is raised.
         '''
         self.sivanna.force_login(self.user)
-        response = self.sivanna.post("/confirm_user", {"email": "sivanna@gmail.com",
-                                                       "password": "wrongsecret"})
+        response = self.sivanna.post(
+            "/confirm_user", {
+                "email": "sivanna@gmail.com", "password": "wrongsecret"
+                }
+            )
         self.assertEqual(response.status_code, 200)
         error_message = AuthenticationForm().error_messages['invalid_login']
         self.assertContains(response, error_message)
@@ -75,16 +83,21 @@ class ConfirmUserView(BaseTestCase):
             - The the user's attribute 'is_change_allowed' changes to true
         '''
         self.sivanna.force_login(self.user)
-        response = self.sivanna.post("/confirm_user", {"email": "sivanna@gmail.com",
-                                                       "password": "secret"})
+        response = self.sivanna.post(
+            "/confirm_user", {
+                "email": "sivanna@gmail.com", "password": "secret"
+                }
+            )
         self.assertRedirects(response, "/change_email", 302)
         user = User.objects.get(email="sivanna@gmail.com")
         self.assertEqual(user.is_change_allowed, True)
 
 
 class ChangeEmailView(BaseTestCase):
+    """Tests functionality for changing email."""
 
     def setUp(self):
+        """Set up initial state of tests."""
         super(ChangeEmailView, self).setUp()
 
     def test_not_logged_in(self):
@@ -152,16 +165,21 @@ class ChangeEmailView(BaseTestCase):
         self.user.save()
         self.sivanna = Client()
         self.sivanna.force_login(self.user)
-        response = self.sivanna.post("/change_email", {"email": "tripona@gmail.com"})
+        response = self.sivanna.post(
+            "/change_email", {"email": "tripona@gmail.com"}
+            )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "The email address you entered has already been registered.")
+        error = "The email address you entered has already been registered."
+        self.assertContains(
+            response, "{}".format(error)
+            )
         message = "Please provide new email for sivanna@gmail.com"
         self.assertContains(response, message)
 
     def test_similar_email(self):
         '''
-        Test that when a similar email to the user's original email is provided as a candidate
-        for change:
+        Test that when a similar email to the user's original email is
+        provided as a candidate for change:
             - That an error is raised
         '''
         User.objects.create_user(email="sivanna@gmail.com", password="secret")
@@ -170,7 +188,9 @@ class ChangeEmailView(BaseTestCase):
         self.user.save()
         self.sivanna = Client()
         self.sivanna.force_login(self.user)
-        response = self.sivanna.post("/change_email", {"email": "sivanna@gmail.com"})
+        response = self.sivanna.post(
+            "/change_email", {"email": "sivanna@gmail.com"}
+            )
         self.assertEqual(response.status_code, 200)
         error_message = ChangeEmailForm.error_messages['invalid_email']
         self.assertContains(response, error_message)
@@ -180,7 +200,8 @@ class ChangeEmailView(BaseTestCase):
     def test_valid_data(self):
         '''
         Test that when a valid email is provided that:
-            - The users change_allowed attribute is set to False, change_email is set to the
+            - The users change_allowed attribute is set to False, change_email
+              is set to the
             intended email, change_email_tracker to a time
             - That the status code is 200
             - That a html with information is rendered
@@ -192,7 +213,9 @@ class ChangeEmailView(BaseTestCase):
         self.sivanna = Client()
         self.sivanna.force_login(self.user)
         self.assertIsNone(self.user.change_email_tracker)
-        response = self.sivanna.post("/change_email", {"email": "pinotico@gmail.com"})
+        response = self.sivanna.post(
+            "/change_email", {"email": "pinotico@gmail.com"}
+            )
         self.assertEqual(response.status_code, 200)
         edited_user = User.objects.get(email="sivanna@gmail.com")
         self.assertFalse(edited_user.is_change_allowed)

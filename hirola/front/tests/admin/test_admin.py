@@ -1,8 +1,15 @@
-from front.base_test import *
+
+"""Contains tests for admin functionality."""
+from front.base_test import User, Client, TestCase
 
 
 class AdminPage(TestCase):
+    """Tests the admin page."""
+
     def setUp(self):
+        """
+        Set up test pre-conditions.
+        """
         self.client = Client()
         user = User.objects.create_superuser(
             email='test@example.com',

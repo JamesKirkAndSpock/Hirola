@@ -1,8 +1,12 @@
-from front.base_test import (BaseTestCase, PhoneList, PhonesColor, Client)
-from front.models import (Feature, Review, ProductInformation, User, PhoneModel, PhoneModelList)
+"""Contains tests for search functionality."""
+from front.base_test import (BaseTestCase, Client)
+from front.models import (
+    Feature, Review, ProductInformation, User, PhoneModel, PhoneModelList
+    )
 
 
 class SearchTest(BaseTestCase):
+    """Test search produces the expected results."""
 
     def setUp(self):
         User.objects.create_user(email="sivanna@gmail.com",
@@ -26,7 +30,9 @@ class SearchTest(BaseTestCase):
             - That the phone object is rendered on the search response
         '''
         response = self.sivanna.post("/search", {"search-name": "sam"})
-        self.assertContains(response, self.samsung_note_5_rose_gold.phone_model)
+        self.assertContains(
+            response, self.samsung_note_5_rose_gold.phone_model
+            )
 
     def test_search_phone_price(self):
         '''
@@ -34,7 +40,9 @@ class SearchTest(BaseTestCase):
             - That the phone object is rendered on the search response
         '''
         response = self.sivanna.post("/search", {"search-name": "25"})
-        self.assertContains(response, self.samsung_note_5_rose_gold.phone_model)
+        self.assertContains(
+            response, self.samsung_note_5_rose_gold.phone_model
+            )
 
     def test_search_phone_size(self):
         '''
@@ -42,7 +50,9 @@ class SearchTest(BaseTestCase):
             - That the phone object is rendered on the search response
         '''
         response = self.sivanna.post("/search", {"search-name": "16"})
-        self.assertContains(response, self.samsung_note_5_rose_gold.phone_model)
+        self.assertContains(
+            response, self.samsung_note_5_rose_gold.phone_model
+            )
 
     def test_search_phone_category(self):
         '''
@@ -50,9 +60,15 @@ class SearchTest(BaseTestCase):
             - That you get phone objects in that category
         '''
         response = self.sivanna.post("/search", {"search-name": "andro"})
-        self.assertContains(response, self.samsung_note_5_rose_gold.phone_model)
-        self.assertContains(response, self.samsung_note_7_rose_gold.phone_model)
-        self.assertNotContains(response, self.iphone_6_s_rose_gold.phone_model)
+        self.assertContains(
+            response, self.samsung_note_5_rose_gold.phone_model
+            )
+        self.assertContains(
+            response, self.samsung_note_7_rose_gold.phone_model
+            )
+        self.assertNotContains(
+            response, self.iphone_6_s_rose_gold.phone_model
+            )
 
     def test_search_phone_feature(self):
         '''
@@ -62,11 +78,17 @@ class SearchTest(BaseTestCase):
 
         Feature.objects.create(phone=self.samsung_note_7_rose_gold,
                                feature="6-inch screen")
-        Feature.objects.create(phone=self.iphone_6_s_rose_gold, feature="7-inch screen")
+        Feature.objects.create(
+            phone=self.iphone_6_s_rose_gold, feature="7-inch screen"
+            )
         response = self.sivanna.post("/search", {"search-name": "inch"})
-        self.assertContains(response, self.samsung_note_7_rose_gold.phone_model)
+        self.assertContains(
+            response, self.samsung_note_7_rose_gold.phone_model
+            )
         self.assertContains(response, self.iphone_6_s_rose_gold.phone_model)
-        self.assertNotContains(response, self.samsung_note_5_rose_gold.phone_model)
+        self.assertNotContains(
+            response, self.samsung_note_5_rose_gold.phone_model
+            )
 
     def test_search_product_information(self):
         '''
@@ -79,13 +101,22 @@ class SearchTest(BaseTestCase):
         ProductInformation.objects.create(phone=self.iphone_6_s_rose_gold,
                                           feature="Network", value="GSM")
         response = self.sivanna.post("/search", {"search-name": "gsm"})
-        self.assertContains(response, self.samsung_note_7_rose_gold.phone_model)
+        self.assertContains(
+            response, self.samsung_note_7_rose_gold.phone_model
+            )
         self.assertContains(response, self.iphone_6_s_rose_gold.phone_model)
-        self.assertNotContains(response, self.samsung_note_5_rose_gold.phone_model)
-        response_2 = self.sivanna.post("/search", {"search-name": "net"})
-        self.assertContains(response, self.samsung_note_7_rose_gold.phone_model)
-        self.assertContains(response, self.iphone_6_s_rose_gold.phone_model)
-        self.assertNotContains(response, self.samsung_note_5_rose_gold.phone_model)
+        self.assertNotContains(
+            response, self.samsung_note_5_rose_gold.phone_model
+            )
+        self.assertContains(
+            response, self.samsung_note_7_rose_gold.phone_model
+            )
+        self.assertContains(
+            response, self.iphone_6_s_rose_gold.phone_model
+            )
+        self.assertNotContains(
+            response, self.samsung_note_5_rose_gold.phone_model
+            )
 
     def test_search_product_review(self):
         '''
@@ -99,13 +130,25 @@ class SearchTest(BaseTestCase):
         Review.objects.create(stars=4, comments=genuine_comment,
                               phone_model=self.samsung_note_7, owner=self.user)
         response = self.sivanna.post("/search", {"search-name": "genui"})
-        self.assertNotContains(response, self.samsung_note_5_rose_gold.phone_model)
-        self.assertContains(response, self.samsung_note_7_rose_gold.phone_model)
-        self.assertNotContains(response, self.iphone_6_s_rose_gold.phone_model)
+        self.assertNotContains(
+            response, self.samsung_note_5_rose_gold.phone_model
+            )
+        self.assertContains(
+            response, self.samsung_note_7_rose_gold.phone_model
+            )
+        self.assertNotContains(
+            response, self.iphone_6_s_rose_gold.phone_model
+            )
         response_2 = self.sivanna.post("/search", {"search-name": "auth"})
-        self.assertContains(response_2, self.samsung_note_5_rose_gold.phone_model)
-        self.assertNotContains(response_2, self.samsung_note_7_rose_gold.phone_model)
-        self.assertNotContains(response_2, self.iphone_6_s_rose_gold.phone_model)
+        self.assertContains(
+            response_2, self.samsung_note_5_rose_gold.phone_model
+            )
+        self.assertNotContains(
+            response_2, self.samsung_note_7_rose_gold.phone_model
+            )
+        self.assertNotContains(
+            response_2, self.iphone_6_s_rose_gold.phone_model
+            )
 
     def test_not_in_stock_search(self):
         '''
@@ -136,10 +179,15 @@ class SearchTest(BaseTestCase):
         self.iphone_7_s_rose_gold = PhoneModelList.objects.get(
             phone_model=self.iphone_7_j, color=self.color_one
         )
-        post_response_1 = self.client.post("/search",
-                                           {"search-name": "Samsung Note 5"})
-        post_response_3 = self.client.post("/search", {"search-name": "Iphone 6 J"})
-        post_response_2 = self.client.post("/search", {"search-name": "Iphone 7"})
+        post_response_1 = self.client.post(
+            "/search", {"search-name": "Samsung Note 5"}
+            )
+        post_response_3 = self.client.post(
+            "/search", {"search-name": "Iphone 6 J"}
+            )
+        post_response_2 = self.client.post(
+            "/search", {"search-name": "Iphone 7"}
+            )
         self.assertContains(post_response_1, "Samsung Note 5")
         self.assertNotContains(post_response_2, "Iphone 7")
         self.assertNotContains(post_response_3, "Iphone 6")

@@ -1,11 +1,15 @@
+"""Contains tests for user authentication."""
+from django.conf import settings
 from front.base_test import BaseTestCase
 from front.forms.user_forms import AuthenticationForm
-from django.conf import settings
 from front.models import (User, CountryCode)
 
 
 class UserSignupTestCase(BaseTestCase):
+    """Tests user signup functionality."""
+
     def setUp(self):
+        """Initialize test environment."""
         super(UserSignupTestCase, self).setUp()
 
     def test_successful_creation_of_user(self):
@@ -119,6 +123,7 @@ class UserSignupTestCase(BaseTestCase):
 
 
 class UserLoginTestCase(BaseTestCase):
+    """Tests user login functionality."""
 
     def setUp(self):
         super(UserLoginTestCase, self).setUp()
@@ -186,6 +191,10 @@ class UserLoginTestCase(BaseTestCase):
         self.assertContains(response, html_content)
 
     def test_active_user_login(self):
+        """
+        Test that when an active user logs in.
+            - They are redirected to the index page.
+        """
         user = User.objects.get(email="urieltimanko@example.com")
         user.is_active = True
         user.save()
@@ -254,7 +263,10 @@ class UserLoginTestCase(BaseTestCase):
 
 
 class UserRegistrationEmailTestCases(BaseTestCase):
+    """Tests send email links during registration."""
+
     def setUp(self):
+        """Set up tests."""
         super(UserRegistrationEmailTestCases, self).setUp()
 
     def test_successful_change_of_registration_email(self):
