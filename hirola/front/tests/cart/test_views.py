@@ -111,4 +111,4 @@ class ConfirmBeforeCartTestCase(BaseTestCase):
         Cart.objects.create(owner=None)
         cart_object = Cart.objects.get(owner=None)
         self.assertIn("Uriel Timanko", str(self.cart))
-        self.assertIn("Anonymouse User", str(cart_object))
+        self.assertIn("Anonymous User", str(cart_object))
