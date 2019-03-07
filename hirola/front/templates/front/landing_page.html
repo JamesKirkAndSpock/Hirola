@@ -53,11 +53,11 @@
             <div class="card image-div">
               <div class="card-content center">
                 <a href="/profile/{{ hot_deal.item.pk }}/" ><img class="responsive-img" src="{{ MEDIA_URL }}{{ hot_deal.item.main_image }}"></a>
-                <div class="card-title-text center"><b>{{ hot_deal.item }}</b></div>
+                <div class="card-title-text center"><b>{{ hot_deal.item.phone_model }}</b></div>
               </div>
               <div class="card-action">
                     <a href="/profile/{{ hot_deal.item.pk }}/">
-                    <p><i id="quality-icon" class="fab fa-{{ hot_deal.item.icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
+                    <p><i id="quality-icon" class="fab fa-{{ hot_deal.item.phone_model.category.category_icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
                     </a>
               </div>
             </div>

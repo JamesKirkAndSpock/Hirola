@@ -34,14 +34,14 @@
           <div class="col m12 s12">
             <div class="card image-div">
               <div class="card-content center">
-                <a href="/profile/{{ phone.id }}/" class="image">
-                  <img src="{{ MEDIA_URL }}{{ phone.main_image }}">
+                <a href="/profile/{{ phone.phone_model.id }}/" class="image">
+                  <img src="{{ MEDIA_URL }}{{ phone.phone_model.brand_model_image }}">
                 </a>
-              <div class="card-title-text center"><b>{{ phone.phone_name}}</b></div>
+              <div class="card-title-text center"><b>{{ phone.phone_model}}</b></div>
               </div>
               <div class="card-action">
-                <a href="/profile/{{ phone.id }}">
-                  <p><i id="quality-icon" class="fab fa-{{ phone.icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ phone.currency }} {{ phone.price}}</b></span></p>
+                <a href="/profile/{{ phone.phone_model.id }}">
+                  <p><i id="quality-icon" class="fab fa-{{ phone.phone_model.category.category_icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ phone.currency }} {{ phone.get_lowest_price }} +</b></span></p>
                 </a>
               </div>
             </div>

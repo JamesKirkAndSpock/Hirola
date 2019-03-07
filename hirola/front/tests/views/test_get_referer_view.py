@@ -1,7 +1,7 @@
 """ A module that tests the functionality for the get_referer_view method """
+from django.test import RequestFactory
 from front.base_test import BaseTestCase
 from front.views import get_referer_view
-from django.test import RequestFactory
 
 
 class GetReferViewTest(BaseTestCase):

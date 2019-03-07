@@ -1,6 +1,6 @@
+"""Module contains app decorators."""
 from functools import wraps
 from django.shortcuts import redirect
-from django.conf import settings
 
 
 def old_password_required(function=None):

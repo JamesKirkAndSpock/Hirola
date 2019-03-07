@@ -23,7 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
-ALLOWED_HOSTS = ["127.0.0.1", os.environ.get('HOST'), os.environ.get('IP_ADDRESS'), "localhost"]
+ALLOWED_HOSTS = [
+    "127.0.0.1", os.environ.get('HOST'),
+    os.environ.get('IP_ADDRESS'), "localhost"
+    ]
 
 # Application definition
 
@@ -147,4 +150,5 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
-LOGIN_URL='/login'
+LOGIN_URL = '/login'
+SESSION_SAVE_EVERY_REQUEST = True

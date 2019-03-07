@@ -1,5 +1,6 @@
-from front.tests.base_selenium import BaseSeleniumTestCase, webdriver
+"""Contains tests for the faq page."""
 import time
+from front.tests.base_selenium import BaseSeleniumTestCase, webdriver
 
 
 class SendSupportEmailTestCase(BaseSeleniumTestCase):
@@ -12,6 +13,7 @@ class SendSupportEmailTestCase(BaseSeleniumTestCase):
         self.driver.implicitly_wait(30)
 
     def test_send_support_email(self):
+        """Test user can send email to teke support."""
         driver = self.driver
         driver.get('%s%s' % (self.live_server_url, '/help#help-center'))
         name_input = driver.find_element_by_name("name")

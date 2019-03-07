@@ -1,4 +1,5 @@
-from front.tests.base_selenium import *
+"""Contains tests for the user profile page."""
+from front.tests.base_selenium import BaseSeleniumTestCase, webdriver
 from selenium.webdriver.chrome.options import Options
 
 
@@ -13,7 +14,6 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         chrome_options = Options()
         chrome_options.add_argument("--window-size=1920,1080")
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
-        # self.driver = webdriver.Chrome()
         self.driver.implicitly_wait(30)
         self.create_country_code()
         self.create_phone_category()
@@ -21,24 +21,40 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         self.create_currency()
         self.create_item_icon()
         self.create_phone_list()
+        self.create_color()
+        self.create_phone_brand()
+        self.create_phone_model()
+        self.create_phone_model_list()
 
     def test_teke_link(self):
         '''
         Test that the teke link redirects to the landing page
         '''
         driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
+        driver.get('%s%s' % (
+            self.live_server_url, '/profile/{}/'.format(
+                self.samsung_note_5_rose_gold.pk)
+                ))
         driver.find_element_by_id("profile-main-page").click()
-        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/'))
+        self.assertEqual(
+            driver.current_url, '%s%s' % (self.live_server_url, '/')
+            )
 
     def test_iphone_link(self):
         '''
-        Test that the iphone link redirects to the phone category page for iphones
+        Test that the iphone link redirects to the phone category
+        page for iphones
         '''
         driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
-        driver.find_element_by_link_text("iPhone").click()
-        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/phone_category/{}/'.format(self.iphone.pk)))
+        driver.get('%s%s' % (
+            self.live_server_url, '/profile/{}/'.format(
+                self.samsung_note_5_rose_gold.pk)
+                ))
+        driver.find_element_by_link_text("Android").click()
+        self.assertEqual(driver.current_url, '%s%s' % (
+            self.live_server_url, '/phone_category/{}/'.format(
+                self.android.pk)
+                ))
 
     def test_phone_link(self):
         '''
@@ -46,17 +62,26 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         phone.
         '''
         driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
-        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
+        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(
+            self.samsung_note_5_rose_gold.pk
+            )))
+        self.assertEqual(driver.current_url, '%s%s' % (
+            self.live_server_url, '/profile/{}/'.format(
+                self.samsung_note_5_rose_gold.pk)
+                ))
 
     def test_faq_link(self):
         '''
         Test that the FAQ link redirects to the help page
         '''
         driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
+        driver.get('%s%s' % (
+            self.live_server_url, '/profile/{}/'.format(
+                self.iphone.pk)))
         driver.find_element_by_link_text("FAQs").click()
-        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/help'))
+        self.assertEqual(driver.current_url, '%s%s' % (
+            self.live_server_url, '/help'
+            ))
 
     def test_dashboard_link(self):
         '''
@@ -64,29 +89,41 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         user
         '''
         driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
+        driver.get('%s%s' % (
+            self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
         driver.find_element_by_id("dropdown").click()
         driver.find_element_by_link_text("Login").click()
-        self.assertEqual(driver.current_url,
-                         '%s%s' % (self.live_server_url, '/login?next=/dashboard'))
+        self.assertEqual(
+            driver.current_url, '%s%s' % (
+                self.live_server_url, '/login?next=/dashboard'
+                ))
 
     def test_navbar_teke_link(self):
         '''
         Test that the navbar teke link redirects to the landing page
         '''
         driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/{}/'.format(self.iphone.pk)))
+        driver.get('%s%s' % (
+            self.live_server_url, '/profile/{}/'.format(
+                self.iphone.pk
+                )))
         driver.find_element_by_id("base-main-page").click()
-        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/'))
+        self.assertEqual(driver.current_url, '%s%s' % (
+            self.live_server_url, '/'
+            ))
 
     def test_missing_profile(self):
         '''
         Test that when you visit a profile that does not exist:
-        - That the user gets a 404 error message that the product does not exist
+        - That the user gets a 404 error message that the product
+          does not exist
         '''
         driver = self.driver
-        driver.get('%s%s' % (self.live_server_url, '/profile/2123764872138/'))
-        self.assertEqual(driver.current_url, '%s%s' % (self.live_server_url, '/error'))
+        driver.get('%s%s' % (
+            self.live_server_url, '/profile/2123764872138/'))
+        self.assertEqual(driver.current_url, '%s%s' % (
+            self.live_server_url, '/error'
+            ))
 
     def tearDown(self):
         self.driver.close()
