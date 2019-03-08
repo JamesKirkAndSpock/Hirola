@@ -1,0 +1,210 @@
+{% extends "front/base.html" %} {% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_profile.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" href="{% static 'front/css/lightslider.css' %}">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="{% static 'front/js/lightslider.js' %}"></script>
+
+{% endblock %} {% block content %}
+{% load stars_counter %}
+{% load humanize %}
+<div class="main-content">
+    <div class="container">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="/" id="profile-main-page" class="breadcrumb">teke</a>
+                    <a href="/phone_category/{{ phone.category.id }}" class="breadcrumb">{{ phone.category }}</a>
+                    <a href="/profile/{{ phone.id }}" class="breadcrumb" id="last-link">{{ phone }}</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row">
+    </div>
+    <div class="row phone-details">
+        <div class="row">
+            <div class="col m5 s12 main-img">
+              <p id="intro"><b>{{ phone }} {% if phone.size_sku %}{{ phone.size_sku }}{% endif %}</b></p>
+                <div class="row">
+                    <div class="col s12 m12 center">
+                        <div class="card z-depth-0">
+                            <div class="card-content center">
+                                    <div class="profile-img">
+                                        <ul id="lightSlider">
+                                            <li data-thumb="{{ MEDIA_URL }}{{ phone.main_image }}">
+                                                <img src="{{ MEDIA_URL }}{{ phone.main_image }}" />
+                                            </li>
+                                            {% for image in image_list %}
+                                                <li data-thumb="{{ MEDIA_URL }}{{ image.image }}" class="center">
+                                                <img src="{{ MEDIA_URL }}{{ image.image }}" />
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col m7 s12 profile">
+                <form method="post" class="row">
+                    <div class="col s12 m6">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="stars">
+                                {% for star in phone.average_review|round_off|checked_star_range %}
+                                <span class="fa fa-star checked"></span>
+                                {% endfor %}
+                                {% for star in phone.average_review|round_off|unchecked_star_range %}
+                                <span class="fa fa-star"></span>
+                                {% endfor %}
+                                <span>{{ phone.average_review|round_off }}</span>
+                            </div>
+                        </div>
+
+                        <div class="row features">
+                                <p>
+                                    <b>Key Features</b>
+                                </p>
+                                <ul style="list-style-type:disc"></ul>
+                                    {% for feature in features %}
+                                    <li>{{ feature.feature }}.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                    </div>
+                    <div class="col m5 push-m1 s12 action">
+                        <div class="row">
+                            <div class="col s12">
+                                <h5 id="price" class="green-text"></h5>
+                                <input type="hidden" id="cart_phone_price" name="cart_phone_price" value="">
+                                <p>
+                                    <i class="medium material-icons inline-icon">local_atm</i>
+                                    Pay on delivery<br>
+                                    <i class="medium material-icons inline-icon">loop</i>
+                                    7 day free return<br>
+                                    <i class="medium material-icons inline-icon">check</i>
+                                    Genuine product<br>
+                                    <i class="material-icons inline-icon">sentiment_very_satisfied</i>
+                                    Free shipping
+                                </p>
+                            </div>
+                        </div>
+                            <div class="row confirm">
+                                <div class="col s12">
+                                    <input type="hidden" id="cartItem" name="cart_item_add" value="{{ phone.id }}">
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <button class="btn waves-effect waves-light green" id="add-to-cart-button">Buy Now
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <button class="btn waves-effect waves-light green darken-2" id="add-to-cart-button2" type="submit" name="action">Add to Cart
+                                                <i class="material-icons tiny left">add_shopping_cart</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s12 left">
+                                            {% if form.quantity.errors %}
+                                            {% for error in form.quantity.errors %}
+                                                <p>
+                                                    {{ form.quantity.errors|escape }}
+                                                </p>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="row more-details">
+        <div class="row">
+                <p>
+                    <b>Product Information</b>
+                </p>
+        </div>
+        <div class="row">
+            <div class="col m6 s12 details-container">
+                {% for info in infos %}
+                <div class="row detail">
+                        <div class="col s6" id="title">{{ info.feature }}</div>
+                        <div class="col s6">{{ info.value }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col m1"></div>
+            <div class="col m5 warranty">
+                <div class="row">
+                    <p><b>Warranty and Support</b></p>
+                    <p>Product Warranty: 7 day free return</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row reviews">
+        <ul class="collection with-header">
+            <li class="collection-item avatar review-head">
+                <p class="left">
+                  <b>Customer Reviews</b>
+                  </p>
+            </li>
+            {% for customer_review in customer_reviews%}
+            <li class="collection-item avatar">
+                <img src="{{ MEDIA_URL }}{{ customer_review.owner.photo }}" alt="User 1" class="circle">
+                {% for star in customer_review.stars|checked_star_range %}
+                <i class="material-icons left checked">grade</i>
+                {% endfor %}
+                {% for star in customer_review.stars|unchecked_star_range %}
+                <i class="material-icons left">grade</i>
+                {% endfor %}
+                <br>
+                <br>
+                <b><em>{{ customer_review.owner.first_name }}  {{ customer_review.owner.last_name }}</em></b><br>
+                <p>
+                    {{ customer_review.time }}<br>
+                    {{ customer_review.comments }} </p>
+            </li>
+            {%  endfor %}
+            </ul>
+    </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var quantities = [];
+    {% for quantity in secondary_details %}
+        var secondary_details_object = {
+            'secondary_details': '{{ quantity.pk|safe }}',
+            'quantity': '{{ quantity.quantity|safe }}',
+            'price': '{{ quantity.price }}',
+            'currency': '{{ quantity.currency }}',
+            'size':'{{quantity.size}}'
+        }
+        quantities.push(secondary_details_object);
+        console.log(secondary_details_object)
+    {% endfor %}
+
+    var error_messages = []
+        {% if messages %}
+            {% for message in messages %}
+               error_messages.push('{{ message|safe }}');
+            {% endfor %}
+        {% endif %}
+</script>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %}
+{{ block.super }}
+{% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script>
+<script src="{% static 'front/js/phone_profile.js' %}"></script>
+{% endblock %}
+{% endblock %}
