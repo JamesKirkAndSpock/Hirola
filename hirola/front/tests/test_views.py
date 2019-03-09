@@ -27,7 +27,7 @@ class LandingPageViewsTestCase(BaseTestCase):
         self.assertContains(response, "fab fa-icon-test")
         self.assertContains(response, "/media/phones/test_image_5_")
         self.assertContains(
-            response, "/profile/{}/".format(
+            response, "/hot_deal/{}/".format(
                 self.samsung_note_5_rose_gold.pk))
 
     def test_non_hot_deals_rendering(self):
