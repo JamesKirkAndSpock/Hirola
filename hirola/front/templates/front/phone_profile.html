@@ -49,6 +49,8 @@
                 </div>
             </div>
             <div class="col m7 s12 profile">
+                <form method="post" class="row">
+                    {% csrf_token %}
                     <div class="col s12 m6">
                         <div class="row">
                             <div class="stars">
@@ -112,6 +114,7 @@
                         </div>
 
                     </div>
+                    <input type="hidden" id="phone_model" name="phone_model_input" value="{{ phone_model.id }}">
                     <div class="col m5 push-m1 s12 action">
                         <div class="row">
                             <div class="col s12">
@@ -160,7 +163,7 @@
                                 </div>
                         </div>
                     </div>
-
+                </form>
             </div>
         </div>
     </div>
@@ -213,7 +216,6 @@
             </ul>
     </div>
     </div>
-    <div id="phone_model" style="display: none;">{{ phone_model.id }}</div>
 </div>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %}

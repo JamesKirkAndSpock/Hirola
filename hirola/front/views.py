@@ -123,6 +123,8 @@ def country_codes(request):
 
 def phone_profile_view(request, phone_model_id):
     """Fetch phone details and render the data in the phone profile page."""
+    if request.method == "POST":
+        print(request.POST)
     phone_model = PhoneModel.objects.filter(id=phone_model_id).first()
     if not phone_model:
         return redirect("/error")

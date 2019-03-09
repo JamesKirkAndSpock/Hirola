@@ -290,23 +290,6 @@ class PaymentMethod(models.Model):
     payment_method = models.CharField(max_length=255, default="Cash")
 
 
-class Cart(models.Model):
-    """Creates carts for holding ordered items."""
-    owner = models.ForeignKey(User, null=True, blank=True,
-                              on_delete=models.CASCADE)
-    creation_date = models.DateField(auto_now_add=True)
-    modified_date = models.DateField(auto_now=True)
-    total_price = IntegerRangeField(min_value=0, default=0)
-    payment_method = models.ForeignKey(PaymentMethod,
-                                       on_delete=models.SET_NULL,
-                                       blank=True, null=True)
-
-    def __str__(self):
-        if self.owner:
-            return str(self.owner) + " date: " + str(self.creation_date)
-        return "Anonymous User" + " date: " + str(self.creation_date)
-
-
 class NewsItem(models.Model):
     """Creates news Items."""
     title = models.CharField(max_length=256)
@@ -479,6 +462,22 @@ class PhoneModelList(models.Model):
         """Returns the lowest price of a phone model."""
         return PhoneModelList.objects.filter(
             phone_model=phone.phone_model).order_by('price').first().price
+
+
+class Cart(models.Model):
+    """Creates carts for holding ordered items."""
+    owner = models.ForeignKey(User, null=True, blank=True,
+                              on_delete=models.CASCADE)
+    creation_date = models.DateField(auto_now_add=True)
+    modified_date = models.DateField(auto_now=True)
+    quantity = IntegerRangeField(min_value=1)
+    phone_model_item = models.ForeignKey(PhoneModelList,
+                                         on_delete=models.CASCADE)
+
+    def __str__(self):
+        if self.owner:
+            return str(self.owner) + " date: " + str(self.creation_date)
+        return "Anonymous User" + " date: " + str(self.creation_date)
 
 
 class Order(models.Model):

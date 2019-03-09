@@ -1,5 +1,5 @@
 $('#color_selector').change(function() {
-    $.getJSON("/get_sizes", {id: $('#color_selector').val(), phone_model_id: $('#phone_model').text(), view: 'json'}, function(j) {
+    $.getJSON("/get_sizes", {id: $('#color_selector').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
 
         var options = '<option value="' + j["phone_size_id"] + '" selected>' + j["phone_size"] + '</option>';
         for (var i in j["sizes"]) {
@@ -33,7 +33,7 @@ $('#color_selector').change(function() {
 });
 
 $('#storage').change(function() {
-    $.getJSON("/size_change", {size_id: $('#storage').val(), phone_model_id: $('#phone_model').text(), view: 'json'}, function(j) {
+    $.getJSON("/size_change", {size_id: $('#storage').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
         var quantity_options = '<option value=0 selected>1</option>'
         for (var i=2, k=1; i <= j["phone_quantity"]; i ++, k++ ){
             quantity_options += '<option value=' + k + '>'+ i + '</option> ';
@@ -45,7 +45,7 @@ $('#storage').change(function() {
 });
 
 $('#quantity').change(function() {
-    $.getJSON("/quantity_change", {color_id: $('#color_selector').val(), size_id: $('#storage').val(), qty: $('#quantity').val(), phone_model_id: $('#phone_model').text(), view: 'json'}, function(j) {
+    $.getJSON("/quantity_change", {color_id: $('#color_selector').val(), size_id: $('#storage').val(), qty: $('#quantity').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
     $('#price').html(j["currency"] + "  " + j["total_cost"]);
     })
 });
