@@ -2,7 +2,7 @@
 This module contains setting configurations for use in the
 production stage.
 """
-import os
+from .base import *
 
 DEBUG = False
 GS_BUCKET_NAME = os.environ.get('GS_BUCKET_NAME')
