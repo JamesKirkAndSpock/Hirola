@@ -3,8 +3,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 from .models import (
-    PhoneImage, Review, Feature, PhonesColor,
-    ProductInformation, ShippingAddress, PhoneList,
+    PhoneImage, Review, Feature,
+    ProductInformation, ShippingAddress,
     PhoneMemorySize, Currency, SocialMedia, Order,
     OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
     Cart, RepairService, Address, ServicePerson, Service,
@@ -40,12 +40,6 @@ class PhoneReviewInline(admin.TabularInline):
 class PhoneFeatureInline(admin.TabularInline):
     """Represents the Feature model."""
     model = Feature
-    extra = 1
-
-
-class PhoneColorInline(admin.TabularInline):
-    """Represents the PhonesColor model."""
-    model = PhonesColor
     extra = 1
 
 
@@ -160,7 +154,6 @@ admin.site.register(NewsItem)
 admin.site.register(ShippingAddress)
 admin.site.register(InactiveUser)
 admin.site.register(Color)
-admin.site.register(PhonesColor)
 admin.site.register(Cart)
 admin.site.register(RepairService)
 admin.site.register(Address)
@@ -169,4 +162,3 @@ admin.site.register(Service)
 admin.site.register(PhoneBrand, PhoneBrandAdmin)
 admin.site.register(PhoneModel, PhoneModelAdmin)
 admin.site.register(PhoneModelList, PhoneModelListAdmin)
-admin.site.register(PhoneList)

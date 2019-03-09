@@ -21,7 +21,7 @@ from front.decorators import (
 from front.models import (
     CountryCode, User, PhoneCategory,
     PhoneMemorySize, SocialMedia, Review, HotDeal,
-    NewsItem, Order, PhoneList, OrderStatus, Cart,
+    NewsItem, Order, OrderStatus, Cart,
     ServicePerson, PhoneModelList, PhoneModel
     )
 from front.forms.user_forms import (
@@ -100,8 +100,8 @@ def sizes(request):
     else:
         filtered_sizes = PhoneMemorySize.objects.filter(
             category=request.GET["id"])
-        if PhoneList.objects.filter(pk=request.GET["id"]).first():
-            size_id = PhoneList.objects.filter(
+        if PhoneModelList.objects.filter(pk=request.GET["id"]).first():
+            size_id = PhoneModelList.objects.filter(
                 pk=request.GET["id"]).first().size_sku.pk
     data = {}
     for size in filtered_sizes:
@@ -119,45 +119,6 @@ def country_codes(request):
         data[country_code.pk] = str(country_code)
     data = {"users_country_code": users_country_code, "data": data}
     return JsonResponse(data)
-
-
-def add_cart_data(request):
-    return save_order(request)
-
-
-def save_order(request, owner=None):
-    """Save Order item to database and add to cart."""
-    item = request.POST['cart_item_add']
-    quantity = request.POST['quantity']
-    price = request.POST['cart_phone_price']
-    size = request.POST['size']
-    total_price = int(quantity) * float(price)
-    total_price = float(int(total_price))
-    phone = PhoneList.objects.filter(pk=item).first()
-    status = OrderStatus.objects.filter(status='pending').first()
-    cart_obj = get_cart_object(request)
-    item_in_list = Order.objects.filter(cart=cart_obj, size=size, phone=phone)
-    if item_in_list:
-        msg = "Oops it seems like you have already" + "{}".\
-              format(" added this item to your cart")
-        messages.error(request, '{}'.format(msg))
-        return redirect('/profile/{}'.format(phone.pk))
-    else:
-        Order.objects.create(owner=owner, phone=phone,
-                             status=status, quantity=quantity,
-                             price=price, size=size, total_price=total_price,
-                             cart=cart_obj)
-        return redirect("/before_checkout")
-
-
-def get_cart_object(request):
-    """Get cart object from session if exists or else create one."""
-    cart = Cart.objects.filter(id=request.session.get('cart_id')).first()
-    if cart:
-        return cart
-    cart_obj = Cart.objects.create(owner=None)
-    request.session['cart_id'] = cart_obj.id
-    return cart_obj
 
 
 def phone_profile_view(request, phone_model_id):
@@ -245,34 +206,6 @@ def checkout_view(request):
     return render(request, 'front/checkout.html',
                   {'categories': phone_categories,
                    'social_media': social_media})
-
-
-def get_cart_total(items):
-    """Calculate cart total."""
-    sum = 0
-    for item in items:
-        sum += item.total_price
-    return sum
-
-
-def before_checkout_view(request):
-    """Get cart items and render the before checkout page."""
-    context = get_cart_items(request)
-    return render(request, 'front/before_checkout.html', context)
-
-
-def get_cart_items(request):
-    """Fetch cart items from database."""
-    (phone_categories, social_media) = various_caches()
-    cart_id = get_cart_object(request)
-    items = Order.objects.filter(cart=cart_id)
-    total = get_cart_total(items)
-    context = {
-                'categories': phone_categories,
-                'social_media': social_media, 'items': items,
-                'item_count': items.count(), 'cart_total': total
-                }
-    return context
 
 
 @login_required

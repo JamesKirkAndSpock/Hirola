@@ -2,8 +2,8 @@
 from django.core.cache import cache
 from front.base_test import BaseTestCase, image
 from front.models import (
-    HotDeal, PhoneList, PhoneCategory, PhoneMemorySize,
-    SocialMedia, ItemIcon
+    HotDeal, PhoneCategory, PhoneMemorySize,
+    SocialMedia, ItemIcon, PhoneModelList
     )
 
 
@@ -153,7 +153,6 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
     """Tests phone category cache."""
 
     def setUp(self):
-        self.phone_edit_url = "/admin/front/phonelist/{}/change/"
         super(PhoneCategoryViewCacheTest, self).setUp()
 
     def tearDown(self):
@@ -174,124 +173,6 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
         category is set.
         '''
         self.phone_cache_exists()
-
-    def test_cache_cleared_on_add(self):
-        '''
-        Test that when a phone is added that has a category, the cache for
-        phone filters with the category being added is deleted.
-        '''
-        self.phone_cache_exists()
-        form = phone_form(self.iphone.pk, self.currency_v.pk,
-                          self.size_iphone.pk)
-        response = self.elena.post('/admin/front/phonelist/add/', form)
-        self.assertEqual(response.status_code, 302)
-        cache_after_add = cache.get('phones_{}'.format(self.iphone.pk))
-        self.assertEqual(cache_after_add, None)
-
-    def test_edition_category_change(self):
-        '''
-        Test that if an admin changes the category of a phone from one
-        category to another, that the cache of both categories are deleted.
-        '''
-        # Add a phone with the category Iphone
-        form = phone_form(self.iphone.pk, self.currency_v.pk,
-                          self.size_iphone.pk)
-        self.elena.post('/admin/front/phonelist/add/', form)
-        # Visit the URL for Iphone and ensure a cache is added.
-        self.phone_cache_exists()
-        # Visit the URL for Android and ensure that a cache exists for Android.
-        self.client.get('/phone_category/{}/'.format(self.android.pk))
-        cache_after_access = cache.get('phones_{}'.format(self.android.pk))
-        self.assertNotEqual(cache_after_access, None)
-        # Create input for an edit
-        form_2 = phone_form(self.android.pk, self.currency_v.pk,
-                            self.size_iphone.pk)
-        phone = PhoneList.objects.get(phone_name="Phone_ImageV")
-        self.elena.post(self.phone_edit_url.format(phone.pk), form_2)
-        cache_after_edit_i = cache.get('phones_{}'.format(self.iphone.pk))
-        cache_after_edit_a = cache.get('phones_{}'.format(self.android.pk))
-        self.assertEqual(cache_after_edit_i, None)
-        self.assertEqual(cache_after_edit_a, None)
-
-    def test_edition_to_none_category(self):
-        '''
-        Test that if an admin edits a phone and changes its category to None
-        that the cache for the previous category it was on will be deleted.
-        '''
-        form = phone_form(self.iphone.pk, self.currency_v.pk,
-                          self.size_iphone.pk)
-        response = self.elena.post('/admin/front/phonelist/add/', form)
-        self.assertEqual(response.status_code, 302)
-        self.phone_cache_exists()
-        phone = PhoneList.objects.get(phone_name="Phone_ImageV")
-        form_2 = phone_form("", self.currency_v.pk, self.size_iphone.pk)
-        response = self.elena.post(self.phone_edit_url.format(phone.pk),
-                                   form_2)
-        cache_after_edit = cache.get('phones_{}'.format(self.iphone.pk))
-        self.assertEqual(cache_after_edit, None)
-
-    def test_edition_to_category(self):
-        '''
-        Test that if an admin edits a phone that had a None category to an
-        existent category that the cache for the existent or newly created
-        category will be deleted.
-        '''
-        form = phone_form("", self.currency_v.pk, self.size_iphone.pk)
-        response = self.elena.post('/admin/front/phonelist/add/', form)
-        self.assertEqual(response.status_code, 302)
-        self.phone_cache_exists()
-        phone = PhoneList.objects.get(phone_name="Phone_ImageV")
-        form_2 = phone_form(self.iphone.pk, self.currency_v.pk,
-                            self.size_iphone.pk)
-        response = self.elena.post(self.phone_edit_url.format(phone.pk),
-                                   form_2)
-        cache_after_edit = cache.get('phones_{}'.format(self.iphone.pk))
-        self.assertEqual(cache_after_edit, None)
-
-    def test_phone_deletion(self):
-        '''
-        Test that when a phone is deleted that belonged to a category, the
-        cache with that category id is deleted.
-        '''
-        form = phone_form(self.iphone.pk, self.currency_v.pk,
-                          self.size_iphone.pk)
-        response = self.elena.post('/admin/front/phonelist/add/', form)
-        self.assertEqual(response.status_code, 302)
-        self.phone_cache_exists()
-        get_phone = PhoneList.objects.get(phone_name="Phone_ImageV")
-        get_phone.delete()
-        cache_after_delete = cache.get("phones_{}".format(self.iphone.pk))
-        self.assertEqual(cache_after_delete, None)
-
-    def test_non_categorized_phone_deletion(self):
-        '''
-        Test that the deletion of a non-categorized phone will be error free.
-        '''
-        # Create a non-categorized phone
-        form = phone_form("", self.currency_v.pk, self.size_iphone.pk)
-        response = self.elena.post('/admin/front/phonelist/add/', form)
-        self.assertEqual(response.status_code, 302)
-        get_phone = PhoneList.objects.get(phone_name="Phone_ImageV")
-        self.assertEqual(get_phone.category, None)
-        # Delete the phone
-        get_phone.delete()
-
-    def test_edit_non_to_non_categorized_phone(self):
-        '''
-        Test that editing a non-categorized phone still maintaining its non-cat
-        egorized state will bring no errors
-        '''
-        # Create a non-categorized phone
-        form = phone_form("", self.currency_v.pk, self.size_iphone.pk)
-        response = self.elena.post('/admin/front/phonelist/add/', form)
-        self.assertEqual(response.status_code, 302)
-        phone = PhoneList.objects.get(phone_name="Phone_ImageV")
-        self.assertEqual(phone.category, None)
-        # Edit non-categorized phone
-        form_2 = phone_form("", self.currency_v.pk, self.size_android.pk)
-        response = self.elena.post(self.phone_edit_url.format(phone.pk),
-                                   form_2)
-        self.assertEqual(response.status_code, 302)
 
     def test_category_deletion(self):
         '''

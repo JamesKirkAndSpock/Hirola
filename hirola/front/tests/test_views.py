@@ -1,6 +1,6 @@
 from front.base_test import (BaseTestCase, image, cache)
 from front.errors import (category_image_error, phone_category_error)
-from front.models import (PhoneList, PhoneModel, PhoneModelList)
+from front.models import (PhoneModel, PhoneModelList)
 from .test_cache import phone_form
 
 
@@ -151,7 +151,6 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         """Test that model items are rendered on the admin's landing page."""
         response = self.elena.get('/admin', follow=True)
         self.assertContains(response, "Phone Categories")
-        self.assertContains(response, "Phones")
         self.assertContains(response, "Currencies")
 
     def test_social_media_on_view(self):
@@ -168,71 +167,6 @@ class PhoneCategoryViewsTestCase(BaseTestCase):
         facebook_data_icon_name = "<i class=\"fa fa-facebook\"></i> Facebook</a>"
         self.assertContains(response, facebook_url)
         self.assertContains(response, facebook_data_icon_name)
-
-
-class PhoneListViewsTestCase(BaseTestCase):
-    """Tests phonelist views."""
-
-    def setUp(self):
-        """Set up testing environment."""
-        super(PhoneListViewsTestCase, self).setUp()
-
-    def test_shillings_value_is_returned(self):
-        """Test that phone cateogory data contains shilling value."""
-        response = self.client.get("/phone_category/{}/".
-                                   format(self.android.pk))
-        self.assertContains(response, "V$")
-
-    def test_creation_of_entry(self):
-        '''
-        Test that an image can be created successfully for a phone list.
-        '''
-        form = phone_form(self.iphone.pk, self.currency_v.pk,
-                          self.size_iphone.pk)
-        response = self.elena.post('/admin/front/phonelist/add/', form,
-                                   follow=True)
-        phone_object = PhoneList.objects.get(phone_name="Phone_ImageV")
-        self.assertContains(response, "The phone list ")
-        self.assertContains(response, str(phone_object))
-        self.assertContains(response, "was added successfully.")
-        self.assertRedirects(response, "/admin/front/phonelist/")
-
-    def test_phones_rendering(self):
-        """
-        Test that when you visit the landing page:
-            - That phones in stock and with a quantity greater than or equal
-            to 1 are rendered
-            - That phones not in stock are not rendered
-            - That phones with a quantity of zero are not rendered
-        """
-        PhoneModel.objects.create(
-            category=self.android, brand=self.samsung_brand,
-            brand_model="Samsung Note 6", average_review=5.0)
-        self.samsung_note_6 = PhoneModel.objects.get(
-            category=self.android, brand=self.samsung_brand,
-            brand_model="Samsung Note 6")
-        PhoneModelList.objects.create(
-            phone_model=self.samsung_note_6, currency=self.currency_v,
-            price=32000, size_sku=self.size_android,
-            main_image=image("test_image_5.png"), color=self.color_one,
-            quantity=0, is_in_stock=True)
-        PhoneModel.objects.create(
-            category=self.android, brand=self.samsung_brand,
-            brand_model="Samsung Note 8", average_review=5.0)
-        self.samsung_note_8 = PhoneModel.objects.get(
-            category=self.android, brand=self.samsung_brand,
-            brand_model="Samsung Note 8")
-        PhoneModelList.objects.create(
-            phone_model=self.samsung_note_8, currency=self.currency_v,
-            price=32000, size_sku=self.size_android,
-            main_image=image("test_image_5.png"), color=self.color_one,
-            quantity=1, is_in_stock=False)
-        get_response = self.client.get("/phone_category/{}/".
-                                       format(self.android.pk))
-        self.assertContains(get_response, "Samsung Note 5")
-        self.assertContains(get_response, "Samsung Note 7")
-        self.assertNotContains(get_response, "Samsung Note 6")
-        self.assertNotContains(get_response, "Samsung Note 8")
 
 
 class AboutPageViewsTestCase(BaseTestCase):

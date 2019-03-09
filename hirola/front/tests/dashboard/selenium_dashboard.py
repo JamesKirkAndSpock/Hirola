@@ -17,7 +17,6 @@ class MyOrders(BaseSeleniumTestCase):
         self.create_phone_memory_size()
         self.create_currency()
         self.create_item_icon()
-        self.create_phone_list()
         self.create_order_status()
         self.create_payment_method()
         self.create_color()
