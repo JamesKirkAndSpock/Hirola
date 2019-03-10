@@ -30,6 +30,7 @@ from front.forms.user_forms import (
     EmailAuthenticationForm, resend_email,
     resend_activation_email, ContactUsForm,
     )
+from front.forms.cart_forms import CartForm
 
 
 def page_view(request):
@@ -124,7 +125,9 @@ def country_codes(request):
 def phone_profile_view(request, phone_model_id):
     """Fetch phone details and render the data in the phone profile page."""
     if request.method == "POST":
-        print(request.POST)
+        form = CartForm(request.POST)
+        if form.is_valid():
+            form.save()
     phone_model = PhoneModel.objects.filter(id=phone_model_id).first()
     if not phone_model:
         return redirect("/error")
@@ -174,6 +177,7 @@ def get_sizes(request):
             "currency": str(phone.currency), "main_image": main_image,
             "features": feature_list,
             "infos": phone_information,
+            "phone": phone.id,
             }
     return JsonResponse(data)
 
@@ -186,19 +190,22 @@ def size_change(request):
             'price').first()
     main_image = settings.MEDIA_URL + str(phone.main_image)
     data = {"phone_quantity": phone.quantity, "price": phone.price,
-            "currency": str(phone.currency), "main_image": main_image}
+            "currency": str(phone.currency), "main_image": main_image,
+            "phone": phone.id}
     return JsonResponse(data)
 
 
 def quantity_change(request):
-    quantity = int(request.GET["qty"]) + 1
+    quantity = int(request.GET["qty"])
     phone_model = PhoneModel.objects.filter(
         id=request.GET["phone_model_id"]).first()
     phone = PhoneModelList.objects.filter(
         phone_model=phone_model, color=request.GET["color_id"],
         size_sku=request.GET["size_id"]).first()
     total_cost = quantity * phone.price
-    data = {"total_cost": total_cost, "currency": str(phone.currency)}
+    data = {"total_cost": total_cost, "currency": str(phone.currency),
+            "phone": phone.id,
+            }
     return JsonResponse(data)
 
 

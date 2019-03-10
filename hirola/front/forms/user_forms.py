@@ -502,18 +502,6 @@ def resend_activation_email(request, user, email):
     return True
 
 
-class PhoneProfileUserDataCollectionForm(forms.Form):
-    """
-    A form to collect user data on phone profile page.
-    """
-    quantity_error_messages = {
-        'required': _("You need to provide the quantity!")
-    }
-
-    CHOICES = (('0', 'Quantity',),)
-    quantity = forms.CharField(error_messages=quantity_error_messages)
-
-
 class ContactUsForm(forms.Form):
     """
     Form to collect user data in the contact page.
