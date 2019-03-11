@@ -128,17 +128,34 @@ def check_cart_exists(request):
         phone_model_item=request.POST.get(
             "phone_model_item")).first()
     if cart:
-        return CartForm(request.user, request.POST, instance=cart)
-    return CartForm(request.user, request.POST)
+        return CartForm(request, request.POST, instance=cart)
+    return CartForm(request, request.POST)
+
+
+def check_cart_exists_anonymous(request):
+    cart = Cart.objects.filter(
+        session_key=request.session.session_key,
+        phone_model_item=request.POST.get(
+            "phone_model_item")).first()
+    if cart:
+        return CartForm(request, request.POST, instance=cart)
+    return CartForm(request, request.POST)
 
 
 def phone_profile_view(request, phone_model_id):
     """Fetch phone details and render the data in the phone profile page."""
     if request.method == "POST":
-        form = check_cart_exists(request)
-        if form.is_valid():
-            form.save()
-            return redirect("/before_checkout")
+        if not request.user.is_anonymous:
+            form = check_cart_exists(request)
+            if form.is_valid():
+                form.save()
+                return redirect("/before_checkout")
+        else:
+            form = check_cart_exists_anonymous(request)
+            if form.is_valid():
+                cart = form.save(commit=False)
+                cart.save()
+                return redirect("/before_checkout_anonymous")
     phone_model = PhoneModel.objects.filter(id=phone_model_id).first()
     if not phone_model:
         return redirect("/error")
@@ -237,12 +254,27 @@ def get_cart_total(items):
     return cart_sum
 
 
+@login_required
 def before_checkout(request):
     """Get cart items and render the before checkout page."""
     (phone_categories, social_media) = various_caches()
     items = None
     if not request.user.is_anonymous:
         items = Cart.objects.filter(owner=request.user)
+    total = get_cart_total(items)
+    context = {
+            'categories': phone_categories,
+            'social_media': social_media,
+            'items': items,
+            'item_count': items.count(),
+            'cart_total': total
+            }
+    return render(request, 'front/before_checkout.html', context)
+
+
+def before_checkout_anonymous(request):
+    (phone_categories, social_media) = various_caches()
+    items = Cart.objects.filter(session_key=request.session.session_key)
     total = get_cart_total(items)
     context = {
             'categories': phone_categories,

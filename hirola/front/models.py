@@ -473,6 +473,8 @@ class Cart(models.Model):
     quantity = IntegerRangeField(min_value=1)
     phone_model_item = models.ForeignKey(PhoneModelList,
                                          on_delete=models.CASCADE)
+    session_key = models.CharField(
+        _('session key'), max_length=40, null=True, blank=True)
 
     def __str__(self):
         if self.owner:
