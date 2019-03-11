@@ -12,7 +12,7 @@ h6 {
 }
 
 .center-content {
-    margin-top: 50px;
+    margin-top: 20px;
     border-bottom: solid 0.05em;
     border-bottom-color: #E8E8E8;
     border-top: solid 0.05em;
@@ -26,7 +26,7 @@ h6 {
 }
 
 .hot-deals {
-    margin-top: 50px !important;
+    margin-top: 20px !important;
 }
 
 .land-imgs .card {
