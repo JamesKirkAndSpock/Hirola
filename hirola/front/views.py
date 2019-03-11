@@ -122,12 +122,23 @@ def country_codes(request):
     return JsonResponse(data)
 
 
+def check_cart_exists(request):
+    cart = Cart.objects.filter(
+        owner=request.user,
+        phone_model_item=request.POST.get(
+            "phone_model_item")).first()
+    if cart:
+        return CartForm(request.user, request.POST, instance=cart)
+    return CartForm(request.user, request.POST)
+
+
 def phone_profile_view(request, phone_model_id):
     """Fetch phone details and render the data in the phone profile page."""
     if request.method == "POST":
-        form = CartForm(request.POST)
+        form = check_cart_exists(request)
         if form.is_valid():
             form.save()
+            return redirect("/before_checkout")
     phone_model = PhoneModel.objects.filter(id=phone_model_id).first()
     if not phone_model:
         return redirect("/error")
@@ -215,6 +226,32 @@ def checkout_view(request):
     return render(request, 'front/checkout.html',
                   {'categories': phone_categories,
                    'social_media': social_media})
+
+
+def get_cart_total(items):
+    """Calculate cart total."""
+    cart_sum = 0
+    for item in items:
+        cart_sum += (item.phone_model_item.price *
+                     item.quantity)
+    return cart_sum
+
+
+def before_checkout(request):
+    """Get cart items and render the before checkout page."""
+    (phone_categories, social_media) = various_caches()
+    items = None
+    if not request.user.is_anonymous:
+        items = Cart.objects.filter(owner=request.user)
+    total = get_cart_total(items)
+    context = {
+            'categories': phone_categories,
+            'social_media': social_media,
+            'items': items,
+            'item_count': items.count(),
+            'cart_total': total
+            }
+    return render(request, 'front/before_checkout.html', context)
 
 
 @login_required
