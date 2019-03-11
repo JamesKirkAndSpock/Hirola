@@ -61,30 +61,7 @@
                                 <span>{{ phone_model.average_review|round_off }}</span>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="input-field col s8">
-                                <select id='color_selector'>
-                                    <option value={{ phone.color.pk }} selected>{{ phone.color }}</option>
-                                    {% for phone_model in phone_model_colors %}
-                                        <option value={{ phone_model.color.pk }}>{{ phone_model.color }}</option>
-                                    {% endfor %}
-                                </select>
-                                <input type="hidden" id="size" name="size" value="">
-                            </div>
 
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s8">
-                                <select id='storage'>
-                                    <option value={{ phone.size_sku.pk }} selected>{{ phone.size_sku }}</option>
-                                    {% for phone_model in phone_model_sizes %}
-                                        <option value={{ phone_model.size_sku.pk }}>{{ phone_model.size_sku }}</option>
-                                    {% endfor %}
-                                </select>
-                                <input type="hidden" id="size" name="size" value="">
-                            </div>
-
-                        </div>
                         <div class="row">
                             <div class="input-field col s8">
                                 <div id="quantityRow">
@@ -100,24 +77,26 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row features">
-                                <p>
-                                    <b>Key Features</b>
-                                </p>
-                                <ul style="list-style-type:disc"></ul>
-                                <div id="phone_features">
-                                    {% for feature in features %}
-                                    <li>{{ feature.feature }}.</li>
-                                    {% endfor %}
-                                </div>
-                            </div>
+
+                        <!-- murage css -->
+                        <div class="row collection with-header">
+                          <div id="phone_features">
+                            <ul></ul>
+                              <li class="collection-header"><h6><b>Key Features</b></h6><li>
+                                {% for feature in features %}
+                                <li class="collection-item">{{ feature.feature }}</li>
+                                {% endfor %}
+                          </div>
+                        </div>
+                        <!-- end of murage hot-deal css -->
+
                     </div>
                     <div class="col m5 push-m1 s12 action">
                         <div class="row">
                             <div class="col s12">
                                 <h5 id="price" class="green-text">{{ phone.currency }} {{ phone.price }}</h5>
                                 <input type="hidden" id="cart_phone_price" name="cart_phone_price" value="">
-                                <p>
+                                  <p>
                                     <i class="medium material-icons inline-icon">local_atm</i>
                                     Pay on delivery<br>
                                     <i class="medium material-icons inline-icon">loop</i>
@@ -164,11 +143,12 @@
             </div>
         </div>
     </div>
+
     <div class="row more-details">
         <div class="row">
-                <p>
-                    <b>Product Information</b>
-                </p>
+                <h5>
+                    Product Information
+                </h5>
         </div>
         <div class="row">
             <div class="col m6 s12 details-container" id="product_information">
@@ -182,12 +162,14 @@
             <div class="col m1"></div>
             <div class="col m5 warranty">
                 <div class="row">
-                    <p><b>Warranty and Support</b></p>
+                    <h5>Warranty and Support</h5>
                     <p>Product Warranty: 7 day free return</p>
                 </div>
             </div>
         </div>
     </div>
+
+
     <div class="row reviews">
         <ul class="collection with-header">
             <li class="collection-item avatar review-head">
