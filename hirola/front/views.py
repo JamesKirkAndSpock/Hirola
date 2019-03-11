@@ -734,3 +734,15 @@ def repair_and_network_view(request):
     context = {'service_men': service_men, 'categories': phone_categories,
                'social_media': social_media}
     return render(request, 'front/repair_network.html', context)
+
+
+def hot_deal(request, hot_deal_id):
+    phone = PhoneModelList.objects.filter(id=hot_deal_id).first()
+    if not phone:
+        return redirect("/error")
+    context = {"phone_model": phone.phone_model, "phone": phone,
+               "image_list": phone.phone_images.all(),
+               "features": phone.phone_features.all(),
+               "infos": phone.phone_information.all(),
+               "customer_reviews": phone.phone_model.phone_reviews.all()}
+    return render(request, 'front/hot_deal.html', context)

@@ -95,3 +95,14 @@ h6 {
         padding-top: 25px !important;
     }
 }
+
+.header-tag {
+  font-size: 24px;
+  margin: 0px 0px;
+  line-height: 26px;
+}
+
+.faded-text {
+  font-size: 14px;
+  color: gray;
+}
