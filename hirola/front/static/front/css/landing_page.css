@@ -106,3 +106,12 @@ h6 {
   font-size: 14px;
   color: gray;
 }
+
+sup {
+    font-size: 0.4em;
+    font-size: smaller;
+    line-height: 5px;
+    vertical-align: super;
+    top: 0.1em;
+    padding-left: 1px;
+}
