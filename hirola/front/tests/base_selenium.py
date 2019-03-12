@@ -3,7 +3,7 @@ from selenium import webdriver
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from front.models import (
     SocialMedia, PhoneCategory, PhoneMemorySize,
-    Currency, ItemIcon, PhoneList, CountryCode, User,
+    Currency, ItemIcon, CountryCode, User,
     Order, OrderStatus, PaymentMethod, ShippingAddress,
     NewsItem, cache, Cart, PhoneBrand, PhoneModel,
     PhoneModelList, Color
@@ -65,27 +65,6 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
         self.iphone_icon = ItemIcon.objects.get(item_icon="iphone")
         ItemIcon.objects.create(item_icon="android")
         self.android_icon = ItemIcon.objects.get(item_icon="android")
-
-    def create_phone_list(self):
-        """Create phones."""
-        PhoneList.objects.create(
-            category=self.iphone, phone_name="iPhone Example1",
-            currency=self.currency, price=25000.00, size_sku=self.iphone_size,
-            icon=self.iphone_icon, average_review=5.0,
-            main_image="phones/test_image_5.png"
-        )
-        self.iphone_example = PhoneList.objects.get(
-            phone_name="iPhone Example1"
-            )
-        PhoneList.objects.create(
-            category=self.android, phone_name="Android Example1",
-            currency=self.currency, price=35000.00, size_sku=self.android_size,
-            icon=self.android_icon, average_review=4.0,
-            main_image="phones/test_image_5.png"
-        )
-        self.android_example = PhoneList.objects.get(
-            phone_name="Android Example1"
-            )
 
     def create_country_code(self):
         """Create country codes."""

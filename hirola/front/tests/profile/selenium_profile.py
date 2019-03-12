@@ -20,7 +20,6 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         self.create_phone_memory_size()
         self.create_currency()
         self.create_item_icon()
-        self.create_phone_list()
         self.create_color()
         self.create_phone_brand()
         self.create_phone_model()

@@ -4,7 +4,7 @@ from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
 from front.models import (
     PhoneCategory, PhoneMemorySize, Currency,
-    NewsItem, Color, PhonesColor, ItemIcon, PhoneList,
+    NewsItem, Color, ItemIcon,
     cache, User, ServicePerson, RepairService, Service,
     CountryCode, PhoneModelList, PhoneBrand, PhoneModel
     )
@@ -20,10 +20,8 @@ class BaseTestCase(TestCase):
         self.create_phone_sizes()
         self.create_currency()
         self.create_landing_page_image()
-        self.create_phones()
         self.create_news_item()
         self.create_color()
-        self.add_phone_colors()
         self.create_service_men()
         self.create_repair_services()
         self.add_serviceman_services()
@@ -94,39 +92,12 @@ class BaseTestCase(TestCase):
         self.color_two = Color.objects.get(color="RoseGold")
         self.color_three = Color.objects.get(color="Silver")
 
-    def add_phone_colors(self):
-        """Add Phone Color objects."""
-        PhonesColor.objects.create(
-            phone=self.iphone_6, size=self.size_iphone, price=10000,
-            color=self.color_one, quantity=5, is_in_stock=True)
-        PhonesColor.objects.create(
-            phone=self.iphone_6, size=self.any_phone_size, price=10000,
-            color=self.color_two, quantity=10, is_in_stock=True)
-        self.iphone6_colors = PhonesColor.objects.filter(
-            phone=self.iphone_6.pk)
-        self.all_colors = PhonesColor.objects.all()
-
     def create_landing_page_image(self):
         """Create a landing page image."""
         add_url = "/admin/front/landingpageimage/add/"
         mock_image = image('test_image_2.jpeg')
         form = landing_page_form(mock_image, 2, ["red", "white"])
         self.elena.post(add_url, form)
-
-    def create_phones(self):
-        """Create Phones."""
-        ItemIcon.objects.create(item_icon="apple")
-        icon = ItemIcon.objects.get(item_icon="apple")
-        PhoneList.objects.create(category=self.iphone,
-                                 currency=self.currency_v,
-                                 price=300000, phone_name="Iphone 6",
-                                 icon=icon,
-                                 main_image=image("test_image_5.png"))
-        self.iphone_6 = PhoneList.objects.get(phone_name="Iphone 6")
-        PhoneList.objects.create(category=self.android,
-                                 currency=self.currency_v,
-                                 price=250000, phone_name="Samsung J7")
-        self.samsung_j_7 = PhoneList.objects.get(phone_name="Samsung J7")
 
     def create_phone_brand(self):
         """

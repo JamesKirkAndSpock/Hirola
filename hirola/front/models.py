@@ -237,42 +237,6 @@ class Currency(models.Model):
         return str(self.currency_abbreviation)
 
 
-class PhoneList(models.Model):
-    """Creates Phones."""
-
-    class Meta:
-        """
-        Sets the plural name of the model to override the default behavior.
-        """
-        verbose_name_plural = "Phones"
-    category = models.ForeignKey(PhoneCategory, on_delete=models.SET_NULL,
-                                 null=True, blank=True)
-    phone_name = models.CharField(max_length=255, blank=False, default=None)
-    currency = models.ForeignKey(Currency, on_delete=models.SET_NULL,
-                                 null=True, blank=True)
-    price = models.DecimalField(max_digits=6, decimal_places=0)
-    size_sku = models.ForeignKey(PhoneMemorySize, on_delete=models.SET_NULL,
-                                 null=True, blank=True)
-    icon = models.ForeignKey(ItemIcon, on_delete=models.SET_NULL, null=True,
-                             blank=True)
-    average_review = models.DecimalField(max_digits=2, decimal_places=1,
-                                         default=5.0)
-    main_image = models.ImageField(upload_to="phones")
-
-    def __str__(self):
-        """Return a string representation of the PhoneList object."""
-        return self.phone_name
-
-    def save(self, *args, **kwargs):
-        if self.pk and self.category is None:
-            delete_cache(PhoneList, self.pk, 'phones_{}')
-        if self.category:
-            cache.delete('phones_{}'.format(self.category_id))
-            if self.pk:
-                delete_cache(PhoneList, self.pk, 'phones_{}')
-        super(PhoneList, self).save(*args, **kwargs)
-
-
 class SocialMedia(models.Model):
     """Creates Social media objects."""
 
@@ -364,44 +328,11 @@ class Color(models.Model):
         return self.color
 
 
-class PhonesColor(models.Model):
-    """
-    Associates phones with certain colors and sets the necessary
-    attributes.
-    """
-    phone = models.ForeignKey(
-        PhoneList, related_name='phone_color_quantity',
-        on_delete=models.SET_NULL, null=True, blank=True)
-    size = models.ForeignKey(PhoneMemorySize,
-                             on_delete=models.SET_NULL,
-                             null=True, blank=True)
-    price = models.DecimalField(max_digits=6, decimal_places=0)
-    color = models.ForeignKey(
-        Color, on_delete=models.SET_NULL, null=True, blank=True)
-    quantity = IntegerRangeField(min_value=0)
-    is_in_stock = models.BooleanField(_('in_stock'), default=False,
-                                      help_text=_(
-                                          'Designates whether this phone \
-                                              color is in stock. '
-                                          'Unselect this instead of \
-                                              deleting phone color.'), )
-
-    class Meta:
-        """
-        Defines a rule for ensuring a phonecolor object cannot be created
-        with similar size more than once.
-        """
-        unique_together = ('phone', 'size')
-
-    def __str__(self):
-        if self.color:
-            return str(self.color) + " " + str(self.size)
-        return str(self.size)
-
-
 class Address(models.Model):
     """Creates addresses."""
+
     class Meta:
+        """Override default plural name."""
         verbose_name_plural = "Addresses"
 
     address_line_one = models.CharField(max_length=255, null=False,
@@ -669,7 +600,7 @@ def clear_phone_categories_cache(sender, **kwargs):
     cache.delete("sizes_{}".format(kwargs["instance"].id))
 
 
-@receiver(pre_delete, sender=PhoneList)
+@receiver(pre_delete, sender=PhoneModelList)
 def clear_phone_cache(sender, **kwargs):
     """Delete phones cache."""
     cache_delete("phones_{}", kwargs["instance"].category)

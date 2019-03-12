@@ -3,9 +3,9 @@ from django.db import IntegrityError, DataError
 from front.base_test import (BaseTestCase, image, TestCase)
 from front.errors import hot_deal_error
 from front.models import (
-    PhoneCategory, get_default, PhoneList,
+    PhoneCategory, get_default,
     HotDeal, User, CountryCode, Order, OrderStatus,
-    ShippingAddress, PhonesColor, Color, Cart,
+    ShippingAddress, Color, Cart,
     ServicePerson, RepairService, Service, Address
     )
 
@@ -82,15 +82,6 @@ class CurrencyModelTestCase(BaseTestCase):
         currecny will be a string that is human readable
         '''
         self.assertEqual(str(self.currency_v), "V$")
-
-
-class PhoneListModelTestCase(TestCase):
-    """Tests the PhoneList model."""
-
-    def test_that_phone_name_is_necessary(self):
-        """Test that a phone must be created with a name."""
-        with self.assertRaises(IntegrityError):
-            PhoneList.objects.create(price=10)
 
 
 class HotDealModelsTestCase(BaseTestCase):
@@ -195,48 +186,6 @@ class OrderModelsTestCase(BaseTestCase):
         ShippingAddress.objects.create(order=order, location="Kiambu Road",
                                        pickup="Evergreen Center")
         self.assertEqual(order.get_address.location, "Kiambu Road")
-
-
-class PhonesColorTestCase(BaseTestCase):
-    """Tests the PhonesColor model."""
-
-    def setUp(self):
-        super(PhonesColorTestCase, self).setUp()
-
-    def test_create_phone_color_object_success(self):
-        """Test user can create a phone color object successfuly."""
-        PhoneList.objects.create(
-            category=self.android,
-            size_sku=self.size_android, price=25000,
-            main_image=image('test_image_5.png'),
-            phone_name="Samsung",
-            currency=self.currency_v
-            )
-        phone = PhoneList.objects.get(phone_name="Samsung")
-        PhonesColor.objects.create(
-            phone=phone, size=self.size_android, price=10000,
-            quantity=10, is_in_stock=True)
-        phone_color = PhonesColor.objects.filter(phone=phone).first()
-        self.assertEqual(str(phone_color), "16 GB")
-        self.assertEqual(phone_color.price, 10000)
-        self.assertEqual(phone_color.phone, phone)
-        Color.objects.create(color="White")
-        color = Color.objects.get(color="White")
-        PhoneList.objects.create(
-            category=self.iphone,
-            size_sku=self.size_iphone, price=25000,
-            main_image=image('test_image_5.png'),
-            phone_name="Iphone X",
-            currency=self.currency_v
-            )
-        phone_2 = PhoneList.objects.get(phone_name="Iphone X")
-        PhonesColor.objects.create(
-            phone=phone_2, size=self.size_iphone, price=10000,
-            color=color, quantity=10, is_in_stock=True)
-        phone_color = PhonesColor.objects.filter(phone=phone_2).first()
-        self.assertEqual(str(phone_color), "White 8 GB")
-        self.assertEqual(phone_color.price, 10000)
-        self.assertEqual(phone_color.phone, phone_2)
 
 
 class ServicesNetworkTestCase(BaseTestCase):

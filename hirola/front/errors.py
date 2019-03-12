@@ -11,12 +11,6 @@ phone_category_error = (
     ' that already exist.'
 )
 
-phone_list_error = (
-    'The image needs to have a height of 150 pixels and a width of between 70 '
-    'to 80 pixels. The image you entered has a height of {} pixels and a width'
-    ' of {} pixels.'
-)
-
 phone_category_error_2 = (
     'The phone category {} already exists.'
 )

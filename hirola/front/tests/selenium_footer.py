@@ -17,7 +17,6 @@ class FooterLink(BaseSeleniumTestCase):
         self.create_phone_memory_size()
         self.create_currency()
         self.create_item_icon()
-        self.create_phone_list()
 
     def test_news_link(self):
         '''
