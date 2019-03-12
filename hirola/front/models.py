@@ -498,8 +498,6 @@ class Order(models.Model):
     payment_method = models.ForeignKey(PaymentMethod,
                                        on_delete=models.SET_NULL,
                                        blank=True, null=True)
-    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, blank=True,
-                             null=True)
 
     def __str__(self):
         return str(self.phone) + ": " + str(self.owner) + " date: " + \

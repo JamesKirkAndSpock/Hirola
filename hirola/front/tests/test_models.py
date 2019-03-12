@@ -175,12 +175,10 @@ class OrderModelsTestCase(BaseTestCase):
         User.objects.create_user(email="example@gmail.com")
         owner = User.objects.get(email="example@gmail.com")
         OrderStatus.objects.create(status="Pending")
-        Cart.objects.create(owner=None)
-        cart = Cart.objects.get(owner=None)
         status = OrderStatus.objects.get(status="Pending")
         Order.objects.create(
             owner=owner, phone=self.samsung_note_5_rose_gold, status=status,
-            quantity=2, price=25000, total_price=80000, cart=cart)
+            quantity=2, price=25000, total_price=80000)
         order = Order.objects.get(owner=owner)
         self.assertEqual(order.get_address, None)
         ShippingAddress.objects.create(order=order, location="Kiambu Road",

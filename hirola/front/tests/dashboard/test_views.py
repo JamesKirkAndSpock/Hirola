@@ -192,12 +192,10 @@ class DashboardTemplate(BaseTestCase):
         owner = User.objects.get(email="urieltimanko@example.com")
         OrderStatus.objects.create(status="Pending")
         status = OrderStatus.objects.get(status="Pending")
-        Cart.objects.create(owner=None)
-        cart = Cart.objects.get(owner=None)
         Order.objects.create(
             owner=owner, phone=self.samsung_note_5_rose_gold, status=status,
             quantity=2, price=25000,
-            total_price=80000, cart=cart
+            total_price=80000
             )
         order = Order.objects.get(owner=owner)
         ShippingAddress.objects.create(
