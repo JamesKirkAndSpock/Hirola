@@ -78,4 +78,6 @@ urlpatterns = [
          name='hot_deal_quantity_change'),
     path('before_checkout_anonymous', views.before_checkout_anonymous,
          name='before_checkout_anonymous'),
+    path('before_checkout', views.before_checkout,
+         name='before_checkout'),
 ]

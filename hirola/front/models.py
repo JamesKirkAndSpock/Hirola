@@ -481,6 +481,10 @@ class Cart(models.Model):
             return str(self.owner) + " date: " + str(self.creation_date)
         return "Anonymous User" + " date: " + str(self.creation_date)
 
+    @property
+    def total_price(cart):
+        return cart.quantity * cart.phone_model_item.price
+
 
 class Order(models.Model):
     """

@@ -12,5 +12,5 @@ register = template.Library()
 def features(p_k):
     """Fetch phone information."""
     phone = PhoneModelList.objects.filter(pk=p_k).first()
-    infos = phone.phone_information.all()
-    return infos
+    features = phone.phone_features.all()
+    return features

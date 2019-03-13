@@ -18,7 +18,7 @@
                     </div>
                     <div class="col m3">
                         <h6>{{ item.phone_model_item }}</h6>
-                        <h5>{{ item.size }}</h5>
+                        <h5>{{ item.phone_model_item.size_sku }}</h5>
                         <ul style="list-style-type:disc"></ul>
                             {% for feature in item.phone_model_item.pk|features %}
                                 <li>{{ feature.feature }}</li>
