@@ -130,4 +130,41 @@ class CartViewsTestCase(BaseTestCase):
         self.assertContains(response, "<span class=\"right\">2</span>")
         self.assertContains(response, "300,000")
 
+    def test_phone_profile_view_post_logged_in(self):
+        """
+        Test that when an identified user makes a post on the phone profile
+        view page
+            - That the user is redirected to the before_checkout page
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        response = self.winniethepooh.post(
+            "/profile/{}/".format(self.samsung_note_5_rose_gold.pk),
+            {'phone_model_item': self.samsung_note_5_rose_gold.pk,
+             'quantity': 2, 'owner': '', 'session_key': ''})
+        self.assertRedirects(response, "/before_checkout")
+        cart = Cart.objects.get(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=2)
+        self.assertTrue(cart)
 
+    def test_phone_profile_view_post_anonymous_user(self):
+        """
+        Test that when an anonymous user makes a post on the phone profile
+        view page
+            - That the user is redirected to the before_checkout_anonymous
+            page
+        """
+        self.cosmas = Client()
+        response = self.cosmas.post(
+            "/profile/{}/".format(self.samsung_note_5_rose_gold.pk),
+            {'phone_model_item': self.samsung_note_5_rose_gold.pk,
+             'quantity': 2, 'owner': ''})
+        self.assertRedirects(response, "/before_checkout_anonymous")
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=2
+        )
+        self.assertTrue(cart)
