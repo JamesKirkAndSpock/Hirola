@@ -74,4 +74,6 @@ urlpatterns = [
     path('size_change', views.size_change, name='size_change'),
     path('quantity_change', views.quantity_change, name='quantity_change'),
     path('hot_deal/<int:hot_deal_id>/', views.hot_deal, name='hot_deal'),
+    path('hot_deal_quantity_change', views.hot_deal_quantity_change,
+         name='hot_deal_quantity_change'),
 ]
