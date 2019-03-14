@@ -96,14 +96,11 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
 
     def create_order(self):
         """Create an order"""
-        Cart.objects.create(owner=None)
-        cart = Cart.objects.get(owner=None)
         Order.objects.create(
             owner=self.timon, phone=self.iphone_6_s_rose_gold,
             status=self.order_status, quantity=2,
             price=10000, total_price=20000,
             payment_method=self.mpesa, date="2018-12-12",
-            cart=cart
             )
         self.order = Order.objects.get(owner=self.timon)
 
