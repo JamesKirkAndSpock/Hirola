@@ -29,7 +29,7 @@ class CartFormTestCase(BaseTestCase):
                  'quantity': 1, 'owner': '',
                  'session_key': ''
                  }
-            )
+        )
         self.client = Client()
         self.client.get("/")
         middleware = SessionMiddleware()
@@ -54,7 +54,7 @@ class CartFormTestCase(BaseTestCase):
                  'quantity': 1, 'owner': user.pk,
                  'session_key': ''
                  }
-            )
+        )
         middleware = SessionMiddleware()
         middleware.process_request(request)
         request.session.save()
@@ -81,8 +81,9 @@ class CartFormTestCase(BaseTestCase):
         request = request.post(
             "", {'phone_model_item': self.samsung_note_5_rose_gold.pk,
                  'quantity': 7, 'owner': user.pk,
-                 'session_key': ''}
-            )
+                 'session_key': ''
+                 }
+        )
         middleware = SessionMiddleware()
         middleware.process_request(request)
         request.session.save()
@@ -110,8 +111,9 @@ class CartFormTestCase(BaseTestCase):
         request = request.post(
             "", {'phone_model_item': self.samsung_note_5_rose_gold.pk,
                  'quantity': 1, 'owner': '',
-                 'session_key': ''}
-            )
+                 'session_key': ''
+                 }
+        )
         self.client = Client()
         self.client.get("/")
         middleware = SessionMiddleware()
@@ -139,7 +141,7 @@ class CartFormTestCase(BaseTestCase):
         request = RequestFactory()
         request = request.post(
             "", {'phone_model_item': self.samsung_note_5_rose_gold.pk}
-            )
+        )
         self.client = Client()
         request.user = user
         form = check_cart_exists(request)
@@ -159,7 +161,7 @@ class CartFormTestCase(BaseTestCase):
         request = RequestFactory()
         request = request.post(
             "", {}
-            )
+        )
         self.client = Client()
         request.user = user
         form = check_cart_exists(request)
@@ -177,7 +179,7 @@ class CartFormTestCase(BaseTestCase):
         request = RequestFactory()
         request = request.post(
             "", {'phone_model_item': self.samsung_note_5_rose_gold.pk}
-            )
+        )
         middleware = SessionMiddleware()
         middleware.process_request(request)
         request.session.save()
@@ -201,7 +203,7 @@ class CartFormTestCase(BaseTestCase):
         request = RequestFactory()
         request = request.post(
             "", {}
-            )
+        )
         middleware = SessionMiddleware()
         middleware.process_request(request)
         request.session.save()

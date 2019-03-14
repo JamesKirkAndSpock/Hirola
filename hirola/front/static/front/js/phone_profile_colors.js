@@ -9,8 +9,8 @@ $('#color_selector').change(function() {
         var instance = M.FormSelect.getInstance($("#storage"));
         $("#storage").html('');
         $("#storage").html(options);
-        var quantity_options = '<option value=1 selected>1</option>'
-        for (var i=2, k=2 ; i <= j["phone_quantity"]; i ++ , k++){
+        var quantity_options = '<option value=1 selected>1</option>';
+        for (var i=2, k=2 ; i <= j.phone_quantity; i ++ , k++){
             quantity_options += '<option value=' + k + '>'+ i + '</option> ';
         }
         $("#quantity").html(quantity_options);
@@ -29,7 +29,7 @@ $('#color_selector').change(function() {
             '<div class="col s6">' + j["infos"][i] + '</div></div>'
         }
         $('#product_information').html(infos);
-        $("#phone_item").val(j["phone"]);
+        $("#phone_item").val(j.phone);
     })
 });
 
