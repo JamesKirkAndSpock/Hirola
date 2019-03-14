@@ -249,8 +249,7 @@ def get_cart_total(items):
     """Calculate cart total."""
     cart_sum = 0
     for item in items:
-        cart_sum += (item.phone_model_item.price *
-                     item.quantity)
+        cart_sum += (item.phone_model_item.price * item.quantity)
     return cart_sum
 
 
@@ -263,12 +262,12 @@ def before_checkout(request):
         items = Cart.objects.filter(owner=request.user)
     total = get_cart_total(items)
     context = {
-            'categories': phone_categories,
-            'social_media': social_media,
-            'items': items,
-            'item_count': items.count(),
-            'cart_total': total
-            }
+        'categories': phone_categories,
+        'social_media': social_media,
+        'items': items,
+        'item_count': items.count(),
+        'cart_total': total
+    }
     return render(request, 'front/before_checkout.html', context)
 
 
@@ -277,12 +276,12 @@ def before_checkout_anonymous(request):
     items = Cart.objects.filter(session_key=request.session.session_key)
     total = get_cart_total(items)
     context = {
-            'categories': phone_categories,
-            'social_media': social_media,
-            'items': items,
-            'item_count': items.count(),
-            'cart_total': total
-            }
+        'categories': phone_categories,
+        'social_media': social_media,
+        'items': items,
+        'item_count': items.count(),
+        'cart_total': total
+    }
     return render(request, 'front/before_checkout.html', context)
 
 

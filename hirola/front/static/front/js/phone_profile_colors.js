@@ -35,14 +35,14 @@ $('#color_selector').change(function() {
 
 $('#storage').change(function() {
     $.getJSON("/size_change", {size_id: $('#storage').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
-        var quantity_options = '<option value=1 selected>1</option>'
-        for (var i=2, k=2; i <= j["phone_quantity"]; i ++, k++ ){
+        var quantity_options = '<option value=1 selected>1</option>';
+        for (var i=2, k=2; i <= j.phone_quantity; i ++, k++ ){
             quantity_options += '<option value=' + k + '>'+ i + '</option> ';
         }
         $("#quantity").html(quantity_options);
         $('select').formSelect();
         $('#price').html(j["currency"] + "  " + j["price"]);
-        $("#phone_item").val(j["phone"]);
+        $("#phone_item").val(j.phone);
     })
 });
 

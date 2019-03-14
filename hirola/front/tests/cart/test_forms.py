@@ -27,7 +27,8 @@ class CartFormTestCase(BaseTestCase):
         request = request.post(
             "", {'phone_model_item': self.samsung_note_5_rose_gold.pk,
                  'quantity': 1, 'owner': '',
-                 'session_key': ''}
+                 'session_key': ''
+                 }
             )
         self.client = Client()
         self.client.get("/")
@@ -51,7 +52,8 @@ class CartFormTestCase(BaseTestCase):
         request = request.post(
             "", {'phone_model_item': self.samsung_note_5_rose_gold.pk,
                  'quantity': 1, 'owner': user.pk,
-                 'session_key': ''}
+                 'session_key': ''
+                 }
             )
         middleware = SessionMiddleware()
         middleware.process_request(request)
