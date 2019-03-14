@@ -679,3 +679,12 @@ def hot_deal(request, hot_deal_id):
                "infos": phone.phone_information.all(),
                "customer_reviews": phone.phone_model.phone_reviews.all()}
     return render(request, 'front/hot_deal.html', context)
+
+
+def hot_deal_quantity_change(request):
+    quantity = int(request.GET["qty"]) + 1
+    phone = PhoneModelList.objects.filter(
+        id=request.GET["phone_model_list_id"]).first()
+    total_cost = quantity * phone.price
+    data = {"total_cost": total_cost, "currency": str(phone.currency)}
+    return JsonResponse(data)

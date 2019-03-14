@@ -62,6 +62,15 @@
                             </div>
                         </div>
 
+     <!-- murage css -->
+                        <div class="row">
+                            <div class="input-field col s8">
+                                <p>Color: {{ phone.color }}</p>
+                                <p>Size: {{ phone.size_sku }}</p>
+                            </div>
+                        </div>
+
+
                         <div class="row">
                             <div class="input-field col s8">
                                 <div id="quantityRow">
@@ -78,7 +87,6 @@
                             </div>
                         </div>
 
-                        <!-- murage css -->
                         <div class="row collection with-header">
                           <div id="phone_features">
                             <ul></ul>
@@ -197,7 +205,7 @@
             </ul>
     </div>
     </div>
-    <div id="phone_model" style="display: none;">{{ phone_model.id }}</div>
+    <div id="phone_model_list_id" style="display: none;">{{ phone.id }}</div>
 </div>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %}
@@ -205,6 +213,6 @@
 {% load static %}
 <script src="{% static 'front/js/material_init.js' %}"></script>
 <script src="{% static 'front/js/phone_profile.js' %}"></script>
-<script src="{% static 'front/js/phone_profile_colors.js'%}"></script>
+<script src="{% static 'front/js/hot_deal_quantity.js'%}"></script>
 {% endblock %}
 {% endblock %}

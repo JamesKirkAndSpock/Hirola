@@ -16,12 +16,12 @@ class LandingPageViewsTestCase(BaseTestCase):
         Test that Hot Deals are rendered on the landing page.
         '''
         before_response = self.client.get("/")
-        self.assertNotContains(before_response, "Hot deals!")
+        self.assertNotContains(before_response, "Hot deals")
         self.elena.post(
             '/admin/front/hotdeal/add/',
             {"item": self.samsung_note_5_rose_gold.pk})
         response = self.client.get("/")
-        self.assertContains(response, "Hot deals!")
+        self.assertContains(response, "Hot deals")
         self.assertContains(response, "Samsung Note 5")
         self.assertContains(response, 25000)
         self.assertContains(response, "fab fa-icon-test")
