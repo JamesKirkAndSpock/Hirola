@@ -751,7 +751,7 @@ def hot_deal(request, hot_deal_id):
 
 
 def hot_deal_quantity_change(request):
-    quantity = int(request.GET["qty"]) + 1
+    quantity = int(request.GET["qty"])
     phone = PhoneModelList.objects.filter(
         id=int(request.GET["phone_model_item"])).first()
     total_cost = quantity * phone.price
