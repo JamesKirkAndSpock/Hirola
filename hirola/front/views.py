@@ -765,9 +765,8 @@ def cart_redirect(request):
         if form.is_valid():
             form.save()
             return redirect("/before_checkout")
-    else:
-        form = check_cart_exists_anonymous(request)
-        if form.is_valid():
-            cart = form.save(commit=False)
-            cart.save()
-            return redirect("/before_checkout_anonymous")
+    form = check_cart_exists_anonymous(request)
+    if form.is_valid():
+        cart = form.save(commit=False)
+        cart.save()
+        return redirect("/before_checkout_anonymous")
