@@ -145,17 +145,7 @@ def check_cart_exists_anonymous(request):
 def phone_profile_view(request, phone_model_id):
     """Fetch phone details and render the data in the phone profile page."""
     if request.method == "POST":
-        if not request.user.is_anonymous:
-            form = check_cart_exists(request)
-            if form.is_valid():
-                form.save()
-                return redirect("/before_checkout")
-        else:
-            form = check_cart_exists_anonymous(request)
-            if form.is_valid():
-                cart = form.save(commit=False)
-                cart.save()
-                return redirect("/before_checkout_anonymous")
+        return cart_redirect(request)
     phone_model = PhoneModel.objects.filter(id=phone_model_id).first()
     if not phone_model:
         return redirect("/error")
@@ -748,17 +738,7 @@ def repair_and_network_view(request):
 
 def hot_deal(request, hot_deal_id):
     if request.method == "POST":
-        if not request.user.is_anonymous:
-            form = check_cart_exists(request)
-            if form.is_valid():
-                form.save()
-                return redirect("/before_checkout")
-        else:
-            form = check_cart_exists_anonymous(request)
-            if form.is_valid():
-                cart = form.save(commit=False)
-                cart.save()
-                return redirect("/before_checkout_anonymous")
+        return cart_redirect(request)
     phone = PhoneModelList.objects.filter(id=hot_deal_id).first()
     if not phone:
         return redirect("/error")
@@ -777,3 +757,17 @@ def hot_deal_quantity_change(request):
     total_cost = quantity * phone.price
     data = {"total_cost": total_cost, "currency": str(phone.currency)}
     return JsonResponse(data)
+
+
+def cart_redirect(request):
+    if not request.user.is_anonymous:
+        form = check_cart_exists(request)
+        if form.is_valid():
+            form.save()
+            return redirect("/before_checkout")
+    else:
+        form = check_cart_exists_anonymous(request)
+        if form.is_valid():
+            cart = form.save(commit=False)
+            cart.save()
+            return redirect("/before_checkout_anonymous")
