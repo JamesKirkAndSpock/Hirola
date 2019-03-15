@@ -30,6 +30,7 @@ from front.forms.user_forms import (
     EmailAuthenticationForm, resend_email,
     resend_activation_email, ContactUsForm,
     )
+from front.forms.cart_forms import CartForm
 
 
 def page_view(request):
@@ -121,8 +122,30 @@ def country_codes(request):
     return JsonResponse(data)
 
 
+def check_cart_exists(request):
+    cart = Cart.objects.filter(
+        owner=request.user,
+        phone_model_item=request.POST.get(
+            "phone_model_item")).first()
+    if cart:
+        return CartForm(request, request.POST, instance=cart)
+    return CartForm(request, request.POST)
+
+
+def check_cart_exists_anonymous(request):
+    cart = Cart.objects.filter(
+        session_key=request.session.session_key,
+        phone_model_item=request.POST.get(
+            "phone_model_item")).first()
+    if cart:
+        return CartForm(request, request.POST, instance=cart)
+    return CartForm(request, request.POST)
+
+
 def phone_profile_view(request, phone_model_id):
     """Fetch phone details and render the data in the phone profile page."""
+    if request.method == "POST":
+        return cart_redirect(request)
     phone_model = PhoneModel.objects.filter(id=phone_model_id).first()
     if not phone_model:
         return redirect("/error")
@@ -172,6 +195,7 @@ def get_sizes(request):
             "currency": str(phone.currency), "main_image": main_image,
             "features": feature_list,
             "infos": phone_information,
+            "phone": phone.id,
             }
     return JsonResponse(data)
 
@@ -184,19 +208,22 @@ def size_change(request):
             'price').first()
     main_image = settings.MEDIA_URL + str(phone.main_image)
     data = {"phone_quantity": phone.quantity, "price": phone.price,
-            "currency": str(phone.currency), "main_image": main_image}
+            "currency": str(phone.currency), "main_image": main_image,
+            "phone": phone.id}
     return JsonResponse(data)
 
 
 def quantity_change(request):
-    quantity = int(request.GET["qty"]) + 1
+    quantity = int(request.GET["qty"])
     phone_model = PhoneModel.objects.filter(
         id=request.GET["phone_model_id"]).first()
     phone = PhoneModelList.objects.filter(
         phone_model=phone_model, color=request.GET["color_id"],
         size_sku=request.GET["size_id"]).first()
     total_cost = quantity * phone.price
-    data = {"total_cost": total_cost, "currency": str(phone.currency)}
+    data = {"total_cost": total_cost, "currency": str(phone.currency),
+            "phone": phone.id,
+            }
     return JsonResponse(data)
 
 
@@ -206,6 +233,46 @@ def checkout_view(request):
     return render(request, 'front/checkout.html',
                   {'categories': phone_categories,
                    'social_media': social_media})
+
+
+def get_cart_total(items):
+    """Calculate cart total."""
+    cart_sum = 0
+    for item in items:
+        cart_sum += (item.phone_model_item.price * item.quantity)
+    return cart_sum
+
+
+@login_required
+def before_checkout(request):
+    """Get cart items and render the before checkout page."""
+    (phone_categories, social_media) = various_caches()
+    items = None
+    if not request.user.is_anonymous:
+        items = Cart.objects.filter(owner=request.user)
+    total = get_cart_total(items)
+    context = {
+        'categories': phone_categories,
+        'social_media': social_media,
+        'items': items,
+        'item_count': items.count(),
+        'cart_total': total
+    }
+    return render(request, 'front/before_checkout.html', context)
+
+
+def before_checkout_anonymous(request):
+    (phone_categories, social_media) = various_caches()
+    items = Cart.objects.filter(session_key=request.session.session_key)
+    total = get_cart_total(items)
+    context = {
+        'categories': phone_categories,
+        'social_media': social_media,
+        'items': items,
+        'item_count': items.count(),
+        'cart_total': total
+    }
+    return render(request, 'front/before_checkout.html', context)
 
 
 @login_required
@@ -670,6 +737,8 @@ def repair_and_network_view(request):
 
 
 def hot_deal(request, hot_deal_id):
+    if request.method == "POST":
+        return cart_redirect(request)
     phone = PhoneModelList.objects.filter(id=hot_deal_id).first()
     if not phone:
         return redirect("/error")
@@ -684,7 +753,20 @@ def hot_deal(request, hot_deal_id):
 def hot_deal_quantity_change(request):
     quantity = int(request.GET["qty"]) + 1
     phone = PhoneModelList.objects.filter(
-        id=request.GET["phone_model_list_id"]).first()
+        id=int(request.GET["phone_model_item"])).first()
     total_cost = quantity * phone.price
     data = {"total_cost": total_cost, "currency": str(phone.currency)}
     return JsonResponse(data)
+
+
+def cart_redirect(request):
+    if not request.user.is_anonymous:
+        form = check_cart_exists(request)
+        if form.is_valid():
+            form.save()
+            return redirect("/before_checkout")
+    form = check_cart_exists_anonymous(request)
+    if form.is_valid():
+        cart = form.save(commit=False)
+        cart.save()
+        return redirect("/before_checkout_anonymous")

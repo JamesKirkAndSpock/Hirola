@@ -290,23 +290,6 @@ class PaymentMethod(models.Model):
     payment_method = models.CharField(max_length=255, default="Cash")
 
 
-class Cart(models.Model):
-    """Creates carts for holding ordered items."""
-    owner = models.ForeignKey(User, null=True, blank=True,
-                              on_delete=models.CASCADE)
-    creation_date = models.DateField(auto_now_add=True)
-    modified_date = models.DateField(auto_now=True)
-    total_price = IntegerRangeField(min_value=0, default=0)
-    payment_method = models.ForeignKey(PaymentMethod,
-                                       on_delete=models.SET_NULL,
-                                       blank=True, null=True)
-
-    def __str__(self):
-        if self.owner:
-            return str(self.owner) + " date: " + str(self.creation_date)
-        return "Anonymous User" + " date: " + str(self.creation_date)
-
-
 class NewsItem(models.Model):
     """Creates news Items."""
     title = models.CharField(max_length=256)
@@ -481,6 +464,28 @@ class PhoneModelList(models.Model):
             phone_model=phone.phone_model).order_by('price').first().price
 
 
+class Cart(models.Model):
+    """Creates carts for holding ordered items."""
+    owner = models.ForeignKey(User, null=True, blank=True,
+                              on_delete=models.CASCADE)
+    creation_date = models.DateField(auto_now_add=True)
+    modified_date = models.DateField(auto_now=True)
+    quantity = IntegerRangeField(min_value=1)
+    phone_model_item = models.ForeignKey(PhoneModelList,
+                                         on_delete=models.CASCADE)
+    session_key = models.CharField(
+        _('session key'), max_length=40, null=True, blank=True)
+
+    def __str__(self):
+        if self.owner:
+            return str(self.owner) + " date: " + str(self.creation_date)
+        return "Anonymous User" + " date: " + str(self.creation_date)
+
+    @property
+    def total_price(cart):
+        return cart.quantity * cart.phone_model_item.price
+
+
 class Order(models.Model):
     """
     A table model for order items.
@@ -497,8 +502,6 @@ class Order(models.Model):
     payment_method = models.ForeignKey(PaymentMethod,
                                        on_delete=models.SET_NULL,
                                        blank=True, null=True)
-    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, blank=True,
-                             null=True)
 
     def __str__(self):
         return str(self.phone) + ": " + str(self.owner) + " date: " + \

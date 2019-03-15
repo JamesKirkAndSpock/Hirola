@@ -76,4 +76,8 @@ urlpatterns = [
     path('hot_deal/<int:hot_deal_id>/', views.hot_deal, name='hot_deal'),
     path('hot_deal_quantity_change', views.hot_deal_quantity_change,
          name='hot_deal_quantity_change'),
+    path('before_checkout_anonymous', views.before_checkout_anonymous,
+         name='before_checkout_anonymous'),
+    path('before_checkout', views.before_checkout,
+         name='before_checkout'),
 ]

@@ -49,6 +49,8 @@
                 </div>
             </div>
             <div class="col m7 s12 profile">
+                <form method="post" class="row">
+                    {% csrf_token %}
                     <div class="col s12 m6">
                         <div class="row">
                             <div class="stars">
@@ -69,7 +71,6 @@
                                         <option value={{ phone_model.color.pk }}>{{ phone_model.color }}</option>
                                     {% endfor %}
                                 </select>
-                                <input type="hidden" id="size" name="size" value="">
                             </div>
 
                         </div>
@@ -81,7 +82,6 @@
                                         <option value={{ phone_model.size_sku.pk }}>{{ phone_model.size_sku }}</option>
                                     {% endfor %}
                                 </select>
-                                <input type="hidden" id="size" name="size" value="">
                             </div>
 
                         </div>
@@ -91,9 +91,9 @@
                                     <select id="quantity" name="quantity">
                                         {% for i in phone.quantity|integize %}
                                             {% if i == 0 %}
-                                                <option value={{ i }} selected>{{ i|add:"1" }}</option>
+                                                <option value="{{ i|add:'1' }}" selected>{{ i|add:"1" }}</option>
                                             {% else %}
-                                                <option value={{ i }}>{{ i|add:"1" }}</option>
+                                                <option value="{{ i|add:'1' }}">{{ i|add:"1" }}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
@@ -112,11 +112,12 @@
                         </div>
 
                     </div>
+                    <input type="hidden" id="phone_model" name="phone_model_input" value="{{ phone_model.id }}">
+                    <input type="hidden" id="phone_item" name="phone_model_item" value="{{ phone.id }}">
                     <div class="col m5 push-m1 s12 action">
                         <div class="row">
                             <div class="col s12">
                                 <h5 id="price" class="green-text">{{ phone.currency }} {{ phone.price }}</h5>
-                                <input type="hidden" id="cart_phone_price" name="cart_phone_price" value="">
                                 <p>
                                     <i class="medium material-icons inline-icon">local_atm</i>
                                     Pay on delivery<br>
@@ -131,7 +132,6 @@
                         </div>
                             <div class="row confirm">
                                 <div class="col s12">
-                                        <input type="hidden" id="cartItem" name="cart_item_add" value="{{ phone.id }}">
                                         <div class="row">
                                             <div class="input-field col s12">
                                                 <button class="btn waves-effect waves-light green" id="add-to-cart-button">Buy Now
@@ -160,7 +160,7 @@
                                 </div>
                         </div>
                     </div>
-
+                </form>
             </div>
         </div>
     </div>
@@ -213,7 +213,6 @@
             </ul>
     </div>
     </div>
-    <div id="phone_model" style="display: none;">{{ phone_model.id }}</div>
 </div>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %}
