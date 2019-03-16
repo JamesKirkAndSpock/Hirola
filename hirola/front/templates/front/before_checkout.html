@@ -32,15 +32,25 @@
                         <h6>Item Total <span class="">{{ item.total_price|intcomma }}</span></h6>
                     </div>
                     <div class="col m3 s12">
-                        <p>Free shipping</p>
-                        <p><i class="material-icons inline-icon green-text">local_shipping</i><span> fast n free</span></p>
-                        <p>Guaranteed delivery</p>
-                        <span id="action"><a href="#">Save for later</a> <a href="#">Remove</a></span>
+                        
+                            <p>Free shipping</p>
+                            <p><i class="material-icons inline-icon green-text">local_shipping</i><span> fast n free</span></p>
+                            <p>Guaranteed delivery</p>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="cart_id_save" value="{{ item.id }}"/>
+                            <button class="faux-link">
+                                <span class="before_checkout_buttons" id="save_for_later"><a>Save for later</a></span>
+                            </button>
+                        </form>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="cart_id_remove" value="{{ item.id }}"/>
+                            <button class="faux-link" type="submit" name="action">
+                                <span class="before_checkout_buttons"><a>Remove</a></span>
+                            </button>
+                        </form>
                     </div>
-                </div>
-                <div class="row" id="offers">
-                    <h5>Offers</h5>
-                    <p>There are currently no offers for this item</p>
                 </div>
             </div>
         {% endfor %}

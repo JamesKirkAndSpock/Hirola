@@ -21,7 +21,9 @@ class CartModelsTestCase(BaseTestCase):
             - That a cart is created successfully
         """
         data = {"owner": self.aladdin.pk, "quantity": 1,
-                "phone_model_item": self.samsung_note_5_rose_gold.pk}
+                "phone_model_item": self.samsung_note_5_rose_gold.pk,
+                "is_wishlist": True
+                }
         post_response = self.elena.post("/admin/front/cart/add/", data)
         self.assertRedirects(post_response, "/admin/front/cart/")
 

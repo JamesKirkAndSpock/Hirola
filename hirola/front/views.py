@@ -262,17 +262,46 @@ def before_checkout(request):
 
 
 def before_checkout_anonymous(request):
+    if request.method == 'POST':
+        if request.POST.get("cart_id_remove"):
+            remove_cart_item(request.POST.get("cart_id_remove"))
+        if request.POST.get("cart_id_save"):
+            save_cart_item(request.POST.get("cart_id_save"))
+        context = before_checkout_anonymous_context(request)
+        return render(request, 'front/before_checkout.html', context)
+    context = before_checkout_anonymous_context(request)
+    return render(request, 'front/before_checkout.html', context)
+
+
+def remove_cart_item(cart_id):
+    cart = Cart.objects.filter(id=cart_id).first()
+    if cart:
+        cart.delete()
+
+
+def save_cart_item(cart_id):
+    cart = Cart.objects.filter(id=cart_id).first()
+    if cart:
+        cart.is_wishlist = True
+        cart.save()
+
+
+def before_checkout_anonymous_context(request):
     (phone_categories, social_media) = various_caches()
-    items = Cart.objects.filter(session_key=request.session.session_key)
+    items = Cart.objects.filter(
+        session_key=request.session.session_key, is_wishlist=False)
+    wishlist = Cart.objects.filter(
+        session_key=request.session.session_key, is_wishlist=True)
     total = get_cart_total(items)
     context = {
         'categories': phone_categories,
         'social_media': social_media,
         'items': items,
         'item_count': items.count(),
-        'cart_total': total
+        'cart_total': total,
+        'wishlist': wishlist
     }
-    return render(request, 'front/before_checkout.html', context)
+    return context
 
 
 @login_required
