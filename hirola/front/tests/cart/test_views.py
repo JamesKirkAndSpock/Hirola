@@ -214,3 +214,51 @@ class CartViewsTestCase(BaseTestCase):
         self.assertEqual(after_save_response.status_code, 200)
         # Test the wishlist appearing
         # self.assertContains(after_save_response, )
+
+    def test_remove_cart_before_checkout(self):
+        """
+        Test that if a Post request is made on the before_checkout
+        page with the cart id to remove
+            - That the cart will be removed.
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=10, owner=user)
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=10, owner=user)
+        response = self.winniethepooh.get("/before_checkout")
+        self.assertContains(response, "Samsung Note 5")
+        data = {"cart_id_remove": cart.id}
+        after_remove_response = self.winniethepooh.post(
+            "/before_checkout", data)
+        self.assertNotContains(after_remove_response, "Samsung Note 5")
+
+    def test_save_cart_before_checkout(self):
+        """
+        Test that if a Post request is made on the before_checkout
+        page with the cart id to save
+            - That the wishlist appears for the user
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=10, owner=user)
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=10, owner=user)
+        response = self.winniethepooh.get("/before_checkout")
+        self.assertContains(response, "Samsung Note 5")
+        data = {"cart_id_save": cart.id}
+        after_save_response = self.winniethepooh.post(
+            "/before_checkout", data)
+        self.assertEqual(after_save_response.status_code, 200)
+        # Test the wishlist appearing
+        # self.assertContains(after_save_response, )

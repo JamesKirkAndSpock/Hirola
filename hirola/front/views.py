@@ -246,19 +246,31 @@ def get_cart_total(items):
 @login_required
 def before_checkout(request):
     """Get cart items and render the before checkout page."""
+    if request.method == 'POST':
+        if request.POST.get("cart_id_remove"):
+            remove_cart_item(request.POST.get("cart_id_remove"))
+        if request.POST.get("cart_id_save"):
+            save_cart_item(request.POST.get("cart_id_save"))
+        context = before_checkout_context(request)
+        return render(request, 'front/before_checkout.html', context)
+    context = before_checkout_context(request)
+    return render(request, 'front/before_checkout.html', context)
+
+
+def before_checkout_context(request):
     (phone_categories, social_media) = various_caches()
-    items = None
-    if not request.user.is_anonymous:
-        items = Cart.objects.filter(owner=request.user)
+    items = Cart.objects.filter(owner=request.user, is_wishlist=False)
+    wishlist = Cart.objects.filter(owner=request.user, is_wishlist=True)
     total = get_cart_total(items)
     context = {
         'categories': phone_categories,
         'social_media': social_media,
         'items': items,
         'item_count': items.count(),
-        'cart_total': total
+        'cart_total': total,
+        'wishlist': wishlist
     }
-    return render(request, 'front/before_checkout.html', context)
+    return context
 
 
 def before_checkout_anonymous(request):
