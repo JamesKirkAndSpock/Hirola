@@ -18,13 +18,28 @@
     font-size: 24px !important;
  }
 
- #action a{
+.faux-link {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    color: #0654ba;
+}
+
+.line-y {
+    display: inline-block;
+    height: 1rem;
+    margin: 1px 8px;
+    width: 1px;
+    background-color: rgb(27, 25, 25);
+}
+
+.before_checkout_buttons a{
    font-size: 110%;
    color: blue !important;
  }
 
- #action > a:first-child {
-
+#save_for_later {
      border-right: solid 0.05em;
      border-color: #696969;
      padding-right: 5px;

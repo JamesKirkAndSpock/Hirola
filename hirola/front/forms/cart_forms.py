@@ -12,7 +12,8 @@ class CartForm(forms.ModelForm):
         This class attaches the model and fields to the UserCreationForm
         """
         model = Cart
-        fields = ('phone_model_item', 'quantity', 'owner', 'session_key')
+        fields = ('phone_model_item', 'quantity', 'owner', 'session_key',
+                  'is_wishlist')
 
     def __init__(self, request, *args, **kwargs):
         self.user = request.user
@@ -36,3 +37,7 @@ class CartForm(forms.ModelForm):
         if self.user.is_anonymous and not self.instance.pk:
             session_key = self.request.session.session_key
         return session_key
+
+    def clean_is_wishlist(self):
+        is_wishlist = self.cleaned_data['is_wishlist']
+        return is_wishlist
