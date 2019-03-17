@@ -479,8 +479,8 @@ class Cart(models.Model):
         _('wish list'), default=False,
         help_text=_(
             'Designates whether cart is to be added to the wish list'
-            ),
-        )
+        ),
+    )
 
     def __str__(self):
         if self.owner:
