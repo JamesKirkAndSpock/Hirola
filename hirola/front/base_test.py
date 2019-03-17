@@ -122,6 +122,11 @@ class BaseTestCase(TestCase):
             brand_model="Samsung Note 5")
         PhoneModel.objects.create(
             category=self.android, brand=self.samsung_brand,
+            brand_model="Samsung Edge s6", average_review=5.0)
+        self.samsung_edge_s6 = PhoneModel.objects.get(
+            brand_model="Samsung Edge s6")
+        PhoneModel.objects.create(
+            category=self.android, brand=self.samsung_brand,
             brand_model="Samsung Note 7", average_review=5.0)
         self.samsung_note_7 = PhoneModel.objects.get(
             brand_model="Samsung Note 7")
@@ -130,6 +135,13 @@ class BaseTestCase(TestCase):
             brand_model="Iphone 6 S", average_review=5.0)
         self.iphone_6_s = PhoneModel.objects.get(
             brand_model="Iphone 6 S")
+        PhoneModel.objects.create(
+            category=self.android, brand=self.lg_brand,
+            brand_model='Lg Plus', average_review=4.0
+        )
+        self.lg_plus = PhoneModel.objects.get(
+            brand_model="Lg Plus"
+            )
 
     def create_phone_model_list(self):
         """Create Phone models."""
@@ -156,6 +168,22 @@ class BaseTestCase(TestCase):
             quantity=4, is_in_stock=True)
         self.iphone_6_s_rose_gold = PhoneModelList.objects.get(
             phone_model=self.iphone_6_s, color=self.color_one
+        )
+        PhoneModelList.objects.create(
+            phone_model=self.lg_plus, currency=self.currency_v,
+            price=12000, size_sku=self.size_android,
+            main_image=image("test_image_5.png"), color=self.color_three,
+            quantity=4, is_in_stock=True)
+        self.lg_plus_silver = PhoneModelList.objects.get(
+            phone_model=self.lg_plus, color=self.color_three
+        )
+        PhoneModelList.objects.create(
+            phone_model=self.lg_plus, currency=self.currency_v,
+            price=5000, size_sku=self.any_phone_size,
+            main_image=image("test_image_5.png"), color=self.color_three,
+            quantity=4, is_in_stock=True)
+        self.lg_plus_silver_two = PhoneModelList.objects.get(
+            phone_model=self.lg_plus, price=5000
         )
 
     def create_repair_services(self):

@@ -56,5 +56,18 @@ class MyOrders(BaseSeleniumTestCase):
         order_details_link.click()
         self.assertEqual(order_1.get_attribute('style'), "display: none;")
 
+    def test_dashboard_link_on_dashboard(self):
+        """
+        Test that when the user clicks on the dashboard link while on the
+        dashboard page
+            - That they are redirected to the same page
+        """
+        driver = self.login_user()
+        driver.get('%s%s' % (self.live_server_url, '/dashboard'))
+        driver.find_element_by_link_text("My Profile").click()
+        self.assertEqual(driver.current_url, '%s%s' % (
+            self.live_server_url, '/dashboard'
+            ))
+
     def tearDown(self):
         self.driver.close()

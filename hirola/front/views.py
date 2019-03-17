@@ -169,6 +169,7 @@ def phone_profile_view(request, phone_model_id):
 
 
 def get_sizes(request):
+    """Get a phonelist memory sizes"""
     phone_model = PhoneModel.objects.filter(
         id=request.GET["phone_model_id"]).first()
     phone = PhoneModelList.objects.filter(
@@ -197,6 +198,11 @@ def get_sizes(request):
             "infos": phone_information,
             "phone": phone.id,
             }
+    if data['sizes_length'] <= 0:
+        error = {
+            "message": "There are no sizes currently"
+            }
+        return JsonResponse(error)
     return JsonResponse(data)
 
 
@@ -206,11 +212,15 @@ def size_change(request):
     phone = PhoneModelList.objects.filter(
         phone_model=phone_model, size_sku=request.GET["size_id"]).order_by(
             'price').first()
-    main_image = settings.MEDIA_URL + str(phone.main_image)
-    data = {"phone_quantity": phone.quantity, "price": phone.price,
-            "currency": str(phone.currency), "main_image": main_image,
-            "phone": phone.id}
-    return JsonResponse(data)
+    if phone:
+        main_image = settings.MEDIA_URL + str(phone.main_image)
+        data = {"phone_quantity": phone.quantity, "price": phone.price,
+                "currency": str(phone.currency), "main_image": main_image}
+        return JsonResponse(data)
+    error = {
+        "message": "Sorry that phone was not found!"
+    }
+    return JsonResponse(error)
 
 
 def quantity_change(request):
@@ -220,11 +230,14 @@ def quantity_change(request):
     phone = PhoneModelList.objects.filter(
         phone_model=phone_model, color=request.GET["color_id"],
         size_sku=request.GET["size_id"]).first()
-    total_cost = quantity * phone.price
-    data = {"total_cost": total_cost, "currency": str(phone.currency),
-            "phone": phone.id,
-            }
-    return JsonResponse(data)
+    if phone:
+        total_cost = quantity * phone.price
+        data = {"total_cost": total_cost, "currency": str(phone.currency)}
+        return JsonResponse(data)
+    error = {
+        "message": "Sorry that phone was not found!"
+    }
+    return JsonResponse(error)
 
 
 def checkout_view(request):
