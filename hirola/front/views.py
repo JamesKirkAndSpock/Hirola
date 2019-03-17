@@ -247,10 +247,7 @@ def get_cart_total(items):
 def before_checkout(request):
     """Get cart items and render the before checkout page."""
     if request.method == 'POST':
-        if request.POST.get("cart_id_remove"):
-            remove_cart_item(request.POST.get("cart_id_remove"))
-        if request.POST.get("cart_id_save"):
-            save_cart_item(request.POST.get("cart_id_save"))
+        cart_operations(request)
         context = before_checkout_context(request)
         return render(request, 'front/before_checkout.html', context)
     context = before_checkout_context(request)
@@ -275,14 +272,18 @@ def before_checkout_context(request):
 
 def before_checkout_anonymous(request):
     if request.method == 'POST':
-        if request.POST.get("cart_id_remove"):
-            remove_cart_item(request.POST.get("cart_id_remove"))
-        if request.POST.get("cart_id_save"):
-            save_cart_item(request.POST.get("cart_id_save"))
+        cart_operations(request)
         context = before_checkout_anonymous_context(request)
         return render(request, 'front/before_checkout.html', context)
     context = before_checkout_anonymous_context(request)
     return render(request, 'front/before_checkout.html', context)
+
+
+def cart_operations(request):
+    if request.POST.get("cart_id_remove"):
+        remove_cart_item(request.POST.get("cart_id_remove"))
+    if request.POST.get("cart_id_save"):
+        save_cart_item(request.POST.get("cart_id_save"))
 
 
 def remove_cart_item(cart_id):
