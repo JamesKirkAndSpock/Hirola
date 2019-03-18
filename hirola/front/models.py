@@ -466,6 +466,11 @@ class PhoneModelList(models.Model):
         return PhoneModelList.objects.filter(
             phone_model=phone.phone_model).order_by('price').first().price
 
+    def save(self, *args, **kwargs):
+        """Overrides the default save behavior of the model."""
+        cache.delete('phones_{}'.format(self.phone_model.category.id))
+        super(PhoneModelList, self).save(*args, **kwargs)
+
 
 class Cart(models.Model):
     """Creates carts for holding proposed items to buy."""
@@ -615,7 +620,7 @@ def clear_phone_categories_cache(sender, **kwargs):
 @receiver(pre_delete, sender=PhoneModelList)
 def clear_phone_cache(sender, **kwargs):
     """Delete phones cache."""
-    cache_delete("phones_{}", kwargs["instance"].category)
+    cache_delete("phones_{}", kwargs["instance"].phone_model.category)
 
 
 @receiver(pre_delete, sender=PhoneMemorySize)
