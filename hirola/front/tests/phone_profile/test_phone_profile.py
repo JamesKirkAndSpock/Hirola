@@ -45,8 +45,7 @@ class PhoneProfilePageTestCase(BaseTestCase):
             self.samsung_note_5_rose_gold.id))
         html = '<option value={} selected>{}</option>'.format(
             self.samsung_note_5_rose_gold.color.id,
-            self.samsung_note_5_rose_gold.color
-            )
+            self.samsung_note_5_rose_gold.color)
         self.assertContains(response, html)
 
     def test_storage_selector_options(self):
@@ -59,8 +58,7 @@ class PhoneProfilePageTestCase(BaseTestCase):
             self.samsung_note_5_rose_gold.id))
         html = '<option value={} selected>{}</option>'.format(
             self.samsung_note_5_rose_gold.size_sku.id,
-            self.samsung_note_5_rose_gold.size_sku
-            )
+            self.samsung_note_5_rose_gold.size_sku)
         self.assertContains(response, html)
 
     def test_quantity_selector_options(self):
@@ -93,8 +91,7 @@ class PhoneProfilePageTestCase(BaseTestCase):
         """
         data = {
             'phone_model_id': self.lg_plus.id,
-            'id': self.lg_plus_silver.color.id
-            }
+            'id': self.lg_plus_silver.color.id}
         response = self.client.get("/get_sizes", data)
         self.assertEqual(json.loads(response.content)['sizes_length'], 1)
 
@@ -105,12 +102,10 @@ class PhoneProfilePageTestCase(BaseTestCase):
         """
         data = {
             'phone_model_id': self.samsung_note_5.id,
-            'id': self.samsung_note_5_rose_gold.color.id
-            }
+            'id': self.samsung_note_5_rose_gold.color.id}
         response = self.client.get("/get_sizes", data)
         error = {
-            "message": "There are no sizes currently"
-            }
+            "message": "There are no sizes currently"}
         self.assertEqual(json.loads(response.content), error)
 
     def test_size_change(self):
@@ -119,8 +114,7 @@ class PhoneProfilePageTestCase(BaseTestCase):
         """
         data = {
             'phone_model_id': self.samsung_note_7.id,
-            'size_id': self.samsung_note_7_rose_gold.size_sku.id
-            }
+            'size_id': self.samsung_note_7_rose_gold.size_sku.id}
         response = self.client.get("/size_change", data)
         self.assertContains(response, 4)
         self.assertContains(response, '25000')
@@ -134,12 +128,10 @@ class PhoneProfilePageTestCase(BaseTestCase):
         """
         data = {
             'phone_model_id': self.samsung_note_5.id,
-            'size_id': self.any_phone_size.id
-            }
+            'size_id': self.any_phone_size.id}
         response = self.client.get("/size_change", data)
         error = {
-            "message": "Sorry that phone was not found!"
-        }
+            "message": "Sorry that phone was not found!"}
         self.assertEqual(json.loads(response.content), error)
 
     def test_change_quantity_url(self):
@@ -150,13 +142,11 @@ class PhoneProfilePageTestCase(BaseTestCase):
             'phone_model_id': self.iphone_6_s.id,
             'qty': self.iphone_6_s_rose_gold.quantity,
             'size_id': self.iphone_6_s_rose_gold.size_sku.id,
-            'color_id': self.iphone_6_s_rose_gold.color.id
-            }
+            'color_id': self.iphone_6_s_rose_gold.color.id}
         response = self.client.get("/quantity_change", data)
         result = {
             "total_cost": "100000",
-            "currency": "V$"
-            }
+            "currency": "V$"}
         self.assertEqual(json.loads(response.content), result)
 
     def test_change_quantity_error(self):
@@ -168,12 +158,10 @@ class PhoneProfilePageTestCase(BaseTestCase):
             'phone_model_id': self.iphone_6_s.id,
             'qty': self.iphone_6_s_rose_gold.quantity,
             'size_id': self.iphone_6_s_rose_gold.size_sku.id,
-            'color_id': self.color_three.id
-            }
+            'color_id': self.color_three.id}
         response = self.client.get("/quantity_change", data)
         error = {
-            "message": "Sorry that phone was not found!"
-        }
+            "message": "Sorry that phone was not found!"}
         self.assertEqual(json.loads(response.content), error)
 
     def test_phone_rendering_order(self):
