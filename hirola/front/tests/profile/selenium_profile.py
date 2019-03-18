@@ -138,8 +138,7 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         driver.find_element_by_link_text("{}".format(self.android)).click()
         self.assertEqual(driver.current_url, '%s%s' % (
             self.live_server_url, '/phone_category/{}/'.format(
-                self.android.pk)
-                ))
+                self.android.pk)))
 
     def test_phone_profile_link(self):
         """
@@ -150,14 +149,12 @@ class PhoneProfileLink(BaseSeleniumTestCase):
         driver = self.driver
         driver.get('%s%s' % (
             self.live_server_url, '/profile/{}/'.format(
-                self.samsung_note_5.pk)
-                ))
+                self.samsung_note_5.pk)))
         driver.find_element_by_link_text("{}".format(
             self.samsung_note_5)).click()
         self.assertEqual(driver.current_url, '%s%s' % (
             self.live_server_url, '/profile/{}/'.format(
-                self.samsung_note_5.pk)
-                ))
+                self.samsung_note_5.pk)))
 
     def tearDown(self):
         self.driver.close()

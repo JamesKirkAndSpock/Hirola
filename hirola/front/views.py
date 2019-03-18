@@ -200,8 +200,7 @@ def get_sizes(request):
             }
     if data['sizes_length'] <= 0:
         error = {
-            "message": "There are no sizes currently"
-            }
+            "message": "There are no sizes currently"}
         return JsonResponse(error)
     return JsonResponse(data)
 
@@ -218,8 +217,7 @@ def size_change(request):
                 "currency": str(phone.currency), "main_image": main_image}
         return JsonResponse(data)
     error = {
-        "message": "Sorry that phone was not found!"
-    }
+        "message": "Sorry that phone was not found!"}
     return JsonResponse(error)
 
 
@@ -235,8 +233,7 @@ def quantity_change(request):
         data = {"total_cost": total_cost, "currency": str(phone.currency)}
         return JsonResponse(data)
     error = {
-        "message": "Sorry that phone was not found!"
-    }
+        "message": "Sorry that phone was not found!"}
     return JsonResponse(error)
 
 

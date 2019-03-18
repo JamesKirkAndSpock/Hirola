@@ -48,7 +48,8 @@ class MyOrders(BaseSeleniumTestCase):
         driver.get('%s%s' % (self.live_server_url, '/dashboard'))
         order_link = driver.find_element_by_link_text("MY ORDERS")
         order_link.click()
-        order_1 = driver.find_element_by_id("details-1")
+        order_1 = driver.find_element_by_id("details-{}".format(
+            self.order.pk))
         self.assertEqual(order_1.get_attribute('style'), '')
         order_details_link = driver.find_element_by_id("order-details-button")
         order_details_link.click()
@@ -64,10 +65,9 @@ class MyOrders(BaseSeleniumTestCase):
         """
         driver = self.login_user()
         driver.get('%s%s' % (self.live_server_url, '/dashboard'))
-        driver.find_element_by_link_text("My Profile").click()
+        driver.find_element_by_id("last-link").click()
         self.assertEqual(driver.current_url, '%s%s' % (
-            self.live_server_url, '/dashboard'
-            ))
+            self.live_server_url, '/dashboard'))
 
     def tearDown(self):
         self.driver.close()
