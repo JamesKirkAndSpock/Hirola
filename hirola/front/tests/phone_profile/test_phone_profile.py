@@ -17,7 +17,6 @@ class PhoneProfilePageTestCase(BaseTestCase):
         """
         response = self.client.get("/profile/{}/".format(
             self.samsung_note_5_rose_gold.id))
-        # print(response.content)
         html = "<p id=\"intro\"><b>Samsung Note 5</b></p>"
         self.assertContains(response, html)
 
@@ -72,10 +71,10 @@ class PhoneProfilePageTestCase(BaseTestCase):
         """
         response = self.client.get("/profile/{}/".format(
             self.samsung_note_7.id))
-        html = '<option value=0 selected>1</option>'
+        html = '<option value="1" selected>1</option>'
         self.assertContains(response, html)
-        for i in range(1, 4):
-            html = '<option value={}>{}</option>'.format(i, i+1)
+        for i in range(2, 4):
+            html = '<option value="{}">{}</option>'.format(i, i)
             self.assertContains(response, html)
 
     def test_phone_price_currency_rendered(self):
@@ -155,7 +154,7 @@ class PhoneProfilePageTestCase(BaseTestCase):
             }
         response = self.client.get("/quantity_change", data)
         result = {
-            "total_cost": "125000",
+            "total_cost": "100000",
             "currency": "V$"
             }
         self.assertEqual(json.loads(response.content), result)

@@ -137,7 +137,7 @@ class BaseTestCase(TestCase):
             brand_model="Iphone 6 S")
         PhoneModel.objects.create(
             category=self.android, brand=self.lg_brand,
-            brand_model='Lg Plus', average_review=4.0
+            brand_model='Lg Plus', average_review=5.0
         )
         self.lg_plus = PhoneModel.objects.get(
             brand_model="Lg Plus"
