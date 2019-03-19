@@ -124,5 +124,37 @@ class PhoneProfileLink(BaseSeleniumTestCase):
             self.live_server_url, '/error'
             ))
 
+    def test_category_link(self):
+        """
+        Test that when a user clicks on the category link on
+        the breadcrumb
+         - That the link redirects to the correct page
+        """
+        driver = self.driver
+        driver.get('%s%s' % (
+            self.live_server_url, '/profile/{}/'.format(
+                self.samsung_note_5_rose_gold.pk)
+                ))
+        driver.find_element_by_link_text("{}".format(self.android)).click()
+        self.assertEqual(driver.current_url, '%s%s' % (
+            self.live_server_url, '/phone_category/{}/'.format(
+                self.android.pk)))
+
+    def test_phone_profile_link(self):
+        """
+        Test that when a user clicks on the phone profile link on
+        the breadcrumb
+         - That the link redirects to the same page
+        """
+        driver = self.driver
+        driver.get('%s%s' % (
+            self.live_server_url, '/profile/{}/'.format(
+                self.samsung_note_5.pk)))
+        driver.find_element_by_link_text("{}".format(
+            self.samsung_note_5)).click()
+        self.assertEqual(driver.current_url, '%s%s' % (
+            self.live_server_url, '/profile/{}/'.format(
+                self.samsung_note_5.pk)))
+
     def tearDown(self):
         self.driver.close()
