@@ -205,7 +205,8 @@ class PhoneMemorySize(models.Model):
                                  null=True, blank=True)
 
     def __str__(self):
-        return str(self.size_number) + " " + self.abbreviation
+        return (str(self.size_number) + " " + self.abbreviation + " "
+                + str(self.category))
 
     def save(self, *args, **kwargs):
         """
