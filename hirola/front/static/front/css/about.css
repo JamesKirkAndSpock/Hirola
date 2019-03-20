@@ -2,10 +2,6 @@ body {
   font-style: Roboto, Helvetica, Arial, Roboto, Verdana, sans-serif;
 }
 
-.breadcrumbs {
-    margin-top: 50px;
-}
-
 .breadcrumbs nav {
    height: 40px;
    line-height: 40px;
@@ -65,15 +61,10 @@ hr {
     width: 100%;
 }
 .container-content {
-    margin-top: 20px;
     flex: 1;
 }
 
 @media only screen and (max-width: 600px) {
-    .row .s12 {
-        /* padding-left: 50px;
-        padding-right: 50px; */
-    }
     .how-it-works {
         padding-left: 40px;
         padding-right: 40px;
@@ -83,3 +74,4 @@ hr {
         padding-right: 30px;
     }
 }
+

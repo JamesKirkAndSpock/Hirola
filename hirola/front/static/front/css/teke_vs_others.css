@@ -1,10 +1,8 @@
 .main-content {
-    margin-top: 100px;
     flex: 1 0 auto;
 }
 
 .landing-content {
-    /* font-size: 14pt; */
     padding: 30px;
     text-align: center;
 }

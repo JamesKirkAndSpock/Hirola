@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_panels.css' %}" />
 {% endblock %}
 {% block content %}
+{% load humanize %}
 <div class="main-content">
 <div class="container content">
   <div class="row center main-head">
@@ -58,7 +59,7 @@
               </div>
               <div class="card-action">
                     <a href="/hot_deal/{{ hot_deal.item.pk }}/">
-                    <p><i id="quality-icon" class="fab fa-{{ hot_deal.item.phone_model.category.category_icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price}}</b></span></p>
+                    <p><i id="quality-icon" class="fab fa-{{ hot_deal.item.phone_model.category.category_icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ hot_deal.item.currency }} {{ hot_deal.item.price|intcomma}}</b></span></p>
                     </a>
               </div>
             </div>

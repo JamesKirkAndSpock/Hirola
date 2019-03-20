@@ -1,6 +1,9 @@
 .main-content {
-    margin-top: 100px;
     flex: 1 0 auto;
+}
+
+.cart-content {
+    margin-top: 20px;
 }
 
 .col {

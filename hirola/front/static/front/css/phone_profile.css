@@ -1,7 +1,6 @@
 .main-content {
     flex: 1 0 auto;
     width: 100%;
-    margin-top: 100px;
 }
 
 .phone-details {
@@ -246,3 +245,4 @@ form .input-field {
     height: auto;
     padding-bottom: 0.1rem !important;
 }
+

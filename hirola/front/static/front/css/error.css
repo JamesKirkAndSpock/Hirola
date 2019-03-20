@@ -1,5 +1,4 @@
 .main-content {
-    margin-top: 100px;
     flex: 1 0 auto;
 }
 
@@ -10,3 +9,4 @@
 .content a {
     color: #4caf50;
 }
+

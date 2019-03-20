@@ -27,6 +27,10 @@ body {
     color: #00A347;
 }
 
+.breadcrumbs {
+    margin-top: 20px;
+}
+
 .breadcrumb:before {
     color: gray;
     padding-right: 2px;

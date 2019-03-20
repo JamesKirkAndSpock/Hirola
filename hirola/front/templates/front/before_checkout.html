@@ -6,6 +6,16 @@
 {% load humanize %}
 {% load stars_counter %}
 <div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="/" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb" id="last-link">My Cart</a>
+                </div>
+            </div>
+        </nav>
+    </div>
     <div class="row cart-content">
         {% if items %}
         {% for item in items %}
@@ -89,3 +99,4 @@
 <script src="{% static 'front/js/material_init.js' %}"></script>
 {% endblock %}
 {% endblock %}
+

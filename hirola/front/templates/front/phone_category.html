@@ -7,6 +7,7 @@
 {% endblock %}
 {% block content %}
 {% load stars_counter %}
+{% load humanize %}
 <div class="row main-container">
   <div class="container content">
     <div class="row breadcrumbs">
@@ -41,7 +42,7 @@
               </div>
               <div class="card-action">
                 <a href="/profile/{{ phone.phone_model.id }}">
-                  <p><i id="quality-icon" class="fab fa-{{ phone.phone_model.category.category_icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ phone.currency }} {{ phone.get_lowest_price }} +</b></span></p>
+                  <p><i id="quality-icon" class="fab fa-{{ phone.phone_model.category.category_icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ phone.currency }} {{ phone.get_lowest_price|intcomma }} +</b></span></p>
                 </a>
               </div>
             </div>
