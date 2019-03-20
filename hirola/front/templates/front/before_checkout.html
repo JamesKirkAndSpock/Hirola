@@ -4,6 +4,7 @@
 {% endblock %} {% block content %}
 {% load before_cart %}
 {% load humanize %}
+{% load stars_counter %}
 <div class="container main-content">
     <div class="row cart-content">
         {% if items %}
@@ -29,18 +30,15 @@
 
                     <div class="col m4 s12 l4">
                       <div class="input-field">
-                          <select class="browser-default">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                            <optgroup label="delete">
-                                <option value="8">Delete</option>
-                                      </optgroup>
-                          </select>
+                        <select class="browser-default">
+                            {% for i in item.phone_model_item.quantity|integize %}
+                                {% if i|add:'1' == item.quantity %}
+                                    <option value="{{ i|add:'1' }}" selected>{{ i|add:"1" }}</option>
+                                {% else %}
+                                    <option value="{{ i|add:'1' }}">{{ i|add:"1" }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
                         </div>
                         <p>Total Price: {{ item.total_price|intcomma }}</p>
 
