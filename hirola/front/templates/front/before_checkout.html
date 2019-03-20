@@ -42,7 +42,7 @@
                                       </optgroup>
                           </select>
                         </div>
-                        <p>Total Price: 32,000</p>
+                        <p>Total Price: {{ item.total_price|intcomma }}</p>
 
                         <form method="POST">
                             {% csrf_token %}

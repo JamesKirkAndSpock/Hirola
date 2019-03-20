@@ -57,8 +57,13 @@ class CartViewsTestCase(BaseTestCase):
         user = User.objects.get(email="winnie@thepooh.com")
         self.winniethepooh.force_login(user)
         response = self.winniethepooh.get("/before_checkout")
-        msg = "Howdy folk!, looks like you havent added anything to the cart!"
-        self.assertContains(response, msg)
+        msg_1 = ("Looks like you haven't added any items to your cart! "
+                 "Visit our")
+        msg_2 = "and find the phone you desire"
+        msg_3 = "tunafurahia sana kukuwezesha kupata teknologia halali"
+        self.assertContains(response, msg_1)
+        self.assertContains(response, msg_2)
+        self.assertContains(response, msg_3)
 
     def test_before_checkout_view_data_rendered(self):
         """
@@ -83,7 +88,6 @@ class CartViewsTestCase(BaseTestCase):
         self.assertNotContains(response, msg)
         self.assertContains(response, cart.phone_model_item)
         self.assertContains(response, cart.phone_model_item.size_sku)
-        self.assertContains(response, "Quantity ({})".format(cart.quantity))
         self.assertContains(response, cart.phone_model_item.main_image)
         self.assertContains(response, "GSM feature")
         self.assertContains(response, "250,000")
@@ -98,8 +102,13 @@ class CartViewsTestCase(BaseTestCase):
         """
         self.winniethepooh = Client()
         response = self.winniethepooh.get("/before_checkout_anonymous")
-        msg = "Howdy folk!, looks like you havent added anything to the cart!"
-        self.assertContains(response, msg)
+        msg_1 = ("Looks like you haven't added any items to your cart! "
+                 "Visit our")
+        msg_2 = "and find the phone you desire"
+        msg_3 = "tunafurahia sana kukuwezesha kupata teknologia halali"
+        self.assertContains(response, msg_1)
+        self.assertContains(response, msg_2)
+        self.assertContains(response, msg_3)
 
     def test_before_checkout_anonymous_data_rendered(self):
         """
@@ -123,7 +132,6 @@ class CartViewsTestCase(BaseTestCase):
         response = self.winniethepooh.get("/before_checkout_anonymous")
         self.assertContains(response, cart.phone_model_item)
         self.assertContains(response, cart.phone_model_item.size_sku)
-        self.assertContains(response, "Quantity ({})".format(cart.quantity))
         self.assertContains(response, cart.phone_model_item.main_image)
         self.assertContains(response, "GSM feature")
         self.assertContains(response, "250,000")
