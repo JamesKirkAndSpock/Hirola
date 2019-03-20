@@ -268,7 +268,7 @@ def before_checkout_context(request):
     (phone_categories, social_media) = various_caches()
     items = Cart.objects.filter(
         owner=request.user, is_wishlist=False).order_by(
-            'phone_model_item.id'
+            'phone_model_item'
         )
     wishlist = Cart.objects.filter(owner=request.user, is_wishlist=True)
     total = get_cart_total(items)
