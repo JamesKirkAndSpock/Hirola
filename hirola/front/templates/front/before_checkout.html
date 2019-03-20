@@ -29,16 +29,20 @@
                     </div>
 
                     <div class="col m4 s12 l4">
-                      <div class="input-field">
-                        <select class="browser-default">
-                            {% for i in item.phone_model_item.quantity|integize %}
-                                {% if i|add:'1' == item.quantity %}
-                                    <option value="{{ i|add:'1' }}" selected>{{ i|add:"1" }}</option>
-                                {% else %}
-                                    <option value="{{ i|add:'1' }}">{{ i|add:"1" }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
+                        <div class="input-field">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <select class="browser-default" name="quantity" onchange='this.form.submit()'>
+                                    {% for i in item.phone_model_item.quantity|integize %}
+                                        {% if i|add:'1' == item.quantity %}
+                                            <option value="{{ i|add:'1' }}" selected>{{ i|add:"1" }}</option>
+                                        {% else %}
+                                            <option value="{{ i|add:'1' }}">{{ i|add:"1" }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <input type="hidden" name="cart_id_quantity" value="{{ item.id }}"/>
+                            </form>
                         </div>
                         <p>Total Price: {{ item.total_price|intcomma }}</p>
 
