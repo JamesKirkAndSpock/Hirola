@@ -82,7 +82,7 @@ class PhoneProfilePageTestCase(BaseTestCase):
         """
         response = self.client.get("/profile/{}/".format(
             self.samsung_note_7.id))
-        html = '<h5 id="price" class="green-text">V$ 25000</h5>'
+        html = '<h5 id="price" class="green-text">V$ 25,000</h5>'
         self.assertContains(response, html)
 
     def test_get_sizes(self):
@@ -171,8 +171,8 @@ class PhoneProfilePageTestCase(BaseTestCase):
         """
         response = self.client.get("/profile/{}/".format(
             self.lg_plus.id))
-
-        self.assertContains(response, self.lg_plus_silver_two.price)
+        self.assertContains(response, "{:,}".format(
+            self.lg_plus_silver_two.price))
 
     def test_phone_category_phone_rendering_order(self):
         """
