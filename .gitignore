@@ -20,6 +20,7 @@ test_image_6_*
 test_image_7_*
 phones/
 phone_categories
+brand_models
 # migrations
 Makefile
 # User Data
