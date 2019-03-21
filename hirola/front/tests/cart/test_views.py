@@ -228,8 +228,6 @@ class CartViewsTestCase(BaseTestCase):
         after_save_response = self.winniethepooh.post(
             "/before_checkout_anonymous", data)
         self.assertEqual(after_save_response.status_code, 200)
-        # Test the wishlist appearing
-        # self.assertContains(after_save_response, )
 
     def test_remove_cart_before_checkout(self):
         """
@@ -276,5 +274,38 @@ class CartViewsTestCase(BaseTestCase):
         after_save_response = self.winniethepooh.post(
             "/before_checkout", data)
         self.assertEqual(after_save_response.status_code, 200)
-        # Test the wishlist appearing
-        # self.assertContains(after_save_response, )
+
+    def test_change_quantity_before_checkout(self):
+        """
+        Test that if a Post request is made on the before_checkout
+        page with quantity to change
+            - That the price and total price change
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=2, owner=user)
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=2, owner=user)
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_7_rose_gold,
+            quantity=1, owner=user)
+        cart_2 = Cart.objects.get(
+            phone_model_item=self.samsung_note_7_rose_gold,
+            quantity=1, owner=user)
+        response = self.winniethepooh.get("/before_checkout")
+        self.assertContains(response, "Samsung Note 5")
+        self.assertContains(response, "50,000")
+        self.assertContains(response, "75,000")
+        cart_2_data = {"quantity": 2, "cart_id_quantity": cart_2.id}
+        self.winniethepooh.post("/before_checkout", cart_2_data)
+        data = {"quantity": 3, "cart_id_quantity": cart.id}
+        after_save_response = self.winniethepooh.post(
+            "/before_checkout", data)
+        self.assertEqual(after_save_response.status_code, 200)
+        self.assertContains(after_save_response, "75,000")
+        self.assertContains(after_save_response, "125,000")

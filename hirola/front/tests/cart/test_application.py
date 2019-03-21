@@ -1,7 +1,7 @@
 """Test the views of a cart"""
 from front.base_test import BaseTestCase
 from front.models import Cart
-from front.views import remove_cart_item, save_cart_item
+from front.views import remove_cart_item, save_cart_item, change_quantity
 
 
 class CartViewsTestCase(BaseTestCase):
@@ -47,3 +47,21 @@ class CartViewsTestCase(BaseTestCase):
             phone_model_item=self.samsung_note_7_rose_gold, quantity=4
         )
         self.assertEqual(cart_2_wishlist.is_wishlist, True)
+
+    def test_change_quantity(self):
+        """
+        Test that when you pass the cart id and a quantity for a cart that you
+        desire to change its quantity
+            - That the quantity changes to the quantity you select
+        """
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_7_rose_gold, quantity=4)
+        cart_2 = Cart.objects.get(
+            phone_model_item=self.samsung_note_7_rose_gold, quantity=4
+        )
+        self.assertEqual(cart_2.quantity, 4)
+        change_quantity(cart_2.id, 2)
+        cart_2_quantity = Cart.objects.get(
+            phone_model_item=self.samsung_note_7_rose_gold
+        )
+        self.assertEqual(cart_2_quantity.quantity, 2)
