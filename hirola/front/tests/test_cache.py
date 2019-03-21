@@ -486,7 +486,7 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
             "phone_features-INITIAL_FORMS": 0,
             "phone_features-MIN_NUM_FORMS": 0,
             "phone_features-MAX_NUM_FORMS": 1000
-            }
+        }
         return form
 
 
