@@ -2,7 +2,7 @@ $('#color_selector').change(function() {
     $.getJSON("/get_sizes", {id: $('#color_selector').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
 
         var options = '<option value="' + j["phone_size_id"] + '" selected>' + j["phone_size"] + '</option>';
-        for (var i in j["sizes"]) {
+        for (var i in j.sizes) {
             options += '<option value="' + i + '">' + j["sizes"][i] + '</option>';
         }
         $('select').formSelect();
@@ -14,8 +14,8 @@ $('#color_selector').change(function() {
             quantity_options += '<option value=' + k + '>'+ i + '</option> ';
         }
         $("#quantity").html(quantity_options);
-        $price = comma(j["price"])
-        $('#price').html(j["currency"] + "  " + $price);
+        $price = commaFunction(j.price)
+        $('#price').html(j.currency + "  " + $price);
         $('select').formSelect();
         $('#main_image_data_thumb').attr("data-thumb", j["main_image"])
         $('#main_image_src').attr("src", j["main_image"]);
@@ -42,21 +42,15 @@ $('#storage').change(function() {
         }
         $("#quantity").html(quantity_options);
         $('select').formSelect();
-        $price = comma(j["price"])
-        $('#price').html(j["currency"] + "  " + $price);
+        $price = commaFunction(j.price);
+        $('#price').html(j.currency + "  " + $price);
         $("#phone_item").val(j.phone);
     })
 });
 
 $('#quantity').change(function() {
     $.getJSON("/quantity_change", {color_id: $('#color_selector').val(), size_id: $('#storage').val(), qty: $('#quantity').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
-        $total = comma(j["total_cost"])
-        $('#price').html(j["currency"] + "  " + $total);
+        $total = commaFunction(j.total_cost);
+        $('#price').html(j.currency + "  " + $total);
     })
 });
-
-function comma(x) {
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-}
