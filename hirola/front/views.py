@@ -269,7 +269,7 @@ def before_checkout_context(request):
     items = Cart.objects.filter(
         owner=request.user, is_wishlist=False
     ).order_by(
-            'phone_model_item'
+        'phone_model_item'
     )
     wishlist = Cart.objects.filter(owner=request.user, is_wishlist=True)
     total = get_cart_total(items)
