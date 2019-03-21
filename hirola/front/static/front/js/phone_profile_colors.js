@@ -3,7 +3,7 @@ $('#color_selector').change(function() {
 
         var options = '<option value="' + j["phone_size_id"] + '" selected>' + j["phone_size"] + '</option>';
         for (var i in j.sizes) {
-            options += '<option value="' + i + '">' + j["sizes"][i] + '</option>';
+            options += '<option value="' + i + '">' + j.sizes[i] + '</option>';
         }
         $('select').formSelect();
         var instance = M.FormSelect.getInstance($("#storage"));
@@ -14,7 +14,7 @@ $('#color_selector').change(function() {
             quantity_options += '<option value=' + k + '>'+ i + '</option> ';
         }
         $("#quantity").html(quantity_options);
-        $price = commaFunction(j.price)
+        $price = commaFunction(j.price);
         $('#price').html(j.currency + "  " + $price);
         $('select').formSelect();
         $('#main_image_data_thumb').attr("data-thumb", j["main_image"])
