@@ -1,5 +1,5 @@
 from front.forms.base_form import forms
-from front.models import Cart
+from front.models import Cart, PhoneModelList
 
 
 class CartForm(forms.ModelForm):
@@ -25,12 +25,6 @@ class CartForm(forms.ModelForm):
         if not self.user.is_anonymous:
             return self.user
         return owner
-
-    def clean_quantity(self):
-        quantity = self.cleaned_data['quantity']
-        if self.instance.pk:
-            quantity = self.instance.quantity + self.cleaned_data['quantity']
-        return quantity
 
     def clean_session_key(self):
         session_key = self.cleaned_data['session_key']

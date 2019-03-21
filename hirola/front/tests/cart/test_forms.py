@@ -67,41 +67,6 @@ class CartFormTestCase(BaseTestCase):
             quantity=1)
         self.assertTrue(cart)
 
-    def test_quantity_user_cart_form(self):
-        """
-        Test that if a quantity is provided to the CartForm for an existent
-        cart:
-            - That the quantity is added to what was there before
-        """
-        User.objects.create_user(email="example_user@gmail.com")
-        user = User.objects.get(email="example_user@gmail.com")
-        self.client = Client()
-        self.client.get("/")
-        request = RequestFactory()
-        request = request.post(
-            "", {'phone_model_item': self.samsung_note_5_rose_gold.pk,
-                 'quantity': 7, 'owner': user.pk,
-                 'session_key': ''
-                 }
-        )
-        middleware = SessionMiddleware()
-        middleware.process_request(request)
-        request.session.save()
-        request.user = auth.get_user(self.client)
-        Cart.objects.create(
-            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
-            quantity=1)
-        cart = Cart.objects.get(
-            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
-            quantity=1
-        )
-        form = CartForm(request, request.POST, instance=cart)
-        self.assertTrue(form.is_valid())
-        form.save()
-        edited_cart = Cart.objects.get(
-            owner=user, phone_model_item=self.samsung_note_5_rose_gold)
-        self.assertEqual(edited_cart.quantity, 8)
-
     def test_session_key_cart_form(self):
         """
         Test that if an anonymous user is provided to the CartForm:
