@@ -89,17 +89,15 @@
                             </div>
                         </div>
 
-                        <div class="row collection with-header">
+                        <div class="row">
                           <div id="phone_features">
-                            <ul></ul>
-                              <li class="collection-header"><h6><b>Key Features</b></h6><li>
+                              <li><h6><b>Key Features</b></h6><li>
                                 {% for feature in features %}
-                                <li class="collection-item">{{ feature.feature }}</li>
+                                <li id="featureList">{{ feature.feature }}</li>
                                 {% endfor %}
                           </div>
                         </div>
                         <!-- end of murage hot-deal css -->
-
                     </div>
                     <div class="col m5 push-m1 s12 action">
                         <div class="row">

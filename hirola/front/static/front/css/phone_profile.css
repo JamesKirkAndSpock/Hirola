@@ -246,3 +246,6 @@ form .input-field {
     padding-bottom: 0.1rem !important;
 }
 
+li#featureList{
+    list-style-type: disc !important;
+}
