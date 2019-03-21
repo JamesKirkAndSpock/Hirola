@@ -327,7 +327,9 @@ def change_quantity(cart_id, quantity):
 def before_checkout_anonymous_context(request):
     (phone_categories, social_media) = various_caches()
     items = Cart.objects.filter(
-        session_key=request.session.session_key, is_wishlist=False)
+        session_key=request.session.session_key, is_wishlist=False).order_by(
+        'phone_model_item'
+    )
     wishlist = Cart.objects.filter(
         session_key=request.session.session_key, is_wishlist=True)
     total = get_cart_total(items)
