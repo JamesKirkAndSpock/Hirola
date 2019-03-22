@@ -205,8 +205,9 @@ class PhoneMemorySize(models.Model):
                                  null=True, blank=True)
 
     def __str__(self):
-        return (str(self.size_number) + " " + self.abbreviation + " " +
-                str(self.category))
+        return "{} {} {}".format(
+            str(self.size_number), self.abbreviation, str(self.category)
+        )
 
     def save(self, *args, **kwargs):
         """
@@ -456,10 +457,10 @@ class PhoneModelList(models.Model):
                                  null=True, blank=True)
 
     def __str__(self):
-        return ("Phone Model: " + str(self.phone_model) +
-                " Color: " + str(self.color) +
-                " Size: " + str(self.size_sku) +
-                " Quantity: " + str(self.quantity))
+        return "Phone Model: {} Color: {} Size: {} Quantity: {}".format(
+                    str(self.phone_model), str(self.color),
+                    str(self.size_sku), str(self.quantity)
+        )
 
     @property
     def get_lowest_price(phone):
