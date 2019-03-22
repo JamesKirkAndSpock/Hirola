@@ -458,8 +458,8 @@ class PhoneModelList(models.Model):
 
     def __str__(self):
         return "Phone Model: {} Color: {} Size: {} Quantity: {}".format(
-                    str(self.phone_model), str(self.color),
-                    str(self.size_sku), str(self.quantity))
+            str(self.phone_model), str(self.color),
+            str(self.size_sku), str(self.quantity))
 
     @property
     def get_lowest_price(phone):
