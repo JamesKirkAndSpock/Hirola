@@ -164,8 +164,11 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
         for phone category is set.
         '''
         self.client.get('/phone_category/{}/'.format(self.iphone.pk))
-        cache_after_access = cache.get('phones_{}'.format(self.iphone.pk))
-        self.assertNotEqual(cache_after_access, None)
+        self.client.get('/phone_category/{}/'.format(self.android.pk))
+        iphone_cache = cache.get('phones_{}'.format(self.iphone.pk))
+        self.assertNotEqual(iphone_cache, None)
+        android_cache = cache.get('phones_{}'.format(self.android.pk))
+        self.assertNotEqual(android_cache, None)
 
     def test_cache_set_on_view_access(self):
         '''
@@ -393,6 +396,99 @@ class PhoneCategoryViewCacheTest(BaseTestCase):
         self.assertEqual(edited_size.category, None)
         self.assertEqual(edited_size.abbreviation, "HI")
 
+    def test_addition_phone_model_list(self):
+        """
+        Test that if a user adds a phone
+            - That the phone cache is deleted
+        """
+        self.phone_cache_exists()
+        PhoneMemorySize.objects.create(
+            abbreviation="GB", size_number=34, category=self.iphone)
+        iphone_size = PhoneMemorySize.objects.get(
+            abbreviation="GB", size_number=34, category=self.iphone
+        )
+        data = self.phone_form(self.iphone_6_s.pk, iphone_size.pk, 5)
+        response = self.elena.post(
+            '/admin/front/phonemodellist/add/', data
+        )
+        self.assertEqual(response.status_code, 302)
+        iphone_cache = cache.get('phones_{}'.format(self.iphone.pk))
+        self.assertEqual(iphone_cache, None)
+        PhoneMemorySize.objects.create(
+            abbreviation="GB", size_number=42, category=self.android
+        )
+        android_size = PhoneMemorySize.objects.get(
+            abbreviation="GB", size_number=42, category=self.android
+        )
+        android_data = self.phone_form(
+            self.samsung_note_5_rose_gold.pk, android_size.pk, 5)
+        android_response = self.elena.post(
+            '/admin/front/phonemodellist/add/', android_data
+        )
+        self.assertEqual(android_response.status_code, 302)
+        android_cache = cache.get('phones_{}'.format(self.android.pk))
+        self.assertEqual(android_cache, None)
+
+    def test_edition_phone_model_list(self):
+        """
+        Test that if a user edits a phone
+            - That the phone cache is deleted
+        """
+        self.phone_cache_exists()
+        form = self.phone_form(
+            self.iphone_6_s.pk, self.size_iphone.pk, 12)
+        iphone_response = self.elena.post(
+            "/admin/front/phonemodellist/{}/change/".format(
+                self.iphone_6_s_rose_gold.pk
+            ), form
+        )
+        self.assertEqual(iphone_response.status_code, 302)
+        iphone_cache = cache.get('phones_{}'.format(self.iphone.pk))
+        self.assertEqual(iphone_cache, None)
+        android_form = self.phone_form(
+            self.samsung_note_5.pk, self.size_android.pk, 12)
+        android_response = self.elena.post(
+            "/admin/front/phonemodellist/{}/change/".format(
+                self.samsung_note_5_rose_gold.pk
+            ), android_form
+        )
+        self.assertEqual(android_response.status_code, 302)
+        android_cache = cache.get('phones_{}'.format(self.android.pk))
+        self.assertEqual(android_cache, None)
+
+    def test_deletion_phone_model_list(self):
+        self.phone_cache_exists()
+        self.samsung_note_5_rose_gold.delete()
+        self.iphone_6_s_rose_gold.delete()
+        android_cache = cache.get('phones_{}'.format(self.android.pk))
+        self.assertEqual(android_cache, None)
+        iphone_cache = cache.get('phones_{}'.format(self.iphone.pk))
+        self.assertEqual(iphone_cache, None)
+
+    def phone_form(self, phone_model, phone_size, quantity):
+        """Generate mock data for a phone."""
+        mock_image = image('test_image_5.png')
+        form = {
+            "phone_model": phone_model, "color": self.color_one.pk,
+            "size_sku": phone_size or self.size_iphone, "price": 25000,
+            "quantity": quantity,
+            "in_stock": True, "currency": self.currency_v.pk,
+            "main_image": mock_image,
+            "phone_information-TOTAL_FORMS": 1,
+            "phone_information-INITIAL_FORMS": 0,
+            "phone_information-MIN_NUM_FORMS": 0,
+            "phone_information-MAX_NUM_FORMS": 1000,
+            "phone_images-TOTAL_FORMS": 1,
+            "phone_images-INITIAL_FORMS": 0,
+            "phone_images-MIN_NUM_FORMS": 0,
+            "phone_images-MAX_NUM_FORMS": 1000,
+            "phone_features-TOTAL_FORMS": 1,
+            "phone_features-INITIAL_FORMS": 0,
+            "phone_features-MIN_NUM_FORMS": 0,
+            "phone_features-MAX_NUM_FORMS": 1000
+        }
+        return form
+
 
 class FooterViewCacheTest(BaseTestCase):
     """Tests footer's cache."""
@@ -465,34 +561,3 @@ class FooterViewCacheTest(BaseTestCase):
         media_object = SocialMedia.objects.get(name="example")
         media_object.delete()
         self.get_none_on_cache()
-
-
-def phone_form(category, currency, size):
-    """Generate mock data for a phone."""
-    mock_image = image('test_image_5.png')
-    icon = ItemIcon.objects.filter(item_icon="android").first()
-    if not icon:
-        ItemIcon.objects.create(item_icon="android")
-        icon = ItemIcon.objects.filter(item_icon="android").first()
-    form = {
-        "main_image": mock_image, "phone_name": "Phone_ImageV", "price": 250,
-        "category": category, "currency": currency, "size_sku": size,
-        "quantity": 5, "icon": icon.id, "average_review": 5.0,
-        "phone_information-TOTAL_FORMS": 1,
-        "phone_information-INITIAL_FORMS": 0,
-        "phone_information-MIN_NUM_FORMS": 0,
-        "phone_information-MAX_NUM_FORMS": 1000,
-        "phone_images-TOTAL_FORMS": 1,
-        "phone_images-INITIAL_FORMS": 0,
-        "phone_images-MIN_NUM_FORMS": 0,
-        "phone_images-MAX_NUM_FORMS": 1000,
-        "phone_reviews-TOTAL_FORMS": 1,
-        "phone_reviews-INITIAL_FORMS": 0,
-        "phone_reviews-MIN_NUM_FORMS": 0,
-        "phone_reviews-MAX_NUM_FORMS": 1000,
-        "phone_features-TOTAL_FORMS": 1,
-        "phone_features-INITIAL_FORMS": 0,
-        "phone_features-MIN_NUM_FORMS": 0,
-        "phone_features-MAX_NUM_FORMS": 1000
-        }
-    return form

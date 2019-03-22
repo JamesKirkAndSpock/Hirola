@@ -205,7 +205,9 @@ class PhoneMemorySize(models.Model):
                                  null=True, blank=True)
 
     def __str__(self):
-        return str(self.size_number) + " " + self.abbreviation
+        return "{} {} {}".format(
+            str(self.size_number), self.abbreviation, str(self.category)
+        )
 
     def save(self, *args, **kwargs):
         """
@@ -455,13 +457,20 @@ class PhoneModelList(models.Model):
                                  null=True, blank=True)
 
     def __str__(self):
-        return "Phone Model: " + str(self.phone_model)
+        return "Phone Model: {} Color: {} Size: {} Quantity: {}".format(
+            str(self.phone_model), str(self.color),
+            str(self.size_sku), str(self.quantity))
 
     @property
     def get_lowest_price(phone):
         """Returns the lowest price of a phone model."""
         return PhoneModelList.objects.filter(
             phone_model=phone.phone_model).order_by('price').first().price
+
+    def save(self, *args, **kwargs):
+        """Overrides the default save behavior of the model."""
+        cache.delete('phones_{}'.format(self.phone_model.category.id))
+        super(PhoneModelList, self).save(*args, **kwargs)
 
 
 class Cart(models.Model):
@@ -612,7 +621,7 @@ def clear_phone_categories_cache(sender, **kwargs):
 @receiver(pre_delete, sender=PhoneModelList)
 def clear_phone_cache(sender, **kwargs):
     """Delete phones cache."""
-    cache_delete("phones_{}", kwargs["instance"].category)
+    cache_delete("phones_{}", kwargs["instance"].phone_model.category)
 
 
 @receiver(pre_delete, sender=PhoneMemorySize)

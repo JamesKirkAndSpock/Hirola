@@ -1,7 +1,6 @@
 from front.base_test import (BaseTestCase, image, cache)
 from front.errors import (category_image_error, phone_category_error)
 from front.models import (PhoneModel, PhoneModelList)
-from .test_cache import phone_form
 
 
 class LandingPageViewsTestCase(BaseTestCase):
