@@ -789,6 +789,8 @@ def repair_and_network_view(request):
 
 
 def hot_deal(request, hot_deal_id):
+    """Render hotdeal page."""
+    (phone_categories, social_media) = various_caches()
     if request.method == "POST":
         return cart_redirect(request)
     phone = PhoneModelList.objects.filter(id=hot_deal_id).first()
@@ -798,7 +800,9 @@ def hot_deal(request, hot_deal_id):
                "image_list": phone.phone_images.all(),
                "features": phone.phone_features.all(),
                "infos": phone.phone_information.all(),
-               "customer_reviews": phone.phone_model.phone_reviews.all()}
+               "customer_reviews": phone.phone_model.phone_reviews.all(),
+               'categories': phone_categories,
+               'social_media': social_media}
     return render(request, 'front/hot_deal.html', context)
 
 

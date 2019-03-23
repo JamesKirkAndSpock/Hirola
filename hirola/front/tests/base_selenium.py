@@ -6,7 +6,7 @@ from front.models import (
     Currency, ItemIcon, CountryCode, User,
     Order, OrderStatus, PaymentMethod, ShippingAddress,
     NewsItem, cache, Cart, PhoneBrand, PhoneModel,
-    PhoneModelList, Color
+    PhoneModelList, Color, HotDeal
     )
 
 
@@ -196,6 +196,11 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
         self.iphone_6_s_rose_gold = PhoneModelList.objects.get(
             phone_model=self.iphone_6_s, color=self.color_one
         )
+
+    def create_hotdeal(self):
+        """Create a hot deal."""
+        HotDeal.objects.create(item=self.samsung_note_5_rose_gold)
+        self.hotdeal = HotDeal.objects.get(item=self.samsung_note_5_rose_gold)
 
     def tearDown(self):
         """Remove the test environment."""

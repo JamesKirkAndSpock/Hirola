@@ -6,7 +6,7 @@ from front.models import (
     PhoneCategory, PhoneMemorySize, Currency,
     NewsItem, Color, ItemIcon,
     cache, User, ServicePerson, RepairService, Service,
-    CountryCode, PhoneModelList, PhoneBrand, PhoneModel
+    CountryCode, PhoneModelList, PhoneBrand, PhoneModel, HotDeal
     )
 
 
@@ -208,6 +208,12 @@ class BaseTestCase(TestCase):
             )
         self.service_person_one = ServicePerson.objects.\
             get(first_name="Wanjigi")
+
+    def create_hotdeal(self):
+        """Create a hot deal."""
+        HotDeal.objects.create(item=self.samsung_note_5_rose_gold)
+        self.hotdeal = HotDeal.objects.get(
+            item=self.samsung_note_5_rose_gold)
 
     def tearDown(self):
         cache.clear()
