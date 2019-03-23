@@ -57,8 +57,13 @@ class CartViewsTestCase(BaseTestCase):
         user = User.objects.get(email="winnie@thepooh.com")
         self.winniethepooh.force_login(user)
         response = self.winniethepooh.get("/before_checkout")
-        msg = "Howdy folk!, looks like you havent added anything to the cart!"
-        self.assertContains(response, msg)
+        msg_1 = ("Looks like you haven't added any items to your cart! "
+                 "Visit our")
+        msg_2 = "and find the phone you desire"
+        msg_3 = "tunafurahia sana kukuwezesha kupata teknologia halali"
+        self.assertContains(response, msg_1)
+        self.assertContains(response, msg_2)
+        self.assertContains(response, msg_3)
 
     def test_before_checkout_view_data_rendered(self):
         """
@@ -70,7 +75,7 @@ class CartViewsTestCase(BaseTestCase):
         User.objects.create(email="winnie@thepooh.com")
         user = User.objects.get(email="winnie@thepooh.com")
         Cart.objects.create(phone_model_item=self.samsung_note_5_rose_gold,
-                            quantity=10, owner=user)
+                            quantity=3, owner=user)
         cart = Cart.objects.get(phone_model_item=self.samsung_note_5_rose_gold,
                                 owner=user)
         Cart.objects.create(phone_model_item=self.samsung_note_7_rose_gold,
@@ -80,15 +85,18 @@ class CartViewsTestCase(BaseTestCase):
             phone=self.samsung_note_5_rose_gold, feature="GSM feature")
         response = self.winniethepooh.get("/before_checkout")
         msg = "Howdy folk!, looks like you havent added anything to the cart!"
+        note_7_quantity = "<option value=\"2\" selected>2</option>"
+        note_5_quantity = "<option value=\"3\" selected>3</option>"
         self.assertNotContains(response, msg)
         self.assertContains(response, cart.phone_model_item)
         self.assertContains(response, cart.phone_model_item.size_sku)
-        self.assertContains(response, "Quantity ({})".format(cart.quantity))
         self.assertContains(response, cart.phone_model_item.main_image)
+        self.assertContains(response, note_7_quantity)
+        self.assertContains(response, note_5_quantity)
         self.assertContains(response, "GSM feature")
-        self.assertContains(response, "250,000")
+        self.assertContains(response, "75,000")
         self.assertContains(response, "<span class=\"right\">2</span>")
-        self.assertContains(response, "300,000")
+        self.assertContains(response, "125,000")
 
     def test_before_checkout_anonymous_no_cart(self):
         """
@@ -98,8 +106,13 @@ class CartViewsTestCase(BaseTestCase):
         """
         self.winniethepooh = Client()
         response = self.winniethepooh.get("/before_checkout_anonymous")
-        msg = "Howdy folk!, looks like you havent added anything to the cart!"
-        self.assertContains(response, msg)
+        msg_1 = ("Looks like you haven't added any items to your cart! "
+                 "Visit our")
+        msg_2 = "and find the phone you desire"
+        msg_3 = "tunafurahia sana kukuwezesha kupata teknologia halali"
+        self.assertContains(response, msg_1)
+        self.assertContains(response, msg_2)
+        self.assertContains(response, msg_3)
 
     def test_before_checkout_anonymous_data_rendered(self):
         """
@@ -110,7 +123,7 @@ class CartViewsTestCase(BaseTestCase):
         self.winniethepooh = Client()
         response = self.winniethepooh.get("/before_checkout_anonymous")
         Cart.objects.create(phone_model_item=self.samsung_note_5_rose_gold,
-                            quantity=10,
+                            quantity=3,
                             session_key=self.winniethepooh.session.session_key)
         cart = Cart.objects.get(
             phone_model_item=self.samsung_note_5_rose_gold,
@@ -118,17 +131,20 @@ class CartViewsTestCase(BaseTestCase):
         Cart.objects.create(phone_model_item=self.samsung_note_7_rose_gold,
                             quantity=2,
                             session_key=self.winniethepooh.session.session_key)
+        note_7_quantity = "<option value=\"2\" selected>2</option>"
+        note_5_quantity = "<option value=\"3\" selected>3</option>"
         Feature.objects.create(
             phone=self.samsung_note_5_rose_gold, feature="GSM feature")
         response = self.winniethepooh.get("/before_checkout_anonymous")
+        self.assertContains(response, note_7_quantity)
+        self.assertContains(response, note_5_quantity)
         self.assertContains(response, cart.phone_model_item)
         self.assertContains(response, cart.phone_model_item.size_sku)
-        self.assertContains(response, "Quantity ({})".format(cart.quantity))
         self.assertContains(response, cart.phone_model_item.main_image)
         self.assertContains(response, "GSM feature")
-        self.assertContains(response, "250,000")
+        self.assertContains(response, "75,000")
         self.assertContains(response, "<span class=\"right\">2</span>")
-        self.assertContains(response, "300,000")
+        self.assertContains(response, "125,000")
 
     def test_phone_profile_view_post_logged_in(self):
         """
@@ -212,8 +228,6 @@ class CartViewsTestCase(BaseTestCase):
         after_save_response = self.winniethepooh.post(
             "/before_checkout_anonymous", data)
         self.assertEqual(after_save_response.status_code, 200)
-        # Test the wishlist appearing
-        # self.assertContains(after_save_response, )
 
     def test_remove_cart_before_checkout(self):
         """
@@ -260,5 +274,38 @@ class CartViewsTestCase(BaseTestCase):
         after_save_response = self.winniethepooh.post(
             "/before_checkout", data)
         self.assertEqual(after_save_response.status_code, 200)
-        # Test the wishlist appearing
-        # self.assertContains(after_save_response, )
+
+    def test_change_quantity_before_checkout(self):
+        """
+        Test that if a Post request is made on the before_checkout
+        page with quantity to change
+            - That the price and total price change
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=2, owner=user)
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=2, owner=user)
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_7_rose_gold,
+            quantity=1, owner=user)
+        cart_2 = Cart.objects.get(
+            phone_model_item=self.samsung_note_7_rose_gold,
+            quantity=1, owner=user)
+        response = self.winniethepooh.get("/before_checkout")
+        self.assertContains(response, "Samsung Note 5")
+        self.assertContains(response, "50,000")
+        self.assertContains(response, "75,000")
+        cart_2_data = {"quantity": 2, "cart_id_quantity": cart_2.id}
+        self.winniethepooh.post("/before_checkout", cart_2_data)
+        data = {"quantity": 3, "cart_id_quantity": cart.id}
+        after_save_response = self.winniethepooh.post(
+            "/before_checkout", data)
+        self.assertEqual(after_save_response.status_code, 200)
+        self.assertContains(after_save_response, "75,000")
+        self.assertContains(after_save_response, "125,000")

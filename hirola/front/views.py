@@ -266,7 +266,11 @@ def before_checkout(request):
 
 def before_checkout_context(request):
     (phone_categories, social_media) = various_caches()
-    items = Cart.objects.filter(owner=request.user, is_wishlist=False)
+    items = Cart.objects.filter(
+        owner=request.user, is_wishlist=False
+    ).order_by(
+        'phone_model_item'
+    )
     wishlist = Cart.objects.filter(owner=request.user, is_wishlist=True)
     total = get_cart_total(items)
     context = {
@@ -294,6 +298,10 @@ def cart_operations(request):
         remove_cart_item(request.POST.get("cart_id_remove"))
     if request.POST.get("cart_id_save"):
         save_cart_item(request.POST.get("cart_id_save"))
+    if request.POST.get("cart_id_quantity"):
+        change_quantity(
+            request.POST.get("cart_id_quantity"),
+            request.POST.get("quantity"))
 
 
 def remove_cart_item(cart_id):
@@ -309,10 +317,19 @@ def save_cart_item(cart_id):
         cart.save()
 
 
+def change_quantity(cart_id, quantity):
+    cart = Cart.objects.filter(id=cart_id).first()
+    if cart:
+        cart.quantity = quantity
+        cart.save()
+
+
 def before_checkout_anonymous_context(request):
     (phone_categories, social_media) = various_caches()
     items = Cart.objects.filter(
-        session_key=request.session.session_key, is_wishlist=False)
+        session_key=request.session.session_key, is_wishlist=False).order_by(
+        'phone_model_item'
+    )
     wishlist = Cart.objects.filter(
         session_key=request.session.session_key, is_wishlist=True)
     total = get_cart_total(items)
