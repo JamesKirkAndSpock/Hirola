@@ -96,15 +96,13 @@ class HotDealLinksTestCase(BaseSeleniumTestCase):
         for category in categories:
             self.driver.get('%s%s' % (self.live_server_url, '/'))
             self.driver.find_element_by_id('money').click()
-            self.driver.find_element_by_link_text("{}".format(category)).click()
+            self.driver.find_element_by_link_text("{}".format(
+                category)).click()
             category_pk = PhoneCategory.objects.get(phone_category=category).pk
             self.assertEqual(
                 self.driver.current_url, '%s%s' % (
                     self.live_server_url, '/phone_category/{}/'.format(
-                        category_pk
-                        )
-                    )
-                )
+                        category_pk)))
             category_pk += 1
 
     def tearDown(self):

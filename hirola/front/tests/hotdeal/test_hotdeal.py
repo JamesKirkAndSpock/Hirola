@@ -1,7 +1,6 @@
 """Tests hotdeal backend."""
 import json
 from front.base_test import BaseTestCase
-from front.models import HotDeal
 
 
 class HotDealTestCase(BaseTestCase):
@@ -16,9 +15,8 @@ class HotDealTestCase(BaseTestCase):
         Test that on the hotdeal page
             -   all the data about the hotdeal item has been rendered.
         """
-        hotdeal = HotDeal.objects.get(item=self.samsung_note_5_rose_gold)
         response = self.client.get("/hot_deal/{}/".format(
-            hotdeal.id))
+            self.samsung_note_5_rose_gold.id))
         self.assertContains(response, '25000')
         self.assertContains(response, 'Color: Red')
         self.assertContains(response, 'Size: 16 GB Android')
@@ -43,6 +41,3 @@ class HotDealTestCase(BaseTestCase):
         self.assertEqual(json.loads(response.content)['total_cost'], '50000')
         self.assertEqual(json.loads(response.content)['currency'], 'V$')
 
-    def create_hotdeal(self):
-        """Create a hot deal."""
-        HotDeal.objects.create(item=self.samsung_note_5_rose_gold)
