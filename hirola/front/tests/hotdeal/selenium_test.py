@@ -31,7 +31,7 @@ class HotDealLinksTestCase(BaseSeleniumTestCase):
         self.driver.find_element_by_id('money').click()
         self.assertEqual(self.driver.current_url, '%s%s' %
                          (self.live_server_url, '/hot_deal/{}/'.
-                          format(self.hotdeal.pk)))
+                          format(self.samsung_note_5_rose_gold.pk)))
 
     def test_breadcrumb_phone_category_link(self):
         """
@@ -43,7 +43,7 @@ class HotDealLinksTestCase(BaseSeleniumTestCase):
         self.driver.find_element_by_id('money').click()
         self.assertEqual(self.driver.current_url, '%s%s' %
                          (self.live_server_url, '/hot_deal/{}/'.
-                          format(self.hotdeal.pk)))
+                          format(self.samsung_note_5_rose_gold.pk)))
         self.driver.find_element_by_link_text(str(self.android)).click()
         self.assertEqual(self.driver.current_url, '%s%s' %
                          (self.live_server_url, '/phone_category/{}/'.
@@ -59,7 +59,7 @@ class HotDealLinksTestCase(BaseSeleniumTestCase):
         self.driver.find_element_by_id('money').click()
         self.assertEqual(self.driver.current_url, '%s%s' %
                          (self.live_server_url, '/hot_deal/{}/'.
-                          format(self.hotdeal.pk)))
+                          format(self.samsung_note_5_rose_gold.pk)))
         self.driver.find_element_by_link_text(str(self.samsung_note_5)).click()
         self.assertEqual(self.driver.current_url, '%s%s' %
                          (self.live_server_url, '/profile/{}/'.
