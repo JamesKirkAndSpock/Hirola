@@ -237,6 +237,7 @@ def quantity_change(request):
     return JsonResponse(error)
 
 
+@login_required
 def checkout_view(request):
     """Render the checkout page."""
     (phone_categories, social_media) = various_caches()
@@ -400,6 +401,8 @@ def validate_active_user(request, form, user, email):
     (phone_categories, social_media) = various_caches()
     if form.is_valid() and user is not None:
         login(request, user)
+        if request.GET.get('next'):
+            return redirect(request.GET.get('next'))
         return redirect('/')
     if form.redirect:
         return check_inactive_user(request, email)
