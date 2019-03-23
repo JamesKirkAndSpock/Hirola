@@ -3,6 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/checkout.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
 {% endblock %} {% block content %}
+{% load humanize %}
     <div class="container main-content">
         <div class="row breadcrumbs">
             <nav class="this-black">
@@ -71,6 +72,29 @@
                     <h6><b>2. Review Your Order</b></h6>
                       <br>
                 </div>
+                {% for item in cart %}
+                <div class="row item">
+                        <div class="col m3 center">
+                            <div class="image responsive-img">
+                                <img src="{{ MEDIA_URL }}{{ item.phone_model_item.main_image }}">
+                            </div>
+                        </div>
+                        <div class="col m3 s12">
+                            <p>{{ item.phone_model_item }}</p>
+                            <p>Delivery: 14 days</p>
+                            <form action="#">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="qty" type="number" value="1">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col m6 s12">
+                            <p>Price: {{ item.total_price|intcomma }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
                 <div class="row item">
                     <div class="col m3 center">
                         <div class="image responsive-img">

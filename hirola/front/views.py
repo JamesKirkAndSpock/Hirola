@@ -241,9 +241,11 @@ def quantity_change(request):
 def checkout_view(request):
     """Render the checkout page."""
     (phone_categories, social_media) = various_caches()
+    cart = Cart.objects.filter(owner=request.user, is_wishlist=False)
     return render(request, 'front/checkout.html',
                   {'categories': phone_categories,
-                   'social_media': social_media})
+                   'social_media': social_media,
+                   'cart': cart})
 
 
 def get_cart_total(items):
