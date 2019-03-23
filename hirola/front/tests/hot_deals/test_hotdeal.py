@@ -40,4 +40,3 @@ class HotDealTestCase(BaseTestCase):
         response = self.client.get('/hot_deal_quantity_change', data)
         self.assertEqual(json.loads(response.content)['total_cost'], '50000')
         self.assertEqual(json.loads(response.content)['currency'], 'V$')
-
