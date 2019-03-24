@@ -327,7 +327,9 @@ def change_quantity(cart_id, quantity):
 def before_checkout_anonymous_context(request):
     (phone_categories, social_media) = various_caches()
     items = Cart.objects.filter(
-        session_key=request.session.session_key, is_wishlist=False)
+        session_key=request.session.session_key, is_wishlist=False).order_by(
+        'phone_model_item'
+    )
     wishlist = Cart.objects.filter(
         session_key=request.session.session_key, is_wishlist=True)
     total = get_cart_total(items)
@@ -804,6 +806,8 @@ def repair_and_network_view(request):
 
 
 def hot_deal(request, hot_deal_id):
+    """Render hotdeal page."""
+    (phone_categories, social_media) = various_caches()
     if request.method == "POST":
         return cart_redirect(request)
     phone = PhoneModelList.objects.filter(id=hot_deal_id).first()
@@ -813,7 +817,9 @@ def hot_deal(request, hot_deal_id):
                "image_list": phone.phone_images.all(),
                "features": phone.phone_features.all(),
                "infos": phone.phone_information.all(),
-               "customer_reviews": phone.phone_model.phone_reviews.all()}
+               "customer_reviews": phone.phone_model.phone_reviews.all(),
+               'categories': phone_categories,
+               'social_media': social_media}
     return render(request, 'front/hot_deal.html', context)
 
 

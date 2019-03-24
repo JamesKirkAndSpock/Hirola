@@ -26,12 +26,6 @@ class CartForm(forms.ModelForm):
             return self.user
         return owner
 
-    def clean_quantity(self):
-        quantity = self.cleaned_data['quantity']
-        if self.instance.pk:
-            quantity = self.instance.quantity + self.cleaned_data['quantity']
-        return quantity
-
     def clean_session_key(self):
         session_key = self.cleaned_data['session_key']
         if self.user.is_anonymous and not self.instance.pk:
