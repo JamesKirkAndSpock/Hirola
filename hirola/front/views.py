@@ -240,12 +240,10 @@ def quantity_change(request):
 @login_required
 def checkout_view(request):
     """Render the checkout page."""
-    (phone_categories, social_media) = various_caches()
-    cart = Cart.objects.filter(owner=request.user, is_wishlist=False)
-    return render(request, 'front/checkout.html',
-                  {'categories': phone_categories,
-                   'social_media': social_media,
-                   'cart': cart})
+    if request.method == "POST":
+        cart_operations(request)
+    context = before_checkout_context(request)
+    return render(request, 'front/checkout.html', context)
 
 
 def get_cart_total(items):
