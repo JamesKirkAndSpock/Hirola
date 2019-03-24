@@ -243,6 +243,8 @@ def checkout_view(request):
     if request.method == "POST":
         cart_operations(request)
     context = before_checkout_context(request)
+    if context.get("item_count") == 0:
+        return redirect('/before_checkout')
     return render(request, 'front/checkout.html', context)
 
 
