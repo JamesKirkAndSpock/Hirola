@@ -17,7 +17,7 @@ class HotDealTestCase(BaseTestCase):
         """
         response = self.client.get("/hot_deal/{}/".format(
             self.samsung_note_5_rose_gold.id))
-        self.assertContains(response, '25000')
+        self.assertContains(response, '25,000')
         self.assertContains(response, 'Color: Red')
         self.assertContains(response, 'Size: 16 GB Android')
         img = "<img id=\"main_image_src\" src=\"/media/{}\" />".\
