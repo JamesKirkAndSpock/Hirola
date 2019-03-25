@@ -1,7 +1,6 @@
 """Test the views of checkout page"""
 from front.base_test import BaseTestCase
 from front.models import Cart, User, Feature
-from front.views import get_cart_total
 from django.test import Client
 
 

@@ -13,7 +13,7 @@ class LoginViewTest(BaseTestCase):
             is_change_allowed=False,
             country_code=self.code,
             phone_number=722000000
-            )
+        )
         self.timon = User.objects.get(email="timonpumba@gmail.com")
         self.timon.set_password("secret")
         self.timon.save()
