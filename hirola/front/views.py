@@ -856,21 +856,19 @@ def cart_redirect(request):
 
 def add_cart(request, user):
     cart_items = CartOwner.objects.filter(owner=user)
-    if cart_items:
-        for item in cart_items:
-            cart = Cart.objects.filter(id=item.cart.id).first()
-            if cart:
-                cart.owner = user
-                cart.session_key = None
-                cart.save()
-                item.delete()
+    for item in cart_items:
+        cart = Cart.objects.filter(id=item.cart.id).first()
+        if cart:
+            cart.owner = user
+            cart.session_key = None
+            cart.save()
+            item.delete()
 
 
 def before_add_cart(request, user):
     items = Cart.objects.filter(
         session_key=request.session.session_key, is_wishlist=False)
-    if items:
-        for item in items:
-            form = CartOwnerForm({'owner': user.id, 'cart': item.id})
-            if form.is_valid():
-                form.save()
+    for item in items:
+        form = CartOwnerForm({'owner': user.id, 'cart': item.id})
+        if form.is_valid():
+            form.save()
