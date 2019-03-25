@@ -21,7 +21,7 @@ from front.decorators import (
 from front.models import (
     CountryCode, User, PhoneCategory,
     PhoneMemorySize, SocialMedia, Review, HotDeal,
-    NewsItem, Order, OrderStatus, Cart,
+    NewsItem, Order, CartOwner, Cart,
     ServicePerson, PhoneModelList, PhoneModel
     )
 from front.forms.user_forms import (
@@ -30,7 +30,7 @@ from front.forms.user_forms import (
     EmailAuthenticationForm, resend_email,
     resend_activation_email, ContactUsForm,
     )
-from front.forms.cart_forms import CartForm
+from front.forms.cart_forms import CartForm, CartOwnerForm
 
 
 def page_view(request):
@@ -237,12 +237,15 @@ def quantity_change(request):
     return JsonResponse(error)
 
 
+@login_required
 def checkout_view(request):
     """Render the checkout page."""
-    (phone_categories, social_media) = various_caches()
-    return render(request, 'front/checkout.html',
-                  {'categories': phone_categories,
-                   'social_media': social_media})
+    if request.method == "POST":
+        cart_operations(request)
+    context = before_checkout_context(request)
+    if context.get("item_count") == 0:
+        return redirect('/before_checkout')
+    return render(request, 'front/checkout.html', context)
 
 
 def get_cart_total(items):
@@ -327,7 +330,8 @@ def change_quantity(cart_id, quantity):
 def before_checkout_anonymous_context(request):
     (phone_categories, social_media) = various_caches()
     items = Cart.objects.filter(
-        session_key=request.session.session_key, is_wishlist=False).order_by(
+        session_key=request.session.session_key, is_wishlist=False,
+        owner=None).order_by(
         'phone_model_item'
     )
     wishlist = Cart.objects.filter(
@@ -399,7 +403,11 @@ def validate_active_user(request, form, user, email):
     """
     (phone_categories, social_media) = various_caches()
     if form.is_valid() and user is not None:
+        before_add_cart(request, user)
         login(request, user)
+        add_cart(request, user)
+        if request.GET.get('next'):
+            return redirect(request.GET.get('next'))
         return redirect('/')
     if form.redirect:
         return check_inactive_user(request, email)
@@ -411,6 +419,7 @@ def validate_active_user(request, form, user, email):
 def logout_view(request):
     """Log a user out of the system."""
     logout(request)
+    request.session.create()
     return redirect(get_referer_view(request))
 
 
@@ -843,3 +852,23 @@ def cart_redirect(request):
         cart = form.save(commit=False)
         cart.save()
         return redirect("/before_checkout_anonymous")
+
+
+def add_cart(request, user):
+    cart_items = CartOwner.objects.filter(owner=user)
+    for item in cart_items:
+        cart = Cart.objects.filter(id=item.cart.id).first()
+        if cart:
+            cart.owner = user
+            cart.session_key = None
+            cart.save()
+            item.delete()
+
+
+def before_add_cart(request, user):
+    items = Cart.objects.filter(
+        session_key=request.session.session_key, is_wishlist=False)
+    for item in items:
+        form = CartOwnerForm({'owner': user.id, 'cart': item.id})
+        if form.is_valid():
+            form.save()

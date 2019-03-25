@@ -57,3 +57,16 @@ class LogoutViewTest(BaseTestCase):
         self.flinstones.post("/logout")
         after_logout_response = self.flinstones.get("/")
         self.assertNotContains(after_logout_response, 'flinstones')
+
+    def test_logout_creates_session_key(self):
+        """
+        Test that logging out creates a session key
+        """
+        after_login_response = self.flinstones.get("/")
+        self.assertTrue(after_login_response.context["user"].is_authenticated)
+        self.assertTrue(self.flinstones.session.session_key)
+        self.flinstones.post("/logout")
+        after_logout_response = self.flinstones.get("/")
+        self.assertFalse(
+            after_logout_response.context["user"].is_authenticated)
+        self.assertTrue(self.flinstones.session.session_key)

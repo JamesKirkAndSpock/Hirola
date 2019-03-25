@@ -1,5 +1,5 @@
 from front.forms.base_form import forms
-from front.models import Cart
+from front.models import Cart, CartOwner
 
 
 class CartForm(forms.ModelForm):
@@ -35,3 +35,27 @@ class CartForm(forms.ModelForm):
     def clean_is_wishlist(self):
         is_wishlist = self.cleaned_data['is_wishlist']
         return is_wishlist
+
+
+class CartOwnerForm(forms.ModelForm):
+    """
+    A form to collect temporary cart and owner information
+    """
+
+    class Meta:
+        """
+        This class attaches the model and fields to the CartOwnerForm
+        """
+        model = CartOwner
+        fields = ('cart', 'owner')
+
+    def clean(self):
+        data = self.cleaned_data
+        cart = self.cleaned_data['cart']
+        owner = self.cleaned_data['owner']
+        existent_cart = CartOwner.objects.filter(
+            cart=cart, owner=owner).first()
+        if existent_cart:
+            self.add_error(None, "Relation already exists")
+            return None
+        return data

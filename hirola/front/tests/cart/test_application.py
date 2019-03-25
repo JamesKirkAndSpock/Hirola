@@ -1,7 +1,9 @@
 """Test the views of a cart"""
 from front.base_test import BaseTestCase
-from front.models import Cart
-from front.views import remove_cart_item, save_cart_item, change_quantity
+from front.models import Cart, User, CartOwner
+from front.views import (remove_cart_item, save_cart_item, change_quantity,
+                         add_cart, before_add_cart)
+from django.test import Client
 
 
 class CartViewsTestCase(BaseTestCase):
@@ -65,3 +67,54 @@ class CartViewsTestCase(BaseTestCase):
             phone_model_item=self.samsung_note_7_rose_gold
         )
         self.assertEqual(cart_2_quantity.quantity, 2)
+
+    def test_add_cart(self):
+        """
+        Test that when a Cart for an anonymous user with a session_key is
+        created then a request with the session_key, and a user is passed to
+        the add_cart method:
+            - That the cart owner is changed from None to the user passed to
+            the method
+            - That the session key is set to None.
+            - That the CartOwner object is deleted.
+        """
+        self.winniethepooh = Client()
+        Cart.objects.create(phone_model_item=self.samsung_note_5_rose_gold,
+                            quantity=3,
+                            session_key=self.winniethepooh.session.session_key)
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            session_key=self.winniethepooh.session.session_key)
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        before_add_cart(self.winniethepooh, user)
+        self.assertEqual(cart.owner, None)
+        self.assertEqual(
+            cart.session_key, self.winniethepooh.session.session_key)
+        cart_owner = CartOwner.objects.filter(owner=user, cart=cart).first()
+        self.assertTrue(cart_owner)
+        add_cart(self.winniethepooh, user)
+        after_cart = Cart.objects.get(id=cart.id)
+        self.assertEqual(after_cart.owner, user)
+        self.assertEqual(after_cart.session_key, None)
+        cart_owner = CartOwner.objects.filter(owner=user, cart=cart).first()
+        self.assertFalse(cart_owner)
+
+    def test_before_add_cart(self):
+        """
+        Test that the before_add_cart method creates a cart_owner object
+        """
+        self.winniethepooh = Client()
+        Cart.objects.create(phone_model_item=self.samsung_note_5_rose_gold,
+                            quantity=3,
+                            session_key=self.winniethepooh.session.session_key)
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            session_key=self.winniethepooh.session.session_key)
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        before_add_cart(self.winniethepooh, user)
+        cart_owner = CartOwner.objects.filter(owner=user, cart=cart).first()
+        self.assertTrue(cart_owner)
+        self.assertEqual(cart_owner.owner, user)
+        self.assertEqual(cart_owner.cart, cart)
