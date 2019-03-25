@@ -14,35 +14,42 @@
                 </div>
             </nav>
         </div>
-        <h4 class="center">kalapa checkout</h4>
+        <h5 class="center">{teke}<sup>2</sup> checkout</h5>
         <div class="row">
             <div class="col m7 goods">
+              <div class="row payment">
+                  <h6><b></b></h6>
+                  <div class="row">
+                      <div class="col s12">
+                          <p>At {teke}<sup>2</sup>, we work on a pay on delivery system. You will only pay once we have delivered your ordered item to you, or
+                            when you pick it up at our office. Shipping takes about 1 to 3 weeks.
+                          </p>
+                      </div>
+                  </div>
+              </div>
                 <div class="row shipping">
-                    <h6><b>1. Shipping</b></h6>
-                      <br>
+                    <h6><b>1. Delivery Options</b></h6>
+                      <p>Please select how you would like to receive your ordered item(s)</p>
                     <form action="#">
                         <div class="col s12">
                           <label for="pickup">
                         <input class="with-gap" name="group1" type="radio" id="pickup"/>
-                        <span>Pick up at Nairobi office</span>
+                        <span>Pick up at our office: 1234 Kiambu (Kiambu-Nairobi Road next to Thindigua Realtors)</span>
                         </label>
                         </div>
                         <div class="col s12">
                         <label for="delivery">
                         <input class="with-gap" name="group1" type="radio" id="delivery" />
-                        <span>Request delivery (only within Nairobi)</span>
+                        <span>Request delivery (only within Nairobi area)</span>
                       </label>
                         </div>
                     </form>
                 </div>
                 <div class="row payment">
-                    <h6><b>2. Payment</b></h6>
+                    <!-- <h6><b>2. Payment</b></h6> -->
                     <div class="row">
                         <div class="col s12">
-                            <p>At kalapa, we work on a pay and delivery system. You will only pay once we have delivered your order to you, or
-                              when you pick it up at our office. Shipping takes about 1 to 3 weeks.<br>
-                              Please fill in the form below so we can update you on delivery details
-                            </p>
+                            <p>Please fill in the form below so we can know where to delivery your order to (be as specific as possible)</p>
                         </div>
                     </div>
                     <form action="#" class="payment-form">
@@ -55,13 +62,13 @@
                         <div class="row">
                             <div class="input-field col s12">
                                 <input id="town" type="text" class="validate" required>
-                                <label for="town">Town</label>
+                                <label for="town">Town/Street/Apartment Number</label>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="row" style="margin-top: 30px">
-                    <h6><b>3. Review Item and Shipping</b></h6>
+                    <h6><b>2. Review Your Order</b></h6>
                       <br>
                 </div>
                 <div class="row item">
@@ -91,20 +98,22 @@
             <div class="col m1"></div>
             <div class="col m4 confirmation">
                 <div class="row">
-                    <div class="col s6"><p>Item(1)</p></div>
-                    <div class="col s6"><p>Kshs 67 000</p></div>
+                    <div class="col s6"><p></p></div>
+                    <div class="col s6"><p></p></div>
                 </div>
                 <div class="row">
-                    <div class="col s6">Order Total</div>
-                    <div class="col s6">Ksh 67 000</div>
+                    <div class="col s6"><p><b>Order Total:</b></p></div>
+                    <div class="col s6"><p class="green-text"><b>Ksh 67000</b></p></div>
                 </div>
+                <hr>
                 <div class="row">
                     <div class="col s12">
                       <p></p>
-                        <button class="btn waves-effect waves-light btg  green" type="submit" name="action">Confirm and Order</button>
-                        <p class="confirmation-text">By clicking Confirm and Order, you agree to pay the full price of this item once its delivered</p>
+                        <button class="btn waves-effect waves-light btg  green" type="submit" name="action">Place Order</button>
                     </div>
+
                 </div>
+                <p class="confirmation-text">By clicking Place Order, you agree to pay the full price of this item once its delivered</p>
             </div>
         </div>
     </div>
