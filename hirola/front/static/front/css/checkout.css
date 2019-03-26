@@ -14,6 +14,7 @@
 
 .payment {
     margin-top: 30px;
+    display: none;
 }
 
 .payment form {
