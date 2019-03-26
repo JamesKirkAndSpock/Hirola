@@ -8,9 +8,9 @@
 <div class="container main-content">
     <div class="row cart-content">
         {% if items %}
+        <div class="row heading-right"><h5>My Cart</h5></div>
         {% for item in items %}
         <div class="col s12 m8 l8 right-content">
-                <div class="row heading-right"><h5>{teke}<sup>2</sup> hot deal</h5></div>
                 <div class="row">
                     <div class="col s6 m4">
                         <div class="card z-depth-0 center">
@@ -56,32 +56,34 @@
                     </div>
                 </div>
             </div>
-            <div class="cols12 m4 l4 left-content">
-                <div class="row">
-                    <div class="col s12">
 
-                        <p><b>Quantity:</b><span class="right">{{ item_count }}</span></p>
-                        <p><b>Shipping:</b></i> <span class="right">Free</span></p>
-                        <hr>
-                        {% if cart_total %}
-                            <h6 class="green-text"><b>Total:<span class="right">{{ cart_total|intcomma }}</span></b></h6>
-                        {% else %}
-                        <h6 class="green-text"><b>Total:<span class="right">0</span></b></h6>
-                        {% endif %}
-                        <a href="{% url 'front:checkout' %}">
-                            <button class="btn green" id="add-to-cart-button">Go to Checkout</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
         {% endfor %}
+
         {% else %}
-            <div class="col s12">
+            <div class="col s8">
                 <h6>Looks like you haven't added any items to your cart! Visit our <span><a href="/" class="green-text">home page</a> </span> and find the phone you desire<h6>
                 <sup>Hapa {teke}<sup>2</sup> tunafurahia sana kukuwezesha kupata teknologia halali</sup>
             </div>
         {% endif %}
-
+        <div class="s12 m4 l4 left-content">
+                <div class="row">
+                    <div class="col s12">
+                        <div id="itemCheckout">
+                            <p><b>Quantity:</b><span class="right">{{ item_count }}</span></p>
+                            <p><b>Shipping:</b></i> <span class="right">Free</span></p>
+                            <hr>
+                            {% if cart_total %}
+                                <h6 class="green-text"><b>Total:<span class="right">{{ cart_total|intcomma }}</span></b></h6>
+                            {% else %}
+                            <h6 class="green-text"><b>Total:<span class="right">0</span></b></h6>
+                            {% endif %}
+                            <a href="{% url 'front:checkout' %}">
+                                <button class="btn green" id="add-to-cart-button">Go to Checkout</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 </div>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}

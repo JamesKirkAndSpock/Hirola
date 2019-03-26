@@ -12,6 +12,7 @@
                 <div class="nav-wrapper">
                     <div class="col s12">
                         <a href="/" class="breadcrumb">teke</a>
+                        <a href="/before_checkout" class="breadcrumb">My Cart</a>
                         <a href="#!" class="breadcrumb" id="last-link">Checkout</a>
                     </div>
                 </div>
@@ -33,7 +34,7 @@
                 <div class="row shipping">
                     <h6><b>1. Delivery Options</b></h6>
                       <p>Please select how you would like to receive your ordered item(s)</p>
-                    <form action="#">
+                    <form action="#" id="shippingMethod">
                         <div class="col s12">
                           <label for="pickup">
                         <input class="with-gap" name="group1" type="radio" id="pickup"/>
@@ -108,7 +109,7 @@
                                 </form>
                             </div>
                             <p>Total Price: {{ item.total_price|intcomma }}</p>
-    
+
                             <form method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="cart_id_remove" value="{{ item.id }}"/>
@@ -147,5 +148,6 @@
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %} {{ block.super }} {% load static %}
 <script src="{% static 'front/js/material_init.js' %}"></script>
+<script src="{% static 'front/js/checkout.js' %}"></script>
 {% endblock %}
 {% endblock %}
