@@ -1,0 +1,334 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/dashboard.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
+<div class="main-content">
+    {% load stars_counter %}
+<div class="container content">
+        <div class="row breadcrumbs">
+            <nav class="this-black">
+                <div class="nav-wrapper">
+                    <div class="col s12">
+                        <a href="/" class="breadcrumb">teke</a>
+                        <a href="/dashboard" class="breadcrumb" id="last-link">Dashboard</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s4">
+                    <a  class="active black-text" href="#login">Login & Security</a>
+                </li>
+                <li class="tab col s4">
+                    <a class="black-text" href="#orders">My Orders</a>
+                </li>
+                <li class="tab col s4">
+                    <a class="black-text" href="#reviews">My Reviews & Ratings</a>
+                </li>
+            </ul>
+        </div>
+        <div id="login" class="col s12 tab-content">
+            <div class="row">
+                <div class="col m3"></div>
+                <div class="col s12 m6">
+                    <div class="row field-row">
+                        <form class="col s12" method="post">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class="row" id="firstname-output">
+                                <p><b>First Name</b></p>
+                                <p>
+                                    {{ user.first_name }}
+                                    <span class="right">
+                                        <a href="#" onclick="editName('firstname-input', 'firstname-output');">
+                                            <i class="material-icons right">edit</i>
+                                        </a>
+                                    </span>
+                                </p>
+                                {% if form.first_name.errors %}
+                                  {% for error in form.first_name.errors %}
+                                    <li><strong>{{ error|escape }}</strong></li>
+                                  {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="row hidden-input" id="firstname-input">
+                                <div class="input-field col m6 s12">
+                                    {{ form.first_name }}
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">save
+                                        <i class="material-icons right">save</i>
+                                    </button>
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="button" onclick="editName('firstname-output', 'firstname-input');">cancel
+                                        <i class="material-icons right">cancel</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row field-row">
+                        <form class="col s12" method="post">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class="row" id="lastname-output">
+                                <p><b>Last Name</b></p>
+                                <p>
+                                    {{ user.last_name }}
+                                    <span class="right">
+                                        <a href="#" onclick="editName('lastname-input', 'lastname-output');">
+                                            <i class="material-icons right">edit</i>
+                                        </a>
+                                    </span>
+                                </p>
+                                {% if form.last_name.errors %}
+                                    {% for error in form.last_name.errors %}
+                                    <li><strong>{{ error|escape }}</strong></li>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="row hidden-input" id="lastname-input">
+                                <div class="input-field col m6 s12">
+                                    {{ form.last_name }}
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">save
+                                        <i class="material-icons right">save</i>
+                                    </button>
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="button" onclick="editName('lastname-output', 'lastname-input');">cancel
+                                        <i class="material-icons right">cancel</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row field-row">
+                        <form class="col s12" method="post">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class="row" id="countrycode-output">
+                                <p><b>Country Code</b></p>
+                                {{ user.country_code }}
+                                <span class="right">
+                                    <a href="#" onclick="editName('countrycode-input', 'countrycode-output');">
+                                        <i class="material-icons right">edit</i>
+                                    </a>
+                                </span>
+                                    {% if form.country_code.errors %}
+                                        {% for error in form.country_code.errors %}
+                                        <li><strong>{{ error|escape }}</strong></li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="row hidden-input" id="countrycode-input">
+                                    <div class="input-field col m6 s12">
+                                        {{ form.country_code }}
+                                    </div>
+                                    <div class="input-field col m3 s6">
+                                        <button class="btn waves-effect waves-light" type="submit" name="action">save
+                                            <i class="material-icons right">save</i>
+                                        </button>
+                                    </div>
+                                    <div class="input-field col m3 s6">
+                                        <button class="btn waves-effect waves-light" type="button" onclick="editName('countrycode-output', 'countrycode-input');">cancel
+                                            <i class="material-icons right">cancel</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    <div class="row field-row">
+                        <form class="col s12" method="post">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class="row" id="tel-output">
+                                <p><b>Phone Number</b></p>
+                                <p>
+                                    {{ user.phone_number}}
+                                    <span class="right">
+                                        <a href="#" onclick="editName('tel-input', 'tel-output');">
+                                            <i class="material-icons right">edit</i>
+                                        </a>
+                                    </span>
+                                    {% if form.phone_number.errors %}
+                                        {% for error in form.phone_number.errors %}
+                                        <li><strong>{{ error|escape }}</strong></li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="row hidden-input" id="tel-input">
+                                <div class="input-field col m6 s12">
+                                    {{ form.phone_number }}
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">save
+                                        <i class="material-icons right">save</i>
+                                    </button>
+                                </div>
+                                <div class="input-field col m3 s6">
+                                    <button class="btn waves-effect waves-light" type="button" onclick="editName('tel-output', 'tel-input');">cancel
+                                        <i class="material-icons right">cancel</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row field-row">
+                        <form class="col s12" action="/dashboard">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class="row" id="mail-output">
+                                <p>
+                                    <b>Email</b>
+                                </p>
+                                <p>
+                                    {{ user.email }}
+                                    <span class="right">
+                                        <a href="/confirm_user">
+                                            <i class="material-icons right">edit</i>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="row">
+                                {% if user.change_email %}
+                                <p>
+                                    <span id="changeEmail">
+                                        <span class="grey-text">
+                                            {{ user.change_email }}
+                                        </span>
+                                        <span>
+                                        <i class="fas fa-info-circle red-text tooltipped" data-position="top" data-tooltip="To activate this email, you need to click on the activation link that was sent on this email address. In
+                                                case you cannot find it in your inbox, check your spam folder. If the email has not been sent, click on the resend button.
+                                                Otherwise, this email will be deleted if not activated in the next 72 hours.">
+                                        </i>
+                                        <a href="/resend_new_email_activation_link/" class="green-text right">Resend link</a>
+                                    </span>
+                                </p>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row field-row">
+                        <form class="col s12" action="/dashboard">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class="row" id="pass-output">
+                                <p>
+                                    <b>Password</b>
+                                </p>
+                                <p>
+                                    {{ form.password }}
+                                    <span class="right">
+                                        <a href="/old_password">
+                                            <i class="material-icons right">edit</i>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col m3"></div>
+            </div>
+        </div>
+        <div id="orders" class="col s12 tab-content">
+                <div class="row tab-heading">
+                    <h5>MY ORDERS</h5>
+                </div>
+                {% for order in orders %}
+                <div id="order" class="row">
+                    <div class="row order-row">
+                        <div class="col m6 s6">
+                            <div class="row">
+                                <div class="col s6">
+                                    <p>
+                                        <b>{{ order.phone.phone_model }}</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col m6 s6">
+                            <div class="row">
+                                <button id="order-details-button" value="{{ order.pk }}" onclick="openDisplay(this.value)" class="green-text waves-effect waves-teal btn-flat">Order Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row details-row" id="details-{{order.pk}}">
+                        <div class="col m4 s12">
+                            <p><b>Order No.</b><span> #{{ order.pk }}</span></p>
+                            <p><b>Payment Method</b><span> {{ order.payment_method }}</span></p>
+                            <p><b>Quantity</b><span> {{ order.quantity }}</span></p>
+                            <p><b>Total Price</b><span> {{ order.total_price }}</span></p>
+                            <p><b>Current Status </b><span id="current-date"></span><span> {{ order.status }}</span>
+                            <p><b>Purchase Date </b><span> {{ order.date }}</span>
+                        </div>
+                        <div class="col m4 s12">
+                            <p>
+                                <b>Shipping Address</b>
+                            </p>
+                            <ul>
+                                <li>Recepient: {% if order.get_address.recepient %}{{ order.get_address.recepient }}{% else %}{{ order.owner }}
+                                               {% endif %}
+                                </li>
+                                <li>Pick up: {{ order.get_address.pickup }}</li>
+                                <li>Location: {{ order.get_address.location }}</li>
+                            </ul>
+
+                        </div>
+                        <div class="col m4 s12 center">
+                            <p>
+                                <b>Item</b>
+                            </p>
+                            <div class="img">
+                                <img src="{{ MEDIA_URL }}{{ order.phone.main_image }}" height="200" width="200">
+                            </div>
+                        </div>
+                    </div>
+            </div>
+                {% endfor %}
+        </div>
+        <div id="reviews" class="col s12 tab-content">
+            <div class="row reviews">
+                <ul class="collection">
+                    <li class="collection-header">
+                        <h5>My Reviews</h5>
+                    </li>
+                    {% for review in reviews %}
+                        <li class="collection-item avatar">
+                            <img src="{% static 'front/run.png' %}" alt="User 1" class="circle">
+                            {% for star in review.stars|checked_star_range %}
+                            <i class="material-icons left checked">grade</i>
+                            {% endfor %}
+                            {% for star in review.stars|unchecked_star_range %}
+                            <i class="material-icons left">grade</i>
+                            {% endfor %}
+                            <a class="right" href="#"><p>{{ review.orders }}</p></a>
+                            <br>
+                            <br>
+                            <p>{{ review.comments }} </p>
+                        </li>
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+        var success_messages = []
+        {% if messages %}
+            {% for message in messages %}
+            success_messages.push('{{ message|safe }}');
+            {% endfor %}
+        {% endif %}
+    </script>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %} {% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script>
+<script src="{% static 'front/js/dashboard.js' %}"></script>
+{% endblock %} {% endblock %}

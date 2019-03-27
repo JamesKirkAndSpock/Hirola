@@ -1,0 +1,57 @@
+.main-content {
+    margin-top: 100px;
+    flex: 1 0 auto;
+}
+
+.error p {
+    color: red;
+    font-size: 120%;
+    font-weight: bold;
+}
+
+.hot-deals {
+    margin-top: 50px !important;
+}
+
+.card {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+.card:hover {
+    box-shadow: 0px 0px 4px 2px #E8E8E8;
+}
+
+.card-content img {
+    padding-bottom: 20px;
+}
+
+.card-content {
+    padding-bottom: 0 !important;
+}
+
+.card-action {
+    margin-bottom: 0 !important;
+    border-top: none !important;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+}
+
+.card-action a {
+    margin: 0 !important;
+    text-transform: capitalize !important;
+    color: black !important;
+    font-style: bold !important;
+}
+
+.card-title-text {
+    font-size: 125%;
+}
+
+@media only screen and (max-width: 767px) {
+
+}

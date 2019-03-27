@@ -1,0 +1,63 @@
+{% extends "front/base.html" %}
+{% block styles %}
+{{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/base_grid.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="main-content">
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h5><b>Please confirm your email address</b></h5>
+                <p>We have sent a link to <b>{{ user_email }}</b><br>
+                   Please open your email and click on the link to continue with your registration</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+
+                {% if provider == 'gmail' %}
+                    <a href="https://mail.google.com/" target="_blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% elif provider == 'yahoo' %}
+                    <a href="https://overview.mail.yahoo.com/" target="_blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% elif provider == 'outlook' %}
+                    <a href="https://outlook.live.com/owa/" target=" _blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% elif provider == 'inbox' %}
+                    <a href="http://www.inbox.com/" target=" _blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% elif provider == 'icloud' %}
+                    <a href="https://www.icloud.com/" target=" _blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% else %}
+                    <a href="https://www.google.com/" target=" _blank">
+                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <h6>Didn't recieve our email?</h6>
+                <ol>
+                    <li>Check your spam folder</li>
+                    <li>Resend the activation email to <b>{{ user_email }} </b><a href="/resend_activation_link/{{ user_email }}"
+                            class="green-text">resend now</a></li>
+                    <li>Change to another email address <a href="/change_activation_email/{{ user_email }}" class="green-text">change now</a> </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}

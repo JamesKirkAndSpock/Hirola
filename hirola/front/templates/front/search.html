@@ -1,0 +1,54 @@
+{% extends "front/base.html" %}{% block styles %}{{ block.super }}{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/search.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="main-content">
+<div class="container">
+{% if instructions %}
+<p>
+  Add something to the search bar to search for your items.
+</p>
+{% else %}
+  {% if results %}
+  <div class="row hot-deals">
+    <div class="row deals-row">
+      {% for result in results %}
+      <div class="col m3 s12 hot-img">
+          <div class="row">
+            <div class="col s12 m12">
+              <div class="card">
+                <div class="card-content center">
+                  <a href="/profile/{{ result.pk }}/" ><img class="responsive-img" src="{{ MEDIA_URL }}{{ result.main_image }}"></a><br>
+                  <span class="card-title-text"><b>{{ result.phone_model }}</b></span>
+                </div>
+                <div class="card-action">
+                      <a href="/profile/{{ result.pk }}/">
+                      <p><i id="quality-icon" class="fab fa-{{ result.icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ result.currency }} {{ result.price}}</b></span></p>
+                      </a>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+  <div class="error">
+    <p>
+      Oops! we did not find what you are looking for.
+    </p>
+  </div>
+  {% endif %}
+{% endif %}
+</div>
+</div>
+</div>
+{% block footer %}
+{% include 'front/footer.html' %}
+{% endblock %}
+{% block scripts %}
+{{ block.super }}
+{% load static %}
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+{% endblock %}
+{% endblock %}

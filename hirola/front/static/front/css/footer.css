@@ -1,0 +1,39 @@
+.footer {
+    margin-top: 50px;
+    background-color: #E5E5E8;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+/*–––––––––––––––dragz css––––––––––––––––*/
+
+a {
+    color: inherit;
+    font-style: bold;
+    color: black !important;
+}
+
+#footer-container a:hover {
+    text-decoration: underline;
+    /*color: #C0C0C0;*/
+
+}
+
+#footer-container a:active {
+    text-decoration: none;
+    color: green;
+
+}
+
+.copyright {
+    color: black;
+    font-size: 10px;
+    padding-top: 10px;
+
+}
+
+ul {
+  font-size: 13px;
+}
+
+/*–––––––––––––––dragz css––––––––––––––––*/

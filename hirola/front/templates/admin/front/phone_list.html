@@ -1,0 +1,24 @@
+{% extends "admin/change_form.html" %}
+{% block after_related_objects %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+$(document).ready(selector);
+$('#id_category').change(selector);
+function selector() {
+    $.getJSON("/sizes", {id: $('#id_category').val(), view: 'json'}, function(j) {
+        var options = '<option value="">--------&nbsp;</option>';
+        for (var i in j["data"]) {
+          if ( j["size_id"] == i ) {
+            options += '<option value="' + i + '" selected>' + j["data"][i] + '</option>';
+          }
+          else {
+          options += '<option value="' + i + '">' + j["data"][i] + '</option>';
+          }
+        }
+        $("#id_size_sku").html(options);
+    })
+  $("#id_category").attr('selected', 'selected');
+}
+  </script>
+{% endblock %}
+

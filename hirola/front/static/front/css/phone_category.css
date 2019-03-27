@@ -1,0 +1,29 @@
+.main-container {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+.content {
+    margin-top: 50px;
+    flex-grow: 1.2;
+}
+
+.isDisabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+}
+
+.images {
+    padding-top: 50px;
+}
+
+.image {
+    height: 100px;
+    width: 80px;
+}
+
+.container {
+    flex-shrink: 5;
+}

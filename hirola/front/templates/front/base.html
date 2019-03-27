@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> {% block styles %}
+    <!-- Materialize css -->
+    {% load static %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'front/css/base.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'front/css/footer.css' %}" /> {% endblock %}
+    <!-- Application Title -->
+    <title>{% block title %}Hirola!{% endblock %}</title>
+    <!-- Load Static for Images and CSS -->
+</head>
+
+<body id="body">
+    <header>
+        <div class="row navigation white ">
+            <div class="navbar-fixed">
+                <nav class="nav-extended white">
+                    <div class="container">
+                        <div class="nav-wrapper black-text">
+                            <div class="row">
+                                <div class="col m2 s12">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <a href="/" id="base-main-page">teke</a>
+                                        </div>
+                                        <div class="col s6">
+                                            <a href="#" data-target="mobile-demo" class="sidenav-trigger right hide-on-med-and-up"><i
+                                                    class="material-icons">menu</i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col m8 s12 search-bar">
+                                    <form method="POST" action="/search">
+                                        {% csrf_token %}
+                                        <div class="input-field">
+                                            <input id="search" name="search-name" type="search" required placeholder="Search for android, iphones, tablets or more...">
+                                              <label class="label-icon active" for="search">
+                                                    <i class="material-icons green-text">search</i>
+                                              </label>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col m2 hide-on-small-only">
+                                    <div class="right">
+                                        <ul id="dropdown1" class="dropdown-content">
+                                            <li><a href="/dashboard">My Profile</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/before_checkout">My Cart</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/help">FAQs</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/logout">Sign Out</a></li>
+                                        </ul>
+                                        {% if user.is_authenticated %}
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-trigger" href="#!" data-target="dropdown1">
+                                                        <span id="dropdown">Hi, {{ user.first_name|truncatechars:15 }}</span>
+                                                        <i class="material-icons right">arrow_drop_down</i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                            {% else %}
+                                            <ul id="dropdown2" class="dropdown-content">
+                                                <li><a href="/dashboard">Login</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="/dashboard">My Profile</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="/before_checkout_anonymous">My Cart</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="/help">FAQs</a></li>
+                                            </ul>
+                                            <ul>
+                                                <li>
+                                                    <a class="dropdown-trigger" href="#!" data-target="dropdown2">
+                                                        <span id="dropdown">My Teke</span>
+                                                        <i class="material-icons right">arrow_drop_down</i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-content">
+                            <div class="row">
+                                <div class="col m8 push-m2 center">
+                                    <div class="row">
+                                        <ul class="hide-on-small-only categories">
+                                            {% for category in categories %}
+                                            <div class="col m3 right">
+                                                <li class="a-divider">
+                                                    <a href="/phone_category/{{category.id}}" id="{{ category.phone_category}}">{{ category.phone_category }}</a>
+                                                </li>
+                                            </div>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </nav>
+            </div>
+            <ul class="sidenav" id="mobile-demo">
+
+                {% if user.is_authenticated %}
+                        <li>
+                            <a href="/dashboard" id="dropdown">My Profile</a>
+                        </li>
+                        <li>
+                            <a href="/news">My Cart</a>
+                        </li>
+                        <li>
+                            <a href="/help">FAQs</a>
+                        </li>
+                        <li>
+                            <div class="divider"></div>
+                        </li>
+                        <li>
+                            <a href="/logout">Sign Out</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="/dashboard" id="dropdown">Login</a>
+                        </li>
+                        <li>
+                            <a href="#">My Cart</a>
+                        </li>
+                        <li>
+                            <div class="divider"></div>
+                        </li>
+                        <li>
+                            <a href="/help">FAQs</a>
+                        </li>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+    {% block content %}
+    {% block scripts %}
+    <!-- scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{% static 'front/js/material_init.js' %}"></script>
+    <script src="{% static 'front/js/base.js' %}"></script>
+    {% endblock %}
+    {% endblock %}
+</body>
+
+</html>

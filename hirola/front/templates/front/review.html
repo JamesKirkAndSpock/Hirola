@@ -1,0 +1,106 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/review.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %} {% block content %}
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="#!" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb">iPhone 6</a>
+                    <a href="#!" class="breadcrumb" id="last-link">review</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row content">
+        <div class="row">
+            <h6><b>Create a review</b></h6>
+            <p>
+                <i class="material-icons green-text">android</i> <span>Kabambe ile noma initwa iphone 6</span>
+            </p>
+        </div>
+        <div class="row">
+            <p><b>Overall rating</b></p>
+            <div class="rated-stars">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+            </div>
+        </div>
+        <div class="row user-review">
+            <!-- <div class="row"> -->
+                <p><b>Add a photo</b><br>
+                Shoppers find images more helpful than text alone</p>
+            <!-- </div> -->
+            <div class="row"></div>
+            <form action="#">
+                <div class="row">
+                    <div class="file-field input-field">
+                        <div class="btn white z-depth-0">
+                            <input type="file">
+                            <i class="material-icons green-text">add_a_photo</i>
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Image.....">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h6><b>Rate this item</b></h6>
+                    <div class="row">
+                        <div class='rating-stars text-center'>
+                            <ul id='stars'>
+                                <li class='star' title='Poor' data-value='1'>
+                                    <i class='fa fa-star fa-fw'></i>
+                                </li>
+                                <li class='star' title='Fair' data-value='2'>
+                                    <i class='fa fa-star fa-fw'></i>
+                                </li>
+                                <li class='star' title='Good' data-value='3'>
+                                    <i class='fa fa-star fa-fw'></i>
+                                </li>
+                                <li class='star' title='Excellent' data-value='4'>
+                                    <i class='fa fa-star fa-fw'></i>
+                                </li>
+                                <li class='star' title='WOW!!!' data-value='5'>
+                                    <i class='fa fa-star fa-fw'></i>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="success-box">
+                            <div class='text-message'>Your ratings</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h6><b>Write Your Review</b></h6>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="textarea1" class="materialize-textarea"></textarea>
+                            <label for="textarea1">your review</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row btn-group right">
+                    <div class="col s6">
+                        <button class="btn waves-effect waves-light green" type="submit" name="action">Submit</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/rate.js' %}"></script>
+{% endblock %}
+{% endblock %}

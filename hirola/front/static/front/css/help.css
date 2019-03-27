@@ -1,0 +1,89 @@
+.main-content {
+    margin-top: 100px;
+    flex: 1 0 auto;
+}
+
+.content {
+    padding: 20px;
+}
+
+
+.collapsible-header.active i {
+    -ms-transform: rotate(90deg);
+    /* IE 9 */
+    -webkit-transform: rotate(90deg);
+    /* Chrome, Safari, Opera */
+    transform: rotate(90deg);
+}
+
+.collapsible {
+    border: none;
+    padding: 0;
+}
+
+.collapsible-header {
+  margin-left: 0!important;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  padding: 0!important;
+  border: 0!important;
+  font-size: 16px;
+
+}
+
+.collapsible-body {
+  font-size: 15px;
+  margin-left: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.btn {
+    margin-top: 10px;
+    background: #4caf50;
+}
+
+.collapsible i {
+    /* font-weight: bold; */
+}
+
+/* label focus color */
+
+.input-field input[type=text]:focus+label,
+.materialize-textarea:focus:not([readonly])+label {
+    color: #4caf50 !important;
+}
+
+/* label underline focus color */
+
+.input-field input[type=text]:focus,
+.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #4caf50 !important;
+    box-shadow: 0 1px 0 0 #4caf50 !important;
+}
+
+hr {
+  border: 0; height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.help-links {
+  text-decoration: underline;
+  text-decoration-color: green;
+}
+
+p {
+  font-size: 16px;
+
+}
+
+ul.errorlist li{
+  font-weight: 600 !important;
+  color: red !important;
+  float: left;
+}
+
+.error {
+  padding-left: 10px !important;
+}

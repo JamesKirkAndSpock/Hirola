@@ -1,0 +1,11 @@
+{% extends "front/base.html" %}
+{% block styles %}
+{{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %}
+{% block content %}
+<p>The activation link is invalid!</p>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}

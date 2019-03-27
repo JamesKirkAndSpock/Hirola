@@ -1,0 +1,97 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/login.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %} {% block content %}
+
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="/" class="breadcrumb">teke</a>
+                    <a href="#!" class="breadcrumb" id="last-link">login</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col m3"></div>
+        <div class="col m6 s12">
+            <div class="center">
+                <h4>teke</h4>
+            </div>
+            <div class="row content">
+                <form class="col s12" method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+                            {{ form.email }}
+                            <span class="helper-text right" data-error="Phone number format is incorrect" data-success="OK!">Number format should be +254*********</span>
+
+                        </div>
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 pass">
+                            <i class="material-icons prefix">lock</i>
+                            {{ form.password }}
+                        </div>
+                    {% if form.password.errors %}
+                        {% for error in form.password.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                    <div class="row check">
+                        <div class="col s6">
+                            <p>
+                                <label>
+                                    <input type="checkbox" name="remember-user" class="filled-in" checked="checked" />
+                                    <span>Remember me</span>
+                                </label>
+                            </p>
+                        </div>
+                        <div class="col s6">
+                            <p>
+                                <a href="{% url 'front:password_reset' %}" class="right red-text" style="color:red;">Forgot password?</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <button class="btn waves-effect waves-light bt green accent-4" type="submit" name="action">Login
+                        </button>
+                    </div>
+                    <div class="row center">
+                        <!-- <div class="row">
+                            <p class="center">Or login with your social media account
+                            </p>
+                        </div>
+                        <div class="row social">
+                            <div class="col s6">
+                                <a href="#">
+                                    <i class="fa fa-google fa-lg right"></i>
+                                </a>
+                            </div>
+                            <div class="col s6">
+                                <a href="#">
+                                    <i class="fa fa-facebook-square fa-lg left"></i>
+                                </a>
+                            </div>
+                        </div> -->
+                        <div class="row">
+                            <p class="center" style="margin-bottom: 20px;">Don't have an account? <a href="{% url 'front:signup' %}" class="green-text" style="color:green;">Sign Up</a></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col m3"></div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %} {% endblock %}

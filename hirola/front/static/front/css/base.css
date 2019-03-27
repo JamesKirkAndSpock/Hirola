@@ -1,0 +1,112 @@
+.nav-wrapper {
+    margin-bottom: 5px;
+}
+
+.search-bar {
+  margin-top: 10px;
+}
+
+.search-bar form input {
+    border-radius: 5px !important;
+    border: solid 0.15em !important;
+    border-color: #4caf50 !important;
+
+}
+
+input[type="search"] {
+  height: 40px !important;
+
+}
+
+#search {
+  font-size: 13px;
+}
+
+form .input-field .label-icon {
+  top: -8px;
+  left: 0;
+  color: blue;
+}
+
+
+
+form .input-field {
+    height: 48px;
+}
+
+nav {
+    padding: 10px;
+    box-shadow: none !important;
+}
+
+header {
+    margin-bottom: 50px;
+}
+
+.row {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.nav-extended {
+    box-shadow: 0 0 5px 0 #686868 !important;
+}
+
+.sidenav {
+    height: 40%;
+    width: 100%;
+}
+
+.dropdown-trigger{
+    padding: 0 !important;
+}
+
+.dropdown-trigger .material-icons {
+    margin: 0 !important;
+}
+
+.dropdown-content{
+    padding-top: 8px;
+    width: 150px !important;
+}
+
+@media only screen and (max-width: 767px) {
+    li {
+        margin-right: 10px;
+    }
+    form .input-field {
+        height: 36px;
+    }
+    .sidenav {
+        margin: 2px;
+    }
+    .sidenav-trigger {
+        margin: 0 !important;
+    }
+}
+
+.navigation a {
+    color: black !important;
+}
+
+.a-divider {
+    border-bottom: solid 0.05em !important;
+
+}
+
+.hide-on-small-only .m3{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+li.a-divider{
+    padding: 0 !important;
+}
+
+.categories a {
+    padding-right: 0 !important;
+    font-size: 12px !important;
+
+
+
+}

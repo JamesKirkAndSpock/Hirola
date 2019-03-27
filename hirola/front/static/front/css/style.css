@@ -1,0 +1,45 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column
+}
+
+.breadcrumbs nav {
+    height: 40px;
+    line-height: 40px;
+}
+
+.this-black {
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    padding: 0px 20px !important;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+.breadcrumb {
+    font-size: 14px;
+    color: #00A347;
+}
+
+.breadcrumb:before {
+    color: gray;
+    padding-right: 2px;
+}
+
+.breadcrumb:last-child {
+    color: gray;
+}
+
+.this-black a:hover {
+    text-decoration: underline;
+}
+
+#last-link {
+    text-decoration: none;
+}

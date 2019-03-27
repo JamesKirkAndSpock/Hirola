@@ -1,0 +1,62 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_category.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_panels.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/slick.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/slick-theme.css' %}" />
+{% endblock %}
+{% block content %}
+{% load stars_counter %}
+<div class="row main-container">
+  <div class="container content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+          <div class="nav-wrapper">
+            <div class="col s12">
+              <a href="/" class="breadcrumb">teke</a>
+              <a href="/phone_category/{{ category_id }}" class="breadcrumb">{{ category.phone_category }}</a>
+              <a href="#!" class="breadcrumb" id="last-link">Buy {{ category.phone_category }}</a>
+            </div>
+          </div>
+        </nav>
+    </div>
+    <div class="row images">
+      {% if phones %}
+      <div class="row heading">
+      <h5>Select your favorite {{category.phone_category}} {{ size_message }}</h5>
+      </div>
+      {% else %}
+      <h5>Oops! We currently do not have it</h5>
+      {% endif %}
+      {% for phone in phones %}
+      <div class="col m3 s6 phone-content">
+        <div class="row">
+          <div class="col m12 s12">
+            <div class="card image-div">
+              <div class="card-content center">
+                <a href="/profile/{{ phone.phone_model.id }}/" class="image">
+                  <img src="{{ MEDIA_URL }}{{ phone.phone_model.brand_model_image }}">
+                </a>
+              <div class="card-title-text center"><b>{{ phone.phone_model}}</b></div>
+              </div>
+              <div class="card-action">
+                <a href="/profile/{{ phone.phone_model.id }}">
+                  <p><i id="quality-icon" class="fab fa-{{ phone.phone_model.category.category_icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ phone.currency }} {{ phone.get_lowest_price }} +</b></span></p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+</div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %}
+{{ block.super }}
+{% load static %}
+<script src="{% static 'front/js/slick.min.js' %}"></script>
+<script src="{% static 'front/js/slick-init.js' %}"></script>
+{% endblock %}
+{% endblock %}

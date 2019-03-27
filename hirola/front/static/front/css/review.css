@@ -1,0 +1,84 @@
+.main-content {
+    margin-top: 100px;
+    flex: 1 0 auto;
+}
+
+.content {
+    padding: 20px;
+}
+
+.material-icons {
+    display: inline-flex;
+    vertical-align: top;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.success-box {
+    margin: 50px 0;
+    padding: 10px 10px;
+    border: 1px solid #eee;
+    background: #f9f9f9;
+}
+
+.success-box>div {
+    vertical-align: top;
+    display: inline-block;
+    color: #888;
+}
+
+.rating-stars ul {
+    list-style-type: none;
+    padding: 0;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.rating-stars ul>li.star {
+    display: inline-block;
+}
+
+.rating-stars ul>li.star>i.fa {
+    font-size: 1.4em;
+    color: #ccc;
+}
+
+.rating-stars ul>li.star.hover>i.fa {
+    color: #FFCC36;
+}
+
+.rating-stars ul>li.star.selected>i.fa {
+    color: #FF912C;
+}
+
+.rated-stars {
+    color: #ccc;
+    font-size: 1.4em;
+}
+
+.rated-stars .fa {
+    padding-right: 10px;
+}
+
+.checked {
+    color: #FF912C;
+}
+
+.user-review {
+    padding: 10px !important;
+}
+
+.input-field input[type=text]:focus+label,
+.materialize-textarea:focus:not([readonly])+label {
+    color: #4caf50 !important;
+}
+
+/* label underline focus color */
+
+.input-field input[type=text]:focus,
+.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #4caf50 !important;
+    box-shadow: 0 1px 0 0 #4caf50 !important;
+}

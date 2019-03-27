@@ -1,0 +1,64 @@
+{% block styles %} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/footer.css' %}" />
+{% endblock %} {% block footer %}
+<div class="row footer">
+    <div id="footer-container" class="container">
+        <div class="col m3 s6 white-text">
+            <ul>
+                {% for medium in social_media %}
+                <li>
+                    <a href="{{medium.url_link}}" target="_blank">
+                    <i class="{{ medium.icon }}"></i> {{ medium.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col m3 s6 white-text">
+            <ul>
+                {% for category in categories %}
+                <li>
+                    <a href="/phone_category/{{category.id}}">Buy {{ category }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col m3 s6 white-text">
+            <ul>
+                <li>
+                    <a href="/help#help-center">Help Center</a>
+                </li>
+                <li>
+                    <a href="/help" id="footer-faqs">FAQs</a>
+                </li>
+                <li>
+                    <a href="/repair_and_network">Repair Network</a>
+                </li>
+                <li>
+                    <a href="/teke_vs_others">teke vs. Others</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col m3 s6 white-text">
+            <ul>
+                <li>
+                    <a href="/about">About teke</a>
+                </li>
+                <li>
+                    <a href="/contact_us">Contact Us</a>
+                </li>
+                <li>
+                    <a href="/privacy">Privacy Policy</a>
+                </li>
+                <li>
+                    <a href="/news">News and Press</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <center>
+                <p class="copyright">&copy; Copyright 2019, teke</p>
+            </center>
+        </div>
+    </div>
+</div>
+{% endblock %}

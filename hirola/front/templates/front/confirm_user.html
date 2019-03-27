@@ -1,0 +1,50 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/login.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %} {% block content %}
+<div class="container main-content">
+    <div class="row">
+        <div class="col m3"></div>
+        <div class="col m6 s12">
+            <div class="center">
+                <h4>Log in to change your email</h4>
+            </div>
+            <div class="row content">
+                <form class="col s12" method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">account_circle</i>
+                            {{ form.email }}
+                            <span class="helper-text right" data-error="Phone number format is incorrect" data-success="OK!">Number format should be +254*********</span>
+
+                        </div>
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 pass">
+                            <i class="material-icons prefix">lock</i>
+                            {{ form.password }}
+                        </div>
+                    {% if form.password.errors %}
+                        {% for error in form.password.errors %}
+                            <li><strong>{{ error|escape }}</strong></li>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                    <div class="row center">
+                        <button class="btn waves-effect waves-light bt light-green accent-4" type="submit" name="action">Login
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col m3"></div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %} {% endblock %}

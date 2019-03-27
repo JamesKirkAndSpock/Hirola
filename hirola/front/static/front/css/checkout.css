@@ -1,0 +1,76 @@
+.shipping .col {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    margin: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.shipping label {
+    color: black;
+    opacity: 0.6 !important;
+}
+
+.payment {
+    margin-top: 30px;
+}
+
+.payment form {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    padding: 25px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+.confirmation {
+    margin-top: 50px;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+.confirmation .col {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.btn {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.item {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    padding: 25px;
+}
+
+.main-content {
+    margin-top: 100px;
+    flex: 1 0 auto;
+}
+
+@media only screen and (max-width: 600px) {
+    .main-content {
+        margin-top: 10px;
+    }
+}
+
+.confirmation-text {
+  font-size: 12px;
+  color: red;
+
+}
+
+.confirmation {
+  border-radius: 2px;
+}
+
+.btn {
+  text-transform: none;
+  font-size: 16px;
+}

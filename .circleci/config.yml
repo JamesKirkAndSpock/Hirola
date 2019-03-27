@@ -1,0 +1,63 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/python:3.6-jessie-browsers
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: hi-database
+    working_directory: ~/Hirola
+    
+    steps:
+      - checkout
+      - run:
+          name: Selenium Setup
+          command: |
+            wget https://chromedriver.storage.googleapis.com/2.44/chromedriver_linux64.zip
+            unzip chromedriver_linux64.zip
+            sudo mv chromedriver /usr/bin/chromedriver
+            sudo chown root:root /usr/bin/chromedriver
+            sudo chmod +x /usr/bin/chromedriver
+      - run:
+          name: run tests
+          environment:
+            SECRET_KEY: "simplestring"
+            DJANGO_SETTINGS_MODULE: hirola.settings.development
+            POSTGRES_IP: 127.0.0.1
+            PGUSER: root
+            DATABASE_NAME: hi-database
+            USER: postgres
+          command: |
+            sudo apt-get install memcached
+            memcached -d
+            virtualenv --python=python3 hi-venv
+            source hi-venv/bin/activate
+            pip install -r ./hirola/dev-requirements.txt
+            python ./hirola/manage.py makemigrations front
+            python ./hirola/manage.py migrate
+            cd hirola
+            coverage run manage.py test
+            coverage report --rcfile=../.coveragerc
+            coverage html --rcfile=../.coveragerc
+            export COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN}
+            coveralls --rcfile=../.coveragerc
+            sudo apt-get remove --auto-remove memcached
+            python manage.py test --pattern=selenium*.py
+          
+
+  application-deployment:
+    docker:
+      - image: circleci/python:3.6-jessie-browsers
+    steps:
+      - checkout
+      - run: bash .circleci/deploy.sh
+
+workflows:
+  version: 2
+  deploy-application:
+    jobs:
+      - test
+      - application-deployment:
+          requires:
+            - test

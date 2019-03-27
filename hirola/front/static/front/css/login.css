@@ -1,0 +1,63 @@
+.main-content {
+    margin-top: 100px;
+    flex: 1 0 auto;
+}
+
+.content {
+    padding: 0 20px 50px 20px;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    border-radius: 5px;
+}
+
+.input-field {
+    margin-top: 30px;
+}
+
+.check {
+    margin-top: 30px;
+    padding: 5px;
+}
+
+.btn {
+    width: 80%;
+    border-radius: 10px;
+    margin: 30px 0px 30px 0px;
+}
+
+.material-icons {
+    color: #3cba54;
+}
+
+.filled-in {
+    color: #3cba54;
+}
+
+.fa-facebook-square {
+    color: #3b5998;
+}
+
+.fa-google {
+    color: #3cba54;
+}
+
+.btg {
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+.social i {
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+    .main-content {
+        margin-top: 10px;
+    }
+    .input-field {
+        margin-top: 20px;
+    }
+    .btn {
+        margin-bottom: 10px;
+    }
+}

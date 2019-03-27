@@ -1,0 +1,117 @@
+.main-content {
+    margin-top: 20px;
+    flex: 1 0 auto;
+}
+
+.main-head {
+    margin-bottom: 20px !important;
+}
+
+h6 {
+    margin-top: 5px !important;
+}
+
+.center-content {
+    margin-top: 20px;
+    border-bottom: solid 0.05em;
+    border-bottom-color: #E8E8E8;
+    border-top: solid 0.05em;
+    border-top-color: #E8E8E8;
+}
+
+.material-icons {
+    display: inline-flex;
+    vertical-align: top;
+    margin-right: 5px;
+}
+
+.hot-deals {
+    margin-top: 20px !important;
+}
+
+.land-imgs .card {
+    border: none;
+}
+
+.land-imgs a {
+    font-size: 1.2em;
+}
+
+.deals-row {
+    padding: 5px !important;
+}
+
+.carousel {
+    height: auto;
+    height: 93.3vh;
+}
+
+#money {
+    text-transform: capitalize;
+    /* font-size: 110%; */
+}
+
+.content {
+    margin-bottom: 0 !important;
+}
+
+.bg-image {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    -moz-background-size: cover;
+}
+
+
+.item-text {
+    margin-top: 300px;
+}
+
+.hot-deals .heading {
+    padding-left: 20px !important;
+}
+
+@media only screen and (max-width: 767px) {
+    .carousel {
+        height: 91vh;
+    }
+    .center-content {
+        font-size: 75%;
+    }
+    .material-icons {
+        margin-right: 2px;
+        font-size: 14px;
+        /* margin-block-start: 0 !important; */
+    }
+    .center-content .s4 {
+        padding: 0 !important;
+    }
+
+    .material-icons {
+        margin-top: 2px;
+    }
+    .main-head {
+        padding-top: 25px !important;
+    }
+}
+
+.header-tag {
+  font-size: 24px;
+  margin: 0px 0px;
+  line-height: 26px;
+}
+
+.faded-text {
+  font-size: 14px;
+  color: gray;
+}
+
+sup {
+    font-size: 0.4em;
+    font-size: smaller;
+    line-height: 5px;
+    vertical-align: super;
+    top: 0.1em;
+    padding-left: 1px;
+}

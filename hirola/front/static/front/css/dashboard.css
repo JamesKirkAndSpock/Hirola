@@ -1,0 +1,190 @@
+.main-content {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+.content {
+    margin-top: 50px;
+}
+
+.tab-content {
+    margin-top: 50px;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.btn {
+    margin-top: 10px;
+}
+
+.field-row {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    padding: 20px;
+}
+
+form {
+    margin-bottom: 10px;
+}
+
+#pass-output,
+#name-output,
+#tel-output,
+#mail-output {
+    padding-top: 5px;
+}
+
+p {
+    margin: 0;
+}
+
+.checked {
+    color: orange;
+}
+
+.reviews .collection {
+    padding-left: 50px;
+}
+
+
+.tab-heading {
+    border-bottom: solid 0.05em;
+    border-color: solid;
+}
+
+.order-row {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #E8E8E8;
+}
+
+#details {
+    margin-top: 50px;
+    display: none;
+    border-bottom: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+#status {
+    margin-top: 50px;
+    display: none;
+    border-bottom: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+#status .col {
+    border-right: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+#details .col {
+    border-right: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+.breadcrumbs {
+    margin-bottom: 40px !important;
+}
+
+#order a {
+    text-decoration: underline !important;
+    text-transform: capitalize !important;
+}
+
+#order a {
+    text-decoration: underline !important;
+    text-transform: capitalize !important;
+}
+@media only screen and (max-width: 600px) {
+    .reviews .collection {
+        padding-left: 5px;
+    }
+    .reviews .material-icons {
+        margin-right: 0;
+    }
+}
+
+/* Popup container */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  /* The actual popup (appears on top) */
+  .popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+
+  /* Popup arrow */
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+
+  /* Toggle this class when clicking on the popup container (hide and show the popup) */
+  .popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+  }
+
+  .details-row {
+    display: none;
+  }
+
+  .green-text {
+    text-decoration: underline;
+  }
+
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }
+
+  
+  #changeEmail {
+      line-height: 60px;
+  }
+
+   #changeEmail i {
+      line-height: 60px;
+  }
+  .material-tooltip {
+      width: 300px;
+  }
+
+  i {
+      cursor: pointer;
+      margin-left: 5px;
+  }
+
+#changeEmail a{
+    text-decoration: none;
+}

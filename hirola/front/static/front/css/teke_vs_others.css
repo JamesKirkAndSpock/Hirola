@@ -1,0 +1,25 @@
+.main-content {
+    margin-top: 100px;
+    flex: 1 0 auto;
+}
+
+.landing-content {
+    /* font-size: 14pt; */
+    padding: 30px;
+    text-align: center;
+}
+
+.card {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+.this-para {
+  font-size: 15px;
+}
+
+@media only screen and (max-width: 767px) {
+    .landing-content {
+        text-align: left;
+    }
+}

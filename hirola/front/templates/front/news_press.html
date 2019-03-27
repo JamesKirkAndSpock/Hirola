@@ -1,0 +1,39 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/press.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="/" class="breadcrumb">teke</a>
+                    <a href="/news" class="breadcrumb" id="last-link">news</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row content">
+        <div class="row landing">
+            <div class="landing-content center">
+                <h4>teke news and press</h4>
+                <p>We do things differently at teke. We are revolutionizing the phone tech industry in Kenya, one quality tech gadget at a time.<br>
+                Below is a list of articles and news about the impactful work we are doing: providing Kenyans with quality technology at affordable prices.</p>
+            </div>
+        </div>
+        <div class="row news">
+            <div class="col m8 s12 push-m2">
+                {% for new in news %}
+                <div class="row item">
+                    <div class="col m4 s12">{{ new.source }}</div>
+                    <div class="col m4 s12"><a href="{{ new.link }}" target="_blank">{{ new.title }}</a></div>
+                    <div class="col m4 s12">{{ new.date_created }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}

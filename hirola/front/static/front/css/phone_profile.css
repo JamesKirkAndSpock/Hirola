@@ -1,0 +1,248 @@
+.main-content {
+    flex: 1 0 auto;
+    width: 100%;
+    margin-top: 100px;
+}
+
+.phone-details {
+    margin-top: 40px;
+    border: solid 0.05em #E8E8E8;
+    padding: 10px;
+    border-radius: 2px;
+}
+
+.more-details {
+    margin-top: 30px;
+    /* border: solid 0.05em;
+    border-color: #E8E8E8; */
+    padding: 0px !important;
+
+}
+
+.checked {
+    color: orange;
+}
+
+#intro {
+    font: bold;
+    font-size: 14pt;
+}
+
+.stars {
+    font-size: 12pt;
+    border-bottom: solid 0.05em;
+    border-bottom-color: #E8E8E8;
+    padding-bottom: 5px;
+}
+.sample-form .row {
+    margin: 5px;
+}
+
+.btn {
+    width: 100%;
+}
+
+h5 {
+    font: bold;
+}
+
+#title {
+    background-color: #E8E8E8;
+}
+
+.profile ul {
+    text-align: right;
+}
+
+.details-container {
+    border: 0.05em solid #909090;
+    border-color: ;
+    margin-bottom: 20px;
+}
+
+.detail {
+    border-bottom: solid 0.05em;
+    border-bottom-color: #909090;
+}
+
+.detail .col {
+    padding-bottom: 20px;
+}
+
+.more-details .row {
+    margin-bottom: 0 !important;
+}
+
+.disabled {
+    color: red !important;
+}
+
+.inline-icon {
+    vertical-align: bottom;
+    font-size: 18px !important;
+}
+
+.warranty {
+  padding-left: 0;
+}
+
+.warranty .row {
+    padding-top: 0 !important;
+}
+
+.card {
+    padding: 10px;
+}
+
+.features {
+    border: solid 0.05em #E8E8E8;
+    /* border-color: ; */
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.action {
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+    border-radius: 3px;
+}
+
+.action form {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.profile {
+    padding-right: 30px !important;
+}
+
+.navrow {
+    margin-top: 50px;
+    margin-bottom: 40px;
+}
+
+.review-head {
+    padding-left: 20px !important;
+}
+
+#review-date {
+    padding-top: 0 !important;
+}
+row.reviews {
+    margin-top: 30px;
+    border-radius: 2px;
+}
+@media only screen and (max-width: 600px) {
+    .container {
+        margin-top: 0px !important;
+    }
+    .s12 {
+        margin-bottom: 15px;
+    }
+    .reviews .collection {
+        padding-left: 0
+    }
+    .card-content {
+        padding: 0 !important;
+    }
+    .phone-details {
+        padding: 10px !important;
+    }
+}
+
+ul#lightSlider{
+    margin-top: 10px !important;
+}
+
+ul#lightSlider li {
+    /* background: #cfd6d9 !important; */
+    padding-top: 10px !important;
+}
+
+.profile-img{
+    margin: 0;
+}
+
+.lSSlideOuter {
+    margin-top: 10px !important;
+}
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lSSlideOuter .lSPager.lSGallery {
+    width: 100% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lSSlideOuter .lSPager.lSGallery li{
+    padding: 5px;
+    margin: 5px 5px 5px 5px !important;
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 0.05em;
+    border-color: #E8E8E8;
+}
+
+.lSSlideOuter .lSPager.lSGallery li.active,
+.lSSlideOuter .lSPager.lSGallery li:hover {
+    box-shadow: 0px 0px 4px 2px #E8E8E8;
+    }
+
+.lSSlideOuter .lSPager.lSGallery li:last-child {
+    margin-right: 0 !important;
+}
+
+ul.lSPager.lSGallery{
+    width: 100% !important;
+    padding: 0 2px 0 2px !important;
+}
+
+ul.lSGallery li img {
+    height: 50px !important;
+    text-align: center;
+}
+
+.this-fields {
+  font-size: 10px !important;
+}
+
+.btn {
+  text-transform: none;
+  font-size: 16px;
+}
+
+.input-field {
+  font-size: 13px;
+
+}
+ul.errorlist li{
+    font-weight: 600 !important;
+    color: red !important;
+    float: left;
+}
+
+#price {
+    font-weight: 600;
+}
+
+.action {
+    padding: 10px !important;
+}
+
+.confirm .input-field {
+    margin-top: 0 !important;
+}
+
+form .input-field {
+    height: auto;
+    padding-bottom: 0.1rem !important;
+}

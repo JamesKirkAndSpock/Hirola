@@ -1,0 +1,23 @@
+.main-content {
+    margin-top: 100px;
+    flex: 1 0 auto;
+}
+
+.content {
+    padding: 20px;
+}
+
+.review {
+    padding: 10px;
+    border: 2px solid;
+    border-color: #4caf50;
+    border-radius: 5px;
+}
+
+.material-icons {
+    display: inline-flex;
+    vertical-align: top;
+}
+li {
+    margin-bottom: 10px;
+}
