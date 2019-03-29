@@ -263,12 +263,12 @@
                     </div>
                     <div class="row details-row" id="details-{{order.pk}}">
                         <div class="col m4 s12">
-                            <p><b>Order No:</b><span> #{{ order.pk }}</span></p>
-                            <p><b>Payment Method:</b><span> {{ order.payment_method }}</span></p>
-                            <p><b>Quantity:</b><span> {{ order.quantity }}</span></p>
-                            <p><b>Total Price:</b><span> {{ order.total_price|intcomma }}</span></p>
-                            <p><b>Current Status: </b><span id="current-date"></span><span> {{ order.status }}</span>
-                            <p><b>Purchase Date: </b><span> {{ order.date }}</span>
+                            <p><b>Order No.</b><span> #{{ order.pk }}</span></p>
+                            <p><b>Payment Method</b><span> {{ order.payment_method }}</span></p>
+                            <p><b>Quantity</b><span> {{ order.quantity }}</span></p>
+                            <p><b>Total Price</b><span> {{ order.total_price|intcomma }}</span></p>
+                            <p><b>Current Status </b><span id="current-date"></span><span> {{ order.status }}</span>
+                            <p><b>Purchase Date </b><span> {{ order.date }}</span>
                         </div>
                         <div class="col m4 s12">
                             <p>
