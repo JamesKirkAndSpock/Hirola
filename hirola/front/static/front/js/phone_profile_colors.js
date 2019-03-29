@@ -3,7 +3,7 @@ $('#color_selector').change(function() {
 
         var options = '<option value="' + j["phone_size_id"] + '" selected>' + j["phone_size"] + '</option>';
         for (var i in j["sizes"]) {
-            options += '<option value="' + i + '">' + j["sizes"][i] + '</option>';        
+            options += '<option value="' + i + '">' + j["sizes"][i] + '</option>';
         }
         $('select').formSelect();
         var instance = M.FormSelect.getInstance($("#storage"));
@@ -14,7 +14,7 @@ $('#color_selector').change(function() {
             quantity_options += '<option value=' + k + '>'+ i + '</option> ';
         }
         $("#quantity").html(quantity_options);
-        $('#price').html(j["currency"] + "  " + j["price"]);
+        $('#price').html(j["currency"] + "  " + comma(j.price));
         $('select').formSelect();
         $('#main_image_data_thumb').attr("data-thumb", j["main_image"])
         $('#main_image_src').attr("src", j["main_image"]);
@@ -41,13 +41,13 @@ $('#storage').change(function() {
         }
         $("#quantity").html(quantity_options);
         $('select').formSelect();
-        $('#price').html(j["currency"] + "  " + j["price"]);
+        $('#price').html(j["currency"] + "  " + comma(j.price));
         $("#phone_item").val(j.phone);
     })
 });
 
 $('#quantity').change(function() {
     $.getJSON("/quantity_change", {color_id: $('#color_selector').val(), size_id: $('#storage').val(), qty: $('#quantity').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
-    $('#price').html(j["currency"] + "  " + j["total_cost"]);
+    $('#price').html(j["currency"] + "  " + comma(j.total_cost));
     })
 });
