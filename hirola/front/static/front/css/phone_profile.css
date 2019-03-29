@@ -1,7 +1,6 @@
 .main-content {
     flex: 1 0 auto;
     width: 100%;
-    margin-top: 100px;
 }
 
 .phone-details {
@@ -13,8 +12,6 @@
 
 .more-details {
     margin-top: 30px;
-    /* border: solid 0.05em;
-    border-color: #E8E8E8; */
     padding: 0px !important;
 
 }
@@ -132,6 +129,15 @@ row.reviews {
     margin-top: 30px;
     border-radius: 2px;
 }
+
+#phone_features {
+    padding: 10px;
+}
+
+#phoneFeature {
+    list-style-type: disc;
+}
+
 @media only screen and (max-width: 600px) {
     .container {
         margin-top: 0px !important;

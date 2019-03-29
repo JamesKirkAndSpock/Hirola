@@ -4,6 +4,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
 <div class="main-content">
     {% load stars_counter %}
+    {% load humanize %}
 <div class="container content">
         <div class="row breadcrumbs">
             <nav class="this-black">
@@ -265,7 +266,7 @@
                             <p><b>Order No.</b><span> #{{ order.pk }}</span></p>
                             <p><b>Payment Method</b><span> {{ order.payment_method }}</span></p>
                             <p><b>Quantity</b><span> {{ order.quantity }}</span></p>
-                            <p><b>Total Price</b><span> {{ order.total_price }}</span></p>
+                            <p><b>Total Price</b><span> {{ order.total_price|intcomma }}</span></p>
                             <p><b>Current Status </b><span id="current-date"></span><span> {{ order.status }}</span>
                             <p><b>Purchase Date </b><span> {{ order.date }}</span>
                         </div>
