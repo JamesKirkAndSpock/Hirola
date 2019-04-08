@@ -80,4 +80,5 @@ urlpatterns = [
          name='before_checkout_anonymous'),
     path('before_checkout', views.before_checkout,
          name='before_checkout'),
+    path('order', views.place_order, name='order'),
 ]

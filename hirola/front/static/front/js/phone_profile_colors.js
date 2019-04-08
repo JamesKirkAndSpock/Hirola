@@ -34,6 +34,9 @@ $('#color_selector').change(function() {
 });
 
 $('#storage').change(function() {
+    $("#phone_size").val($('#storage').val());
+
+    console.log(size);
     $.getJSON("/size_change", {size_id: $('#storage').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
         var quantity_options = '<option value=1 selected>1</option>';
         for (var i=2, k=2; i <= j.phone_quantity; i ++, k++ ){
@@ -43,6 +46,7 @@ $('#storage').change(function() {
         $('select').formSelect();
         $('#price').html(j["currency"] + "  " + comma(j.price));
         $("#phone_item").val(j.phone);
+        console.log(j);
     })
 });
 
@@ -50,4 +54,8 @@ $('#quantity').change(function() {
     $.getJSON("/quantity_change", {color_id: $('#color_selector').val(), size_id: $('#storage').val(), qty: $('#quantity').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
     $('#price').html(j["currency"] + "  " + comma(j.total_cost));
     })
+});
+
+$('add-to-cart-button').click(function(){
+    $('add-to-cart-button2').attr('name', '');
 });

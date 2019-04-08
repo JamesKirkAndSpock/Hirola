@@ -26,8 +26,9 @@ class CartFormTestCase(BaseTestCase):
         request = RequestFactory()
         request = request.post(
             "", {'phone_model_item': self.samsung_note_5_rose_gold.pk,
-                 'quantity': 1, 'owner': '',
-                 'session_key': ''
+                 'quantity': 1,
+                 'phone_size_sku': self.samsung_note_5_rose_gold.size_sku.pk,
+                 'owner': '', 'session_key': ''
                  }
         )
         self.client = Client()

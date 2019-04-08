@@ -22,7 +22,7 @@ from front.models import (
     CountryCode, User, PhoneCategory,
     PhoneMemorySize, SocialMedia, Review, HotDeal,
     NewsItem, Order, CartOwner, Cart,
-    ServicePerson, PhoneModelList, PhoneModel
+    ServicePerson, PhoneModelList, PhoneModel, OrderStatus
     )
 from front.forms.user_forms import (
     UserCreationForm, AuthenticationForm,
@@ -164,6 +164,8 @@ def phone_profile_view(request, phone_model_id):
                "features": phone.phone_features.all(),
                "infos": phone.phone_information.all(),
                "customer_reviews": phone_model.phone_reviews.all(),
+               "categories": phone_categories,
+               "social_media": social_media,
                }
     return render(request, 'front/phone_profile.html', context)
 
@@ -872,3 +874,23 @@ def before_add_cart(request, user):
         form = CartOwnerForm({'owner': user.id, 'cart': item.id})
         if form.is_valid():
             form.save()
+
+
+def place_order(request):
+    """
+    Convert user's cart details into processing orders in preparation
+    for shipping
+    """
+    if request.method == 'POST':
+        cart = Cart.objects.filter(owner=request.user)
+        status = OrderStatus.objects.create(status='processing')
+        for obj in cart:
+            size = PhoneMemorySize.objects.filter(id=obj.phone_size_sku).first()
+            Order.objects.create(
+                owner=obj.owner, quantity=obj.quantity,
+                phone=obj.phone_model_item, status=status,
+                price=obj.phone_model_item.price,
+                size=size, total_price=obj.total_price)
+            Cart.objects.filter(id=obj.id).delete()
+        return redirect('/dashboard#orders')
+    return redirect('/checkout')

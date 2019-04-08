@@ -2,6 +2,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/search.css' %}" />
 {% endblock %}
 {% block content %}
+{% load humanize %}
 <div class="main-content">
 <div class="container">
 {% if instructions %}
@@ -23,7 +24,7 @@
                 </div>
                 <div class="card-action">
                       <a href="/profile/{{ result.pk }}/">
-                      <p><i id="quality-icon" class="fab fa-{{ result.icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ result.currency }} {{ result.price}}</b></span></p>
+                      <p><i id="quality-icon" class="fab fa-{{ result.icon }} grey-text right"></i><span class="green-text" id="money"><b>{{ result.currency }} {{ result.price|intcomma }}</b></span></p>
                       </a>
                 </div>
               </div>

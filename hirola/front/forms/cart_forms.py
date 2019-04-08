@@ -12,8 +12,8 @@ class CartForm(forms.ModelForm):
         This class attaches the model and fields to the UserCreationForm
         """
         model = Cart
-        fields = ('phone_model_item', 'quantity', 'owner', 'session_key',
-                  'is_wishlist')
+        fields = ('phone_model_item', 'quantity', 'phone_size_sku', 'owner',
+                  'session_key', 'is_wishlist')
 
     def __init__(self, request, *args, **kwargs):
         self.user = request.user
@@ -35,6 +35,11 @@ class CartForm(forms.ModelForm):
     def clean_is_wishlist(self):
         is_wishlist = self.cleaned_data['is_wishlist']
         return is_wishlist
+
+    def clean_phone_size_sku(self):
+        if self.cleaned_data['phone_size_sku']:
+            phone_size_sku = self.cleaned_data['phone_size_sku']
+            return int(phone_size_sku)
 
 
 class CartOwnerForm(forms.ModelForm):
