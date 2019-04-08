@@ -125,6 +125,8 @@
             </div>
             <div class="col m1"></div>
             <div class="col m4 confirmation">
+                <form action="/order" method="POST">
+                    {% csrf_token %}
                 <div class="row">
                     <div class="col s6"><p></p></div>
                     <div class="col s6"><p></p></div>
@@ -136,12 +138,12 @@
                 <hr>
                 <div class="row">
                     <div class="col s12">
-                      <p></p>
                         <button class="btn waves-effect waves-light btg  green" type="submit" name="action">Place Order</button>
                     </div>
 
                 </div>
                 <p class="confirmation-text">By clicking Place Order, you agree to pay the full price of this item once its delivered</p>
+            </form>
             </div>
         </div>
     </div>

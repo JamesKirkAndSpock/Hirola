@@ -22,7 +22,7 @@ class LandingPageViewsTestCase(BaseTestCase):
         response = self.client.get("/")
         self.assertContains(response, "Hot deals")
         self.assertContains(response, "Samsung Note 5")
-        self.assertContains(response, 25000)
+        self.assertContains(response, "25,000")
         self.assertContains(response, "fab fa-icon-test")
         self.assertContains(response, "/media/phones/test_image_5_")
         self.assertContains(
