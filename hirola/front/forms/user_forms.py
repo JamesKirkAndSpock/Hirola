@@ -531,9 +531,12 @@ class ContactUsForm(forms.Form):
     def send_email(self):
         """Send email to site administrators."""
         to_email = settings.EMAIL_HOST_USER
-        from_email = self.cleaned_data.get('email')
+        from_email = settings.DEFAULT_FROM_EMAIL
         sender_name = self.cleaned_data.get('name') or 'Anonymous User'
-        subject = "Help and support request" + " from " + sender_name
+        email = self.cleaned_data.get('email')
+        subject = "Help and support request from {} of email {}".format(
+            sender_name, email
+        )
         body = self.cleaned_data.get('comment')
         body += '\n'
         body += from_email
