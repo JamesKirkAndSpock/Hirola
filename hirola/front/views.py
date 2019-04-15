@@ -894,4 +894,4 @@ def place_order(request):
                 size=size, total_price=obj.total_price)
             Cart.objects.filter(id=obj.id).delete()
         return redirect('/dashboard#orders')
-    return redirect('/checkout')
+    return redirect('/before_checkout')
