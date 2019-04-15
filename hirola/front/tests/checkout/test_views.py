@@ -145,3 +145,15 @@ class CheckoutViewTestCase(BaseTestCase):
         self.assertEqual(len(orders), 2)
         carts = Cart.objects.filter(owner=user)
         self.assertEqual(len(carts), 0)
+
+    def test_get_order_url(self):
+        """
+        Test that when the order url is visited without posting any data
+        - it redirects to the checkout page
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        response = self.winniethepooh.get('/order')
+        self.assertRedirects(response, '/before_checkout', 302)
