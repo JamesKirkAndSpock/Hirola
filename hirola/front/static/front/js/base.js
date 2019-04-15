@@ -16,3 +16,7 @@ function resize() {
     renameField();
 }
 window.onresize = resize;
+
+$(document).ready(function (){
+    renameField();
+});
