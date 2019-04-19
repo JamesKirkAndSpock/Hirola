@@ -883,15 +883,13 @@ def place_order(request):
     """
     if request.method == 'POST':
         cart = Cart.objects.filter(owner=request.user)
-        status = OrderStatus.objects.create(status='processing')
+        order_status = OrderStatus.objects.get_or_create(
+            status='processing')[0]
         for obj in cart:
-            size = PhoneMemorySize.objects.filter(
-                id=obj.phone_size_sku).first()
             Order.objects.create(
                 owner=obj.owner, quantity=obj.quantity,
-                phone=obj.phone_model_item, status=status,
-                price=obj.phone_model_item.price,
-                size=size, total_price=obj.total_price)
+                phone=obj.phone_model_item, status=order_status,
+                total_price=obj.total_price)
             Cart.objects.filter(id=obj.id).delete()
         return redirect('/dashboard#orders')
-    return redirect('/before_checkout')
+    return redirect('/checkout')

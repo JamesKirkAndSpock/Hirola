@@ -89,19 +89,19 @@ class DashboardTemplate(BaseTestCase):
         get_response = self.uriel.get('/dashboard')
         self.assertContains(get_response, order.phone.phone_model)
         self.assertContains(
-            get_response, "<p><b>Order No.</b><span> #{}</span>".
+            get_response, "<p><b>Order No:</b><span> #{}</span>".
             format(order.pk)
             )
         self.assertContains(
-            get_response, "<b>Payment Method</b><span> {}</span>".
+            get_response, "<b>Payment Method:</b><span> {}</span>".
             format(order.payment_method)
             )
         self.assertContains(
-            get_response, "<b>Quantity</b><span> {}</span>".
+            get_response, "<b>Quantity:</b><span> {}</span>".
             format(order.quantity)
             )
         self.assertContains(
-            get_response, "<b>Total Price</b><span> {}</span>".
+            get_response, "<b>Total Price:</b><span> {}</span>".
             format("{:,}".format(order.total_price))
             )
         self.assertContains(
@@ -109,7 +109,7 @@ class DashboardTemplate(BaseTestCase):
             format(order.status)
             )
         self.assertContains(
-            get_response, "<b>Purchase Date </b><span> {}".
+            get_response, "<b>Purchase Date: </b><span> {}".
             format(order.date.strftime("%b"))
             )
         self.assertContains(
@@ -137,19 +137,19 @@ class DashboardTemplate(BaseTestCase):
         self.assertEqual(post_response.status_code, 200)
         self.assertContains(post_response, order.phone.phone_model)
         self.assertContains(
-            post_response, "<p><b>Order No.</b><span> #{}</span>".
+            post_response, "<p><b>Order No:</b><span> #{}</span>".
             format(order.pk)
             )
         self.assertContains(
-            post_response, "<b>Payment Method</b><span> {}</span>".
+            post_response, "<b>Payment Method:</b><span> {}</span>".
             format(order.payment_method)
             )
         self.assertContains(
-            post_response, "<b>Quantity</b><span> {}</span>".
+            post_response, "<b>Quantity:</b><span> {}</span>".
             format(order.quantity)
             )
         self.assertContains(
-            post_response, "<b>Total Price</b><span> {}</span>".
+            post_response, "<b>Total Price:</b><span> {}</span>".
             format("{:,}".format(order.total_price))
             )
         self.assertContains(
@@ -157,7 +157,7 @@ class DashboardTemplate(BaseTestCase):
             format(order.status)
             )
         self.assertContains(
-            post_response, "<b>Purchase Date </b><span> {}".
+            post_response, "<b>Purchase Date: </b><span> {}".
             format(order.date.strftime("%b"))
             )
         self.assertContains(
@@ -194,8 +194,7 @@ class DashboardTemplate(BaseTestCase):
         status = OrderStatus.objects.get(status="Pending")
         Order.objects.create(
             owner=owner, phone=self.samsung_note_5_rose_gold, status=status,
-            quantity=2, price=25000,
-            total_price=80000
+            quantity=2, total_price=80000
             )
         order = Order.objects.get(owner=owner)
         ShippingAddress.objects.create(
