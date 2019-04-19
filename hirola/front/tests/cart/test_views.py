@@ -309,3 +309,24 @@ class CartViewsTestCase(BaseTestCase):
         self.assertEqual(after_save_response.status_code, 200)
         self.assertContains(after_save_response, "75,000")
         self.assertContains(after_save_response, "125,000")
+
+    def test_buy_now_anonymous(self):
+        """
+        Test that when a user request to buy now before logging in
+            - That their item is saved to the cart
+            - and they are prompted to login in before proceeding
+        """
+        form = {
+            'buy_now': '1',
+            'quantity': '1',
+            'phone_model_input': '{}'.format(
+                self.samsung_note_5_rose_gold.phone_model.id),
+            'phone_model_item': '{}'.format(
+                self.samsung_note_5_rose_gold.id)
+        }
+        response = self.client.post('/profile/{}/'.format(
+            self.samsung_note_5_rose_gold.pk), form, follow=True)
+        self.assertRedirects(response, "/login?next=/checkout")
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold)
+        self.assertTrue(cart)
