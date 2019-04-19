@@ -261,7 +261,9 @@ class SocialMedia(models.Model):
 class OrderStatus(models.Model):
     """Creates order status'"""
 
-    status = models.CharField(max_length=60, blank=False, default=None)
+    status = models.CharField(max_length=60, unique=True, error_messages={
+            'unique': 'The status you entered already exists'},
+            default='processing')
 
     class Meta:
         """Sets the plural name of order status'"""
@@ -478,7 +480,6 @@ class Cart(models.Model):
     creation_date = models.DateField(auto_now_add=True)
     modified_date = models.DateField(auto_now=True)
     quantity = IntegerRangeField(min_value=1)
-    phone_size_sku = models.IntegerField(blank=True, null=True)
     phone_model_item = models.ForeignKey(PhoneModelList,
                                          on_delete=models.CASCADE)
     session_key = models.CharField(
@@ -520,8 +521,6 @@ class Order(models.Model):
     phone = models.ForeignKey(PhoneModelList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
     quantity = IntegerRangeField(min_value=1)
-    price = models.DecimalField(max_digits=6, decimal_places=0)
-    size = models.CharField(max_length=16, null=True, blank=True)
     total_price = IntegerRangeField(min_value=0, default=0)
     payment_method = models.ForeignKey(PaymentMethod,
                                        on_delete=models.SET_NULL,

@@ -178,7 +178,7 @@ class OrderModelsTestCase(BaseTestCase):
         status = OrderStatus.objects.get(status="Pending")
         Order.objects.create(
             owner=owner, phone=self.samsung_note_5_rose_gold, status=status,
-            quantity=2, price=25000, total_price=80000)
+            quantity=2, total_price=80000)
         order = Order.objects.get(owner=owner)
         self.assertEqual(order.get_address, None)
         ShippingAddress.objects.create(order=order, location="Kiambu Road",

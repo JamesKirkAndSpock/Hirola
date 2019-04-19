@@ -155,5 +155,5 @@ class CheckoutViewTestCase(BaseTestCase):
         User.objects.create(email="winnie@thepooh.com")
         user = User.objects.get(email="winnie@thepooh.com")
         self.winniethepooh.force_login(user)
-        response = self.winniethepooh.get('/order')
+        response = self.winniethepooh.get('/order', follow=True)
         self.assertRedirects(response, '/before_checkout', 302)
