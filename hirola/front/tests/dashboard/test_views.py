@@ -101,7 +101,7 @@ class DashboardTemplate(BaseTestCase):
             format(order.quantity)
             )
         self.assertContains(
-            get_response, "<b>Total Price</b><span> {}</span>".
+            get_response, "<b>Total Price:</b><span> {}</span>".
             format("{:,}".format(order.total_price))
             )
         self.assertContains(
@@ -149,7 +149,7 @@ class DashboardTemplate(BaseTestCase):
             format(order.quantity)
             )
         self.assertContains(
-            post_response, "<b>Total Price</b><span> {}</span>".
+            post_response, "<b>Total Price:</b><span> {}</span>".
             format("{:,}".format(order.total_price))
             )
         self.assertContains(

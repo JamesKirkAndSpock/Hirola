@@ -886,8 +886,6 @@ def place_order(request):
         order_status = OrderStatus.objects.get_or_create(
             status='processing')[0]
         for obj in cart:
-            size = PhoneMemorySize.objects.filter(
-                id=obj.phone_size_sku).first()
             Order.objects.create(
                 owner=obj.owner, quantity=obj.quantity,
                 phone=obj.phone_model_item, status=order_status,

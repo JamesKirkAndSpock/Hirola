@@ -12,7 +12,7 @@ class CartForm(forms.ModelForm):
         This class attaches the model and fields to the UserCreationForm
         """
         model = Cart
-        fields = ('phone_model_item', 'quantity', 'phone_size_sku', 'owner',
+        fields = ('phone_model_item', 'quantity', 'owner',
                   'session_key', 'is_wishlist')
 
     def __init__(self, request, *args, **kwargs):
