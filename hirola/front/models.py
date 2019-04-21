@@ -262,8 +262,8 @@ class OrderStatus(models.Model):
     """Creates order status'"""
 
     status = models.CharField(max_length=60, unique=True, error_messages={
-            'unique': 'The status you entered already exists'},
-            default='processing')
+        'unique': 'The status you entered already exists'},
+                              default='processing')
 
     class Meta:
         """Sets the plural name of order status'"""
