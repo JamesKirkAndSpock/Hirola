@@ -1,10 +1,10 @@
 """Test the forms for a cart"""
 from front.base_test import BaseTestCase
-from front.forms.cart_forms import CartForm
+from front.forms.cart_forms import CartForm, CartOwnerForm
 from django.test import RequestFactory, Client
 from django.contrib import auth
 from django.contrib.sessions.middleware import SessionMiddleware
-from front.models import User, Cart
+from front.models import User, Cart, CartOwner
 from front.views import check_cart_exists
 from front.views import check_cart_exists_anonymous
 
@@ -178,3 +178,71 @@ class CartFormTestCase(BaseTestCase):
         form = check_cart_exists_anonymous(request)
         self.assertEqual(form.instance.owner, None)
         self.assertEqual(form.instance.session_key, None)
+
+
+class CartOwnerFormTestCase(BaseTestCase):
+    """Tests the functionality of the CartOwnerform"""
+
+    def setUp(self):
+        """
+        Set up pre-conditions
+        """
+        super(CartOwnerFormTestCase, self).setUp()
+
+    def test_successful_validation(self):
+        """
+        Test that on provision of valid data
+            - That the form's validation is true
+        """
+        request = RequestFactory()
+        User.objects.create_user(email="example_user@gmail.com")
+        user = User.objects.get(email="example_user@gmail.com")
+        Cart.objects.create(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=1)
+        cart = Cart.objects.get(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=1)
+        request = request.post(
+            "", {'cart': cart.id,
+                 'owner': user.id
+                 }
+        )
+        self.client = Client()
+        self.client.get("/")
+        middleware = SessionMiddleware()
+        middleware.process_request(request)
+        request.session.save()
+        request.user = auth.get_user(self.client)
+        form = CartOwnerForm(request.POST)
+        self.assertTrue(form.is_valid())
+
+    def test_successful_validation_of_existing_cart(self):
+        """
+        Test that on provision of data
+            - That the form's returns an error if cart already exists
+        """
+        request = RequestFactory()
+        User.objects.create_user(email="example_user@gmail.com")
+        user = User.objects.get(email="example_user@gmail.com")
+        Cart.objects.create(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=1)
+        cart = Cart.objects.get(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=1)
+        CartOwner.objects.create(owner=user, cart=cart)
+        request = request.post(
+            "", {'cart': cart.id,
+                 'owner': user.id
+                 }
+        )
+        self.client = Client()
+        self.client.get("/")
+        middleware = SessionMiddleware()
+        middleware.process_request(request)
+        request.session.save()
+        request.user = auth.get_user(self.client)
+        form = CartOwnerForm(request.POST)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['__all__'][0], 'Relation already exists')

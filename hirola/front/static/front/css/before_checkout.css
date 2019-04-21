@@ -5,6 +5,10 @@
     flex: 1 0 auto;
 }
 
+.cart-content {
+    margin-top: 30px;
+}
+
 .col {
     height: 100% !important;
 }
@@ -108,6 +112,7 @@
     .cart-content {
         display: flex;
         flex-direction: column;
+        margin-top: 20px;
     }
     .left-content .row .col.s12 {
         width: 100%;
