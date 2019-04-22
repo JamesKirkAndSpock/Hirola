@@ -1,6 +1,6 @@
 """Contains backend tests for phone profile page."""
 import json
-from front.base_test import BaseTestCase, PhoneImage
+from front.base_test import BaseTestCase
 
 
 class PhoneProfilePageTestCase(BaseTestCase):
