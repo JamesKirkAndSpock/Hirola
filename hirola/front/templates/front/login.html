@@ -94,4 +94,11 @@
         <div class="col m3"></div>
     </div>
 </div>
-{% block footer %} {% include 'front/footer.html' %} {% endblock %} {% endblock %}
+{% block scripts %}
+{{ block.super }}
+{% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script>
+{% endblock %}
+{% block footer %}
+{% include 'front/footer.html' %}
+{% endblock %} {% endblock %}

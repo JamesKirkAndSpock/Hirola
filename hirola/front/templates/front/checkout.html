@@ -12,6 +12,7 @@
                 <div class="nav-wrapper">
                     <div class="col s12">
                         <a href="/" class="breadcrumb">teke</a>
+                        <a href="/before_checkout" class="breadcrumb">My Cart</a>
                         <a href="#!" class="breadcrumb" id="last-link">Checkout</a>
                     </div>
                 </div>
@@ -33,7 +34,7 @@
                 <div class="row shipping">
                     <h6><b>1. Delivery Options</b></h6>
                       <p>Please select how you would like to receive your ordered item(s)</p>
-                    <form action="#">
+                    <form action="#" id="shippingMethod">
                         <div class="col s12">
                           <label for="pickup">
                         <input class="with-gap" name="group1" type="radio" id="pickup"/>
@@ -108,7 +109,7 @@
                                 </form>
                             </div>
                             <p>Total Price: {{ item.total_price|intcomma }}</p>
-    
+
                             <form method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="cart_id_remove" value="{{ item.id }}"/>
@@ -124,6 +125,8 @@
             </div>
             <div class="col m1"></div>
             <div class="col m4 confirmation">
+                <form action="/order" method="POST">
+                    {% csrf_token %}
                 <div class="row">
                     <div class="col s6"><p></p></div>
                     <div class="col s6"><p></p></div>
@@ -135,17 +138,18 @@
                 <hr>
                 <div class="row">
                     <div class="col s12">
-                      <p></p>
                         <button class="btn waves-effect waves-light btg  green" type="submit" name="action">Place Order</button>
                     </div>
 
                 </div>
                 <p class="confirmation-text">By clicking Place Order, you agree to pay the full price of this item once its delivered</p>
+            </form>
             </div>
         </div>
     </div>
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %} {{ block.super }} {% load static %}
 <script src="{% static 'front/js/material_init.js' %}"></script>
+<script src="{% static 'front/js/checkout.js' %}"></script>
 {% endblock %}
 {% endblock %}

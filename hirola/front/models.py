@@ -205,8 +205,8 @@ class PhoneMemorySize(models.Model):
                                  null=True, blank=True)
 
     def __str__(self):
-        return "{} {} {}".format(
-            str(self.size_number), self.abbreviation, str(self.category)
+        return "{} {}".format(
+            str(self.size_number), self.abbreviation
         )
 
     def save(self, *args, **kwargs):
@@ -261,7 +261,9 @@ class SocialMedia(models.Model):
 class OrderStatus(models.Model):
     """Creates order status'"""
 
-    status = models.CharField(max_length=60, blank=False, default=None)
+    status = models.CharField(max_length=60, unique=True, error_messages={
+        'unique': 'The status you entered already exists'},
+                              default='processing')
 
     class Meta:
         """Sets the plural name of order status'"""
@@ -519,8 +521,6 @@ class Order(models.Model):
     phone = models.ForeignKey(PhoneModelList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
     quantity = IntegerRangeField(min_value=1)
-    price = models.DecimalField(max_digits=6, decimal_places=0)
-    size = models.CharField(max_length=4, null=True, blank=True)
     total_price = IntegerRangeField(min_value=0, default=0)
     payment_method = models.ForeignKey(PaymentMethod,
                                        on_delete=models.SET_NULL,

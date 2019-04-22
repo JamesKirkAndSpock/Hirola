@@ -98,8 +98,7 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
         """Create an order"""
         Order.objects.create(
             owner=self.timon, phone=self.iphone_6_s_rose_gold,
-            status=self.order_status, quantity=2,
-            price=10000, total_price=20000,
+            status=self.order_status, quantity=2, total_price=20000,
             payment_method=self.mpesa, date="2018-12-12",
             )
         self.order = Order.objects.get(owner=self.timon)

@@ -1,6 +1,6 @@
 """Test the views of checkout page"""
 from front.base_test import BaseTestCase
-from front.models import Cart, User, Feature
+from front.models import Cart, User, Feature, Order
 from django.test import Client
 
 
@@ -120,3 +120,40 @@ class CheckoutViewTestCase(BaseTestCase):
         self.assertEqual(after_save_response.status_code, 200)
         self.assertContains(after_save_response, "75,000")
         self.assertContains(after_save_response, "125,000")
+
+    def test_order_items(self):
+        """
+        Test that when a client clicks the place order button
+            - That the items in the cart are converted to orders
+            - That their cart is emptied
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=2, owner=user)
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_7_rose_gold,
+            quantity=1, owner=user)
+        response = self.winniethepooh.post('/order')
+        self.assertRedirects(response, '/dashboard#orders', 302)
+        order_1 = Order.objects.get(phone=self.samsung_note_5_rose_gold)
+        self.assertEqual(order_1.owner, user)
+        orders = Order.objects.all()
+        self.assertEqual(len(orders), 2)
+        carts = Cart.objects.filter(owner=user)
+        self.assertEqual(len(carts), 0)
+
+    def test_get_order_url(self):
+        """
+        Test that when the order url is visited without posting any data
+        - it redirects to the checkout page
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        response = self.winniethepooh.get('/order', follow=True)
+        self.assertRedirects(response, '/before_checkout', 302)

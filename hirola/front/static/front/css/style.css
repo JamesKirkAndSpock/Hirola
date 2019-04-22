@@ -24,7 +24,11 @@ body {
 
 .breadcrumb {
     font-size: 14px;
-    color: #00A347;
+    color: #00A347 !important;
+}
+
+.breadcrumbs {
+    margin-top: 20px;
 }
 
 .breadcrumb:before {
@@ -33,7 +37,7 @@ body {
 }
 
 .breadcrumb:last-child {
-    color: gray;
+    color: gray !important;
 }
 
 .this-black a:hover {

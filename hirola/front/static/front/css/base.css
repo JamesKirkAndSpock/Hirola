@@ -83,6 +83,12 @@ header {
     .sidenav-trigger {
         margin: 0 !important;
     }
+    .brand {
+        height: 25px;
+        width: 25px;
+        margin-top: 15px !important;
+    }
+
 }
 
 .navigation a {
@@ -109,4 +115,14 @@ li.a-divider{
 
 
 
+}
+
+.brand {
+    margin-top: 10px;
+}
+
+.brand-area{
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
 }

@@ -2,8 +2,8 @@ $('#color_selector').change(function() {
     $.getJSON("/get_sizes", {id: $('#color_selector').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
 
         var options = '<option value="' + j["phone_size_id"] + '" selected>' + j["phone_size"] + '</option>';
-        for (var i in j["sizes"]) {
-            options += '<option value="' + i + '">' + j["sizes"][i] + '</option>';        
+        for (var i in j.sizes) {
+            options += '<option value="' + i + '">' + j.sizes[i] + '</option>';
         }
         $('select').formSelect();
         var instance = M.FormSelect.getInstance($("#storage"));
@@ -14,7 +14,7 @@ $('#color_selector').change(function() {
             quantity_options += '<option value=' + k + '>'+ i + '</option> ';
         }
         $("#quantity").html(quantity_options);
-        $('#price').html(j["currency"] + "  " + j["price"]);
+        $('#price').html(j.currency + "  " + comma(j.price));
         $('select').formSelect();
         $('#main_image_data_thumb').attr("data-thumb", j["main_image"])
         $('#main_image_src').attr("src", j["main_image"]);
@@ -34,6 +34,9 @@ $('#color_selector').change(function() {
 });
 
 $('#storage').change(function() {
+    $("#phone_size").val($('#storage').val());
+
+    console.log(size);
     $.getJSON("/size_change", {size_id: $('#storage').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
         var quantity_options = '<option value=1 selected>1</option>';
         for (var i=2, k=2; i <= j.phone_quantity; i ++, k++ ){
@@ -41,13 +44,18 @@ $('#storage').change(function() {
         }
         $("#quantity").html(quantity_options);
         $('select').formSelect();
-        $('#price').html(j["currency"] + "  " + j["price"]);
+        $('#price').html(j.currency + "  " + comma(j.price));
         $("#phone_item").val(j.phone);
+        console.log(j);
     })
 });
 
 $('#quantity').change(function() {
     $.getJSON("/quantity_change", {color_id: $('#color_selector').val(), size_id: $('#storage').val(), qty: $('#quantity').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
-    $('#price').html(j["currency"] + "  " + j["total_cost"]);
+    $('#price').html(j.currency + "  " + comma(j.total_cost));
     })
+});
+
+$('add-to-cart-button').click(function(){
+    $('add-to-cart-button2').attr('name', '');
 });
