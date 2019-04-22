@@ -33,12 +33,12 @@ $('#color_selector').change(function() {
             var profileImg = $('.profile-img');
             var lightSlider = $('<ul/>').attr('id', 'lightSlider');
             var mainImg = $('<li/>').attr('id', 'main_image_data_thumb');
-            mainImg.attr("data-thumb", j["main_image"]);
+            mainImg.attr("data-thumb", j.main_image);
             var mainImgSrc = $('<img/>').attr('id', 'main_image_src');
-            mainImgSrc.attr("src", j["main_image"]);
+            mainImgSrc.attr("src", j.main_image);
             mainImg.append(mainImgSrc);
             lightSlider.append(mainImg);
-            for (img in j.images){
+            for (var img in j.images){
                 var thumbLi = $('<li/>').attr('data-thumb', j.images[img]);
                 thumbLi.addClass('center scroll-images');
                 var thumbImg = $('<img/>').attr('id', 'main_image_src');
