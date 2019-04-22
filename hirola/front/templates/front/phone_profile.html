@@ -37,11 +37,9 @@
                                                 <img id="main_image_src" src="{{ MEDIA_URL }}{{ phone.main_image }}" />
                                             </li>
                                             {% for image in image_list %}
-                                            <!-- <span id="sliderImages"> -->
                                                 <li data-thumb="{{ MEDIA_URL }}{{ image.image }}" class="center scroll-images">
                                                 <img src="{{ MEDIA_URL }}{{ image.image }}" />
                                                 </li>
-                                            <!-- </span> -->
                                             {% endfor %}
                                         </ul>
                                     </div>

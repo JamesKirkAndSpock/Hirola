@@ -1,6 +1,6 @@
 """Contains backend tests for phone profile page."""
 import json
-from front.base_test import BaseTestCase
+from front.base_test import BaseTestCase, PhoneImage
 
 
 class PhoneProfilePageTestCase(BaseTestCase):
@@ -90,10 +90,17 @@ class PhoneProfilePageTestCase(BaseTestCase):
         Test that the get sizes url fetches the appropriate data
         """
         data = {
-            'phone_model_id': self.lg_plus.id,
-            'id': self.lg_plus_silver.color.id}
+            'phone_model_id': self.lg_plus_silver_two.id,
+            'id': self.lg_plus_silver_two.color.id}
         response = self.client.get("/get_sizes", data)
         self.assertEqual(json.loads(response.content)['sizes_length'], 1)
+        self.assertEqual(json.loads(response.content)['phone_size'], '4 GB')
+        self.assertEqual(
+            json.loads(response.content)['phone_quantity'],
+            self.lg_plus_silver.quantity)
+        self.assertEqual(len(json.loads(response.content)['images']), 2)
+        self.assertEqual(
+            json.loads(response.content)['price'], '5000')
 
     def test_size_change(self):
         """
