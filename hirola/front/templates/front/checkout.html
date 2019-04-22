@@ -3,6 +3,9 @@
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/checkout.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
 {% endblock %} {% block content %}
+{% load humanize %}
+{% load stars_counter %}
+{% load before_cart %}
     <div class="container main-content">
         <div class="row breadcrumbs">
             <nav class="this-black">
@@ -71,27 +74,51 @@
                     <h6><b>2. Review Your Order</b></h6>
                       <br>
                 </div>
+                {% for item in items %}
                 <div class="row item">
-                    <div class="col m3 center">
-                        <div class="image responsive-img">
-                            <img src="../../static/front/nexus-5x.png">
+                    <div class="col s6 m4">
+                        <div class="card z-depth-0 center">
+                            <img src="{{ MEDIA_URL }}{{ item.phone_model_item.main_image }}" class="responsive-img">
                         </div>
                     </div>
-                    <div class="col m3 s12">
-                        <p>Apple iphone 6s</p>
-                        <p>Delivery: 14 days</p>
-                        <form action="#">
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input id="qty" type="number" value="1">
-                                </div>
+                    <div class="col m4 s6 l4">
+                        <p>{{ item.phone_model_item }}</p>
+                        <p><b>{{ item.phone_model_item.size_sku }}</b></p>
+                        <ul style="list-style-type:disc"></ul>
+                            {% for feature in item.phone_model_item.pk|features %}
+                                <li>{{ feature.feature }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="col m4 s12 l4">
+                            <div class="input-field">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <select class="browser-default" name="quantity" onchange='this.form.submit()'>
+                                        {% for i in item.phone_model_item.quantity|integize %}
+                                            {% if i|add:'1' == item.quantity %}
+                                                <option value="{{ i|add:'1' }}" selected>{{ i|add:"1" }}</option>
+                                            {% else %}
+                                                <option value="{{ i|add:'1' }}">{{ i|add:"1" }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <input type="hidden" name="cart_id_quantity" value="{{ item.id }}"/>
+                                </form>
                             </div>
-                        </form>
+                            <p>Total Price: {{ item.total_price|intcomma }}</p>
+    
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="cart_id_remove" value="{{ item.id }}"/>
+                                <button class="faux-link" type="submit" name="action">
+                                    <span class="before_checkout_buttons"><a>Remove</a></span>
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="col m6 s12">
-                        <p>Price: 67 000</p>
-                    </div>
-                </div>
+                {% endfor %}
                 <div class="row"></div>
                 <div class="row"></div>
             </div>
@@ -103,7 +130,11 @@
                 </div>
                 <div class="row">
                     <div class="col s6"><p><b>Order Total:</b></p></div>
+<<<<<<< HEAD
                     <div class="col s6"><p class="green-text"><b>Ksh 67000</b></p></div>
+=======
+                    <div class="col s6"><p class="green-text"><b>Ksh {{ cart_total|intcomma }}</b></p></div>
+>>>>>>> 2791da956254bb7f9a088d587e8a724442905b08
                 </div>
                 <hr>
                 <div class="row">

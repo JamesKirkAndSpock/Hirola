@@ -499,6 +499,16 @@ class Cart(models.Model):
         return cart.quantity * cart.phone_model_item.price
 
 
+class CartOwner(models.Model):
+    """ A relation between a possible cart owner and the cart. It exists as
+    a temporary storage before a user is logged in to save carts in a
+    pre-existing session to his own cart."""
+    owner = models.ForeignKey(User, null=True, blank=True,
+                              on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, null=True, blank=True,
+                             on_delete=models.CASCADE)
+
+
 class Order(models.Model):
     """
     A table model for order items.
