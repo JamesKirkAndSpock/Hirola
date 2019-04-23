@@ -95,19 +95,6 @@ class PhoneProfilePageTestCase(BaseTestCase):
         response = self.client.get("/get_sizes", data)
         self.assertEqual(json.loads(response.content)['sizes_length'], 1)
 
-    def test_get_sizes_error(self):
-        """
-        Test that when the get sizes url doesn't find the required data.
-            - That it returns a json error message
-        """
-        data = {
-            'phone_model_id': self.samsung_note_5.id,
-            'id': self.samsung_note_5_rose_gold.color.id}
-        response = self.client.get("/get_sizes", data)
-        error = {
-            "message": "There are no sizes currently"}
-        self.assertEqual(json.loads(response.content), error)
-
     def test_size_change(self):
         """
         Test that the size change url returns the expected data
