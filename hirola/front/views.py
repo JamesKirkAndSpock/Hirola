@@ -200,10 +200,6 @@ def get_sizes(request):
             "infos": phone_information,
             "phone": phone.id,
             }
-    if data['sizes_length'] <= 0:
-        error = {
-            "message": "There are no sizes currently"}
-        return JsonResponse(error)
     return JsonResponse(data)
 
 
