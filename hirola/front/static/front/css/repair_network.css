@@ -57,3 +57,30 @@
 .service p {
   margin: 5px 0 5px 0 !important;
 }
+
+.order-details {
+  border: 0.5px solid grey;
+}
+
+.order-header {
+  margin-top: 30px;
+}
+
+.order-header {
+  font-family: Circular-Bold,Arial,sans-serif;
+font-weight: 700;
+position: relative;
+margin: 0 0 30px;
+color: #3b302c;
+}
+
+.order-header h5:after {
+    content: '';
+    border-bottom: 5px green solid;
+    top:25px;
+    position: absolute;
+    height: 5px;
+    width: 80px;
+    left: 0;
+    bottom: -10px;
+}

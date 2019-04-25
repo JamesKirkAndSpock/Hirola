@@ -1,0 +1,78 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/repair_network.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+{% endblock %}
+{% block content %}
+{% load services %}
+<div class="container main-content">
+    <div class="row breadcrumbs">
+        <nav class="this-black">
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <a href="/" class="breadcrumb">teke</a>
+                    <a href="#" class="breadcrumb" id="last-link">order received</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="row content">
+
+      <div class="row">
+        <div class="center">
+              <h5>{teke}<sup>2<sup></h5>
+        </div>
+        </div>
+
+        <div class="row">
+        <div class="order-header">
+              <h5 class="header-text">Order Received</h5>
+        </div>
+        <p>Thank you for shopping at {teke}<sup>2</sup>, Peter. We have received your order of <a class="green-text" href=#>iPhone
+          6S</a> and <a  class="green-text" href="#">iPad 4.</a></p>
+        </div>
+
+        <h6><b>Order details</b></h6>
+        <div class="row">
+            <div class="col s12 m6 l3 order-details">
+              <p><b class="green-text">ORDER NUMBER:</b><br>#001</p>
+            </div>
+            <div class="col s12 m6 l3 order-details">
+              <p><b class="green-text">DATE:</b><br>13th April, 2013</p>
+            </div>
+            <div class="col s12 m6 l3 order-details">
+              <p><b class="green-text">ORDER TOTAL:</b><br>Kes. 90,000</p>
+            </div>
+            <div class="col s12 m6 l3 order-details">
+              <p><b class="green-text">DELIVERY:</b><br>Pick up @ Thindigua</p>
+            </div>
+          </div>
+
+
+        <div class="row">
+        <div class="order-header">
+              <h5 class="header-text">Next Steps</h5>
+        </div>
+            <ul class="collapsible z-depth-0">
+                <li>
+                    <div class="collapsible-header green-text"><i class="material-icons">track_changes</i>Track Order</div>
+                    <div class="collapsible-body"><span>Delivery takes between 1 to 3 weeks. We will keep you updated on the shipping status through the number you provided us.</span>
+                      </div>
+                </li>
+                <li>
+                    <div class="collapsible-header red-text"><i class="material-icons">cancel</i>Cancel or Edit Order</div>
+                    <div class="collapsible-body"><span>If you would like to cancel or delete your order, please contact us within two days of ordering.
+                      You can contact us <a href="/help#help-center" class="help-links green-text"><u>here</u></a>, or on social media:
+                    facebook, twitter, WhatsApp </span></div>
+                </li>
+                <li>
+                          <div class="collapsible-header green-text"><i class="material-icons">payment</i>How do I Pay?</div>
+                          <div class="collapsible-body"><span>You will only pay for your order once we deliver it to you. We accept M-Pesa, Equitel and Z-Cash. We do not accept cash.</span></div>
+                </li>
+        </div>
+
+ </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/material_init.js' %}"></script> {% endblock %}
+{% endblock %}

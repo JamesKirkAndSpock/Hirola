@@ -889,3 +889,9 @@ def place_order(request):
             Cart.objects.filter(id=obj.id).delete()
         return redirect('/dashboard#orders')
     return redirect('/checkout')
+
+
+def checkout_complete(request):
+    (phone_categories, social_media) = various_caches()
+    context = {'categories': phone_categories, 'social_media': social_media}
+    return render(request, 'front/checkout_complete.html', context)
