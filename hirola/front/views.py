@@ -818,6 +818,8 @@ def hot_deal(request, hot_deal_id):
     """Render hotdeal page."""
     (phone_categories, social_media) = various_caches()
     if request.method == "POST":
+        if request.POST.get('buy_now'):
+            return buy_now(request)
         return cart_redirect(request)
     phone = PhoneModelList.objects.filter(id=hot_deal_id).first()
     if not phone:
