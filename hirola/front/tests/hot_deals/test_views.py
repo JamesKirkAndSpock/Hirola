@@ -54,4 +54,18 @@ class HotDealsViewsTestCase(BaseTestCase):
             phone_model_item=self.samsung_note_5_rose_gold,
             quantity=2
         )
+
         self.assertTrue(cart)
+
+    def test_buy_now_anonymous(self):
+        """
+        Test that when the user clicks buy now button before logging in
+            - That they are redirected to the login page before going to
+              checkout
+        """
+        response = self.client.post(
+            "/hot_deal/{}/".format(self.hot_deal.pk),
+            {'phone_model_item': self.samsung_note_5_rose_gold.pk,
+             'quantity': 2, 'owner': '',
+             'buy_now': '1'}, follow=True)
+        self.assertRedirects(response, "/login?next=/checkout")

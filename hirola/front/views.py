@@ -145,6 +145,8 @@ def check_cart_exists_anonymous(request):
 def phone_profile_view(request, phone_model_id):
     """Fetch phone details and render the data in the phone profile page."""
     if request.method == "POST":
+        if request.POST.get('buy_now'):
+            return buy_now(request)
         return cart_redirect(request)
     phone_model = PhoneModel.objects.filter(id=phone_model_id).first()
     if not phone_model:
@@ -816,6 +818,8 @@ def hot_deal(request, hot_deal_id):
     """Render hotdeal page."""
     (phone_categories, social_media) = various_caches()
     if request.method == "POST":
+        if request.POST.get('buy_now'):
+            return buy_now(request)
         return cart_redirect(request)
     phone = PhoneModelList.objects.filter(id=hot_deal_id).first()
     if not phone:
@@ -895,3 +899,14 @@ def checkout_complete(request):
     (phone_categories, social_media) = various_caches()
     context = {'categories': phone_categories, 'social_media': social_media}
     return render(request, 'front/checkout_complete.html', context)
+
+
+def buy_now(request):
+    """
+    Go to checkout as anonymous user
+    """
+    form = check_cart_exists_anonymous(request)
+    if form.is_valid():
+        cart = form.save(commit=False)
+        cart.save()
+        return redirect("/checkout")
