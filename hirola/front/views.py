@@ -905,6 +905,11 @@ def buy_now(request):
     """
     Go to checkout as anonymous user
     """
+    if not request.user.is_anonymous:
+        form = check_cart_exists(request)
+        if form.is_valid():
+            form.save()
+            return redirect('/checkout')
     form = check_cart_exists_anonymous(request)
     if form.is_valid():
         cart = form.save(commit=False)

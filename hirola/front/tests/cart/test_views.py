@@ -330,3 +330,29 @@ class CartViewsTestCase(BaseTestCase):
         cart = Cart.objects.get(
             phone_model_item=self.samsung_note_5_rose_gold)
         self.assertTrue(cart)
+
+    def test_buy_now_logged_in(self):
+        """
+        Test that when a user request to buy now while logged in
+            - That their item is saved to the cart
+            - and they are redirected to the checkout page
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        form = {
+            'buy_now': '1',
+            'quantity': '1',
+            'phone_model_input': '{}'.format(
+                self.samsung_note_5_rose_gold.phone_model.id),
+            'phone_model_item': '{}'.format(
+                self.samsung_note_5_rose_gold.id)
+        }
+        response = self.winniethepooh.post('/profile/{}/'.format(
+            self.samsung_note_5_rose_gold.pk), form, follow=True)
+        self.assertRedirects(response, "/checkout")
+        self.assertContains(response, '1. Delivery Options')
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold)
+        self.assertTrue(cart)
