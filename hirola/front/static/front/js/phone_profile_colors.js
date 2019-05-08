@@ -1,6 +1,5 @@
 $('#color_selector').change(function() {
     $.getJSON("/get_sizes", {id: $('#color_selector').val(), phone_model_id: $('#phone_model').val(), view: 'json'}, function(j) {
-
         var options = '<option value="' + j["phone_size_id"] + '" selected>' + j["phone_size"] + '</option>';
         for (var i in j.sizes) {
             options += '<option value="' + i + '">' + j.sizes[i] + '</option>';
@@ -30,6 +29,36 @@ $('#color_selector').change(function() {
         }
         $('#product_information').html(infos);
         $("#phone_item").val(j.phone);
+        $(document).ready(function () {
+            var profileImg = $('.profile-img');
+            var lightSlider = $('<ul/>').attr('id', 'lightSlider');
+            var mainImg = $('<li/>').attr('id', 'main_image_data_thumb');
+            mainImg.attr("data-thumb", j.main_image);
+            var mainImgSrc = $('<img/>').attr('id', 'main_image_src');
+            mainImgSrc.attr("src", j.main_image);
+            mainImg.append(mainImgSrc);
+            lightSlider.append(mainImg);
+            for (var img in j.images){
+                var thumbLi = $('<li/>').attr('data-thumb', j.images[img]);
+                thumbLi.addClass('center scroll-images');
+                var thumbImg = $('<img/>').attr('id', 'main_image_src');
+                thumbImg.attr("src", j.images[img]);
+                thumbLi.append(thumbImg);
+                lightSlider.append(thumbLi);
+            }
+            profileImg.html(lightSlider);
+            lightSlider.lightSlider({
+                gallery: true,
+                item: 1,
+                loop: true,
+                thumbItem: 9,
+                slideMargin: 0,
+                enableDrag: false,
+                currentPagerPosition: 'left',
+                prevHtml: '<i class="fas fa-chevron-left fa-2x"></i>',
+                nextHtml: '<i class="fas fa-chevron-right fa-2x"></i>'
+            });
+        });
     })
 });
 

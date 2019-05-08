@@ -191,6 +191,9 @@ def get_sizes(request):
     for feature in phone.phone_features.all():
         feature_list.append(feature.feature)
     phone_information = {}
+    image_list = []
+    for image in phone.phone_images.all():
+        image_list.append(settings.MEDIA_URL + str(image.image))
     for info in phone.phone_information.all():
         phone_information[info.feature] = info.value
     data = {"sizes": sizes_data, "sizes_length": len(sizes_data),
@@ -201,6 +204,7 @@ def get_sizes(request):
             "features": feature_list,
             "infos": phone_information,
             "phone": phone.id,
+            'images': image_list
             }
     return JsonResponse(data)
 
