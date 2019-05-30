@@ -34,11 +34,11 @@
                                     <div class="profile-img">
                                         <ul id="lightSlider">
                                             <li id="main_image_data_thumb" data-thumb="{{ MEDIA_URL }}{{ phone.main_image }}">
-                                                <img id="main_image_src" src="{{ MEDIA_URL }}{{ phone.main_image }}" />
+                                                <img id="main_image_src" src="{{ MEDIA_URL }}{{ phone.main_image }}" width="80" height="150" />
                                             </li>
                                             {% for image in image_list %}
                                                 <li data-thumb="{{ MEDIA_URL }}{{ image.image }}" class="center scroll-images">
-                                                <img src="{{ MEDIA_URL }}{{ image.image }}" />
+                                                <img src="{{ MEDIA_URL }}{{ image.image }}" width="80" height="150" />
                                                 </li>
                                             {% endfor %}
                                         </ul>
@@ -100,17 +100,14 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
-                          <div id="phone_features">
-                            <ul></ul>
-                              <li class="key-features"><h6><b>Key Features</b></h6><li>
-                                {% for feature in features %}
-                                <li id="phoneFeature">{{ feature.feature }}</li>
-                                {% endfor %}
+                            <div id="phone_features">
+                                <h6><b>Key Features</b></h6>
+                                  {% for feature in features %}
+                                  <li>{{ feature.feature }}</li>
+                                  {% endfor %}
+                            </div>
                           </div>
-                        </div>
-
                     </div>
                     <input type="hidden" id="phone_model" name="phone_model_input" value="{{ phone_model.id }}">
                     <input type="hidden" id="phone_item" name="phone_model_item" value="{{ phone.id }}">
