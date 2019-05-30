@@ -95,7 +95,6 @@ class CartViewsTestCase(BaseTestCase):
         self.assertContains(response, note_5_quantity)
         self.assertContains(response, "GSM feature")
         self.assertContains(response, "75,000")
-        self.assertContains(response, "<span class=\"right\">2</span>")
         self.assertContains(response, "125,000")
 
     def test_before_checkout_anonymous_no_cart(self):
@@ -143,7 +142,6 @@ class CartViewsTestCase(BaseTestCase):
         self.assertContains(response, cart.phone_model_item.main_image)
         self.assertContains(response, "GSM feature")
         self.assertContains(response, "75,000")
-        self.assertContains(response, "<span class=\"right\">2</span>")
         self.assertContains(response, "125,000")
 
     def test_phone_profile_view_post_logged_in(self):
