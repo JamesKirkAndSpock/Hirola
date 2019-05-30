@@ -31,8 +31,9 @@ class PhoneProfilePageTestCase(BaseTestCase):
         img = "<li id=\"main_image_data_thumb\" data-thumb=\"/media/{}\">".\
             format(self.samsung_note_5_rose_gold.main_image)
         self.assertContains(response, img)
-        img_2 = "<img id=\"main_image_src\" src=\"/media/{}\" width=\"80\" height=\"150\" />".\
-            format(self.samsung_note_5_rose_gold.main_image)
+        img_2 = '<img id=\"main_image_src\" src=\"/media/{}\"'\
+                ' width=\"80\" height=\"150\" />'.\
+                format(self.samsung_note_5_rose_gold.main_image)
         self.assertContains(response, img_2)
 
     def test_color_selector_options(self):

@@ -20,7 +20,8 @@ class HotDealTestCase(BaseTestCase):
         self.assertContains(response, '25,000')
         self.assertContains(response, 'Color: Red')
         self.assertContains(response, 'Size: 16 GB')
-        img = "<img id=\"main_image_src\" src=\"/media/{}\" width=\"80\" height=\"150\"/>".\
+        img = '<img id=\"main_image_src\" src=\"/media/{}\"'\
+            ' width=\"80\" height=\"150\"/>'.\
             format(self.samsung_note_5_rose_gold.main_image)
         self.assertContains(response, img)
         img_2 = "<li id=\"main_image_data_thumb\" data-thumb=\"/media/{}\">".\
