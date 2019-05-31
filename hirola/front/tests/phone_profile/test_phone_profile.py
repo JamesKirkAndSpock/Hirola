@@ -49,6 +49,18 @@ class PhoneProfilePageTestCase(BaseTestCase):
             self.samsung_note_5_rose_gold.color)
         self.assertContains(response, html)
 
+    def test_key_features_rendered(self):
+        """
+        Test that on the profile page
+            - Key features are displayed
+        """
+        response = self.client.get("/profile/{}/".format(
+            self.samsung_note_5_rose_gold.id))
+        heading = "<h6><b>Key Features</b></h6>"
+        self.assertContains(response, heading)
+        feature = "<li>Dual Sim Card</li>"
+        self.assertContains(response, feature)
+
     def test_storage_selector_options(self):
         """
         Test that on the profile page
