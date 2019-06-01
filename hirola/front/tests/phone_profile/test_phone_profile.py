@@ -31,8 +31,9 @@ class PhoneProfilePageTestCase(BaseTestCase):
         img = "<li id=\"main_image_data_thumb\" data-thumb=\"/media/{}\">".\
             format(self.samsung_note_5_rose_gold.main_image)
         self.assertContains(response, img)
-        img_2 = "<img id=\"main_image_src\" src=\"/media/{}\" />".\
-            format(self.samsung_note_5_rose_gold.main_image)
+        img_2 = '<img id=\"main_image_src\" src=\"/media/{}\"'\
+                ' width=\"80\" height=\"150\" />'.\
+                format(self.samsung_note_5_rose_gold.main_image)
         self.assertContains(response, img_2)
 
     def test_color_selector_options(self):
@@ -47,6 +48,18 @@ class PhoneProfilePageTestCase(BaseTestCase):
             self.samsung_note_5_rose_gold.color.id,
             self.samsung_note_5_rose_gold.color)
         self.assertContains(response, html)
+
+    def test_key_features_rendered(self):
+        """
+        Test that on the profile page
+            - Key features are displayed
+        """
+        response = self.client.get("/profile/{}/".format(
+            self.samsung_note_5_rose_gold.id))
+        heading = "<h6><b>Key Features</b></h6>"
+        self.assertContains(response, heading)
+        feature = "<li>Dual Sim Card</li>"
+        self.assertContains(response, feature)
 
     def test_storage_selector_options(self):
         """

@@ -17,7 +17,7 @@ $('#color_selector').change(function() {
         $('select').formSelect();
         $('#main_image_data_thumb').attr("data-thumb", j["main_image"])
         $('#main_image_src').attr("src", j["main_image"]);
-        var  feature_list = "";
+        var  feature_list = "<h6><b>Key Features</b></h6>";
         for( feature in j["features"]){
             feature_list += '<li>'+ j["features"][feature] + '</li>';
         }
@@ -35,13 +35,13 @@ $('#color_selector').change(function() {
             var mainImg = $('<li/>').attr('id', 'main_image_data_thumb');
             mainImg.attr("data-thumb", j.main_image);
             var mainImgSrc = $('<img/>').attr('id', 'main_image_src');
-            mainImgSrc.attr("src", j.main_image);
+            mainImgSrc.attr({"src": j.main_image, 'height':150, 'width': 80});
             mainImg.append(mainImgSrc);
             lightSlider.append(mainImg);
             for (var img in j.images){
                 var thumbLi = $('<li/>').attr('data-thumb', j.images[img]);
                 thumbLi.addClass('center scroll-images');
-                var thumbImg = $('<img/>').attr('id', 'main_image_src');
+                var thumbImg = $('<img/>').attr({'id': 'main_image_src', 'height':150, 'width': 80});
                 thumbImg.attr("src", j.images[img]);
                 thumbLi.append(thumbImg);
                 lightSlider.append(thumbLi);

@@ -7,7 +7,7 @@ from front.models import (
     NewsItem, Color, ItemIcon,
     cache, User, ServicePerson, RepairService, Service,
     CountryCode, PhoneModelList, PhoneBrand, PhoneModel, HotDeal,
-    PhoneImage
+    PhoneImage, Feature
     )
 
 
@@ -30,6 +30,7 @@ class BaseTestCase(TestCase):
         self.create_phone_model()
         self.create_phone_model_list()
         self.add_phone_images()
+        self.create_phone_features()
 
     def create_admin(self):
         """Create a super user Elena who has admin privilidges."""
@@ -225,6 +226,12 @@ class BaseTestCase(TestCase):
         HotDeal.objects.create(item=self.samsung_note_5_rose_gold)
         self.hotdeal = HotDeal.objects.get(
             item=self.samsung_note_5_rose_gold)
+
+    def create_phone_features(self):
+        """Add phone features."""
+        Feature.objects.create(
+            phone=self.samsung_note_5_rose_gold,
+            feature="Dual Sim Card")
 
     def tearDown(self):
         cache.clear()

@@ -49,6 +49,10 @@
     margin-top: 20px;
 }
 
+.company-logo img{
+    margin-top: 20px;
+}
+
 @media only screen and (max-width: 600px) {
     .main-content {
         margin-top: 10px;
