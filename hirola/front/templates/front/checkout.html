@@ -97,14 +97,6 @@
             </div>
             </form>
         </div>
-
-
-
-
-
-
-
-
             <div class="row">
                 <div class="col m7">
                     <div class="row" style="margin-top: 30px">
@@ -158,32 +150,7 @@
                 </div>
             </div>
     </div>
-<!--
-            <div class="col m1"></div>
-            <div class="col m4 confirmation">
-                <form action="/order" method="POST">
-                    {% csrf_token %}
-                <div class="row">
-                    <div class="col s6"><p></p></div>
-                    <div class="col s6"><p></p></div>
-                </div>
-                <div class="row">
-                    <div class="col s6"><p><b>Order Total:</b></p></div>
-                    <div class="col s6"><p class="green-text"><b>Ksh {{ cart_total|intcomma }}</b></p></div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col s12">
-                        <button class="btn waves-effect waves-light btg  green" type="submit" name="action">Place Order</button>
-                    </div>
-                </div>
-                <p class="confirmation-text">By clicking Place Order, you agree to pay the full price of this item once its delivered</p>
-                <input type="hidden" value="" name="phone_number">
-                <input type="hidden" value="" name="location">
-            </form>
-            </div> -->
         </div>
-    <!-- </div> -->
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %} {{ block.super }} {% load static %}
 <script src="{% static 'front/js/material_init.js' %}"></script>
