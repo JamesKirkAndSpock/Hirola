@@ -511,6 +511,20 @@ class CartOwner(models.Model):
                              on_delete=models.CASCADE)
 
 
+class ShippingAddress(models.Model):
+    """
+    A table model for shipping addresses.
+    """
+    pickup = models.BooleanField(default=True)
+    location = models.CharField(max_length=255, blank=False, null=False)
+    country_code = models.ForeignKey(CountryCode, on_delete=models.SET_NULL,
+                                     null=True, blank=True)
+    phone_number = models.IntegerField(blank=False, null=False)
+
+    def __str__(self):
+        return self.location
+
+
 class Order(models.Model):
     """
     A table model for order items.
@@ -525,25 +539,12 @@ class Order(models.Model):
     payment_method = models.ForeignKey(PaymentMethod,
                                        on_delete=models.SET_NULL,
                                        blank=True, null=True)
+    shipping_address = models.ForeignKey(
+        ShippingAddress, blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.phone) + ": " + str(self.owner) + " date: " + \
             str(self.date)
-
-    @property
-    def get_address(order):
-        return ShippingAddress.objects.filter(order=order).first()
-
-
-class ShippingAddress(models.Model):
-    """
-    A table model for shipping addresses.
-    """
-    order = models.ForeignKey(Order, related_name='shipping_address',
-                              on_delete=models.CASCADE)
-    pickup = models.CharField(max_length=255, blank=True, null=True)
-    location = models.CharField(max_length=255, blank=True, null=True)
-    recepient = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Feature(models.Model):

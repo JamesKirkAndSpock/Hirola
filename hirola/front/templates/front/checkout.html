@@ -20,6 +20,8 @@
         </div>
         <h5 class="center">{teke}<sup>2</sup> checkout</h5>
         <div class="row">
+            <form action="/order" method="POST" id="shippingMethod">
+            {% csrf_token %}
             <div class="col m7 goods">
               <div class="row payment">
                   <h6><b></b></h6>
@@ -34,95 +36,129 @@
                 <div class="row shipping">
                     <h6><b>1. Delivery Options</b></h6>
                       <p>Please select how you would like to receive your ordered item(s)</p>
-                    <form action="#" id="shippingMethod">
-                        <div class="col s12">
-                          <label for="pickup">
-                        <input class="with-gap" name="group1" type="radio" id="pickup"/>
-                        <span>Pick up at our office: 1234 Kiambu (Kiambu-Nairobi Road next to Thindigua Realtors)</span>
-                        </label>
+                        <div class="row">
+                            <div class="col s12">
+                            <label for="pickup">
+                            <input class="with-gap" name="pickup" type="radio" id="pickup" required value="1" />
+                            <span>Pick up at our office: 1234 Kiambu (Kiambu-Nairobi Road next to Thindigua Realtors)</span>
+                            </label>
+                            </div>
+                            <div class="col s12">
+                            <label for="delivery">
+                            <input class="with-gap" name="pickup" type="radio" id="delivery" value="2"/>
+                            <span>Request delivery (only within Nairobi area)</span>
+                            </label>
+                            </div>
+                            <input type="hidden" name="hidden_pickup" id="pickupOption" value="0">
                         </div>
-                        <div class="col s12">
-                        <label for="delivery">
-                        <input class="with-gap" name="group1" type="radio" id="delivery" />
-                        <span>Request delivery (only within Nairobi area)</span>
-                      </label>
-                        </div>
-                    </form>
                 </div>
                 <div class="row payment">
-                    <!-- <h6><b>2. Payment</b></h6> -->
                     <div class="row">
                         <div class="col s12">
                             <p>Please fill in the form below so we can know where to delivery your order to (be as specific as possible)</p>
                         </div>
                     </div>
-                    <form action="#" class="payment-form">
                         <div class="row">
-                            <div class="input-field col s12">
-                                <input id="tel" type="text" class="validate" required>
+                            <div class="input-field col s6">
+                                <select name="country_code" id="countryCode" class="browser-default"></select>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="tel" type="text" name="phone_number" class="validate">
                                 <label for="tel">Phone Number</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="town" type="text" class="validate" required>
+                                <input id="town" type="text" name="location" class="validate">
                                 <label for="town">Town/Street/Apartment Number</label>
                             </div>
                         </div>
-                    </form>
                 </div>
-                <div class="row" style="margin-top: 30px">
-                    <h6><b>2. Review Your Order</b></h6>
-                      <br>
-                </div>
-                {% for item in items %}
-                <div class="row item">
-                    <div class="col s6 m4">
-                        <div class="card z-depth-0 center">
-                            <img src="{{ MEDIA_URL }}{{ item.phone_model_item.main_image }}" class="responsive-img">
-                        </div>
-                    </div>
-                    <div class="col m4 s6 l4">
-                        <p>{{ item.phone_model_item }}</p>
-                        <p><b>{{ item.phone_model_item.size_sku }}</b></p>
-                        <ul style="list-style-type:disc"></ul>
-                            {% for feature in item.phone_model_item.pk|features %}
-                                <li>{{ feature.feature }}</li>
+                <div>
+                    {% if form.errors %}
+                            {% for key,value in form.errors.items %}
+                            <strong>{{ value|escape }}</strong>
                             {% endfor %}
-                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col m4 push-m1 confirmation">
+                <div class="row">
+                    <div class="col s6"><p><b>Order Total:</b></p></div>
+                    <div class="col s6"><p class="green-text"><b>Ksh {{ cart_total|intcomma }}</b></p></div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col s12">
+                        <button class="btn waves-effect waves-light btg  green" type="submit" name="action">Place Order</button>
                     </div>
+                </div>
+                <p class="confirmation-text">By clicking Place Order, you agree to pay the full price of this item once its delivered</p>
+            </div>
+            </form>
+        </div>
 
-                    <div class="col m4 s12 l4">
-                            <div class="input-field">
+
+
+
+
+
+
+
+            <div class="row">
+                <div class="col m7">
+                    <div class="row" style="margin-top: 30px">
+                        <h6><b>2. Review Your Order</b></h6>
+                            <br>
+                    </div>
+                    {% for item in items %}
+                    <div class="row item">
+                        <div class="col s6 m4">
+                            <div class="card z-depth-0 center">
+                                <img src="{{ MEDIA_URL }}{{ item.phone_model_item.main_image }}" class="responsive-img">
+                            </div>
+                        </div>
+                        <div class="col m4 s6 l4">
+                            <p>{{ item.phone_model_item }}</p>
+                            <p><b>{{ item.phone_model_item.size_sku }}</b></p>
+                            <ul style="list-style-type:disc"></ul>
+                                {% for feature in item.phone_model_item.pk|features %}
+                                    <li>{{ feature.feature }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="col m4 s12 l4">
+                                <div class="input-field">
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <select class="browser-default" name="quantity" onchange='this.form.submit()'>
+                                            {% for i in item.phone_model_item.quantity|integize %}
+                                                {% if i|add:'1' == item.quantity %}
+                                                    <option value="{{ i|add:'1' }}" selected>{{ i|add:"1" }}</option>
+                                                {% else %}
+                                                    <option value="{{ i|add:'1' }}">{{ i|add:"1" }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                        <input type="hidden" name="cart_id_quantity" value="{{ item.id }}"/>
+                                    </form>
+                                </div>
+                                <p>Total Price: {{ item.total_price|intcomma }}</p>
                                 <form method="POST">
                                     {% csrf_token %}
-                                    <select class="browser-default" name="quantity" onchange='this.form.submit()'>
-                                        {% for i in item.phone_model_item.quantity|integize %}
-                                            {% if i|add:'1' == item.quantity %}
-                                                <option value="{{ i|add:'1' }}" selected>{{ i|add:"1" }}</option>
-                                            {% else %}
-                                                <option value="{{ i|add:'1' }}">{{ i|add:"1" }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                    <input type="hidden" name="cart_id_quantity" value="{{ item.id }}"/>
+                                    <input type="hidden" name="cart_id_remove" value="{{ item.id }}"/>
+                                    <button class="faux-link" type="submit" name="action">
+                                        <span class="before_checkout_buttons"><a>Remove</a></span>
+                                    </button>
                                 </form>
                             </div>
-                            <p>Total Price: {{ item.total_price|intcomma }}</p>
-
-                            <form method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="cart_id_remove" value="{{ item.id }}"/>
-                                <button class="faux-link" type="submit" name="action">
-                                    <span class="before_checkout_buttons"><a>Remove</a></span>
-                                </button>
-                            </form>
                         </div>
-                    </div>
-                {% endfor %}
-                <div class="row"></div>
-                <div class="row"></div>
+                    {% endfor %}
+                </div>
             </div>
+    </div>
+<!--
             <div class="col m1"></div>
             <div class="col m4 confirmation">
                 <form action="/order" method="POST">
@@ -140,13 +176,14 @@
                     <div class="col s12">
                         <button class="btn waves-effect waves-light btg  green" type="submit" name="action">Place Order</button>
                     </div>
-
                 </div>
                 <p class="confirmation-text">By clicking Place Order, you agree to pay the full price of this item once its delivered</p>
+                <input type="hidden" value="" name="phone_number">
+                <input type="hidden" value="" name="location">
             </form>
-            </div>
+            </div> -->
         </div>
-    </div>
+    <!-- </div> -->
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %} {{ block.super }} {% load static %}
 <script src="{% static 'front/js/material_init.js' %}"></script>

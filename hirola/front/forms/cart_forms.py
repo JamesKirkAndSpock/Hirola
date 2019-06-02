@@ -1,5 +1,6 @@
 from front.forms.base_form import forms
-from front.models import Cart, CartOwner
+from front.models import Cart, CartOwner, ShippingAddress
+from front.twilio import TwilioValidation
 
 
 class CartForm(forms.ModelForm):
@@ -64,3 +65,43 @@ class CartOwnerForm(forms.ModelForm):
             self.add_error(None, "Relation already exists")
             return None
         return data
+
+
+class ShippingAddressForm(forms.ModelForm):
+    """
+    Collects order details
+    """
+
+    class Meta:
+        """
+        Attaches the ShippingAddress model to the form fields.
+        """
+
+        model = ShippingAddress
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(ShippingAddressForm, self).__init__(*args, **kwargs)
+        self.fields['hidden_pickup'] = forms.CharField(
+            widget=forms.TextInput(
+                attrs={'required': False, 'id': 'pickupOption'}))
+
+    def clean_phone_number(self):
+        """
+        Validate phone number.
+        """
+        country_code = self.cleaned_data.get("country_code")
+        if not country_code:
+            raise forms.ValidationError("Enter a valid country code")
+        phone_number = self.cleaned_data.get("phone_number")
+        return TwilioValidation().phone_validation(country_code, phone_number)
+
+    def save(self, commit=True):
+        """
+        Save address to the database.
+        """
+        address = super().save(commit=False)
+        address.pickup = False
+        if commit:
+            address.save()
+        return address
