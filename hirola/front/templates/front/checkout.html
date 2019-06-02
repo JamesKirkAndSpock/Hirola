@@ -60,7 +60,7 @@
                     </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <select name="country_code" id="countryCode" class="browser-default"></select>
+                                {{ form.country_code }}
                             </div>
                             <div class="input-field col s6">
                                 <input id="tel" type="text" name="phone_number" class="validate">
@@ -154,6 +154,7 @@
 {% block footer %} {% include 'front/footer.html' %} {% endblock %}
 {% block scripts %} {{ block.super }} {% load static %}
 <script src="{% static 'front/js/material_init.js' %}"></script>
+<script src="{% static 'front/js/dashboard.js' %}"></script>
 <script src="{% static 'front/js/checkout.js' %}"></script>
 {% endblock %}
 {% endblock %}

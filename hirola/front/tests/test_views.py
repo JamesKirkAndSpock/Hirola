@@ -1,6 +1,6 @@
-from front.base_test import (BaseTestCase, image, cache)
+from front.base_test import (BaseTestCase, image, cache, Client)
 from front.errors import (category_image_error, phone_category_error)
-from front.models import (PhoneModel, PhoneModelList)
+from front.models import (PhoneModel, PhoneModelList, User, Cart)
 
 
 class LandingPageViewsTestCase(BaseTestCase):
@@ -341,3 +341,54 @@ class FAQSupportEmailTestCase(BaseTestCase):
         s_msg = 'Sorry we were not able to process your request at this '\
                 'time, please correct the errors in the form and try again'
         self.assertTrue('{}'.format(s_msg) in message.message)
+
+
+class ShippingAddressTestCase(BaseTestCase):
+    """Tests Contact us page views"""
+
+    def setUp(self):
+        """Set the initial state of the tests."""
+        super(ShippingAddressTestCase, self).setUp()
+
+    def test_shipping_address_form_validation_failure(self):
+        """
+        Test that when the user places an order and the shipping address
+        information sent is incorrect:
+            - They are notified of the error
+        """
+        winniethepooh = Client()
+        User.objects.create(email="minnie@thepooh.com")
+        order_user = User.objects.get(email="minnie@thepooh.com")
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=3, owner=order_user)
+        data = {
+            'hidden_pickup': 1,
+            'country_code': self.code.id,
+            'phone_number': '071555777578899',
+            'location': 'Rongai, Posta'}
+        winniethepooh.force_login(order_user)
+        post_response = winniethepooh.post('/order', data)
+        self.assertContains(
+            post_response, "The phone number entered is invalid.")
+
+    def test_shipping_address_created(self):
+        """
+        Test that when the user places an order and the shipping address
+        information is sent:
+            - Their shipping data is saved
+        """
+        winniethepooh = Client()
+        User.objects.create(email="minnie@thepooh.com")
+        order_user = User.objects.get(email="minnie@thepooh.com")
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=3, owner=order_user)
+        data = {
+            'hidden_pickup': 1,
+            'country_code': self.code.id,
+            'phone_number': '0715557775',
+            'location': 'Rongai, Posta'}
+        winniethepooh.force_login(order_user)
+        post_response = winniethepooh.post('/order', data, follow=True)
+        self.assertRedirects(post_response, '/dashboard#orders', 302)

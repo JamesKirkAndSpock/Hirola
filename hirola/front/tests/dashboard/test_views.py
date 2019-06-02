@@ -91,40 +91,31 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(get_response, order.phone.phone_model)
         self.assertContains(
             get_response, "<p><b>Order No:</b><span> #{}</span>".
-            format(order.pk)
-            )
+            format(order.pk))
         self.assertContains(
             get_response, "<b>Payment Method:</b><span> {}</span>".
-            format(order.payment_method)
-            )
+            format(order.payment_method))
         self.assertContains(
             get_response, "<b>Quantity:</b><span> {}</span>".
-            format(order.quantity)
-            )
+            format(order.quantity))
         self.assertContains(
             get_response, "<b>Total Price:</b><span> {}</span>".
-            format("{:,}".format(order.total_price))
-            )
+            format("{:,}".format(order.total_price)))
         self.assertContains(
             get_response, "<span> {}</span>".
-            format(order.status)
-            )
+            format(order.status))
         self.assertContains(
             get_response, "<b>Purchase Date: </b><span> {}".
-            format(order.date.strftime("%b"))
-            )
+            format(order.date.strftime("%b")))
         self.assertContains(
             get_response, "<li>Recepint: {}</li>".
-            format(owner)
-            )
+            format(owner))
         self.assertContains(
             get_response, "Location: {}".
-            format(order.shipping_address.location)
-            )
+            format(order.shipping_address.location))
         self.assertContains(
             get_response, "<li>Pick up: {}</li>".
-            format(order.shipping_address.location)
-            )
+            format(order.shipping_address.location))
 
     def test_order_data_post_request(self):
         '''
@@ -149,44 +140,34 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(post_response, cart.phone_model_item)
         self.assertContains(
             post_response, "<p><b>Order No:</b><span> #{}</span>".
-            format(order.pk)
-            )
+            format(order.pk))
         self.assertContains(
             post_response, "<b>Payment Method:</b><span> {}</span>".
-            format(order.payment_method)
-            )
+            format(order.payment_method))
         self.assertContains(
             post_response, "<b>Quantity:</b><span> {}</span>".
-            format(order.quantity)
-            )
+            format(order.quantity))
         self.assertContains(
             post_response, "<b>Total Price:</b><span> {}</span>".
-            format("{:,}".format(order.total_price))
-            )
+            format("{:,}".format(order.total_price)))
         self.assertContains(
             post_response, "<span> {}</span>".
-            format(order.status)
-            )
+            format(order.status))
         self.assertContains(
             post_response, "<b>Purchase Date: </b><span> {}".
-            format(order.date.strftime("%b"))
-            )
+            format(order.date.strftime("%b")))
         self.assertContains(
             post_response, "<li>Recepint: {}</li>".
-            format(user)
-            )
+            format(user))
         self.assertContains(
             post_response, "Location: {}".format(
-                order.shipping_address.location)
-            )
+                order.shipping_address.location))
         self.assertContains(
             post_response, "Pick up: {}".
-            format(order.shipping_address.location)
-            )
+            format(order.shipping_address.location))
         self.assertContains(
             post_response, "<li>Phone No: {}</li>".
-            format(order.shipping_address.phone_number)
-            )
+            format(order.shipping_address.phone_number))
 
     def test_order_to_pickup(self):
         """
@@ -205,12 +186,10 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(post_response, cart.phone_model_item)
         self.assertContains(
             post_response, "<p><b>Order No:</b><span> #{}</span>".
-            format(order.pk)
-            )
+            format(order.pk))
         self.assertContains(
             post_response, "<li>Recepint: {}</li>".
-            format(user)
-            )
+            format(user))
         self.assertContains(
             post_response, "Pick up: To Pick up")
 
@@ -221,11 +200,9 @@ class DashboardTemplate(BaseTestCase):
         status = OrderStatus.objects.get(status="Pending")
         address = ShippingAddress.objects.create(
             phone_number="0715557775", country_code=self.code,
-            location="Kiambu Road", pickup=True
-            )
+            location="Kiambu Road", pickup=True)
         Order.objects.create(
             owner=owner, phone=self.samsung_note_5_rose_gold, status=status,
-            quantity=2, total_price=80000, shipping_address=address,
-            )
+            quantity=2, total_price=80000, shipping_address=address)
         order = Order.objects.get(owner=owner)
         return (owner, order)

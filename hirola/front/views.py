@@ -31,8 +31,7 @@ from front.forms.user_forms import (
     resend_activation_email, ContactUsForm,
     )
 from front.forms.cart_forms import (
-    CartForm, CartOwnerForm, ShippingAddressForm
-    )
+    CartForm, CartOwnerForm, ShippingAddressForm)
 
 
 def page_view(request):
@@ -896,10 +895,7 @@ def place_order(request):
             if form.is_valid():
                 shipping_address = form.save()
                 return populate_order(request, shipping_address)
-            print(form.errors)
             context = before_checkout_context(request)
-            if context.get("item_count") == 0:
-                return redirect('/before_checkout')
             context['form'] = form
             return render(request, 'front/checkout.html', context)
         return populate_order(request, shipping_address)

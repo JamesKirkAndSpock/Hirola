@@ -7,7 +7,7 @@ from front.models import (
     NewsItem, Color, ItemIcon,
     cache, User, ServicePerson, RepairService, Service,
     CountryCode, PhoneModelList, PhoneBrand, PhoneModel, HotDeal,
-    PhoneImage, Feature
+    PhoneImage, Feature, Cart
     )
 
 
