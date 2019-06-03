@@ -886,20 +886,27 @@ def before_add_cart(request, user):
 def place_order(request):
     """
     Convert user's cart details into processing orders in preparation
-    for shipping
+    for shipping.
     """
     if request.method == 'POST':
         shipping_address = None
         if request.POST.get('hidden_pickup') == "1":
-            form = ShippingAddressForm(request.POST)
-            if form.is_valid():
-                shipping_address = form.save()
-                return populate_order(request, shipping_address)
-            context = before_checkout_context(request)
-            context['form'] = form
-            return render(request, 'front/checkout.html', context)
+            return(save_shipping_address_form(request))
         return populate_order(request, shipping_address)
     return redirect('/checkout')
+
+
+def save_shipping_address_form(request):
+    """
+    Save the shipping address form.
+    """
+    form = ShippingAddressForm(request.POST)
+    if form.is_valid():
+        shipping_address = form.save()
+        return populate_order(request, shipping_address)
+    context = before_checkout_context(request)
+    context['form'] = form
+    return render(request, 'front/checkout.html', context)
 
 
 def populate_order(request, address):
