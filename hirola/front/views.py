@@ -22,7 +22,7 @@ from front.models import (
     CountryCode, User, PhoneCategory,
     PhoneMemorySize, SocialMedia, Review, HotDeal,
     NewsItem, Order, CartOwner, Cart,
-    ServicePerson, PhoneModelList, PhoneModel, OrderStatus
+    ServicePerson, PhoneModelList, PhoneModel, OrderStatus, ShippingAddress
     )
 from front.forms.user_forms import (
     UserCreationForm, AuthenticationForm,
@@ -30,7 +30,8 @@ from front.forms.user_forms import (
     EmailAuthenticationForm, resend_email,
     resend_activation_email, ContactUsForm,
     )
-from front.forms.cart_forms import CartForm, CartOwnerForm
+from front.forms.cart_forms import (
+    CartForm, CartOwnerForm, ShippingAddressForm)
 
 
 def page_view(request):
@@ -280,13 +281,15 @@ def before_checkout_context(request):
     )
     wishlist = Cart.objects.filter(owner=request.user, is_wishlist=True)
     total = get_cart_total(items)
+    shipping_address_form = ShippingAddressForm
     context = {
         'categories': phone_categories,
         'social_media': social_media,
         'items': items,
         'item_count': items.count(),
         'cart_total': total,
-        'wishlist': wishlist
+        'wishlist': wishlist,
+        'shipping_address_form': shipping_address_form
     }
     return context
 
@@ -883,20 +886,43 @@ def before_add_cart(request, user):
 def place_order(request):
     """
     Convert user's cart details into processing orders in preparation
-    for shipping
+    for shipping.
     """
     if request.method == 'POST':
-        cart = Cart.objects.filter(owner=request.user)
-        order_status = OrderStatus.objects.get_or_create(
-            status='processing')[0]
-        for obj in cart:
-            Order.objects.create(
-                owner=obj.owner, quantity=obj.quantity,
-                phone=obj.phone_model_item, status=order_status,
-                total_price=obj.total_price)
-            Cart.objects.filter(id=obj.id).delete()
-        return redirect('/dashboard#orders')
+        shipping_address = None
+        if request.POST.get('hidden_pickup') == "1":
+            return(save_shipping_address_form(request))
+        return populate_order(request, shipping_address)
     return redirect('/checkout')
+
+
+def save_shipping_address_form(request):
+    """
+    Save the shipping address form.
+    """
+    shipping_address_form = ShippingAddressForm(request.POST)
+    if shipping_address_form.is_valid():
+        shipping_address = shipping_address_form.save()
+        return populate_order(request, shipping_address)
+    context = before_checkout_context(request)
+    context['shipping_address_form'] = shipping_address_form
+    return render(request, 'front/checkout.html', context)
+
+
+def populate_order(request, address):
+    """
+    Populate order details
+    """
+    cart = Cart.objects.filter(owner=request.user)
+    order_status = OrderStatus.objects.get_or_create(
+        status='processing')[0]
+    for obj in cart:
+        Order.objects.create(
+            owner=obj.owner, quantity=obj.quantity,
+            phone=obj.phone_model_item, status=order_status,
+            total_price=obj.total_price, shipping_address=address)
+        Cart.objects.filter(id=obj.id).delete()
+    return redirect('/dashboard#orders')
 
 
 def checkout_complete(request):

@@ -74,3 +74,12 @@ input[type=number]::-webkit-outer-spin-button {
   text-transform: none;
   font-size: 16px;
 }
+
+.errorlist {
+    color: red;
+    font-size: 120%;
+}
+
+.errorlist li {
+    list-style-type: disc;
+}

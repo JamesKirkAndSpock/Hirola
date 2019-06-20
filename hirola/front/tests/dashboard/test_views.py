@@ -82,7 +82,8 @@ class DashboardTemplate(BaseTestCase):
 
     def test_order_data_get_request(self):
         '''
-        Test that if a moves to the dashboard, and that he had made some orders
+        Test that if a moves to the dashboard, and that he had made
+        some orders
             - That the order details for his past orders are rendered:
         '''
         (owner, order) = self.generate_review_data()
@@ -90,40 +91,31 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(get_response, order.phone.phone_model)
         self.assertContains(
             get_response, "<p><b>Order No:</b><span> #{}</span>".
-            format(order.pk)
-            )
+            format(order.pk))
         self.assertContains(
             get_response, "<b>Payment Method:</b><span> {}</span>".
-            format(order.payment_method)
-            )
+            format(order.payment_method))
         self.assertContains(
             get_response, "<b>Quantity:</b><span> {}</span>".
-            format(order.quantity)
-            )
+            format(order.quantity))
         self.assertContains(
             get_response, "<b>Total Price:</b><span> {}</span>".
-            format("{:,}".format(order.total_price))
-            )
+            format("{:,}".format(order.total_price)))
         self.assertContains(
             get_response, "<span> {}</span>".
-            format(order.status)
-            )
+            format(order.status))
         self.assertContains(
             get_response, "<b>Purchase Date: </b><span> {}".
-            format(order.date.strftime("%b"))
-            )
+            format(order.date.strftime("%b")))
         self.assertContains(
-            get_response, "Recepient: {}".
-            format(owner)
-            )
+            get_response, "<li>Recipient: {}</li>".
+            format(owner))
         self.assertContains(
             get_response, "Location: {}".
-            format(order.get_address.location)
-            )
+            format(order.shipping_address.location))
         self.assertContains(
-            get_response, "Pick up: {}".
-            format(order.get_address.pickup)
-            )
+            get_response, "<li>Pick up: {}</li>".
+            format(order.shipping_address.location))
 
     def test_order_data_post_request(self):
         '''
@@ -131,73 +123,86 @@ class DashboardTemplate(BaseTestCase):
             some orders and he posts something:
             - That the order details for his past orders are rendered:
         '''
-        (owner, order) = self.generate_review_data()
-        first_name_data = {"first_name": "Britney"}
-        post_response = self.uriel.post('/dashboard', first_name_data)
-        self.assertEqual(post_response.status_code, 200)
-        self.assertContains(post_response, order.phone.phone_model)
+        winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        cart = Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=3, owner=user)
+        data = {
+            'hidden_pickup': 1,
+            'country_code': self.code.id,
+            'phone_number': '0715557775',
+            'location': 'Rongai, Posta'}
+        winniethepooh.force_login(user)
+        post_response = winniethepooh.post('/order', data, follow=True)
+        order = Order.objects.get(owner=user)
+        self.assertContains(post_response, cart.phone_model_item)
         self.assertContains(
             post_response, "<p><b>Order No:</b><span> #{}</span>".
-            format(order.pk)
-            )
+            format(order.pk))
         self.assertContains(
             post_response, "<b>Payment Method:</b><span> {}</span>".
-            format(order.payment_method)
-            )
+            format(order.payment_method))
         self.assertContains(
             post_response, "<b>Quantity:</b><span> {}</span>".
-            format(order.quantity)
-            )
+            format(order.quantity))
         self.assertContains(
             post_response, "<b>Total Price:</b><span> {}</span>".
-            format("{:,}".format(order.total_price))
-            )
+            format("{:,}".format(order.total_price)))
         self.assertContains(
             post_response, "<span> {}</span>".
-            format(order.status)
-            )
+            format(order.status))
         self.assertContains(
             post_response, "<b>Purchase Date: </b><span> {}".
-            format(order.date.strftime("%b"))
-            )
+            format(order.date.strftime("%b")))
         self.assertContains(
-            post_response, "Recepient: {}".
-            format(first_name_data["first_name"] + " " + owner.last_name)
-            )
+            post_response, "<li>Recipient: {}</li>".
+            format(user))
         self.assertContains(
-            post_response, "Location: {}".format(order.get_address.location)
-            )
+            post_response, "Location: {}".format(
+                order.shipping_address.location))
         self.assertContains(
             post_response, "Pick up: {}".
-            format(order.get_address.pickup)
-            )
-
-    def test_order_data_with_recepient(self):
-        '''
-        Test that when you create a recepient for the Shipping Address:
-            - That the recepient's name is rendered rather than
-              the owner's name.
-        '''
-        (owner, order) = self.generate_review_data()
-        shipping_address = ShippingAddress.objects.get(order=order)
-        shipping_address.recepient = "Mishael Tchala"
-        shipping_address.save()
-        get_response = self.uriel.get('/dashboard')
+            format(order.shipping_address.location))
         self.assertContains(
-            get_response, "Recepient: {}".format(order.get_address.recepient)
-            )
+            post_response, "<li>Phone No: {}</li>".
+            format(order.shipping_address.phone_number))
+
+    def test_order_to_pickup(self):
+        """
+        Test that a user can order to pickup from company premises
+        """
+        winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        cart = Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=3, owner=user)
+        data = {}
+        winniethepooh.force_login(user)
+        post_response = winniethepooh.post('/order', data, follow=True)
+        order = Order.objects.get(owner=user)
+        self.assertContains(post_response, cart.phone_model_item)
+        self.assertContains(
+            post_response, "<p><b>Order No:</b><span> #{}</span>".
+            format(order.pk))
+        self.assertContains(
+            post_response, "<li>Recipient: {}</li>".
+            format(user))
+        self.assertContains(
+            post_response, "Pick up: To Pick up")
 
     def generate_review_data(self, shipping_address=None):
         """Generate data for a review."""
         owner = User.objects.get(email="urieltimanko@example.com")
         OrderStatus.objects.create(status="Pending")
         status = OrderStatus.objects.get(status="Pending")
+        address = ShippingAddress.objects.create(
+            phone_number="0715557775", country_code=self.code,
+            location="Kiambu Road", pickup=True)
         Order.objects.create(
             owner=owner, phone=self.samsung_note_5_rose_gold, status=status,
-            quantity=2, total_price=80000
-            )
+            quantity=2, total_price=80000, shipping_address=address)
         order = Order.objects.get(owner=owner)
-        ShippingAddress.objects.create(
-            order=order, location="Kiambu Road", pickup="Evergreen Center"
-            )
         return (owner, order)

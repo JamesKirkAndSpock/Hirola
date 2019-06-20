@@ -1,6 +1,6 @@
 """Contains tests for orders."""
 from front.base_test import BaseTestCase
-from front.admin import ShippingAddressInline
+from front.admin import OrderInline
 
 
 class Orders(BaseTestCase):
@@ -14,10 +14,8 @@ class Orders(BaseTestCase):
 
     def test_shipping_address(self):
         '''
-        Test that when you visit an add page for an order:
-            - That the shipping address row does not have an add another
-              button.
+        Test that a shippig address only allows one order
         '''
-        self.assertEqual(ShippingAddressInline.max_num, 1)
+        self.assertEqual(OrderInline.max_num, 1)
         get_response = self.elena.get("/admin/front/order/add/")
         self.assertContains(get_response, "Shipping address")

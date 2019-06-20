@@ -49,11 +49,17 @@ class PhoneProductInline(admin.StackedInline):
     extra = 1
 
 
-class ShippingAddressInline(admin.StackedInline):
-    """Represents the ShippingAddress model."""
-    model = ShippingAddress
+class OrderInline(admin.StackedInline):
+    """
+    Order inline form
+    """
+    model = Order
     extra = 1
     max_num = 1
+
+
+class ShippingAddressAdmin(admin.ModelAdmin):
+    inlines = [OrderInline]
 
 
 class PhoneModelListInline(admin.StackedInline):
@@ -90,14 +96,6 @@ class PhoneBrandAdmin(admin.ModelAdmin):
     Implements an inline layout for PhoneModelInline on the admin interface.
     """
     inlines = [PhoneModelInline]
-
-
-class OrderAdmin(admin.ModelAdmin):
-    """
-    Implements an inline layout for ShippingAddressInline on the
-    admin interface.
-    """
-    inlines = [ShippingAddressInline, ]
 
 
 class UserAdmin(BaseUserAdmin):
@@ -146,12 +144,12 @@ admin.site.register(SocialMedia)
 admin.site.register(User, UserAdmin)
 admin.site.register(CountryCode)
 admin.site.register(OrderStatus)
-admin.site.register(Order, OrderAdmin)
+admin.site.register(Order)
 admin.site.register(Review)
 admin.site.register(HotDeal, HotDealAdmin)
 admin.site.register(ItemIcon)
 admin.site.register(NewsItem)
-admin.site.register(ShippingAddress)
+admin.site.register(ShippingAddress, ShippingAddressAdmin)
 admin.site.register(InactiveUser)
 admin.site.register(Color)
 admin.site.register(Cart)

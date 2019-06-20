@@ -275,13 +275,11 @@
                                 <b>Shipping Address</b>
                             </p>
                             <ul>
-                                <li>Recepient: {% if order.get_address.recepient %}{{ order.get_address.recepient }}{% else %}{{ order.owner }}
-                                               {% endif %}
-                                </li>
-                                <li>Pick up: {{ order.get_address.pickup }}</li>
-                                <li>Location: {{ order.get_address.location }}</li>
+                                <li>Recipient: {{ order.owner }}</li>
+                                <li>Phone No: {{ order.shipping_address.phone_number }}</li>
+                                <li>Pick up: {% if order.shipping_address %}{{ order.shipping_address }}{% else %}{{ "To Pick up from headquarters." }}{% endif %}</li>
+                                <li>Location: {{ order.shipping_address.location }}</li>
                             </ul>
-
                         </div>
                         <div class="col m4 s12 center">
                             <p>
