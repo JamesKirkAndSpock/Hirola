@@ -281,7 +281,7 @@ def before_checkout_context(request):
     )
     wishlist = Cart.objects.filter(owner=request.user, is_wishlist=True)
     total = get_cart_total(items)
-    form = ShippingAddressForm
+    shipping_address_form = ShippingAddressForm
     context = {
         'categories': phone_categories,
         'social_media': social_media,
@@ -289,7 +289,7 @@ def before_checkout_context(request):
         'item_count': items.count(),
         'cart_total': total,
         'wishlist': wishlist,
-        'form': form
+        'shipping_address_form': shipping_address_form
     }
     return context
 
@@ -900,12 +900,12 @@ def save_shipping_address_form(request):
     """
     Save the shipping address form.
     """
-    form = ShippingAddressForm(request.POST)
-    if form.is_valid():
-        shipping_address = form.save()
+    shipping_address_form = ShippingAddressForm(request.POST)
+    if shipping_address_form.is_valid():
+        shipping_address = shipping_address_form.save()
         return populate_order(request, shipping_address)
     context = before_checkout_context(request)
-    context['form'] = form
+    context['shipping_address_form'] = shipping_address_form
     return render(request, 'front/checkout.html', context)
 
 

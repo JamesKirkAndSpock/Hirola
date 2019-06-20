@@ -60,7 +60,7 @@
                     </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                {{ form.country_code }}
+                                {{ shipping_address_form.country_code }}
                             </div>
                             <div class="input-field col s6">
                                 <input id="tel" type="text" name="phone_number" class="validate">
@@ -75,8 +75,8 @@
                         </div>
                 </div>
                 <div>
-                    {% if form.errors %}
-                            {% for key,value in form.errors.items %}
+                    {% if shipping_address_form.errors %}
+                            {% for key,value in shipping_address_form.errors.items %}
                             <strong>{{ value|escape }}</strong>
                             {% endfor %}
                     {% endif %}

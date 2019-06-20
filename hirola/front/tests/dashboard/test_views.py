@@ -108,7 +108,7 @@ class DashboardTemplate(BaseTestCase):
             get_response, "<b>Purchase Date: </b><span> {}".
             format(order.date.strftime("%b")))
         self.assertContains(
-            get_response, "<li>Recepint: {}</li>".
+            get_response, "<li>Recipient: {}</li>".
             format(owner))
         self.assertContains(
             get_response, "Location: {}".
@@ -157,7 +157,7 @@ class DashboardTemplate(BaseTestCase):
             post_response, "<b>Purchase Date: </b><span> {}".
             format(order.date.strftime("%b")))
         self.assertContains(
-            post_response, "<li>Recepint: {}</li>".
+            post_response, "<li>Recipient: {}</li>".
             format(user))
         self.assertContains(
             post_response, "Location: {}".format(
@@ -188,7 +188,7 @@ class DashboardTemplate(BaseTestCase):
             post_response, "<p><b>Order No:</b><span> #{}</span>".
             format(order.pk))
         self.assertContains(
-            post_response, "<li>Recepint: {}</li>".
+            post_response, "<li>Recipient: {}</li>".
             format(user))
         self.assertContains(
             post_response, "Pick up: To Pick up")
