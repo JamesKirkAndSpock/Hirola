@@ -1,6 +1,12 @@
 from front.forms.base_form import forms
 from front.models import Cart, CartOwner, ShippingAddress
 from front.twilio import TwilioValidation
+from django.template import loader
+from django.core.mail import EmailMultiAlternatives
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from front.token import account_activation_token
 
 
 class CartForm(forms.ModelForm):
@@ -105,3 +111,32 @@ class ShippingAddressForm(forms.ModelForm):
         if commit:
             address.save()
         return address
+
+
+def send_order_notice_email(request, user, cart, cart_total, shipping_address):
+    """
+    Send an email to the user notifying them that their order is in
+    processing.
+    """
+    current_site = get_current_site(request)
+    context = {
+        'user': user,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
+        'token': account_activation_token.make_token(user),
+        'protocol': 'https' if request.is_secure() else 'http',
+        'cart': cart,
+        'cart_total': cart_total,
+        'shipping_address': shipping_address
+    }
+    to_email = user.email
+    subject = loader.render_to_string(
+        "front/confirmation_email_subject.txt", context
+        )
+    subject = ''.join(subject.splitlines())
+    body = loader.render_to_string(
+        "front/confirmation_email_body.html", context
+        )
+    email_message = EmailMultiAlternatives(subject, body, None, [to_email])
+    email_message.content_subtype = "html"
+    email_message.send()

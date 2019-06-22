@@ -307,7 +307,7 @@ class ContactUsTestcase(BaseTestCase):
 
 
 class FAQSupportEmailTestCase(BaseTestCase):
-    """Tests Contact us page views"""
+    """Tests FAQs page views"""
 
     def setUp(self):
         """Set the initial state of the tests."""
@@ -344,7 +344,7 @@ class FAQSupportEmailTestCase(BaseTestCase):
 
 
 class ShippingAddressTestCase(BaseTestCase):
-    """Tests Contact us page views"""
+    """Tests shipping address can be collected and stored"""
 
     def setUp(self):
         """Set the initial state of the tests."""
