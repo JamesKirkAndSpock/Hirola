@@ -4,8 +4,6 @@ from front.forms.cart_forms import send_order_notice_email
 from django.test import RequestFactory
 from django.core import mail
 from front.views import get_cart_total
-from django.conf import settings
-from django.template.loader import render_to_string
 
 
 class NoticeEmailTestCase(BaseTestCase):
@@ -23,8 +21,7 @@ class NoticeEmailTestCase(BaseTestCase):
         """
         request = RequestFactory()
         request = request.post(
-            "", {'email': 'naisomia@gmail.com', 'password': 'secret'}
-            )
+            "", {'email': 'naisomia@gmail.com', 'password': 'secret'})
         User.objects.create_user(email="sivanna@gmail.com", password="secret")
         user = User.objects.get(email="sivanna@gmail.com")
         request.user = user
@@ -38,7 +35,7 @@ class NoticeEmailTestCase(BaseTestCase):
             phone_number=712893454
         )
         send_order_notice_email(
-            request, user, cart, get_cart_total(cart), shipping_address)
+            request, cart, get_cart_total(cart), shipping_address)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, ['sivanna@gmail.com'])
         subject = "Order Confirmation"

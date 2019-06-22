@@ -113,30 +113,28 @@ class ShippingAddressForm(forms.ModelForm):
         return address
 
 
-def send_order_notice_email(request, user, cart, cart_total, shipping_address):
+def send_order_notice_email(request, cart, cart_total, shipping_address):
     """
     Send an email to the user notifying them that their order is in
     processing.
     """
     current_site = get_current_site(request)
     context = {
-        'user': user,
+        'user': request.user,
         'domain': current_site.domain,
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode(),
-        'token': account_activation_token.make_token(user),
+        'uid': urlsafe_base64_encode(force_bytes(request.user.pk)).decode(),
+        'token': account_activation_token.make_token(request.user),
         'protocol': 'https' if request.is_secure() else 'http',
         'cart': cart,
         'cart_total': cart_total,
         'shipping_address': shipping_address
     }
-    to_email = user.email
+    to_email = request.user.email
     subject = loader.render_to_string(
-        "front/confirmation_email_subject.txt", context
-        )
+        "front/confirmation_email_subject.txt", context)
     subject = ''.join(subject.splitlines())
     body = loader.render_to_string(
-        "front/confirmation_email_body.html", context
-        )
+        "front/confirmation_email_body.html", context)
     email_message = EmailMultiAlternatives(subject, body, None, [to_email])
     email_message.content_subtype = "html"
     email_message.send()

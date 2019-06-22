@@ -923,7 +923,7 @@ def populate_order(request, address):
             total_price=obj.total_price, shipping_address=address)
         Cart.objects.filter(id=obj.id).delete()
     send_order_notice_email(
-        request, request.user, cart, get_cart_total(cart), address)
+        request, cart, get_cart_total(cart), address)
     return redirect('/dashboard#orders')
 
 
