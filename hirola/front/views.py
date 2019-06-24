@@ -31,7 +31,7 @@ from front.forms.user_forms import (
     resend_activation_email, ContactUsForm,
     )
 from front.forms.cart_forms import (
-    CartForm, CartOwnerForm, ShippingAddressForm)
+    CartForm, CartOwnerForm, ShippingAddressForm, send_order_notice_email)
 
 
 def page_view(request):
@@ -922,6 +922,8 @@ def populate_order(request, address):
             phone=obj.phone_model_item, status=order_status,
             total_price=obj.total_price, shipping_address=address)
         Cart.objects.filter(id=obj.id).delete()
+    send_order_notice_email(
+        request, cart, get_cart_total(cart), address)
     return redirect('/dashboard#orders')
 
 

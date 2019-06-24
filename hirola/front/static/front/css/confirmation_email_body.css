@@ -1,0 +1,53 @@
+h2 {
+    color: #3cba54;
+}
+
+.main {
+    font-size: 120%;
+}
+
+.row {
+    font-size: 120%;
+}
+
+.title {
+    display: flex;
+    border-bottom: solid 0.05em;
+    border-bottom-color: #E8E8E8;
+}
+
+.col-a {
+    flex-basis: 50%;
+    margin-right: 300px;
+}
+
+.col-b {
+    flex-basis: 50%;
+    flex-basis: 300px;
+}
+
+.text-title {
+    font-weight: 600;
+}
+
+.a {
+    text-decoration: none;
+    color: #3cba54;
+}
+
+li {
+    list-style: decimal;
+}
+
+.foot{
+    font-size: 90%;
+    color: gray;
+    margin-top: 10px;
+    border-top: solid 0.05em;
+    border-top-color: #E8E8E8;
+}
+
+
+#total {
+    margin-left: 20px;
+}
