@@ -6,7 +6,8 @@ from front.models import (
     PhoneCategory, PhoneMemorySize, Currency,
     NewsItem, Color, ItemIcon,
     cache, User, ServicePerson, RepairService, Service,
-    CountryCode, PhoneModelList, PhoneBrand, PhoneModel, HotDeal
+    CountryCode, PhoneModelList, PhoneBrand, PhoneModel, HotDeal,
+    PhoneImage, Feature, Cart
     )
 
 
@@ -28,6 +29,8 @@ class BaseTestCase(TestCase):
         self.create_phone_brand()
         self.create_phone_model()
         self.create_phone_model_list()
+        self.add_phone_images()
+        self.create_phone_features()
 
     def create_admin(self):
         """Create a super user Elena who has admin privilidges."""
@@ -169,17 +172,26 @@ class BaseTestCase(TestCase):
         PhoneModelList.objects.create(
             phone_model=self.lg_plus, currency=self.currency_v,
             price=12000, size_sku=self.size_android,
-            main_image=image("test_image_5.png"), color=self.color_three,
+            main_image=image("test_image_5.png"), color=self.color_one,
             quantity=4, is_in_stock=True)
         self.lg_plus_silver = PhoneModelList.objects.get(
-            phone_model=self.lg_plus, color=self.color_three)
+            phone_model=self.lg_plus, color=self.color_one)
         PhoneModelList.objects.create(
             phone_model=self.lg_plus, currency=self.currency_v,
             price=5000, size_sku=self.any_phone_size,
-            main_image=image("test_image_5.png"), color=self.color_three,
+            main_image=image("test_image_5.png"), color=self.color_one,
             quantity=4, is_in_stock=True)
         self.lg_plus_silver_two = PhoneModelList.objects.get(
             phone_model=self.lg_plus, price=5000)
+
+    def add_phone_images(self):
+        """
+        Add extra phone images
+        """
+        PhoneImage.objects.create(
+            image=image("test_image_1.jpeg"), images=self.lg_plus_silver_two)
+        PhoneImage.objects.create(
+            image=image("test_image_2.jpeg"), images=self.lg_plus_silver_two)
 
     def create_repair_services(self):
         """Create repair services."""
@@ -214,6 +226,12 @@ class BaseTestCase(TestCase):
         HotDeal.objects.create(item=self.samsung_note_5_rose_gold)
         self.hotdeal = HotDeal.objects.get(
             item=self.samsung_note_5_rose_gold)
+
+    def create_phone_features(self):
+        """Add phone features."""
+        Feature.objects.create(
+            phone=self.samsung_note_5_rose_gold,
+            feature="Dual Sim Card")
 
     def tearDown(self):
         cache.clear()

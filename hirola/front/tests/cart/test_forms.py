@@ -1,6 +1,6 @@
 """Test the forms for a cart"""
 from front.base_test import BaseTestCase
-from front.forms.cart_forms import CartForm, CartOwnerForm
+from front.forms.cart_forms import CartForm, CartOwnerForm, ShippingAddressForm
 from django.test import RequestFactory, Client
 from django.contrib import auth
 from django.contrib.sessions.middleware import SessionMiddleware
@@ -246,3 +246,100 @@ class CartOwnerFormTestCase(BaseTestCase):
         form = CartOwnerForm(request.POST)
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['__all__'][0], 'Relation already exists')
+
+
+class ShippingAddressFormTestCase(BaseTestCase):
+    """
+    Test the rendition of the shipping address form
+    """
+
+    def setUp(self):
+        """
+        Initialize environment.
+        """
+        super(ShippingAddressFormTestCase, self).setUp()
+
+    def test_successful_validation_of_phone_number(self):
+        """
+        Test user phone number is successfuly validated
+        """
+        data = {
+            'hidden_pickup': 1,
+            'country_code': self.code.id,
+            'phone_number': '071555777576',
+            'location': 'Rongai, Posta'}
+
+        request = RequestFactory()
+        User.objects.create_user(email="example_user@gmail.com")
+        user = User.objects.get(email="example_user@gmail.com")
+        Cart.objects.create(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=1)
+        cart = Cart.objects.get(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=1)
+        CartOwner.objects.create(owner=user, cart=cart)
+        request = request.post(
+            "/order", data
+        )
+        form = ShippingAddressForm(request.POST)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors, {
+            'phone_number': ['The phone number entered is invalid.']
+        })
+
+    def test_successful_validation_of_country_code(self):
+        """
+        Test user must select a valid country code
+        """
+        data = {
+            'hidden_pickup': 1,
+            'phone_number': '0715557775',
+            'location': 'Rongai, Posta'}
+
+        request = RequestFactory()
+        User.objects.create_user(email="example_user@gmail.com")
+        user = User.objects.get(email="example_user@gmail.com")
+        Cart.objects.create(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=1)
+        cart = Cart.objects.get(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=1)
+        CartOwner.objects.create(owner=user, cart=cart)
+        request = request.post(
+            "/order", data
+        )
+        form = ShippingAddressForm(request.POST)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors, {
+            'phone_number':
+            ['Enter a valid country code']
+        })
+
+    def test_successful_saving_of_shipping_address(self):
+        """
+        Test address is saved and pickup set to false
+        """
+        data = {
+            'hidden_pickup': 1,
+            'country_code': self.code.id,
+            'phone_number': '0715557775',
+            'location': 'Rongai, Posta'}
+
+        request = RequestFactory()
+        User.objects.create_user(email="example_user@gmail.com")
+        user = User.objects.get(email="example_user@gmail.com")
+        Cart.objects.create(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=1)
+        cart = Cart.objects.get(
+            owner=user, phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=1)
+        CartOwner.objects.create(owner=user, cart=cart)
+        request = request.post(
+            "/order", data
+        )
+        form = ShippingAddressForm(request.POST)
+        self.assertTrue(form.is_valid())
+        self.assertFalse(form.save().pickup)

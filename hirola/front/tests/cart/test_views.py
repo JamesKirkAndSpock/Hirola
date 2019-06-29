@@ -95,7 +95,6 @@ class CartViewsTestCase(BaseTestCase):
         self.assertContains(response, note_5_quantity)
         self.assertContains(response, "GSM feature")
         self.assertContains(response, "75,000")
-        self.assertContains(response, "<span class=\"right\">2</span>")
         self.assertContains(response, "125,000")
 
     def test_before_checkout_anonymous_no_cart(self):
@@ -143,7 +142,6 @@ class CartViewsTestCase(BaseTestCase):
         self.assertContains(response, cart.phone_model_item.main_image)
         self.assertContains(response, "GSM feature")
         self.assertContains(response, "75,000")
-        self.assertContains(response, "<span class=\"right\">2</span>")
         self.assertContains(response, "125,000")
 
     def test_phone_profile_view_post_logged_in(self):
@@ -309,3 +307,50 @@ class CartViewsTestCase(BaseTestCase):
         self.assertEqual(after_save_response.status_code, 200)
         self.assertContains(after_save_response, "75,000")
         self.assertContains(after_save_response, "125,000")
+
+    def test_buy_now_anonymous(self):
+        """
+        Test that when a user request to buy now before logging in
+            - That their item is saved to the cart
+            - and they are prompted to login in before proceeding
+        """
+        form = {
+            'buy_now': '1',
+            'quantity': '1',
+            'phone_model_input': '{}'.format(
+                self.samsung_note_5_rose_gold.phone_model.id),
+            'phone_model_item': '{}'.format(
+                self.samsung_note_5_rose_gold.id)
+        }
+        response = self.client.post('/profile/{}/'.format(
+            self.samsung_note_5_rose_gold.pk), form, follow=True)
+        self.assertRedirects(response, "/login?next=/checkout")
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold)
+        self.assertTrue(cart)
+
+    def test_buy_now_logged_in(self):
+        """
+        Test that when a user request to buy now while logged in
+            - That their item is saved to the cart
+            - and they are redirected to the checkout page
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        form = {
+            'buy_now': '1',
+            'quantity': '1',
+            'phone_model_input': '{}'.format(
+                self.samsung_note_5_rose_gold.phone_model.id),
+            'phone_model_item': '{}'.format(
+                self.samsung_note_5_rose_gold.id)
+        }
+        response = self.winniethepooh.post('/profile/{}/'.format(
+            self.samsung_note_5_rose_gold.pk), form, follow=True)
+        self.assertRedirects(response, "/checkout")
+        self.assertContains(response, '1. Delivery Options')
+        cart = Cart.objects.get(
+            phone_model_item=self.samsung_note_5_rose_gold)
+        self.assertTrue(cart)

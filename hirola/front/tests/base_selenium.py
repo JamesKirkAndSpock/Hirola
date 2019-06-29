@@ -106,8 +106,8 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
     def create_shipping_address(self):
         """Create a shipping address."""
         ShippingAddress.objects.create(
-            order=self.order, pickup="Evergreen Center",
-            location="Kiambu Road", recepient="Nala"
+            pickup=False, location="Kiambu Road",
+            country_code=self.country_code, phone_number="0715577755"
             )
 
     def create_news(self):

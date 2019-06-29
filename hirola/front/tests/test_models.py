@@ -169,21 +169,23 @@ class OrderModelsTestCase(BaseTestCase):
     def test_get_address_method(self):
         '''
         Test that when you access the get_address method:
-            - That it returns None if a Shipping address does not have one.
             - That it returns the shipping address if an order has one.
         '''
         User.objects.create_user(email="example@gmail.com")
         owner = User.objects.get(email="example@gmail.com")
         OrderStatus.objects.create(status="Pending")
         status = OrderStatus.objects.get(status="Pending")
+        address = ShippingAddress.objects.create(
+            phone_number='0715555775',
+            location="Kiambu Road",
+            pickup=False)
         Order.objects.create(
-            owner=owner, phone=self.samsung_note_5_rose_gold, status=status,
+            owner=owner, shipping_address=address,
+            phone=self.samsung_note_5_rose_gold, status=status,
             quantity=2, total_price=80000)
         order = Order.objects.get(owner=owner)
-        self.assertEqual(order.get_address, None)
-        ShippingAddress.objects.create(order=order, location="Kiambu Road",
-                                       pickup="Evergreen Center")
-        self.assertEqual(order.get_address.location, "Kiambu Road")
+        self.assertEqual(order.shipping_address, address)
+        self.assertEqual(order.shipping_address.location, "Kiambu Road")
 
 
 class ServicesNetworkTestCase(BaseTestCase):

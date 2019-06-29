@@ -39,13 +39,22 @@ nav {
     box-shadow: none !important;
 }
 
-header {
-    margin-bottom: 50px;
+.navigation {
+    display: flex;
+    flex-direction: column
+}
+
+.navbar-fixed {
+    height: 100px !important;
 }
 
 .row {
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+}
+
+.main-content {
+    margin-top: 50px;
 }
 
 .nav-extended {
@@ -88,6 +97,12 @@ header {
         width: 25px;
         margin-top: 15px !important;
     }
+    .navbar-fixed {
+        height: 200px !important;
+    }
+    .main-content {
+        margin-top: 20px;
+    }
 
 }
 
@@ -113,8 +128,6 @@ li.a-divider{
     padding-right: 0 !important;
     font-size: 12px !important;
 
-
-
 }
 
 .brand {
@@ -122,7 +135,12 @@ li.a-divider{
 }
 
 .brand-area{
-    /* display: flex;
+    height: 56px;
+}
+
+#base-main-page {
+    display: flex;
     align-items: center;
-    justify-content: center; */
+    align-content: center;
+    height: 100%;
 }

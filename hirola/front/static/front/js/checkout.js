@@ -1,10 +1,17 @@
 $(document).ready(function(){
     $('#shippingMethod').click(function(){
-        var radioValue = $("input[name='group1']:checked").attr('id');
+        var radioValue = $("input[name='pickup']:checked").attr('id');
         if(radioValue === 'delivery'){
-            $('.payment').css('display', 'block');
+            changeBehavior("block", "1", true);
         }else {
-            $('.payment').css('display', 'none');
+            changeBehavior("none", "0", false);
         }
     });
 });
+
+function changeBehavior(displayValue, pickUpvalue, inputsValue){
+    $('.payment').css('display', displayValue);
+    $('#pickupOption').val(pickUpvalue);
+    $('#tel').attr('required', inputsValue);
+    $('#town').attr('required', inputsValue);
+}

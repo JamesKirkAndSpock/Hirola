@@ -31,8 +31,9 @@ class PhoneProfilePageTestCase(BaseTestCase):
         img = "<li id=\"main_image_data_thumb\" data-thumb=\"/media/{}\">".\
             format(self.samsung_note_5_rose_gold.main_image)
         self.assertContains(response, img)
-        img_2 = "<img id=\"main_image_src\" src=\"/media/{}\" />".\
-            format(self.samsung_note_5_rose_gold.main_image)
+        img_2 = '<img id=\"main_image_src\" src=\"/media/{}\"'\
+                ' width=\"80\" height=\"150\" />'.\
+                format(self.samsung_note_5_rose_gold.main_image)
         self.assertContains(response, img_2)
 
     def test_color_selector_options(self):
@@ -47,6 +48,18 @@ class PhoneProfilePageTestCase(BaseTestCase):
             self.samsung_note_5_rose_gold.color.id,
             self.samsung_note_5_rose_gold.color)
         self.assertContains(response, html)
+
+    def test_key_features_rendered(self):
+        """
+        Test that on the profile page
+            - Key features are displayed
+        """
+        response = self.client.get("/profile/{}/".format(
+            self.samsung_note_5_rose_gold.id))
+        heading = "<h6><b>Key Features</b></h6>"
+        self.assertContains(response, heading)
+        feature = "<li>Dual Sim Card</li>"
+        self.assertContains(response, feature)
 
     def test_storage_selector_options(self):
         """
@@ -90,23 +103,17 @@ class PhoneProfilePageTestCase(BaseTestCase):
         Test that the get sizes url fetches the appropriate data
         """
         data = {
-            'phone_model_id': self.lg_plus.id,
-            'id': self.lg_plus_silver.color.id}
+            'phone_model_id': self.lg_plus_silver_two.id,
+            'id': self.lg_plus_silver_two.color.id}
         response = self.client.get("/get_sizes", data)
         self.assertEqual(json.loads(response.content)['sizes_length'], 1)
-
-    def test_get_sizes_error(self):
-        """
-        Test that when the get sizes url doesn't find the required data.
-            - That it returns a json error message
-        """
-        data = {
-            'phone_model_id': self.samsung_note_5.id,
-            'id': self.samsung_note_5_rose_gold.color.id}
-        response = self.client.get("/get_sizes", data)
-        error = {
-            "message": "There are no sizes currently"}
-        self.assertEqual(json.loads(response.content), error)
+        self.assertEqual(json.loads(response.content)['phone_size'], '4 GB')
+        self.assertEqual(
+            json.loads(response.content)['phone_quantity'],
+            self.lg_plus_silver.quantity)
+        self.assertEqual(len(json.loads(response.content)['images']), 2)
+        self.assertEqual(
+            json.loads(response.content)['price'], '5000')
 
     def test_size_change(self):
         """
