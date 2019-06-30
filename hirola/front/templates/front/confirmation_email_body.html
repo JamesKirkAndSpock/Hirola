@@ -1,16 +1,13 @@
-{% load inlinecss %}
-{% inlinecss "front/css/confirmation_email_body.css" %}
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <body>
-        <div class="row">
-                <div class="title">
-                        <div class="col-a">
-                            <h2>teke</h2>
+        <div class="row" style="font-size: 120%">
+                <div class="title" style="display: flex;  border-bottom: solid 0.05em;  border-bottom-color: #E8E8E8;">
+                        <div class="col-a" style=" flex-basis: 50%;  margin-right: 300px;">
+                            <h2 style="color: #3cba54">teke</h2>
                         </div>
                         <div class="col-b">
-                                <h2>Order Confirmation</h2>
+                                <h2 style="color: #3cba54">Order Confirmation</h2>
                         </div>
                 </div>
                 <div class="content">
@@ -22,25 +19,25 @@
                         </p>
                 </div>
         </div>
-        <div class="row">
-                <div class="title">
+        <div class="row" style="font-size: 120%">
+                <div class="title" style="border-bottom: solid 0.05em; border-bottom-color: #E8E8E8;">
                         <div class="col-a">
-                                <h2>Order Details</h2>
+                                <h2 style="color: #3cba54">Order Details</h2>
                         </div>
                 </div>
                 <div class="content">
                         {% for obj in cart %}
-                        <li><span class="text-title">{{obj.phone_model_item}}</span> Ksh. {{obj.phone_model_item.price}}</li>
+                        <li style="list-style: decimal; margin-left: 0;"><span class="text-title" style="font-weight: 600;">{{obj.phone_model_item}}:</span> Ksh. {{obj.phone_model_item.price}}</li>
                         {% endfor %}
                         <p>
-                            <span class="text-title" id="total">Order Total: Ksh. </span>{{cart_total}}
+                            <span class="text-title" id="total" style="font-weight: 600;">Order Total: Ksh. </span>{{cart_total}}
                         </p>
                 </div>
         </div>
-        <div class="row">
-                <div class="title">
+        <div class="row" style="font-size: 120%">
+                <div class="title" style="border-bottom: solid 0.05em; border-bottom-color: #E8E8E8;">
                         <div class="col-a">
-                            <h2>Shipping Details</h2>
+                            <h2 style="color: #3cba54">Shipping Details</h2>
                         </div>
                 </div>
                 <div class="content">
@@ -50,37 +47,36 @@
                         </p>
                         {% if shipping_address != None %}
                         <p>
-                            <span class="text-title">Phone Number:</span> {{shipping_address.phone_number}}
+                            <span class="text-title" style="font-weight: 600;">Phone Number:</span> {{shipping_address.phone_number}}
                         </p>
                         <p>
-                            <span class="text-title">Town:</span> {{shipping_address}}
+                            <span class="text-title" style="font-weight: 600;">Town:</span> {{shipping_address}}
                         </p>
                         {% else %}
                         <p>
-                            <span class="text-title">Phone Number:</span> {{user.phone_number}}
+                            <span class="text-title" style="font-weight: 600;">Phone Number:</span> {{user.phone_number}}
                         </p>
                         {% endif %}
                 </div>
         </div>
-        <div class="row">
+        <div class="row" style="font-size: 120%">
                 <div class="content">
                         <p>
-                           Have a question? please visit <span><a href="{{ protocol }}://{{ domain }}{% url 'front:help' %}">teke help center</a></span>
+                           Have a question? please visit <span><a href="{{ protocol }}://{{ domain }}{% url 'front:help' %}" style="text-decoration: none; color: #3cba54;">teke help center</a></span>
                         </p>
                         <p>
                            We hope to see you soon again.
                         </p>
                         <p>
-                            <span><a href="{{ protocol }}://{{ domain }}{% url 'front:landing_page' %}">Tekesquared.com</a></span>
+                            <span><a href="{{ protocol }}://{{ domain }}{% url 'front:landing_page' %}" style="text-decoration: none; color: #3cba54;">Tekesquared.com</a></span>
                         </p>
                 </div>
         </div>
-        <div class="foot">
+        <div class="foot" style="font-size: 90%;  color: gray; margin-top: 10px;  border-top: solid 0.05em;  border-top-color: #E8E8E8;">
                 <p>
                     By placing your order, you agree to pay the whole amount of the products ordered,
-                    as well as to teke's <span><a href="{{ protocol }}://{{ domain }}{% url 'front:privacy' %}">privacy policy</a></span>
+                    as well as to teke's <span><a href="{{ protocol }}://{{ domain }}{% url 'front:privacy' %}" style="text-decoration: none; color: #3cba54;">privacy policy</a></span>
                 </p>
         </div>
 </body>
 </html>
-{% endinlinecss %}

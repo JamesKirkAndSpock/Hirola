@@ -1,8 +1,9 @@
+"""Test sending of confirmation email"""
+from django.test import RequestFactory
+from django.core import mail
 from front.base_test import BaseTestCase, User, Cart
 from front.models import ShippingAddress
 from front.forms.cart_forms import send_order_notice_email
-from django.test import RequestFactory
-from django.core import mail
 from front.views import get_cart_total
 
 
@@ -41,16 +42,14 @@ class NoticeEmailTestCase(BaseTestCase):
         subject = "Order Confirmation"
         self.assertEqual(mail.outbox[0].subject, subject)
         body_content = "Thanks for shopping at teke"
-        rendered = str(mail.outbox[0].body)
+        rendered = str(mail.outbox[0].alternatives)
         self.assertIn(body_content, rendered)
-        item_detail = "<li style=\"list-style: decimal\">".format(
-            "<span class=\"text-title\" style=\"font-weight: 600\">"
-            "Samsung Note 5</span> Ksh. 25000</li>")
-        self.assertIn(item_detail, rendered)
-        shipping = "<span class=\"text-title\" style=\"font-weight: 600\">"\
+        price = "<span class=\"text-title\" style=\"font-weight: 600;\">"\
+                "Samsung Note 5:</span> Ksh. 25000</li>"
+        self.assertIn(price, rendered)
+        shipping = "<span class=\"text-title\" style=\"font-weight: 600;\">"\
                    "Town:</span> Kibera"
         self.assertIn(shipping, rendered)
-        item_title = "<span class=\"text-title\" id=\"total\" "\
-                     "style=\"font-weight: 600; margin-left: 20px\">"\
-                     "Order Total: Ksh. </span>50000"
-        self.assertIn(item_title, rendered)
+        order_total = "<span class=\"text-title\" id=\"total\" style=\""\
+                      "font-weight: 600;\">Order Total: Ksh. </span>50000"
+        self.assertIn(order_total, rendered)
