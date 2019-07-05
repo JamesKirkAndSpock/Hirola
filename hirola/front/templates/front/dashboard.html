@@ -307,7 +307,7 @@
                               </div>
                               <div class="modal-footer">
                                 <a class="btn green modal-close waves-effect waves-green">Undo</a>
-                                <a class="waves-effect waves-green btn-flat" href="cancel/{{ order.id }}">Confirm</a>
+                                <a class="waves-effect waves-green btn-flat" href="cancel/{{ order.id }}" id="confirmCancelOrder{{ order.id }}">Confirm</a>
                               </div>
                             </div>
                             <input type="hidden" id="orderPk" value="{{ order.pk }}">

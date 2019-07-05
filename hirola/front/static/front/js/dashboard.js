@@ -92,28 +92,31 @@ function activateTimer(date, timeLeftdiv, btn){
   var initialDate = new Date(month+ ' '+ day+ ','+ ' ' + year+ ' ' + time);
   var countDownDate = new Date(initialDate.getTime() + 60 * 60 * 48 * 1000);
   countDownDate = countDownDate.getTime();
+  setTimerInterval(countDownDate, timeLeftdiv)
+}
 
-  // Update the count down every 1 second
-  var x = setInterval(function() {
-    var now = new Date().getTime();
-    var distance = countDownDate - now;
-    seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    $(timeLeftdiv).html(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
+function setTimerInterval(countDownDate, timeLeftdiv){
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+      var now = new Date().getTime();
+      var distance = countDownDate - now;
+      seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      $(timeLeftdiv).html(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
 
-    if (distance < 0) {
-      clearInterval(x);
-      $(timeLeftdiv).html("EXPIRED");
-      $(btn).attr("disabled", true);
-      $.ajax({
-        type: 'PUT',
-        dataType: 'json',
-        url: "/disable_cancel_order",
-        data: {"order_id": $('#orderPk').val()}
-    });
-    }
+      if (distance < 0) {
+        clearInterval(x);
+        $(timeLeftdiv).html("EXPIRED");
+        $(btn).attr("disabled", true);
+        $.ajax({
+          type: 'PUT',
+          dataType: 'json',
+          url: "/disable_cancel_order",
+          data: {"order_id": $('#orderPk').val()}
+      });
+      }
   }, 1000);
 }

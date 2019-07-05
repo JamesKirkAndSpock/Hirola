@@ -962,7 +962,6 @@ def cancel_order(request, pk):
         order = Order.objects.get(pk=pk)
         CancelledOrder.objects.create(
             owner=order.owner,
-            date=order.date,
             phone=order.phone,
             status=order.status,
             quantity=order.quantity,
@@ -1011,11 +1010,6 @@ def disable_cancel_order(request):
         order = Order.objects.get(pk=pk)
         order.is_cancellable = False
         order.save()
-        # return JsonResponse({'message': 'Order status updated'})
         return HttpResponse('Success!')
     except Order.DoesNotExist:
-        # error = {
-        #     'message': 'That order was not found'
-        # }
-        # return JsonResponse(error)
         return HttpResponseNotFound('Order not found')
