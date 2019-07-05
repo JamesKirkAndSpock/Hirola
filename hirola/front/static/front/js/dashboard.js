@@ -63,3 +63,57 @@ $(document).ready(function () {
         }
     });
 });
+
+$(document).ready(function () {
+  // activateTimer();
+  getOrdersDiv();
+});
+
+function getOrdersDiv(){
+  var divs = $('.count-down');
+  for (var i=0; i<divs.length; i++){
+    var $date = $(divs[i]).find('#purchaseDate').html();
+    console.log($date);
+    var $timeLeftdiv = $(divs[i]).find('#timeLeft');
+    var $btn = $(divs[i]).find('#cancelOrderBtn');
+    activateTimer($date, $timeLeftdiv, $btn);
+  }
+}
+
+function activateTimer(date, timeLeftdiv, btn){
+  var dateParts = date.split(" ");
+  var month, day, year, time, noonPeriod;
+  month = dateParts[0];
+  day = dateParts[1];
+  year = dateParts[2];
+  time = dateParts[3];
+  noonPeriod =dateParts[4];
+  time = time + ':' + '00';
+  var initialDate = new Date(month+ ' '+ day+ ','+ ' ' + year+ ' ' + time);
+  var countDownDate = new Date(initialDate.getTime() + 60 * 60 * 48 * 1000);
+  countDownDate = countDownDate.getTime();
+
+  // Update the count down every 1 second
+  var x = setInterval(function() {
+    var now = new Date().getTime();
+    var distance = countDownDate - now;
+    seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    $(timeLeftdiv).html(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
+
+    if (distance < 0) {
+      clearInterval(x);
+      $(timeLeftdiv).html("EXPIRED");
+      $(btn).attr("disabled", true);
+      $.ajax({
+        type: 'PUT',
+        dataType: 'json',
+        url: "/disable_cancel_order",
+        data: {"order_id": $('#orderPk').val()}
+    });
+    }
+  }, 1000);
+}

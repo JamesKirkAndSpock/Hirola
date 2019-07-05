@@ -1,0 +1,15 @@
+#somethingElseInput {
+    display: none;
+}
+
+h5 {
+    border-bottom: solid 0.05em;
+    border-color: #E8E8E8;
+    font-weight: 600;
+    font-size: 180%;
+}
+
+.errorlist {
+    color: red;
+    font-size: 120%;
+}
