@@ -69,41 +69,5 @@ class MyOrders(BaseSeleniumTestCase):
         self.assertEqual(driver.current_url, '%s%s' % (
             self.live_server_url, '/dashboard'))
 
-    def test_confirm_cancel_link(self):
-        '''
-        Test that when a user moves to the order_detail and clicks on the
-            Cancel Order button:
-            - That a pop up window appears asking them to confirm the action
-        '''
-        self.create_order()
-        driver = self.login_user()
-        driver.get('%s%s' % (self.live_server_url, '/dashboard'))
-        driver.find_element_by_link_text("MY ORDERS").click()
-        driver.find_element_by_id("order-details-button").click()
-        btn = driver.find_element_by_id("cancelOrderBtn")
-        btn.click()
-        confirm_link = driver.find_element_by_link_text('Confirm')
-        confirm_link.click()
-        self.assertEqual(driver.current_url, '%s%s' % (
-            self.live_server_url, '/cancel/{}'.format(self.order.pk)))
-
-    def test_confirm_expired_order_cancel(self):
-        '''
-        Test that when a user attempts to cancel an order
-            whose window has expire.
-            - That they are redirected to the same page
-        '''
-        self.create_expired_order()
-        driver = self.login_user()
-        driver.get('%s%s' % (self.live_server_url, '/dashboard'))
-        driver.find_element_by_link_text("MY ORDERS").click()
-        driver.find_element_by_id("order-details-button").click()
-        btn = driver.find_element_by_id("cancelOrderBtn")
-        btn.click()
-        confirm_link = driver.find_element_by_link_text('Confirm')
-        confirm_link.click()
-        self.assertEqual(driver.current_url, '%s%s' % (
-            self.live_server_url, '/dashboard'))
-
     def tearDown(self):
         self.driver.close()
