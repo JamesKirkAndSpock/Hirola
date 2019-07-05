@@ -545,3 +545,45 @@ class ContactUsForm(forms.Form):
                 subject, body, from_email, [to_email]
             )
             email_message.send()
+
+
+class OrderCancellationForm(forms.Form):
+    """
+    Form to collect user reason to collect data.
+    """
+    error_messages = {
+        'invalid': _('Please enter a valid reason')
+    }
+
+    other_reason = forms.CharField(required=False)
+    hidden = forms.CharField(required=False)
+
+    def clean_other_reason(self):
+        """Validate 'other' reason."""
+        reason = self.cleaned_data.get('other_reason')
+        if re.match(r'^[_\W]+$', reason) or reason.isspace():
+            raise ValidationError(self.error_messages['invalid'])
+        return reason
+
+    def clean_hidden(self):
+        """Validate radio choices reason."""
+        hidden_reason = self.cleaned_data.get('hidden')
+        return hidden_reason
+
+    def send_email(self, request):
+        """Send email to site administrators."""
+        to_email = settings.EMAIL_HOST_USER
+        email = request.user.email
+        subject = "Reason for Cancelling Order"
+        body = ""
+        if self.clean_hidden():
+            body = self.clean_hidden()
+        else:
+            body = self.clean_other_reason()
+        body += '\n'
+        body += 'From ' + email
+        if subject and body and email:
+            email_message = EmailMultiAlternatives(
+                subject, body, email, [to_email]
+            )
+            email_message.send()

@@ -83,4 +83,8 @@ urlpatterns = [
     path('order', views.place_order, name='order'),
     path('checkout_complete', views.checkout_complete,
          name='checkout_complete'),
+    path('cancel/<int:pk>', views.cancel_order, name='cancel'),
+    path('submit_reason', views.submit_reason, name='submit_reason'),
+    path('disable_cancel_order', views.disable_cancel_order,
+         name='disable_cancel_order')
 ]

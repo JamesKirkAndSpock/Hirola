@@ -38,7 +38,11 @@ $(document).ready(function () {
 
 // trigger modal
 $(document).ready(function () {
-    $('.modal').modal();
+    $('.modal').modal({
+        'dismissible': false,
+        'opacity': 0.8,
+        'endingTop': '30%'
+    });
 });
 
 // trigger side-nav

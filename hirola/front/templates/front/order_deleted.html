@@ -1,0 +1,81 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/error.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/order_deleted.css' %}" />
+{% endblock %} {% block content %}
+<div class="container main-content">
+    <div class="row breadcrumbs">
+            <div class="col m8 push-m2">
+                <nav class="this-black">
+                    <div class="nav-wrapper">
+                        <div class="col s12">
+                            <a href="/teke" class="breadcrumb">teke</a>
+                            <a href="/dashboard" class="breadcrumb">dashboard</a>
+                            <a href="#!" class="breadcrumb" id="last-link">Order Cancellation</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+    </div>
+    <div class="row content">
+        <div class="row">
+            <div class="col m8 push-m2">
+                <div class="row">
+                    <h5><b>Order Cancellation Successful!!</b></h5>
+                    <p>
+                        We are always looking to improve our services. Please let us know why you cancelled the Order
+                        so that we can serve you better next time
+                    </p>
+                </div>
+                <div class="row">
+                    <form action="/submit_reason" method="POST" class="col s12" id="clientReasonForm">
+                        {% csrf_token %}
+                        <div class="row">
+                                <p>
+                                    <label>
+                                        <input class="with-gap" name="group1" type="radio" id="cheaperRadio" required/>
+                                        <span>Found a cheaper item somewhere.</span>
+                                    </label>
+                                    </p>
+                                    <p>
+                                    <label>
+                                        <input class="with-gap" name="group1" type="radio" id="expensiveRadio"/>
+                                        <span>Item was too expensive</span>
+                                    </label>
+                                    </p>
+                                    <p>
+                                    <label>
+                                        <input class="with-gap" name="group1" type="radio" id="uneededRadio"/>
+                                        <span>I don't need the item any more</span>
+                                    </label>
+                                    </p>
+                                    <p>
+                                    <label>
+                                        <input class="with-gap" name="group1" type="radio" id="somethingElseRadio"/>
+                                        <span>Somthing else</span>
+                                    </label>
+                                    <input type="text" placeholder="Please tell us your reason." id="somethingElseInput" name="other_reason">
+                                    <input type="hidden" name="hidden" id="hidden">
+                                </p>
+                        </div>
+                        <div class="row">
+                            <button type="submit" class="waves-effect waves-green btn green" name="action">Submit</button>
+                        </div>
+                        <div class="row">
+                            {% if order_cancellation_form.errors %}
+                                {% for key,value in order_cancellation_form.errors.items %}
+                                <strong>{{ value|escape }}</strong>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% block scripts %} {{ block.super }} {% load static %}
+<script src="{% static 'front/js/order_deleted.js' %}"></script>
+{% endblock %}
+{% endblock %}

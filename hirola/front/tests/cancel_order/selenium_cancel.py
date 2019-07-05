@@ -38,37 +38,6 @@ class MyOrders(BaseSeleniumTestCase):
         submit_button.click()
         return driver
 
-    def test_order_details_link(self):
-        '''
-        Test that when a user moves to the order_detail and clicks on the
-            MY ORDERS link:
-            - That the link opens up the orders that the user has
-        '''
-        driver = self.login_user()
-        driver.get('%s%s' % (self.live_server_url, '/dashboard'))
-        order_link = driver.find_element_by_link_text("MY ORDERS")
-        order_link.click()
-        order_1 = driver.find_element_by_id("details-{}".format(
-            self.order.pk))
-        self.assertEqual(order_1.get_attribute('style'), '')
-        order_details_link = driver.find_element_by_id("order-details-button")
-        order_details_link.click()
-        self.assertEqual(order_1.get_attribute('style'), "display: block;")
-        order_details_link.click()
-        self.assertEqual(order_1.get_attribute('style'), "display: none;")
-
-    def test_dashboard_link_on_dashboard(self):
-        """
-        Test that when the user clicks on the dashboard link while on the
-        dashboard page
-            - That they are redirected to the same page
-        """
-        driver = self.login_user()
-        driver.get('%s%s' % (self.live_server_url, '/dashboard'))
-        driver.find_element_by_id("last-link").click()
-        self.assertEqual(driver.current_url, '%s%s' % (
-            self.live_server_url, '/dashboard'))
-
     def test_confirm_cancel_link(self):
         '''
         Test that when a user moves to the order_detail and clicks on the
@@ -81,10 +50,16 @@ class MyOrders(BaseSeleniumTestCase):
         driver.find_element_by_id("order-details-button").click()
         btn = driver.find_element_by_id("cancelOrderBtn")
         btn.click()
+        driver.implicitly_wait(5)
         confirm_link = driver.find_element_by_link_text('Confirm')
         confirm_link.click()
         self.assertEqual(driver.current_url, '%s%s' % (
             self.live_server_url, '/cancel/{}'.format(self.order.pk)))
+        driver.find_elements_by_xpath(
+            "//*[contains(text(), 'Item was too expensive')]")[0].click()
+        driver.find_element_by_name("action").click()
+        self.assertEqual(driver.current_url, '%s%s' % (
+            self.live_server_url, '/'))
 
     def tearDown(self):
         self.driver.close()
