@@ -92,10 +92,10 @@ function activateTimer(date, timeLeftdiv, btn){
   var initialDate = new Date(month+ ' '+ day+ ','+ ' ' + year+ ' ' + time);
   var countDownDate = new Date(initialDate.getTime() + 60 * 60 * 48 * 1000);
   countDownDate = countDownDate.getTime();
-  setTimerInterval(countDownDate, timeLeftdiv)
+  setTimerInterval(countDownDate, timeLeftdiv, btn);
 }
 
-function setTimerInterval(countDownDate, timeLeftdiv){
+function setTimerInterval(countDownDate, timeLeftdiv, btn){
     // Update the count down every 1 second
     var x = setInterval(function() {
       var now = new Date().getTime();
@@ -111,12 +111,7 @@ function setTimerInterval(countDownDate, timeLeftdiv){
         clearInterval(x);
         $(timeLeftdiv).html("EXPIRED");
         $(btn).attr("disabled", true);
-        $.ajax({
-          type: 'PUT',
-          dataType: 'json',
-          url: "/disable_cancel_order",
-          data: {"order_id": $('#orderPk').val()}
-      });
+      $.getJSON("/disable_cancel_order", {"order_id": $('#orderPk').val(), view: 'json'}, function() {});
       }
   }, 1000);
 }

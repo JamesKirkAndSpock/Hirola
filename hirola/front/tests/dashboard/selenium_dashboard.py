@@ -23,7 +23,6 @@ class MyOrders(BaseSeleniumTestCase):
         self.create_phone_brand()
         self.create_phone_model()
         self.create_phone_model_list()
-        self.create_order()
         self.create_shipping_address()
 
     def login_user(self):
@@ -44,6 +43,7 @@ class MyOrders(BaseSeleniumTestCase):
             MY ORDERS link:
             - That the link opens up the orders that the user has
         '''
+        self.create_order()
         driver = self.login_user()
         driver.get('%s%s' % (self.live_server_url, '/dashboard'))
         order_link = driver.find_element_by_link_text("MY ORDERS")
@@ -75,17 +75,35 @@ class MyOrders(BaseSeleniumTestCase):
             Cancel Order button:
             - That a pop up window appears asking them to confirm the action
         '''
+        self.create_order()
         driver = self.login_user()
         driver.get('%s%s' % (self.live_server_url, '/dashboard'))
         driver.find_element_by_link_text("MY ORDERS").click()
         driver.find_element_by_id("order-details-button").click()
         btn = driver.find_element_by_id("cancelOrderBtn")
         btn.click()
-        confirm_link = driver.find_element_by_id(
-            'confirmCancelOrder{}'.format(self.order.pk))
+        confirm_link = driver.find_element_by_link_text('Confirm')
         confirm_link.click()
         self.assertEqual(driver.current_url, '%s%s' % (
             self.live_server_url, '/cancel/{}'.format(self.order.pk)))
+
+    def test_confirm_expired_order_cancel(self):
+        '''
+        Test that when a user attempts to cancel an order
+            whose window has expire.
+            - That they are redirected to the same page
+        '''
+        self.create_expired_order()
+        driver = self.login_user()
+        driver.get('%s%s' % (self.live_server_url, '/dashboard'))
+        driver.find_element_by_link_text("MY ORDERS").click()
+        driver.find_element_by_id("order-details-button").click()
+        btn = driver.find_element_by_id("cancelOrderBtn")
+        btn.click()
+        confirm_link = driver.find_element_by_link_text('Confirm')
+        confirm_link.click()
+        self.assertEqual(driver.current_url, '%s%s' % (
+            self.live_server_url, '/dashboard'))
 
     def tearDown(self):
         self.driver.close()

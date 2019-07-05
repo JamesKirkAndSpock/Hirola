@@ -960,21 +960,24 @@ def cancel_order(request, pk):
     """
     try:
         order = Order.objects.get(pk=pk)
-        CancelledOrder.objects.create(
-            owner=order.owner,
-            phone=order.phone,
-            status=order.status,
-            quantity=order.quantity,
-            total_price=order.total_price,
-            payment_method=order.payment_method,
-            shipping_address=order.shipping_address,
-        )
-        order.delete()
-        order_cancellation_form = OrderCancellationForm()
-        return order_cancellation_data(request, order_cancellation_form)
     except Order.DoesNotExist:
         messages.error(request, 'That order does not exist')
         return redirect('/dashboard')
+    if order.is_cancellable:
+        CancelledOrder.objects.create(
+                owner=order.owner,
+                phone=order.phone,
+                status=order.status,
+                quantity=order.quantity,
+                total_price=order.total_price,
+                payment_method=order.payment_method,
+                shipping_address=order.shipping_address,
+            )
+        order.delete()
+        order_cancellation_form = OrderCancellationForm()
+        return order_cancellation_data(request, order_cancellation_form)
+    messages.info(request, 'That order\'s cancel window has expired')
+    return redirect('/dashboard')
 
 
 def order_cancellation_data(request, form):
