@@ -102,16 +102,6 @@ class BaseSeleniumTestCase(StaticLiveServerTestCase):
             payment_method=self.mpesa)
         self.order = Order.objects.get(owner=self.timon, total_price=25000)
 
-    def create_expired_order(self):
-        """Create an order"""
-        Order.objects.create(
-            owner=self.timon, phone=self.iphone_6_s_rose_gold,
-            status=self.order_status, quantity=2, total_price=20000,
-            payment_method=self.mpesa, date="2018-12-12",
-            )
-        self.expired_order = Order.objects.get(
-            owner=self.timon, date="2018-12-12")
-
     def create_shipping_address(self):
         """Create a shipping address."""
         ShippingAddress.objects.create(
