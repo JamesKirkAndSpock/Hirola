@@ -50,9 +50,7 @@ class MyOrders(BaseSeleniumTestCase):
         driver.find_element_by_id("order-details-button").click()
         btn = driver.find_element_by_id("cancelOrderBtn")
         btn.click()
-        driver.implicitly_wait(5)
-        confirm_link = driver.find_element_by_id(
-            'confirmCancelOrder{}'.format(self.order.pk))
+        confirm_link = driver.find_element_by_link_text('Confirm')
         confirm_link.click()
         self.assertEqual(driver.current_url, '%s%s' % (
             self.live_server_url, '/cancel/{}'.format(self.order.pk)))
