@@ -1,9 +1,8 @@
 """Contains tests for dashboard views."""
 from front.base_test import (BaseTestCase, Client)
 from front.tests.test_users import UserSignupTestCase
-from front.models import (Review, User, ShippingAddress, Order, OrderStatus,
-                          Cart, CancelledOrder)
-import json
+from front.models import (
+    Review, User, ShippingAddress, Order, OrderStatus, Cart, CancelledOrder)
 
 
 class DashboardTemplate(BaseTestCase):

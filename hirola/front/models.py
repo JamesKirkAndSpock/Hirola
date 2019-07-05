@@ -581,9 +581,7 @@ class CancelledOrder(models.Model):
         ordering = ('-date',)
 
     def __str__(self):
-        return str(self.phone) + ": " + str(self.owner) + " date: " + \
-            str(self.date)
-
+        return str(self.phone) + ": " + str(self.owner)
 
 class Feature(models.Model):
     """
