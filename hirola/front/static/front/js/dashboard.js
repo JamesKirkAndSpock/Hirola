@@ -96,7 +96,7 @@ function activateTimer(date, timeLeftdiv, btn, id){
   setTimerInterval(countDownDate, timeLeftdiv, btn, id);
 }
 
-function setTimerInterval(countDownDate, timeLeftdiv, btn, id, callback){
+function setTimerInterval(countDownDate, timeLeftdiv, btn, id){
     // Update the count down every 1 second
     var x = setInterval(function() {
       var now = new Date().getTime();
