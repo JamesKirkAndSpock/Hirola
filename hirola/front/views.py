@@ -1015,3 +1015,15 @@ def disable_cancel_order(request):
         return HttpResponse('Success!')
     except Order.DoesNotExist:
         return HttpResponseNotFound('Order not found')
+
+
+def confirm_order_cancellation(request, pk):
+    """
+    Render page for confirmin cancel order.
+    """
+    (phone_categories, social_media) = various_caches()
+    context = {
+        'categories': phone_categories,
+        'social_media': social_media,
+        'order_id': pk}
+    return render(request, 'front/confirm_order_cancellation.html', context)
