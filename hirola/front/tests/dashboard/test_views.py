@@ -241,6 +241,17 @@ class DashboardTemplate(BaseTestCase):
         msg = str(response.content, 'utf-8')
         self.assertIn(msg, 'Order not found')
 
+    def test_confirm_cancel_page_rendered(self):
+        """
+        Test that when a user clicks on the cancel order button.
+            that they are redirected to the confirm page.
+        """
+        (owner, order) = self.generate_review_data()
+        data = {'order_id': order.id}
+        response = self.client.get("/confirm/{}".format(order.id), data)
+        page_header = '<h5>Confirm Order Cancellation</h5>'
+        self.assertContains(response, page_header)
+
     def generate_review_data(self, shipping_address=None):
         """Generate data for a review."""
         owner = User.objects.get(email="urieltimanko@example.com")

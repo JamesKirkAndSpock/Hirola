@@ -73,14 +73,15 @@ function getOrdersDiv(){
   var divs = $('.count-down');
   for (var i=0; i<divs.length; i++){
     var $date = $(divs[i]).find('#purchaseDate').html();
-    console.log($date);
     var $timeLeftdiv = $(divs[i]).find('#timeLeft');
     var $btn = $(divs[i]).find('#cancelOrderBtn');
-    activateTimer($date, $timeLeftdiv, $btn);
+    var $id = $(divs[i]).find('#orderPk').val();
+    // console.log($id);
+    activateTimer($date, $timeLeftdiv, $btn, $id);
   }
 }
 
-function activateTimer(date, timeLeftdiv, btn){
+function activateTimer(date, timeLeftdiv, btn, id){
   var dateParts = date.split(" ");
   var month, day, year, time, noonPeriod;
   month = dateParts[0];
@@ -92,10 +93,10 @@ function activateTimer(date, timeLeftdiv, btn){
   var initialDate = new Date(month+ ' '+ day+ ','+ ' ' + year+ ' ' + time);
   var countDownDate = new Date(initialDate.getTime() + 60 * 60 * 48 * 1000);
   countDownDate = countDownDate.getTime();
-  setTimerInterval(countDownDate, timeLeftdiv, btn);
+  setTimerInterval(countDownDate, timeLeftdiv, btn, id);
 }
 
-function setTimerInterval(countDownDate, timeLeftdiv, btn){
+function setTimerInterval(countDownDate, timeLeftdiv, btn, id, callback){
     // Update the count down every 1 second
     var x = setInterval(function() {
       var now = new Date().getTime();
@@ -106,12 +107,17 @@ function setTimerInterval(countDownDate, timeLeftdiv, btn){
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
       $(timeLeftdiv).html(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
-
+      console.log(distance);
       if (distance < 0) {
         clearInterval(x);
         $(timeLeftdiv).html("EXPIRED");
         $(btn).attr("disabled", true);
-      $.getJSON("/disable_cancel_order", {"order_id": $('#orderPk').val(), view: 'json'}, function() {});
-      }
+        $("#cancelOrder"+id).removeAttr('href');
+        sendCancelRequest(id);
+    }
   }, 1000);
+}
+
+function sendCancelRequest(id){
+    $.getJSON("/disable_cancel_order", {"order_id": id, view: 'json'}, function() {});
 }

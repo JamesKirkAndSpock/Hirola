@@ -297,19 +297,9 @@
                     </div>
                     <div class="row">
                         <div class="class col s12">
-                            <button data-target="confirm{{order.id}}" class="btn waves-effect waves-light green modal-trigger modal-trigger"
-                            id="cancelOrderBtn">Cancel Order</button>
-                            <div id="confirm{{order.id}}" class="modal">
-                              <div class="modal-content">
-                                <h4>Confirm Order Cancellation</h4>
-                                <p>Are you sure you want to <em>cancel</em> this order?</p>
-                                <p><em>Note:</em> This action cannot be undone!</p>
-                              </div>
-                              <div class="modal-footer">
-                                <a class="btn green modal-close waves-effect waves-green">Undo</a>
-                                <a class="waves-effect waves-green btn-flat" href="cancel/{{ order.id }}" id="confirmCancelOrder{{ order.id }}">Confirm</a>
-                              </div>
-                            </div>
+                            <a href="confirm/{{order.id}}" id="cancelOrder{{order.pk}}">
+                            <button class="btn waves-effect waves-light green" id="cancelOrderBtn">Cancel Order</button>
+                            </a>
                             <input type="hidden" id="orderPk" value="{{ order.pk }}">
                         </div>
                     </div>

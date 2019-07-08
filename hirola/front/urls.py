@@ -86,5 +86,6 @@ urlpatterns = [
     path('cancel/<int:pk>', views.cancel_order, name='cancel'),
     path('submit_reason', views.submit_reason, name='submit_reason'),
     path('disable_cancel_order', views.disable_cancel_order,
-         name='disable_cancel_order')
+         name='disable_cancel_order'),
+    path('confirm/<int:pk>', views.confirm_order_cancellation, name='confirm')
 ]
