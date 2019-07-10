@@ -12,7 +12,7 @@ download_terraform() {
 
 prepare_deployment_script() {
     cd ~
-    git clone -b develop https://github.com/JamesKirkAndSpock/Hirola-Deployment-Script.git
+    git clone -b fix-pip-version-167191779 https://github.com/JamesKirkAndSpock/Hirola-Deployment-Script.git
     cd ~/Hirola-Deployment-Script
     mkdir account-folder
     cd account-folder
