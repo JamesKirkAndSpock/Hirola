@@ -531,7 +531,7 @@ class Order(models.Model):
     """
     owner = models.ForeignKey(User, null=True, blank=True,
                               on_delete=models.CASCADE)
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(auto_now_add=True)
     phone = models.ForeignKey(PhoneModelList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
     quantity = IntegerRangeField(min_value=1)
