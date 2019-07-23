@@ -1,6 +1,5 @@
 """Contains tests for dashboard views."""
 import pytz
-from django.utils import timezone
 from front.base_test import (BaseTestCase, Client)
 from front.tests.test_users import UserSignupTestCase
 from front.models import (
