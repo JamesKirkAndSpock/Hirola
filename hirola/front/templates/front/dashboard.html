@@ -5,6 +5,7 @@
 <div class="main-content">
     {% load stars_counter %}
     {% load humanize %}
+    {% load tz %}
 <div class="container content">
         <div class="row breadcrumbs">
             <nav class="this-black">
@@ -269,11 +270,12 @@
                             <p><b>Quantity:</b><span> {{ order.quantity }}</span></p>
                             <p><b>Total Price:</b><span> {{ order.total_price|intcomma }}</span></p>
                             <p><b>Current Status: </b><span id="current-date"></span><span> {{ order.status }}</span>
-                            <p><b>Purchase Date: </b><span id="purchaseDate">{{ order.date|date:'M d Y H:i' }}</span>
+                            <p><b>Purchase Date: </b><span>{{ order.date|timezone:"Africa/Nairobi"|date:'M d Y H:i' }}  : EAT</span>
                             <p class="grey-text">Time left to cancel order:
                                 <span class="red-text" id="timeLeft">
                                 </span>
                             </p>
+                            <span id="purchaseDate">{{ order.date|date:'M d Y H:i' }}</span>
                         </div>
                         <div class="col m4 s12">
                             <p>

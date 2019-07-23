@@ -15,6 +15,10 @@
     display: none;
 }
 
+#purchaseDate {
+    display: none;
+}
+
 .btn {
     margin-right: 10px !important;
 }

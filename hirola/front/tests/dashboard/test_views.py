@@ -1,4 +1,6 @@
 """Contains tests for dashboard views."""
+import pytz
+from django.utils import timezone
 from front.base_test import (BaseTestCase, Client)
 from front.tests.test_users import UserSignupTestCase
 from front.models import (
@@ -104,8 +106,14 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(
             get_response, "<span> {}</span>".
             format(order.status))
-        purchase_date = "<b>Purchase Date: </b><span id=\"purchaseDate\">"\
-            "{}</span>".format(order.date.strftime("%b %d %Y %H:%M"))
+        order_date = order.date
+        nairobi_time_zone = pytz.timezone('Africa/Nairobi')
+        fmt = "%b %d %Y %H:%M"
+        utc = order_date.replace(tzinfo=pytz.UTC)
+        localtz = utc.astimezone(nairobi_time_zone)
+        localtz = localtz.strftime(fmt)
+        purchase_date = "<b>Purchase Date: </b><span>{}  : EAT</span>".\
+            format(localtz)
         self.assertContains(
             get_response, purchase_date)
         self.assertContains(
@@ -154,8 +162,14 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(
             post_response, "<span> {}</span>".
             format(order.status))
-        purchase_date = "<b>Purchase Date: </b><span id=\"purchaseDate\">"\
-            "{}</span>".format(order.date.strftime("%b %d %Y %H:%M"))
+        order_date = order.date
+        nairobi_time_zone = pytz.timezone('Africa/Nairobi')
+        fmt = "%b %d %Y %H:%M"
+        utc = order_date.replace(tzinfo=pytz.UTC)
+        localtz = utc.astimezone(nairobi_time_zone)
+        localtz = localtz.strftime(fmt)
+        purchase_date = "<b>Purchase Date: </b><span>{}  : EAT</span>".\
+            format(localtz)
         self.assertContains(
             post_response, purchase_date)
         self.assertContains(

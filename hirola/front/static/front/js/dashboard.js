@@ -76,7 +76,6 @@ function getOrdersDiv(){
     var $timeLeftdiv = $(divs[i]).find('#timeLeft');
     var $btn = $(divs[i]).find('#cancelOrderBtn');
     var $id = $(divs[i]).find('#orderPk').val();
-    // console.log($id);
     activateTimer($date, $timeLeftdiv, $btn, $id);
   }
 }
@@ -99,7 +98,10 @@ function activateTimer(date, timeLeftdiv, btn, id){
 function setTimerInterval(countDownDate, timeLeftdiv, btn, id){
     // Update the count down every 1 second
     var x = setInterval(function() {
-      var now = new Date().getTime();
+      var date = new Date();
+      // convert to utc time
+      var utc = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+      var now = utc.getTime();
       var distance = countDownDate - now;
       seconds = Math.floor((distance % (1000 * 60)) / 1000);
       var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -107,7 +109,6 @@ function setTimerInterval(countDownDate, timeLeftdiv, btn, id){
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
       $(timeLeftdiv).html(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
-      console.log(distance);
       if (distance < 0) {
         clearInterval(x);
         $(timeLeftdiv).html("EXPIRED");
