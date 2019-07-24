@@ -574,6 +574,7 @@ class OrderCancellationForm(forms.Form):
         """Send email to site administrators."""
         to_email = settings.EMAIL_HOST_USER
         email = request.user.email
+        from_email = settings.DEFAULT_FROM_EMAIL
         subject = "Reason for Cancelling Order"
         body = ""
         if self.clean_hidden():
@@ -584,6 +585,6 @@ class OrderCancellationForm(forms.Form):
         body += 'From ' + email
         if subject and body and email:
             email_message = EmailMultiAlternatives(
-                subject, body, email, [to_email]
+                subject, body, from_email, [to_email]
             )
             email_message.send()
