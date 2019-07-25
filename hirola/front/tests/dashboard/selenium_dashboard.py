@@ -23,7 +23,6 @@ class MyOrders(BaseSeleniumTestCase):
         self.create_phone_brand()
         self.create_phone_model()
         self.create_phone_model_list()
-        self.create_order()
         self.create_shipping_address()
 
     def login_user(self):
@@ -44,6 +43,7 @@ class MyOrders(BaseSeleniumTestCase):
             MY ORDERS link:
             - That the link opens up the orders that the user has
         '''
+        self.create_order()
         driver = self.login_user()
         driver.get('%s%s' % (self.live_server_url, '/dashboard'))
         order_link = driver.find_element_by_link_text("MY ORDERS")

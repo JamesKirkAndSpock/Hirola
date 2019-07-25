@@ -15,6 +15,7 @@ from django.contrib.auth.views import (
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm
+from django.http import HttpResponse, HttpResponseNotFound
 from front.token import account_activation_token, email_activation_token
 from front.decorators import (
     old_password_required, remember_user, is_change_allowed_required)
@@ -22,13 +23,14 @@ from front.models import (
     CountryCode, User, PhoneCategory,
     PhoneMemorySize, SocialMedia, Review, HotDeal,
     NewsItem, Order, CartOwner, Cart,
-    ServicePerson, PhoneModelList, PhoneModel, OrderStatus, ShippingAddress
+    ServicePerson, PhoneModelList, PhoneModel, OrderStatus, ShippingAddress,
+    CancelledOrder
     )
 from front.forms.user_forms import (
     UserCreationForm, AuthenticationForm,
     UserForm, OldPasswordForm, ChangeEmailForm,
     EmailAuthenticationForm, resend_email,
-    resend_activation_email, ContactUsForm,
+    resend_activation_email, ContactUsForm, OrderCancellationForm
     )
 from front.forms.cart_forms import (
     CartForm, CartOwnerForm, ShippingAddressForm, send_order_notice_email)
@@ -947,3 +949,81 @@ def buy_now(request):
         cart = form.save(commit=False)
         cart.save()
         return redirect("/checkout")
+
+
+def cancel_order(request, pk):
+    """
+    Cancel an order after placement.
+
+    args:
+        pk(int): Id of order to cancel
+    """
+    try:
+        order = Order.objects.get(pk=pk)
+    except Order.DoesNotExist:
+        messages.error(request, 'That order does not exist')
+        return redirect('/dashboard')
+    if order.is_cancellable:
+        CancelledOrder.objects.create(
+            owner=order.owner,
+            phone=order.phone,
+            status=order.status,
+            quantity=order.quantity,
+            total_price=order.total_price,
+            payment_method=order.payment_method,
+            shipping_address=order.shipping_address,)
+        order.delete()
+        order_cancellation_form = OrderCancellationForm()
+        return order_cancellation_data(request, order_cancellation_form)
+    messages.info(request, 'That order\'s cancel window has expired')
+    return redirect('/dashboard')
+
+
+def order_cancellation_data(request, form):
+    """
+    Generate data for order cancellation page.
+    """
+    (phone_categories, social_media) = various_caches()
+    context = {
+        'categories': phone_categories,
+        'order_cancellation_form': form,
+        'social_media': social_media}
+    return render(request, 'front/order_deleted.html', context)
+
+
+def submit_reason(request):
+    """
+    submit reason for cancelling order via email.
+    """
+    if request.method == 'POST':
+        form = OrderCancellationForm(request.POST)
+        if form.is_valid():
+            form.send_email(request)
+            return redirect('/')
+        return order_cancellation_data(request, form)
+
+
+def disable_cancel_order(request):
+    """
+    Edit an order so a client cannot be able to cancel it.
+    """
+    try:
+        pk = request.GET["order_id"]
+        order = Order.objects.get(pk=pk)
+        order.is_cancellable = False
+        order.save()
+        return HttpResponse('Success!')
+    except Order.DoesNotExist:
+        return HttpResponseNotFound('Order not found')
+
+
+def confirm_order_cancellation(request, pk):
+    """
+    Render page for confirmin cancel order.
+    """
+    (phone_categories, social_media) = various_caches()
+    context = {
+        'categories': phone_categories,
+        'social_media': social_media,
+        'order_id': pk}
+    return render(request, 'front/confirm_order_cancellation.html', context)

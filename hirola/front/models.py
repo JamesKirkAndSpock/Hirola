@@ -531,7 +531,39 @@ class Order(models.Model):
     """
     owner = models.ForeignKey(User, null=True, blank=True,
                               on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
+    phone = models.ForeignKey(PhoneModelList, on_delete=models.CASCADE)
+    status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
+    quantity = IntegerRangeField(min_value=1)
+    total_price = IntegerRangeField(min_value=0, default=0)
+    payment_method = models.ForeignKey(PaymentMethod,
+                                       on_delete=models.SET_NULL,
+                                       blank=True, null=True)
+    shipping_address = models.ForeignKey(
+        ShippingAddress, blank=True, null=True, on_delete=models.CASCADE)
+    help_message = _('Designates whether an order\'s window for'
+                     'being cancelled has expired')
+    is_cancellable = models.BooleanField(
+        _('is_cancellable'), default=True, help_text=help_message, )
+
+    class Meta:
+        """
+        Adds filters to the Order model
+        """
+        ordering = ('-date',)
+
+    def __str__(self):
+        return str(self.phone) + ": " + str(self.owner) + " date: " + \
+            str(self.date)
+
+
+class CancelledOrder(models.Model):
+    """
+    A model for canceled orders.
+    """
+    owner = models.ForeignKey(User, null=True, blank=True,
+                              on_delete=models.CASCADE)
+    date = models.DateTimeField(default=timezone.now)
     phone = models.ForeignKey(PhoneModelList, on_delete=models.CASCADE)
     status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
     quantity = IntegerRangeField(min_value=1)
@@ -542,10 +574,14 @@ class Order(models.Model):
     shipping_address = models.ForeignKey(
         ShippingAddress, blank=True, null=True, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return str(self.phone) + ": " + str(self.owner) + " date: " + \
-            str(self.date)
+    class Meta:
+        """
+        Adds filters to the Order model
+        """
+        ordering = ('-date',)
 
+    def __str__(self):
+        return str(self.phone) + ": " + str(self.owner)
 
 class Feature(models.Model):
     """
