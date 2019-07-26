@@ -4,8 +4,6 @@ from front.base_test import (BaseTestCase, Client)
 from front.tests.test_users import UserSignupTestCase
 from front.models import (
     Review, User, ShippingAddress, Order, OrderStatus, Cart, CancelledOrder)
-from front.models import (Review, User, ShippingAddress, Order, OrderStatus,
-                          Cart)
 from front.models import (
     Review, User, ShippingAddress, Order, OrderStatus, Cart, CancelledOrder,
     PhoneModelList)
