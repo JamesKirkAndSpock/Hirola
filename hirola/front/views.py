@@ -893,7 +893,7 @@ def place_order(request):
     if request.method == 'POST':
         shipping_address = None
         if request.POST.get('hidden_pickup') == "1":
-            return(save_shipping_address_form(request))
+            return save_shipping_address_form(request)
         return populate_order(request, shipping_address)
     return redirect('/checkout')
 
@@ -924,6 +924,11 @@ def populate_order(request, address):
             phone=obj.phone_model_item, status=order_status,
             total_price=obj.total_price, shipping_address=address)
         Cart.objects.filter(id=obj.id).delete()
+        phone = PhoneModelList.objects.get(id=obj.phone_model_item.pk)
+        phone.quantity -= obj.quantity
+        if phone.quantity == 0:
+            phone.is_in_stock = False
+        phone.save()
     send_order_notice_email(
         request, cart, get_cart_total(cart), address)
     return redirect('/dashboard#orders')
@@ -974,6 +979,11 @@ def cancel_order(request, pk):
             shipping_address=order.shipping_address,)
         order.delete()
         order_cancellation_form = OrderCancellationForm()
+        phone = PhoneModelList.objects.get(id=order.phone.pk)
+        phone.quantity += order.quantity
+        if not phone.is_in_stock:
+            phone.is_in_stock = True
+        phone.save()
         return order_cancellation_data(request, order_cancellation_form)
     messages.info(request, 'That order\'s cancel window has expired')
     return redirect('/dashboard')
