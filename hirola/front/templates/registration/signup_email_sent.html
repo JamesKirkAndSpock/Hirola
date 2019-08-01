@@ -2,6 +2,7 @@
 {% block styles %}
 {{ block.super }} {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/signup_email.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/base_grid.css' %}" />
 {% endblock %}
 {% block content %}
@@ -19,27 +20,33 @@
 
                 {% if provider == 'gmail' %}
                     <a href="https://mail.google.com/" target="_blank">
-                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                        <button class="btn waves-effect waves-ripple google-color">Confirm Email
+                            <i class="fab fa-google fa-xs"></i>
+                        </button>
                     </a>
                 {% elif provider == 'yahoo' %}
                     <a href="https://overview.mail.yahoo.com/" target="_blank">
-                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                        <button class="btn waves-effect waves-ripple yahoo">Confirm Email
+                            <i class="fab fa-yahoo"></i>
+                        </button>
                     </a>
                 {% elif provider == 'outlook' %}
                     <a href="https://outlook.live.com/owa/" target=" _blank">
-                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
-                    </a>
-                {% elif provider == 'inbox' %}
-                    <a href="http://www.inbox.com/" target=" _blank">
-                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                        <button class="btn waves-effect waves-ripple outlook">Confirm Email
+                            <i class="fas fa-envelope"></i>
+                        </button>
                     </a>
                 {% elif provider == 'icloud' %}
                     <a href="https://www.icloud.com/" target=" _blank">
-                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                        <button class="btn waves-effect waves-ripple icloud">Confirm Email
+                            <i class="fab fa-apple"></i>
+                        </button>
                     </a>
                 {% else %}
                     <a href="https://www.google.com/" target=" _blank">
-                        <button class="btn waves-effect waves-ripple green">Confirm Email</button>
+                        <button class="btn waves-effect waves-ripple green">Confirm Email
+                            <i class="material-icons">send</i>
+                        </button>
                     </a>
                 {% endif %}
             </div>
