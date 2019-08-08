@@ -3,7 +3,8 @@ import pytz
 from front.base_test import (BaseTestCase, Client)
 from front.tests.test_users import UserSignupTestCase
 from front.models import (
-    Review, User, ShippingAddress, Order, OrderStatus, Cart, CancelledOrder)
+    Review, User, ShippingAddress, Order, OrderStatus, Cart, CancelledOrder,
+    PhoneModelList)
 
 
 class DashboardTemplate(BaseTestCase):
@@ -219,6 +220,35 @@ class DashboardTemplate(BaseTestCase):
         self.assertEqual(order.quantity, cancelled_order.quantity)
         with self.assertRaises(Order.DoesNotExist):
             Order.objects.get(owner=owner)
+
+    def test_item_quantity_restored_on_order_cancel(self):
+        """
+        Test that when a user cancels an order
+            - That the item's quantity is restored
+                with the number of items the canceled order had
+        """
+        owner = User.objects.get(email="urieltimanko@example.com")
+        self.winniethepooh = Client()
+        self.winniethepooh.force_login(owner)
+        phone = PhoneModelList.objects.get(
+            id=self.samsung_note_5_rose_gold.pk)
+        self.assertEqual(phone.quantity, 4)
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=4, owner=owner)
+        response = self.winniethepooh.post('/order')
+        self.assertRedirects(response, '/dashboard#orders', 302)
+        order = Order.objects.get(owner=owner)
+        phone = PhoneModelList.objects.get(
+            id=self.samsung_note_5_rose_gold.pk)
+        self.assertEqual(phone.quantity, 0)
+        self.assertFalse(phone.is_in_stock)
+        response = self.uriel.get('/cancel/{}'.format(order.pk))
+        self.assertEqual(response.status_code, 200)
+        phone = PhoneModelList.objects.get(
+            id=self.samsung_note_5_rose_gold.pk)
+        self.assertEqual(phone.quantity, 4)
+        self.assertTrue(phone.is_in_stock)
 
     def test_cancel_non_existent_order(self):
         """

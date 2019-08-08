@@ -1,6 +1,6 @@
 """Test the views of checkout page"""
 from front.base_test import BaseTestCase
-from front.models import Cart, User, Feature, Order
+from front.models import Cart, User, Feature, Order, PhoneModelList
 from django.test import Client
 
 
@@ -145,6 +145,38 @@ class CheckoutViewTestCase(BaseTestCase):
         self.assertEqual(len(orders), 2)
         carts = Cart.objects.filter(owner=user)
         self.assertEqual(len(carts), 0)
+
+    def test_item_quantity_reduced(self):
+        """
+        Test that when a client order's an item
+            - That its quantity is reduced by the number
+              of items ordered
+        """
+        self.winniethepooh = Client()
+        User.objects.create(email="winnie@thepooh.com")
+        user = User.objects.get(email="winnie@thepooh.com")
+        self.winniethepooh.force_login(user)
+        phone = PhoneModelList.objects.get(
+            id=self.samsung_note_5_rose_gold.pk)
+        self.assertEqual(phone.quantity, 4)
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=2, owner=user)
+        response = self.winniethepooh.post('/order')
+        self.assertRedirects(response, '/dashboard#orders', 302)
+        phone = PhoneModelList.objects.get(
+            id=self.samsung_note_5_rose_gold.pk)
+        self.assertEqual(phone.quantity, 2)
+        # if item's quantity gets to zero, the item should not be in stock
+        Cart.objects.create(
+            phone_model_item=self.samsung_note_5_rose_gold,
+            quantity=2, owner=user)
+        response = self.winniethepooh.post('/order')
+        self.assertRedirects(response, '/dashboard#orders', 302)
+        phone = PhoneModelList.objects.get(
+            id=self.samsung_note_5_rose_gold.pk)
+        self.assertEqual(phone.quantity, 0)
+        self.assertFalse(phone.is_in_stock)
 
     def test_get_order_url(self):
         """
