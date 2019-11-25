@@ -10,6 +10,7 @@ hirola/db.sqlite3
 # Ignore environment file
 .env
 hi-venv/
+env/
 # Mock Images
 test_image_1_*
 test_image_2_*
