@@ -302,7 +302,7 @@ class ContactUsTestcase(BaseTestCase):
     def test_contact_us_page_content_rendering(self):
         """Test contact us page is rendered correctly."""
         response = self.client.get('/contact_us')
-        html = "Contact teke"
+        html = "Contact Tekesquared"
         self.assertContains(response, html)
 
 
