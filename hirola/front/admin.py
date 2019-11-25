@@ -8,7 +8,7 @@ from .models import (
     PhoneMemorySize, Currency, SocialMedia, Order,
     OrderStatus, ItemIcon, NewsItem, InactiveUser, Color,
     Cart, RepairService, Address, ServicePerson, Service,
-    PhoneBrand, PhoneModel, PhoneModelList
+    PhoneBrand, PhoneModel, PhoneModelList, CancelledOrder
     )
 from .forms.model_forms import (
     PhoneCategoryForm, HotDealForm,
@@ -160,3 +160,4 @@ admin.site.register(Service)
 admin.site.register(PhoneBrand, PhoneBrandAdmin)
 admin.site.register(PhoneModel, PhoneModelAdmin)
 admin.site.register(PhoneModelList, PhoneModelListAdmin)
+admin.site.register(CancelledOrder)

@@ -1,0 +1,41 @@
+{% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/error.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'front/css/order_deleted.css' %}" />
+{% endblock %} {% block content %}
+<div class="container main-content">
+    <div class="row breadcrumbs">
+            <div class="col m8 push-m2">
+                <nav class="this-black">
+                    <div class="nav-wrapper">
+                        <div class="col s12">
+                            <a href="/teke" class="breadcrumb">teke</a>
+                            <a href="/dashboard" class="breadcrumb">dashboard</a>
+                            <a href="#!" class="breadcrumb" id="last-link">Order Cancellation</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+    </div>
+    <div class="row content">
+        <div class="row">
+            <div class="col m8 push-m2">
+                <div class="row">
+                    <h5>Confirm Order Cancellation</h5>
+                    <p>Are you sure you want to <em>cancel</em> this order?</p>
+                    <p><em>Note:</em> This action cannot be undone!</p>
+                </div>
+                <div class="row">
+                    <a href="/cancel/{{order_id}}">
+                        <button class="btn waves-light green">Confirm</button>
+                    </a>
+                    <a href="/dashboard">
+                        <button class="btn waves-light green">Back</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block footer %} {% include 'front/footer.html' %} {% endblock %}
+{% endblock %}

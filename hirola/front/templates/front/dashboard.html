@@ -5,6 +5,7 @@
 <div class="main-content">
     {% load stars_counter %}
     {% load humanize %}
+    {% load tz %}
 <div class="container content">
         <div class="row breadcrumbs">
             <nav class="this-black">
@@ -244,7 +245,7 @@
                     <h5>MY ORDERS</h5>
                 </div>
                 {% for order in orders %}
-                <div id="order" class="row">
+                <div id="order" class="row count-down">
                     <div class="row order-row">
                         <div class="col m6 s6">
                             <div class="row">
@@ -262,13 +263,19 @@
                         </div>
                     </div>
                     <div class="row details-row" id="details-{{order.pk}}">
+                    <div class="row">
                         <div class="col m4 s12">
                             <p><b>Order No:</b><span> #{{ order.pk }}</span></p>
                             <p><b>Payment Method:</b><span> {{ order.payment_method }}</span></p>
                             <p><b>Quantity:</b><span> {{ order.quantity }}</span></p>
                             <p><b>Total Price:</b><span> {{ order.total_price|intcomma }}</span></p>
                             <p><b>Current Status: </b><span id="current-date"></span><span> {{ order.status }}</span>
-                            <p><b>Purchase Date: </b><span> {{ order.date }}</span>
+                            <p><b>Purchase Date: </b><span>{{ order.date|timezone:"Africa/Nairobi"|date:'M d Y H:i' }}  : EAT</span>
+                            <p class="grey-text">Time left to cancel order:
+                                <span class="red-text" id="timeLeft">
+                                </span>
+                            </p>
+                            <span id="purchaseDate">{{ order.date|date:'M d Y H:i' }}</span>
                         </div>
                         <div class="col m4 s12">
                             <p>
@@ -290,6 +297,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="class col s12">
+                            <a href="confirm/{{order.id}}" id="cancelOrder{{order.pk}}">
+                            <button class="btn waves-effect waves-light green" id="cancelOrderBtn">Cancel Order</button>
+                            </a>
+                            <input type="hidden" id="orderPk" value="{{ order.pk }}">
+                        </div>
+                    </div>
+                    </div>
+
             </div>
                 {% endfor %}
         </div>

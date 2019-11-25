@@ -133,8 +133,10 @@ def send_order_notice_email(request, cart, cart_total, shipping_address):
     subject = loader.render_to_string(
         "front/confirmation_email_subject.txt", context)
     subject = ''.join(subject.splitlines())
+    text_content = "Confirmation Email"
     body = loader.render_to_string(
         "front/confirmation_email_body.html", context)
-    email_message = EmailMultiAlternatives(subject, body, None, [to_email])
-    email_message.content_subtype = "html"
+    email_message = EmailMultiAlternatives(
+        subject, text_content, None, [to_email])
+    email_message.attach_alternative(body, "text/html")
     email_message.send()

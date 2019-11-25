@@ -1,8 +1,9 @@
 """Contains tests for dashboard views."""
+import pytz
 from front.base_test import (BaseTestCase, Client)
 from front.tests.test_users import UserSignupTestCase
-from front.models import (Review, User, ShippingAddress, Order, OrderStatus,
-                          Cart)
+from front.models import (
+    Review, User, ShippingAddress, Order, OrderStatus, Cart, CancelledOrder)
 
 
 class DashboardTemplate(BaseTestCase):
@@ -104,9 +105,16 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(
             get_response, "<span> {}</span>".
             format(order.status))
+        order_date = order.date
+        nairobi_time_zone = pytz.timezone('Africa/Nairobi')
+        fmt = "%b %d %Y %H:%M"
+        utc = order_date.replace(tzinfo=pytz.UTC)
+        localtz = utc.astimezone(nairobi_time_zone)
+        localtz = localtz.strftime(fmt)
+        purchase_date = "<b>Purchase Date: </b><span>{}  : EAT</span>".\
+            format(localtz)
         self.assertContains(
-            get_response, "<b>Purchase Date: </b><span> {}".
-            format(order.date.strftime("%b")))
+            get_response, purchase_date)
         self.assertContains(
             get_response, "<li>Recipient: {}</li>".
             format(owner))
@@ -153,9 +161,16 @@ class DashboardTemplate(BaseTestCase):
         self.assertContains(
             post_response, "<span> {}</span>".
             format(order.status))
+        order_date = order.date
+        nairobi_time_zone = pytz.timezone('Africa/Nairobi')
+        fmt = "%b %d %Y %H:%M"
+        utc = order_date.replace(tzinfo=pytz.UTC)
+        localtz = utc.astimezone(nairobi_time_zone)
+        localtz = localtz.strftime(fmt)
+        purchase_date = "<b>Purchase Date: </b><span>{}  : EAT</span>".\
+            format(localtz)
         self.assertContains(
-            post_response, "<b>Purchase Date: </b><span> {}".
-            format(order.date.strftime("%b")))
+            post_response, purchase_date)
         self.assertContains(
             post_response, "<li>Recipient: {}</li>".
             format(user))
@@ -192,6 +207,63 @@ class DashboardTemplate(BaseTestCase):
             format(user))
         self.assertContains(
             post_response, "Pick up: To Pick up")
+
+    def test_cancel_order(self):
+        """
+        Test user can cancel an order.
+        """
+        (owner, order) = self.generate_review_data()
+        response = self.uriel.get('/cancel/{}'.format(order.pk))
+        self.assertEqual(response.status_code, 200)
+        cancelled_order = CancelledOrder.objects.get(owner=order.owner)
+        self.assertEqual(order.quantity, cancelled_order.quantity)
+        with self.assertRaises(Order.DoesNotExist):
+            Order.objects.get(owner=owner)
+
+    def test_cancel_non_existent_order(self):
+        """
+        Test that the app handles cancelling of a non existent order.
+        """
+        response = self.uriel.get('/cancel/12345', follow=True)
+        self.assertRedirects(response, '/dashboard')
+        message = list(response.context.get('messages'))[0]
+        self.assertEqual(message.tags, 'error')
+        s_msg = 'That order does not exist'
+        self.assertTrue('{}'.format(s_msg) in message.message)
+
+    def test_disable_cancel_order(self):
+        """
+        Test the request for disabling cancel order
+        """
+        (owner, order) = self.generate_review_data()
+        data = {'order_id': order.id}
+        response = self.client.get("/disable_cancel_order", data)
+        msg = str(response.content, 'utf-8')
+        self.assertIn(msg, 'Success!')
+        order = Order.objects.get(owner=owner)
+        self.assertFalse(order.is_cancellable)
+
+    def test_disable_cancel_non_existent_order(self):
+        """
+        Test the request for disabling cancel order with
+             a non existent order
+        """
+        (owner, order) = self.generate_review_data()
+        data = {'order_id': 12345}
+        response = self.client.get("/disable_cancel_order", data)
+        msg = str(response.content, 'utf-8')
+        self.assertIn(msg, 'Order not found')
+
+    def test_confirm_cancel_page_rendered(self):
+        """
+        Test that when a user clicks on the cancel order button.
+            that they are redirected to the confirm page.
+        """
+        (owner, order) = self.generate_review_data()
+        data = {'order_id': order.id}
+        response = self.client.get("/confirm/{}".format(order.id), data)
+        page_header = '<h5>Confirm Order Cancellation</h5>'
+        self.assertContains(response, page_header)
 
     def generate_review_data(self, shipping_address=None):
         """Generate data for a review."""
