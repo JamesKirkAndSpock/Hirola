@@ -36,8 +36,11 @@
                   <h6><b></b></h6>
                   <div class="row">
                       <div class="col s12">
-                          <p>At {teke}<sup>2</sup>, we work on a pay on delivery system. You will only pay once we have delivered your ordered item to you, or
-                            when you pick it up at our office. Shipping takes about 1 to 3 weeks.
+                          <p>At Tekesquared, we work on a pay on delivery system. You will only pay once we have delivered your ordered item to you, or
+                            when you pick it up at our office. However, if your item's price is more than ksh. 25,000, you need to pay the balance first
+                            before we can process your order (e.g. if you buy an iphone 7 of Kes. 28,000, you'll need to pay Kes. 3,000 after you have ordered,
+                            then you will pay the balance upon delivery. We will email you instructions on how to pay the balance before we process your order. Shipping
+                            takes 17 business days.
                           </p>
                       </div>
                   </div>
@@ -49,7 +52,7 @@
                             <div class="col s12">
                             <label for="pickup">
                             <input class="with-gap" name="pickup" type="radio" id="pickup" required value="1" />
-                            <span>Pick up at our office: 1234 Kiambu (Kiambu-Nairobi Road next to Thindigua Realtors)</span>
+                            <span>Pick up at our office: Ever Green Shopping Center (Kiambu-Nairobi Road opposite Four Ways Junction)</span>
                             </label>
                             </div>
                             <div class="col s12">
@@ -94,7 +97,7 @@
             <div class="col m4 push-m1 confirmation">
                 <div class="row">
                     <div class="col s6"><p><b>Order Total:</b></p></div>
-                    <div class="col s6"><p class="green-text"><b>Ksh {{ cart_total|intcomma }}</b></p></div>
+                    <div class="col s6"><p class="green-text"><b>Ksh. {{ cart_total|intcomma }}</b></p></div>
                 </div>
                 <hr>
                 <div class="row">
