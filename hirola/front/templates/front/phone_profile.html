@@ -1,4 +1,13 @@
 {% extends "front/base.html" %} {% block styles %} {{ block.super }} {% load static %}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-153583848-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-153583848-1');
+</script>
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/phone_profile.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
 <link rel="stylesheet" href="{% static 'front/css/lightslider.css' %}">
@@ -120,7 +129,7 @@
                                     <i class="medium material-icons inline-icon">local_atm</i>
                                     Pay on delivery<br>
                                     <i class="medium material-icons inline-icon">loop</i>
-                                    7 day free return<br>
+                                    30 day free return<br>
                                     <i class="medium material-icons inline-icon">check</i>
                                     Genuine product<br>
                                     <i class="material-icons inline-icon">sentiment_very_satisfied</i>

@@ -1,4 +1,13 @@
 {% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-153583848-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-153583848-1');
+</script>
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/login.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
 {% endblock %} {% block content %}
@@ -30,7 +39,7 @@
                         <div class="input-field col s12">
                             <i class="material-icons prefix">account_circle</i>
                             {{ form.email }}
-                            <span class="helper-text right" data-error="Phone number format is incorrect" data-success="OK!">Number format should be +254*********</span>
+                            <span class="helper-text right" data-error="Phone number format is incorrect" data-success="OK!"></span>
 
                         </div>
                     {% if form.email.errors %}

@@ -1,4 +1,14 @@
 {% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-153583848-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-153583848-1');
+</script>
+
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/before_checkout.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
 {% endblock %} {% block content %}
@@ -10,7 +20,7 @@
         <nav class="this-black">
             <div class="nav-wrapper">
                 <div class="col s12">
-                    <a href="/" class="breadcrumb">teke</a>
+                    <a href="/" class="breadcrumb">Tekesquared</a>
                     <a href="/before_checkout" class="breadcrumb">My Cart</a>
                 </div>
             </div>

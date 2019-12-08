@@ -1,4 +1,13 @@
 {% extends "front/base.html" %}{% block styles %} {{ block.super }} {% load static %}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-153583848-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-153583848-1');
+</script>
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/press.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" /> {% endblock %} {% block content %}
 <div class="container main-content">
@@ -7,7 +16,7 @@
             <div class="nav-wrapper">
                 <div class="col s12">
                     <a href="/" class="breadcrumb">teke</a>
-                    <a href="/news" class="breadcrumb" id="last-link">news</a>
+                    <a href="/news" class="breadcrumb" id="last-link">news & press</a>
                 </div>
             </div>
         </nav>
@@ -15,8 +24,8 @@
     <div class="row content">
         <div class="row landing">
             <div class="landing-content center">
-                <h4>teke news and press</h4>
-                <p>We do things differently at Tekesquared. We are revolutionizing the phone tech industry in Kenya, one quality tech gadget at a time.<br>
+                <h4>Tekesquared news and press</h4>
+                <p>We do things differently at Tekesquared. We are revolutionizing the technology industry in Kenya, one quality tech gadget at a time.
                 Below is a list of articles and news about the impactful work we are doing: providing Kenyans with quality technology at affordable prices.</p>
             </div>
         </div>
