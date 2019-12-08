@@ -31,7 +31,7 @@ pylint==1.9.2
 PySocks==1.6.8
 python-memcached==1.59
 pytz==2018.4
-requests==2.18.4
+requests==2.20.0
 rsa==3.4.2
 selenium==3.141.0
 six==1.11.0
