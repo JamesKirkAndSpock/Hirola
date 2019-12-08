@@ -1,5 +1,14 @@
 {% extends "front/base.html" %}
 {% block styles %}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-153583848-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-153583848-1');
+</script>
 {{ block.super }} {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/signup.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'front/css/style.css' %}" />
@@ -65,7 +74,7 @@
                         <div class="input-field col s6">
                             <label for="{{ form.phone_number.id_for_label }}">Phone number</label>
                             {{ form.phone_number }}
-                            <span class="helper-text" data-error="wrong" data-success="right">712 345 678</span>
+                            <span class="helper-text" data-error="wrong" data-success="right">e.g. 712 345 678</span>
                         </div>
                       </div>
                     {% if form.phone_number.errors %}

@@ -54,7 +54,7 @@ class NewsTestCase(BaseSeleniumTestCase):
         driver.find_element_by_link_text("News and Press").click()
         self.assertEqual(driver.current_url, '%s%s' %
                          (self.live_server_url, '/news'))
-        driver.find_element_by_link_text("news").click()
+        driver.find_element_by_link_text("news & press").click()
         self.assertEqual(driver.current_url, '%s%s' %
                          (self.live_server_url, '/news'))
 
