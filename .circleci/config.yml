@@ -57,7 +57,4 @@ workflows:
   version: 2
   deploy-application:
     jobs:
-      - test
-      - application-deployment:
-          requires:
-            - test
+      - application-deployment
