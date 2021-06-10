@@ -6,7 +6,7 @@ certifi==2018.4.16
 chardet==3.0.4
 cssselect==1.0.3
 cssutils==1.0.2
-Django==2.0.2
+Django==2.2.24
 django-storages==1.6.6
 future==0.17.1
 google-api-core==1.2.0
