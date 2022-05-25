@@ -30,7 +30,7 @@ psycopg2-binary==2.7.4
 pyasn1==0.4.3
 pyasn1-modules==0.2.1
 pycodestyle==2.4.0
-PyJWT==1.6.4
+PyJWT==2.4.0
 pylint==1.9.2
 pynliner==0.8.0
 PySocks==1.6.8
