@@ -24,7 +24,7 @@ mccabe==0.6.1
 pep8==1.7.1
 Pillow==5.2.0
 premailer==3.0.0
-protobuf==3.5.2.post1
+protobuf==3.18.3
 psycopg2==2.7.4
 psycopg2-binary==2.7.4
 pyasn1==0.4.3
